@@ -1,0 +1,39 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:hrdmagenta/page/opening/wellcome.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+class SharedPreference {
+  var username,contac,first_name,last_name,email,gender,employee_id,profile_background;
+  var user_id,value;
+
+  void saveDataEmployee(int value,String user_id,String employee_id ,String username,first_name,last_name,email,profile_background,contact,String gender) async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    sharedPreferences.setInt("value", value);
+    sharedPreferences.setString("first_name", first_name);
+    sharedPreferences.setString("last_name", last_name);
+    sharedPreferences.setString("email", email);
+    sharedPreferences.setString("profile_background", profile_background);
+    sharedPreferences.setString("user_id", user_id);
+    sharedPreferences.setString("username", username);
+    sharedPreferences.setString("contact", contact);
+    sharedPreferences.setString("employee_id", employee_id);
+    sharedPreferences.setString("gender", gender);
+
+  }
+
+  void logout(BuildContext context) async{
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+   sharedPreferences.clear();
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (BuildContext context) => Wellcome()),
+      ModalRoute.withName('/Employee'),
+    );
+
+  }
+
+
+
+
+}

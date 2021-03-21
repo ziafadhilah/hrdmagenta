@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "513629780252",
+    "project_id": "magentahrd-43b4d",
+    "storage_bucket": "magentahrd-43b4d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:513629780252:android:f9b56d89c37464ada962d9",
+        "android_client_info": {
+          "package_name": "com.arenzha.hrdmagenta"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "513629780252-edm9q349ovv03dore9h6getgvsob4tge.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.arenzha.hrdmagenta",
+            "certificate_hash": "79ccdf98d39d3d27c004d5d68a0d89cda3e9d469"
+          }
+        },
+        {
+          "client_id": "513629780252-nji4cqm0a8mmt5e6r1agndro2ut2orep.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAeSebqYL4x6CpRM4N82w0Tyk8zoiDH3MQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "513629780252-nji4cqm0a8mmt5e6r1agndro2ut2orep.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
