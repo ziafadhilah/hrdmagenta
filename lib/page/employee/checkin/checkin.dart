@@ -32,6 +32,7 @@ class _CheckinState extends State<Checkin> {
 
 
 
+
   ///widge widget
   //Widger photo default
   Widget _buildPhoto() {
@@ -90,7 +91,7 @@ class _CheckinState extends State<Checkin> {
           icon: Icon(Icons.lock,
           color: Colors.black12,
           ),
-          labelText: 'Remark(Opsitional)',
+          labelText: 'Remark(Optional)',
           labelStyle: TextStyle(
             color: Colors.black38,
           ),

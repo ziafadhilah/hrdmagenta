@@ -9,6 +9,7 @@ import 'package:hrdmagenta/validasi/validator.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:toast/toast.dart';
 
 class Checkout extends StatefulWidget {
   @override
@@ -26,6 +27,7 @@ class _CheckoutState extends State<Checkout> {
   var time,_lat,_long,_employee_id,_check_in,_clock_in;
   String base64;
   Validasi validator=new Validasi();
+  String _type_absence;
 
 
 
@@ -88,7 +90,7 @@ class _CheckoutState extends State<Checkout> {
           icon: Icon(Icons.lock,
             color: Colors.black12,
           ),
-          labelText: 'Remark(Opsitional)',
+          labelText: 'Remark(Optional)',
           labelStyle: TextStyle(
             color: Colors.black38,
           ),
@@ -248,6 +250,64 @@ class _CheckoutState extends State<Checkout> {
     );
   }
 
+  Widget _buildtypeabsen(){
+    return Container(
+      margin: EdgeInsets.only(left: 25,right: 20),
+      width: double.infinity,
+      padding: const EdgeInsets.all(0.0),
+      child: Row(
+        children: [
+          Container(
+            child: Icon(
+              Icons.merge_type,
+              color: Colors.black12,
+              size: 30,
+
+            ),
+          ),
+          Container(
+            width: 300,
+
+            margin: EdgeInsets.only(left: 10),
+            child: DropdownButton<String>(
+              isExpanded: true,
+
+              value: _type_absence,
+              //elevation: 5,
+              style: TextStyle(color: Colors.black),
+
+              items: <String>[
+
+                'Office',
+                'Event',
+                'Sick',
+                'Permission',
+              ].map<DropdownMenuItem<String>>((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+
+                  child: Text(value),
+                );
+              }).toList(),
+              hint: Text(
+                "--Select Type--",
+                style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600),
+              ),
+              onChanged: (String value) {
+                setState(() {
+                  _type_absence = value;
+                });
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
 
   ///main context
   @override
@@ -283,12 +343,16 @@ class _CheckoutState extends State<Checkout> {
                   ),
                 ),
                 _buildText(),
+
                 SizedBox(height: 15,),
+                _buildtypeabsen(),
+                SizedBox(height: 10,),
                 _buildLocation(),
                 SizedBox(height: 10,),
                 _buildremark(),
                 SizedBox(height: 10,),
                 _buildtime(),
+
 
                 Expanded(
 
@@ -341,7 +405,8 @@ class _CheckoutState extends State<Checkout> {
     //
     //
     // }
-    validator.validation_checkout(context, base64.toString(), Cremark.text, _lat.toString().trim(), _long.toString().trim(),_employee_id,date.toString(),time.toString(),);
+    Toast.show(_type_absence.toString(), context);
+    //validator.validation_checkout(context, base64.toString(), Cremark.text, _lat.toString().trim(), _long.toString().trim(),_employee_id,date.toString(),time.toString(),);
 
 
   }
