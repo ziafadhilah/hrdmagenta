@@ -28,7 +28,7 @@ class _CheckinState extends State<Checkin> {
   String base64;
   Validasi validator=new Validasi();
   List typeList;
-  String _type;
+  String _type,_type_absent;
 
 
 
@@ -149,6 +149,64 @@ class _CheckinState extends State<Checkin> {
           ),
         ),
       ],
+    );
+  }
+
+  Widget _buildtypeabsen(){
+    return Container(
+      margin: EdgeInsets.only(left: 25,right: 20),
+      width: double.infinity,
+      padding: const EdgeInsets.all(0.0),
+      child: Row(
+        children: [
+          Container(
+            child: Icon(
+              Icons.merge_type,
+              color: Colors.black12,
+              size: 30,
+
+            ),
+          ),
+          Container(
+            width: 300,
+
+            margin: EdgeInsets.only(left: 10),
+            child: DropdownButton<String>(
+              isExpanded: true,
+
+              value: _type_absent,
+              //elevation: 5,
+              style: TextStyle(color: Colors.black),
+
+              items: <String>[
+
+                'Office',
+                'Event',
+                'Sick',
+                'Permission',
+              ].map<DropdownMenuItem<String>>((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+
+                  child: Text(value),
+                );
+              }).toList(),
+              hint: Text(
+                "--Select Type--",
+                style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600),
+              ),
+              onChanged: (String value) {
+                setState(() {
+                  _type_absent = value;
+                });
+              },
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -288,10 +346,9 @@ upload();
                 _buildText(),
                 SizedBox(height: 15,),
 
-
+                _buildtypeabsen(),
+                SizedBox(height: 15,),
                 _buildLocation(),
-                //SizedBox(height: 15,),
-                //_buildtypeabsence(),
                 SizedBox(height: 10,),
                 _buildremark(),
                 SizedBox(height: 10,),
@@ -389,62 +446,7 @@ Future upload() async{
       print(e);
     }
   }
-  Widget _buildtypeabsence() {
-    return Container(
-      margin: EdgeInsets.only(left: 30,right: 20),
 
-      width: double.infinity,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-
-        children: <Widget>[
-          Text(
-            'Absence Type',
-            style: TextStyle(
-                color: Colors.black87
-            ),
-          ),
-
-          Container(
-            width: double.infinity,
-            child: DropdownButtonHideUnderline(
-              child: ButtonTheme(
-                alignedDropdown: true,
-                child: DropdownButton<String>(
-                  value: _type,
-                  iconSize: 30,
-                  icon: (null),
-                  style: TextStyle(
-                    color: Colors.black54,
-                    fontSize: 16,
-                  ),
-                  hint: Text('Select Type',
-                    style: TextStyle(
-                      color: Colors.black38
-                    ),
-                  ),
-                  onChanged: (String newValue) {
-                    setState(() {
-                      _type = newValue;
-
-                      print(_type);
-                    });
-                  },
-                  items: typeList?.map((item) {
-                    return new DropdownMenuItem(
-                      child: new Text(item['name']),
-                      value: item['id'].toString(),
-                    );
-                  })?.toList() ??
-                      [],
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 
 
 
