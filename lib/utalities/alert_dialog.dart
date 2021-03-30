@@ -4,16 +4,13 @@ import 'package:hrdmagenta/utalities/color.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
-
-
 void loading(BuildContext context) {
-
   ProgressDialog progressDialog = ProgressDialog(context);
   progressDialog.style(message: "Loading ...");
   progressDialog.show();
-
 }
-void alert_error(BuildContext context,var title,text_button){
+
+void alert_error(BuildContext context, var title, text_button) {
   Alert(
     context: context,
     title: "$title",
@@ -31,13 +28,10 @@ void alert_error(BuildContext context,var title,text_button){
         radius: BorderRadius.circular(0.0),
       ),
     ],
-
-  )
-      .show();
+  ).show();
 }
 
-
-void alert_success(BuildContext context,var title,text_button){
+void alert_success(BuildContext context, var title, text_button) {
   Alert(
     context: context,
     title: "$title",
@@ -56,12 +50,10 @@ void alert_success(BuildContext context,var title,text_button){
         radius: BorderRadius.circular(0.0),
       ),
     ],
-
-  )
-      .show();
+  ).show();
 }
 
-void alert_success1(BuildContext context,var title,text_button){
+void alert_success1(BuildContext context, var title, text_button) {
   Alert(
     context: context,
     title: "$title",
@@ -74,18 +66,16 @@ void alert_success1(BuildContext context,var title,text_button){
         ),
         onPressed: () {
           Navigator.pop(context);
-        Navigator.pushReplacementNamed(context, "tabmenu_absence_admin");
+          Navigator.pushReplacementNamed(context, "tabmenu_absence_admin");
         },
         color: btnColor2,
         radius: BorderRadius.circular(0.0),
       ),
     ],
-
-  )
-      .show();
+  ).show();
 }
 
-void alert_info(BuildContext context,var title,text_button){
+void alert_info(BuildContext context, var title, text_button) {
   Alert(
     context: context,
     title: "$title",
@@ -104,9 +94,7 @@ void alert_info(BuildContext context,var title,text_button){
         radius: BorderRadius.circular(0.0),
       ),
     ],
-
-  )
-      .show();
+  ).show();
 }
 
 void toast_success(message) {
@@ -119,6 +107,7 @@ void toast_success(message) {
       textColor: Colors.white,
       fontSize: 16.0);
 }
+
 void toast_error(message) {
   Fluttertoast.showToast(
       msg: message,

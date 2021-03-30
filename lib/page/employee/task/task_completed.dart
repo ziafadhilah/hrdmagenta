@@ -1,4 +1,3 @@
-
 import 'dart:convert';
 import 'dart:io';
 
@@ -11,36 +10,23 @@ import 'package:image_picker/image_picker.dart';
 import 'package:toast/toast.dart';
 import 'package:http/http.dart' as http;
 
-
 class task_complated extends StatefulWidget {
-  task_complated ({
-    this.tasks,
-    this.status,
-    this.id
+  task_complated({this.tasks, this.status, this.id});
 
-});
-  var tasks,status,id;
-
+  var tasks, status, id;
 
   @override
   _task_complatedState createState() => new _task_complatedState();
 }
 
-
-class _task_complatedState extends State<task_complated > {
+class _task_complatedState extends State<task_complated> {
   final _scaffoldKey = new GlobalKey<ScaffoldState>();
   File imageFile;
-  var Cdesciription=TextEditingController();
-  var Cfile=TextEditingController();
+  var Cdesciription = TextEditingController();
+  var Cfile = TextEditingController();
   Map _task;
-  bool _loading=false;
-  Services services=new Services();
-
-
-
-
-
-
+  bool _loading = false;
+  Services services = new Services();
 
 //functions
   /// Get from gallery
@@ -52,10 +38,9 @@ class _task_complatedState extends State<task_complated > {
     );
     if (pickedFile != null) {
       setState(() {
-
         imageFile = File(pickedFile.path);
         //Toast.show("$imageFile", context);
-        Cfile.text=imageFile.toString();
+        Cfile.text = imageFile.toString();
       });
     }
   }
@@ -74,159 +59,139 @@ class _task_complatedState extends State<task_complated > {
     }
   }
 
-
-
-
-
   @override
   Widget build(BuildContext context) {
-    final items = _loading?"":_task['data'][int.parse(widget.id)]['tasks'][0];
+    final items =
+        _loading ? "" : _task['data'][int.parse(widget.id)]['tasks'][0];
     return new Scaffold(
       body: new Container(
         color: Colors.white,
-        child:Container(
+        child: Container(
           width: double.infinity,
           height: double.infinity,
+          child: _loading
+              ? Center(child: CircularProgressIndicator())
+              : ListView.builder(
+                  itemCount:
+                      _task['data'][int.parse(widget.id)]['tasks'].length,
+                  itemBuilder: (context, index) {
+                    return widget.status ==
+                            _task['data'][int.parse(widget.id)]['tasks'][index]
+                                ['status']
+                        ? _listtask_inprogress(index)
+                        : Text("");
 
-
-          child: _loading?Center(child: CircularProgressIndicator()): ListView.builder(
-              itemCount:_task['data'][int.parse(widget.id)]['tasks'].length,
-              itemBuilder:(context,index){
-                return widget.status==_task['data'][int.parse(widget.id)]['tasks'][index]['status']? _listtask_inprogress(index):Text("");
-
-
-
-                // return _listtask(index);
-              }),
-
+                    // return _listtask(index);
+                  }),
         ),
       ),
     );
   }
 
-  Widget _listtask_completed(index){
+  Widget _listtask_completed(index) {
     return Container(
-
       child: Card(
         child: Container(
-          margin: EdgeInsets.only(left: 10,right: 10),
+          margin: EdgeInsets.only(left: 10, right: 10),
           child: Column(
             children: <Widget>[
               Container(
-
                 width: double.infinity,
-                child: Text("${_task['data'][int.parse(widget.id)]['tasks'][index]['task']}",
-                  style: TextStyle(fontSize: 18,
-                    color: Colors.black87
-                  ),
+                child: Text(
+                  "${_task['data'][int.parse(widget.id)]['tasks'][index]['task']}",
+                  style: TextStyle(fontSize: 18, color: Colors.black87),
                 ),
-
               ),
-             SizedBox(height: 15,),
-             Column(
-               crossAxisAlignment: CrossAxisAlignment.end,
-               children: [
-                 Container(
-
-                   width: double.infinity,
-                   height: 30,
-                   child: Column(
-                     crossAxisAlignment: CrossAxisAlignment.end,
-                     children: [
-                       Text("Completed",
-                         style: TextStyle(color: baseColor1),
-                       ),
-                     ],
-                   ),
-
-
-                 ),
-
-               ],
-             ),
-
-
-            ],
-          ),
-        ),
-      ),
-
-    );
-  }
-
-  Widget _listtask_inprogress(index){
-    return Container(
-
-      child: Card(
-        child: Container(
-          margin: EdgeInsets.only(left: 10,right: 10),
-          child: Column(
-            children: <Widget>[
-              Container(
-
-                width: double.infinity,
-                child: Text("${_task['data'][int.parse(widget.id)]['tasks'][index]['task']}",
-                  style: TextStyle(fontSize: 18,
-                      color: Colors.black87
-                  ),
-                ),
-
+              SizedBox(
+                height: 15,
               ),
-              SizedBox(height: 15,),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Container(
-
                     width: double.infinity,
                     height: 30,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        Text("Completed",
+                        Text(
+                          "Completed",
                           style: TextStyle(color: baseColor1),
                         ),
                       ],
                     ),
-
-
                   ),
-
                 ],
               ),
-
-
             ],
           ),
         ),
       ),
-
     );
   }
-  //ge data from api--------------------------------
-  Future dataProject() async{
-    try{
-      setState(() {
-        _loading=true;
-      });
-      http.Response response=await http.get("http://${base_url}/api/employees/1/events?status=approved");
-      _task=jsonDecode(response.body);
 
-
-      setState(() {
-        _loading=false;
-      });
-    }catch(e){
-
-    }
-
+  Widget _listtask_inprogress(index) {
+    return Container(
+      child: Card(
+        child: Container(
+          margin: EdgeInsets.only(left: 10, right: 10),
+          child: Column(
+            children: <Widget>[
+              Container(
+                width: double.infinity,
+                child: Text(
+                  "${_task['data'][int.parse(widget.id)]['tasks'][index]['task']}",
+                  style: TextStyle(fontSize: 18, color: Colors.black87),
+                ),
+              ),
+              SizedBox(
+                height: 15,
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Container(
+                    width: double.infinity,
+                    height: 30,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Text(
+                          "Completed",
+                          style: TextStyle(color: baseColor1),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
+
+  //ge data from api--------------------------------
+  Future dataProject() async {
+    try {
+      setState(() {
+        _loading = true;
+      });
+      http.Response response = await http
+          .get("http://${base_url}/api/employees/1/events?status=approved");
+      _task = jsonDecode(response.body);
+
+      setState(() {
+        _loading = false;
+      });
+    } catch (e) {}
+  }
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     dataProject();
-
   }
-  
 }

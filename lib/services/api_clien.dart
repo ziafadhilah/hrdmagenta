@@ -29,10 +29,19 @@ class Services{
     final data = jsonDecode(response.body);
     if (data['code']==200){
       final loginmodel=loginEmployeeFromJson(response.body);
-      sharedPreference.saveDataEmployee(1 ,loginmodel.data.id.toString(), loginmodel.data.employeeId, loginmodel.data.username, loginmodel.data.firstName, loginmodel.data.lastName, loginmodel.data.email, "", loginmodel.data.contactNumber, loginmodel.data.gender);
+      sharedPreference.saveDataEmployee(1
+          ,loginmodel.data.id.toString(),
+          loginmodel.data.employeeId,
+          loginmodel.data.username,
+          loginmodel.data.firstName,
+          loginmodel.data.lastName,
+          loginmodel.data.email, "",
+          loginmodel.data.contactNumber,
+          loginmodel.data.gender);
+
+
       Navigator.pop(context);
       Navigator.pushNamedAndRemoveUntil(context, "navbar_employee-page", (route) => false);
-
     }else{
       Navigator.pop(context);
       alert_error(context, "${data['message']}", "Close");

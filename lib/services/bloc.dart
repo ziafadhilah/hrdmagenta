@@ -1,4 +1,3 @@
-
 import 'package:hrdmagenta/model/example.dart';
 import 'package:hrdmagenta/services/repository.dart';
 import 'package:rxdart/rxdart.dart';
@@ -10,7 +9,9 @@ class TodoBloc {
   final _id = BehaviorSubject<String>();
 
   Observable<List<Example>> get allTodo => _todoFetcher.stream;
+
   Function(String) get updateTitle => _title.sink.add;
+
   Function(String) get getId => _id.sink.add;
 
   fetchAllTodo() async {
@@ -27,8 +28,7 @@ class TodoBloc {
     _repository.updateSaveTodo(_id.value);
   }
 
-
-  dispose(){
+  dispose() {
     _title.close();
     _id.close();
     _todoFetcher.close();

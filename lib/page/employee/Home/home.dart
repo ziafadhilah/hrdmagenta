@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:hrdmagenta/model/notifacations.dart';
 import 'package:hrdmagenta/page/employee/absence/tabmenu_absence.dart';
+import 'package:hrdmagenta/page/employee/absence/tabmenu_absence_status.dart';
 import 'package:hrdmagenta/page/employee/checkin/checkin.dart';
 import 'package:hrdmagenta/page/employee/checkout/checkout.dart';
 import 'package:hrdmagenta/page/employee/project/tabmenu_project.dart';
@@ -135,10 +136,11 @@ final List<Notif> ListNotif=[];
             child: InkWell(
               onTap: () {
                 Navigator.push(context, MaterialPageRoute(
-                    builder: (context) => TabsApp()
+                    builder: (context) => TabsMenuAbsencestatus()
                 ));
-
               },
+
+
               child: Card(
                 elevation: 1,
                 shape:  RoundedRectangleBorder(
@@ -152,6 +154,8 @@ final List<Notif> ListNotif=[];
               ),
             ),
           ),
+
+
           Text("Absence",
             style: TextStyle(
                 color: Colors.black38,
@@ -208,7 +212,7 @@ final List<Notif> ListNotif=[];
   }
 
 
-  Widget _buildMenucuty(){
+  Widget _buildMenuoffwork(){
     return Column(
         children: <Widget>[
 
@@ -217,9 +221,7 @@ final List<Notif> ListNotif=[];
             height: 70,
             child: InkWell(
               onTap: () {
-                Navigator.push(context, MaterialPageRoute(
-                    builder: (context) => TabsApp()
-                ));
+
 
               },
               child: Card(
@@ -229,13 +231,13 @@ final List<Notif> ListNotif=[];
                 ),
                 child: Container(
                     margin:EdgeInsets.all(15.0),
-                    child: absent
+                    child: offwork
                 ),
 
               ),
             ),
           ),
-          Text("Cuti",
+          Text("Off Work",
             style: TextStyle(
                 color: Colors.black38,
                 fontWeight: FontWeight.bold,
@@ -257,9 +259,7 @@ final List<Notif> ListNotif=[];
             height: 70,
             child: InkWell(
               onTap: () {
-                Navigator.push(context, MaterialPageRoute(
-                    builder: (context) => TabsApp()
-                ));
+
 
               },
               child: Card(
@@ -269,7 +269,7 @@ final List<Notif> ListNotif=[];
                 ),
                 child: Container(
                     margin:EdgeInsets.all(15.0),
-                    child: absent
+                    child: pyslip
                 ),
 
               ),
@@ -340,20 +340,20 @@ Widget _buildproject(){
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: <Widget>[
+
                           _buildMenucheckin(),
                           _buildMenucheckout(),
                           _buildMenuproject(),
 
-
                         ],
                       ),
                       Container(
-
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: <Widget>[
+
                             _buildMenuaabsence(),
-                            _buildMenucuty(),
+                            _buildMenuoffwork(),
                             _buildmenupyslip()
 
                           ],
@@ -565,12 +565,8 @@ Widget _buildInformation(){
                                             NetworkImage("https://pintek.id/blog/wp-content/uploads/2020/12/perusahaan-startup-1024x683.jpg"),
                                             NetworkImage("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRdARQSAn3H0I4m52-7Co7fLa6Eff0mPgumPg&usqp=CAU"),
                                             NetworkImage("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRQtZSosUkHA8evWPkN_nNOzKaUt1woUQse-A&usqp=CAU"),
-
                                           ],
-
-
                                         )
-
                                     )
 
                                   ],
@@ -605,9 +601,6 @@ Widget _buildInformation(){
                             _buildproject(),
                            // _buildgrafik(),
 
-
-
-
                             SizedBox(height: 15,),
                             Container(
                               margin: EdgeInsets.only(left: 10,top: 5),
@@ -618,10 +611,6 @@ Widget _buildInformation(){
                               ),
                             ),
                             _buildInformation(),
-
-
-
-
 
                           ],
                         ),

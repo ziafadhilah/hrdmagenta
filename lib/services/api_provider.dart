@@ -6,8 +6,8 @@ import 'package:hrdmagenta/services/api_clien.dart';
 import 'package:http/http.dart' as client;
 
 class TodoApiProvider {
-
   final _url = 'http://${base_url}/api/employees';
+
   Future<List<Example>> fetchTodoList() async {
     print('panggil data');
     final response = await client.get(_url);
@@ -32,7 +32,8 @@ class TodoApiProvider {
 
   Future updateTodo(ids) async {
     // print('$_url$ids/update');
-    final response = await client.put("$_url$ids/update", body: {'done': "true"});
+    final response =
+        await client.put("$_url$ids/update", body: {'done': "true"});
     if (response.statusCode == 200) {
       print('berhasil di update');
       return response;

@@ -12,6 +12,7 @@ import 'package:hrdmagenta/page/employee/Home/home.dart';
 import 'package:hrdmagenta/page/employee/Home/navbar.dart';
 import 'package:hrdmagenta/page/employee/Login/employee.dart';
 import 'package:hrdmagenta/page/employee/absence/photoview.dart';
+import 'package:hrdmagenta/page/employee/absence/tabmenu_absence_status.dart';
 import 'package:hrdmagenta/page/employee/budget/budget_project.dart';
 import 'package:hrdmagenta/page/employee/budget/expense.dart';
 import 'package:hrdmagenta/page/employee/checkin/maps.dart';
@@ -47,6 +48,7 @@ class MyApp extends StatelessWidget {
         'photoview_employee-page':(context)=>PhotoViewPage(),
         'budget_project_employee-page':(context)=>budgetproject(),
         'expense_budget_employee-page':(context)=>expandbudget(),
+        'tabmenu_absence_status_employee-page':(context)=>TabsMenuAbsencestatus(),
 
 
 

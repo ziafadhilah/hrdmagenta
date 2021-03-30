@@ -77,6 +77,21 @@ final Widget task = SvgPicture.asset(
 
 );
 
+final Widget pyslip = SvgPicture.asset(
+  "assets/pyslip.svg",
+  semanticsLabel: 'Acme Logo',
+  color: baseColor1,
+
+);
+final Widget offwork = SvgPicture.asset(
+  "assets/offwork.svg",
+  semanticsLabel: 'Acme Logo',
+  color: baseColor1,
+
+);
+
+
+
 final Widget wellcome = SvgPicture.asset(
   "assets/wellcome.svg",
   semanticsLabel: 'Acme Logo',
@@ -171,9 +186,14 @@ final Widget budget = SvgPicture.asset(
 
 class Constants{
   static const String Buget ="Budget History";
+  static const String Absence ="Absence Status";
 
   static const List<String> choicesM=<String>[
     Buget
+
+  ];
+  static const List<String> AbsenceStatus=<String>[
+    Absence
 
   ];
 

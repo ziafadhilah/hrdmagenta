@@ -9,38 +9,34 @@ import 'package:hrdmagenta/utalities/color.dart';
 import 'package:hrdmagenta/utalities/constants.dart';
 import 'package:http/http.dart' as http;
 
-
-
-
-
 class budgetproject extends StatefulWidget {
+  budgetproject(
+      {this.title_event,
+      this.active_budget,
+      this.expired_budget,
+      this.balance,
+      this.remaining_budget,
+      this.event_id});
 
-  budgetproject({
-    this.title_event,
-    this.active_budget,
-    this.expired_budget,
-    this.balance,
-    this.remaining_budget,
-    this.event_id
+  var title_event,
+      active_budget,
+      expired_budget,
+      balance,
+      remaining_budget,
+      event_id;
 
-});
-
-  var title_event,active_budget,expired_budget,balance,remaining_budget,event_id;
   @override
   _budgetprojectState createState() => new _budgetprojectState();
 }
 
-
 class _budgetprojectState extends State<budgetproject> {
   final _scaffoldKey = new GlobalKey<ScaffoldState>();
   Map _transaction;
-  bool _loading=true;
+  bool _loading = true;
   var _remaining;
 
-
-
 //widget------------------
-  Widget _buildbidget(){
+  Widget _buildbidget() {
     return Stack(
       children: [
         Container(
@@ -52,22 +48,18 @@ class _budgetprojectState extends State<budgetproject> {
             height: 200,
             color: baseColor,
             child: Container(
-
-              
-              margin: EdgeInsets.only(left: 30,right: 30),
+              margin: EdgeInsets.only(left: 30, right: 30),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-
                 children: <Widget>[
-                  Text("${widget.title_event}",
-                    style: TextStyle(color: Colors.white,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: "OpenSans"
-                    ),
-
+                  Text(
+                    "${widget.title_event}",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: "OpenSans"),
                   ),
-                  
                   Container(
                     height: 100,
                     width: double.infinity,
@@ -77,37 +69,29 @@ class _budgetprojectState extends State<budgetproject> {
                         Container(
                           child: Container(
                             margin: EdgeInsets.only(bottom: 20),
-                            child: Text("Active on ${widget.active_budget}",
-                              style: TextStyle(
-                                fontSize: 12,
-                                color: Colors.white
-                              ),
-
+                            child: Text(
+                              "Active on ${widget.active_budget}",
+                              style:
+                                  TextStyle(fontSize: 12, color: Colors.white),
                             ),
                           ),
-
-
                         ),
                         Expanded(
                           flex: 1,
                           child: Container(
                             width: 200,
                             margin: EdgeInsets.only(bottom: 20),
-
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.end,
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
-                                Text("Expired on ${widget.expired_budget}",
+                                Text(
+                                  "Expired on ${widget.expired_budget}",
                                   style: TextStyle(
-                                      fontSize: 12,
-                                      color: Colors.white
-                                  ),
-
+                                      fontSize: 12, color: Colors.white),
                                 ),
                               ],
                             ),
-
                           ),
                         )
                       ],
@@ -120,126 +104,115 @@ class _budgetprojectState extends State<budgetproject> {
         ),
         //container detail budget
         Container(
-          margin: EdgeInsets.only(left: 20,right: 20),
+          margin: EdgeInsets.only(left: 20, right: 20),
           width: double.infinity,
           height: 260,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.end,
             children: <Widget>[
-
               //card for remaining dan starting budget
-             Container(
-               child: Card(
-                 child: Container(
-                   width: double.infinity,
-                   height: 130,
-                   child: Row(
-                     crossAxisAlignment: CrossAxisAlignment.start,
-                     children: <Widget>[
-                       //Container
-                       Container(
-                         width: 140,
-                         margin: EdgeInsets.all(10),
-                         child: Column(
-                           crossAxisAlignment: CrossAxisAlignment.start,
-                           children: <Widget>[
-                             Container(
-                               child: Text("Remaining Budget",
-                               style: TextStyle(
-                                 color: Colors.black38,
-
-                                 fontSize: 16
-                               ),
-                               ),
-                             ),
-                             Container(
-
-                               margin: EdgeInsets.only(top: 20),
-
-                               child: _loading==true?Text(""):Text("IDR ${_transaction['data']['balance']-_transaction['data']['total_expense']}",
-                                 style: TextStyle(
-                                   color: Colors.green,
-
-                                   fontSize: 16,
-                                   fontWeight: FontWeight.bold
-                                 ),
-                               ),
-                             )
-                           ],
-                         ),
-
-                       ),
-                       Container(
-                         margin: EdgeInsets.only(top: 10,bottom: 10),
-                           child: VerticalDivider(color: Colors.black38,)),
-                       //Container
-                       Expanded(
-                         child: Container(
-
-
-                           width: 140,
-                           margin: EdgeInsets.all(10),
-                           child: Column(
-                             crossAxisAlignment: CrossAxisAlignment.start,
-                             children: <Widget>[
-                               Container(
-                                 child: Text("Balance",
-                                   style: TextStyle(
-                                       color: Colors.black38,
-
-                                       fontSize: 16
-                                   ),
-                                 ),
-                               ),
-                               Container(
-                                 margin: EdgeInsets.only(top: 20),
-                                 child: _loading==true?Text(""):Text("IDR ${_transaction['data']['balance']}",
-                                   style: TextStyle(
-                                       fontSize: 16,
-                                       fontWeight: FontWeight.bold
-                                   ),
-                                 ),
-                               )
-                             ],
-                           ),
-
-                         ),
-                       ),
-                     ],
-                   ),
-                 ),
-               ),
-             )
-
+              Container(
+                child: Card(
+                  child: Container(
+                    width: double.infinity,
+                    height: 130,
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        //Container
+                        Container(
+                          width: 140,
+                          margin: EdgeInsets.all(10),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Container(
+                                child: Text(
+                                  "Remaining Budget",
+                                  style: TextStyle(
+                                      color: Colors.black38, fontSize: 16),
+                                ),
+                              ),
+                              Container(
+                                margin: EdgeInsets.only(top: 20),
+                                child: _loading == true
+                                    ? Text("")
+                                    : Text(
+                                        "IDR ${_transaction['data']['balance'] - _transaction['data']['total_expense']}",
+                                        style: TextStyle(
+                                            color: Colors.green,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                              )
+                            ],
+                          ),
+                        ),
+                        Container(
+                            margin: EdgeInsets.only(top: 10, bottom: 10),
+                            child: VerticalDivider(
+                              color: Colors.black38,
+                            )),
+                        //Container
+                        Expanded(
+                          child: Container(
+                            width: 140,
+                            margin: EdgeInsets.all(10),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Container(
+                                  child: Text(
+                                    "Balance",
+                                    style: TextStyle(
+                                        color: Colors.black38, fontSize: 16),
+                                  ),
+                                ),
+                                Container(
+                                  margin: EdgeInsets.only(top: 20),
+                                  child: _loading == true
+                                      ? Text("")
+                                      : Text(
+                                          "IDR ${_transaction['data']['balance']}",
+                                          style: TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              )
             ],
           ),
         )
-
       ],
     );
-
   }
 
-  Widget _buildTransaction(index){
+  Widget _buildTransaction(index) {
     return InkWell(
-      onTap: (){
-
-
-        Navigator.pushReplacement(context, MaterialPageRoute(
-            builder: (context) => detailBudget(
-              usage_budget: _transaction['data']['cash_flow'][index]['amount'],
-              requested_on: _transaction['data']['cash_flow'][index]['date'],
-              status: "pending",
-              budget_usage_category: _transaction['data']['cash_flow'][index]['budget_category']['name'],
-              type:_transaction['data']['cash_flow'][index]['budget_category']['type'] ,
-              note: _transaction['data']['cash_flow'][index]['note'] ,
-
-
-
-
-            )
-        ));
-
+      onTap: () {
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (context) => detailBudget(
+                      usage_budget: _transaction['data']['cash_flow'][index]
+                          ['amount'],
+                      requested_on: _transaction['data']['cash_flow'][index]
+                          ['date'],
+                      status: "pending",
+                      budget_usage_category: _transaction['data']['cash_flow']
+                          [index]['budget_category']['name'],
+                      type: _transaction['data']['cash_flow'][index]
+                          ['budget_category']['type'],
+                      note: _transaction['data']['cash_flow'][index]['note'],
+                    )));
       },
       child: Center(
         child: Container(
@@ -249,18 +222,20 @@ class _budgetprojectState extends State<budgetproject> {
             children: <Widget>[
               //Container icon
               Container(
-                child: _transaction['data']['cash_flow'][index]['type']=="income"?Icon(
-                  Icons.monetization_on_outlined,
-                  color: Colors.green,
-                ): Icon(
-                  Icons.monetization_on_outlined,
-                  color: Colors.redAccent,
-                ),
+                child:
+                    _transaction['data']['cash_flow'][index]['type'] == "income"
+                        ? Icon(
+                            Icons.monetization_on_outlined,
+                            color: Colors.green,
+                          )
+                        : Icon(
+                            Icons.monetization_on_outlined,
+                            color: Colors.redAccent,
+                          ),
               ),
               Expanded(
                 child: Container(
                   width: 340,
-
                   child: Card(
                     child: Row(
                       children: [
@@ -268,37 +243,31 @@ class _budgetprojectState extends State<budgetproject> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Container(
-                              margin: EdgeInsets.only(left: 10,top: 10),
+                              margin: EdgeInsets.only(left: 10, top: 10),
                               child: Text(
                                 "${_transaction['data']['cash_flow'][index]['budget_category']['name']}",
                                 style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold
-                                ),
+                                    fontSize: 16, fontWeight: FontWeight.bold),
                               ),
                             ),
                             Container(
-                              margin: EdgeInsets.only(left: 10,top: 10),
+                              margin: EdgeInsets.only(left: 10, top: 10),
                               child: Text(
-                                  "${_transaction['data']['cash_flow'][index]['note']}",
+                                "${_transaction['data']['cash_flow'][index]['note']}",
                                 style: TextStyle(
-                                    fontSize: 16,
-                                   color: Colors.black38
-                                ),
+                                    fontSize: 16, color: Colors.black38),
                               ),
                             ),
                             Container(
-                              margin: EdgeInsets.only(left: 10,top: 20,bottom: 10),
+                              margin: EdgeInsets.only(
+                                  left: 10, top: 20, bottom: 10),
                               child: Text(
-                                  "IDR ${_transaction['data']['cash_flow'][index]['amount']}",
+                                "IDR ${_transaction['data']['cash_flow'][index]['amount']}",
                                 style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold
-                                ),
+                                    fontSize: 16, fontWeight: FontWeight.bold),
                               ),
                             ),
                           ],
-
                         ),
                         Expanded(
                           child: Container(
@@ -309,23 +278,24 @@ class _budgetprojectState extends State<budgetproject> {
                               children: <Widget>[
                                 Container(
                                     margin: EdgeInsets.only(right: 10),
-
-                                    child: _transaction['data']['cash_flow'][index]['type']=="income"? Text("Deposit",
-                                      style: TextStyle(
-                                          color: Colors.green
-                                      ),
-                                    ): Text("Expense",
-                                      style: TextStyle(
-                                        color: Colors.redAccent
-                                      ),
-                                    )
-                                ),
+                                    child: _transaction['data']['cash_flow']
+                                                [index]['type'] ==
+                                            "income"
+                                        ? Text(
+                                            "Deposit",
+                                            style:
+                                                TextStyle(color: Colors.green),
+                                          )
+                                        : Text(
+                                            "Expense",
+                                            style: TextStyle(
+                                                color: Colors.redAccent),
+                                          )),
                                 Container(
                                   width: 70,
                                   height: 70,
                                   color: Colors.black12,
                                 )
-
                               ],
                             ),
                           ),
@@ -335,14 +305,12 @@ class _budgetprojectState extends State<budgetproject> {
                   ),
                 ),
               )
-
             ],
           ),
         ),
       ),
     );
   }
-
 
 //main context----------------------------------
   @override
@@ -354,29 +322,30 @@ class _budgetprojectState extends State<budgetproject> {
         actions: <Widget>[
           PopupMenuButton<String>(
             onSelected: choiceAction,
-            itemBuilder: (BuildContext context){
-              return Constants.choicesM.map((String choice){
+            itemBuilder: (BuildContext context) {
+              return Constants.choicesM.map((String choice) {
                 return PopupMenuItem<String>(
                   value: choice,
                   child: Text(choice),
                 );
               }).toList();
-
             },
           )
         ],
-
-
-        title: new Text("",
+        title: new Text(
+          "",
           style: TextStyle(color: Colors.black87),
         ),
       ),
-      floatingActionButton:  FloatingActionButton(onPressed: (){
-        Navigator.push(context, MaterialPageRoute(
-            builder: (context) =>   expandbudget(event_id: widget.event_id.toString(),)
-        ));
-
-      },
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => expandbudget(
+                        event_id: widget.event_id.toString(),
+                      )));
+        },
         child: Icon(Icons.add),
         backgroundColor: btnColor1,
       ),
@@ -385,24 +354,35 @@ class _budgetprojectState extends State<budgetproject> {
           child: Container(
             child: Container(
               child: Center(
-                child:Container(
+                child: Container(
                   child: Column(
                     children: <Widget>[
                       _buildbidget(),
                       Expanded(
-                        child: _loading?Center(child: ShimmerBudget(),):  ListView.builder(
-                            // itemCount: _budgeting['data']['cash_flow'].length,
-                          itemCount: _transaction['data']['cash_flow'].length==0?0:_transaction['data']['cash_flow'].length,
-                            itemBuilder:(context,index){
-                              return _transaction['data']['cash_flow'].length==0? _buildnodata(): _buildTransaction(index);
-                            }),
+                        child: _loading
+                            ? Center(
+                                child: ShimmerBudget(),
+                              )
+                            : ListView.builder(
+                                // itemCount: _budgeting['data']['cash_flow'].length,
+                                itemCount: _transaction['data']['cash_flow']
+                                            .length ==
+                                        0
+                                    ? 0
+                                    : _transaction['data']['cash_flow'].length,
+                                itemBuilder: (context, index) {
+                                  return _transaction['data']['cash_flow']
+                                              .length ==
+                                          0
+                                      ? _buildnodata()
+                                      : _buildTransaction(index);
+                                }),
                       ),
 
-
-                     //list transation
-                      SizedBox(height: 20,),
-
-
+                      //list transation
+                      SizedBox(
+                        height: 20,
+                      ),
                     ],
                   ),
                 ),
@@ -414,21 +394,22 @@ class _budgetprojectState extends State<budgetproject> {
       ),
     );
   }
+
   //function
   void choiceAction(String choice) {
-    if (choice==Constants.Buget){
-      Navigator.push(context, MaterialPageRoute(
-          builder: (context) =>   Tabsappbudget(event_id: widget.event_id,)
-      ));
-
+    if (choice == Constants.Buget) {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => Tabsappbudget(
+                    event_id: widget.event_id,
+                  )));
     }
-
   }
 
-  Widget _buildnodata(){
+  Widget _buildnodata() {
     return Container(
-      height: MediaQuery.of(context).size.height/2,
-
+      height: MediaQuery.of(context).size.height / 2,
       child: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -436,45 +417,40 @@ class _budgetprojectState extends State<budgetproject> {
             Container(
               child: no_data_transacation,
             ),
-            SizedBox(height: 20,),
-            Container(
-                child: Text("No transaction yet",
-                  style: TextStyle(
-                      color: Colors.black38,
-                      fontSize: 18
-                  ),
-
-                )
+            SizedBox(
+              height: 20,
             ),
+            Container(
+                child: Text(
+              "No transaction yet",
+              style: TextStyle(color: Colors.black38, fontSize: 18),
+            )),
           ],
         ),
       ),
     );
   }
 
-  void Refreshbudget(){
+  void Refreshbudget() {
     setState(() {
       _dataBudgeting();
     });
   }
 
   //ge data from api--------------------------------
-  Future _dataBudgeting() async{
-    try{
+  Future _dataBudgeting() async {
+    try {
       setState(() {
-        _loading=true;
+        _loading = true;
       });
-      http.Response response=await http.get("http://${base_url}/api/events/${widget.event_id}/budgets");
-      _transaction=jsonDecode(response.body);
-
+      http.Response response = await http
+          .get("http://${base_url}/api/events/${widget.event_id}/budgets");
+      _transaction = jsonDecode(response.body);
 
       setState(() {
-        _loading=false;
+        _loading = false;
       });
-    }catch(e){
-
-    }
-
+    } catch (e) {}
   }
 
   //inilisasi state
@@ -484,7 +460,5 @@ class _budgetprojectState extends State<budgetproject> {
     super.initState();
     _dataBudgeting();
     print(widget.event_id);
-
-
   }
 }

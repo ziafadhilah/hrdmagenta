@@ -2,9 +2,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 
-
-
-
 class ShimmerBudget extends StatefulWidget {
   ShimmerBudget({Key key}) : super(key: key);
 
@@ -13,7 +10,6 @@ class ShimmerBudget extends StatefulWidget {
 }
 
 class _ShimmerBudgetState extends State {
-
   @override
   void initState() {
     super.initState();
@@ -22,102 +18,99 @@ class _ShimmerBudgetState extends State {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       body: SingleChildScrollView(
         child: Container(
             padding: EdgeInsets.all(5.0),
-            child:Center(
+            child: Center(
               child: Shimmer.fromColors(
                   direction: ShimmerDirection.ltr,
-                  period: Duration(seconds:2),
+                  period: Duration(seconds: 2),
                   child: Column(
-                    children: [0, 1, 2,4,5,6,7]
+                    children: [0, 1, 2, 4, 5, 6, 7]
                         .map((_) => Padding(
-                      padding: const EdgeInsets.only(bottom: 8.0),
-                      child: Container(
-
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-
-                            Padding(
-                              padding:
-                              const EdgeInsets.symmetric(horizontal: 8.0),
-                            ),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Container(
-                                    width: MediaQuery.of(context).size.width/2,
-                                    height: 20.0,
-
-                                    color: Colors.white,
-                                  ),
-                                  Padding(
-                                    padding:
-                                    const EdgeInsets.symmetric(vertical: 2.0),
-                                  ),
-
-                                  Padding(
-                                    padding:
-                                    const EdgeInsets.symmetric(vertical: 2.0),
-                                  ),
-                                  Container(
-                                    width: 130.0,
-                                    height: 20.0,
-                                    color: Colors.white,
-                                  ),
-                                  Padding(
-                                    padding:
-                                    const EdgeInsets.symmetric(vertical: 2.0),
-                                  ),
-                                  Container(
-                                    width: 100.0,
-                                    height: 20.0,
-                                    color: Colors.white,
-                                  ),
-                                  Padding(
-                                    padding:
-                                    const EdgeInsets.symmetric(vertical: 2.0),
-                                  ),
-
-
-                                  SizedBox(height: 20,)
-                                ],
-                              ),
-                            ),
-                            Expanded(
+                              padding: const EdgeInsets.only(bottom: 8.0),
                               child: Container(
-
-                                width: double.infinity,
                                 child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Container(
-                                      margin: EdgeInsets.only(right: 20),
-                                      width: 100.0,
-                                      height: 100.0,
-                                      color: Colors.white,
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 8.0),
                                     ),
-
-
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Container(
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width /
+                                                2,
+                                            height: 20.0,
+                                            color: Colors.white,
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                vertical: 2.0),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                vertical: 2.0),
+                                          ),
+                                          Container(
+                                            width: 130.0,
+                                            height: 20.0,
+                                            color: Colors.white,
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                vertical: 2.0),
+                                          ),
+                                          Container(
+                                            width: 100.0,
+                                            height: 20.0,
+                                            color: Colors.white,
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                vertical: 2.0),
+                                          ),
+                                          SizedBox(
+                                            height: 20,
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: Container(
+                                        width: double.infinity,
+                                        child: Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.end,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.end,
+                                          children: [
+                                            Container(
+                                              margin:
+                                                  EdgeInsets.only(right: 20),
+                                              width: 100.0,
+                                              height: 100.0,
+                                              color: Colors.white,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
                                   ],
                                 ),
                               ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ))
+                            ))
                         .toList(),
                   ),
-
                   baseColor: Colors.grey[350],
                   highlightColor: Colors.grey[300]),
-            )
-        ),
+            )),
       ),
     );
   }

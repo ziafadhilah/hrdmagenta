@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hrdmagenta/page/employee/Home/home.dart';
@@ -7,16 +6,21 @@ import 'package:hrdmagenta/utalities/color.dart';
 import 'package:hrdmagenta/utalities/constants.dart';
 import 'package:hrdmagenta/validasi/validator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-class LoginEmployee extends StatefulWidget{
+
+class LoginEmployee extends StatefulWidget {
   @override
   _LoginEmployeeState createState() => _LoginEmployeeState();
 }
+
 enum statusLogin { signIn, notSignIn }
-class _LoginEmployeeState extends State<LoginEmployee>{
-  Validasi validator=Validasi();
+
+class _LoginEmployeeState extends State<LoginEmployee> {
+  Validasi validator = Validasi();
   statusLogin _loginStatus = statusLogin.notSignIn;
+
   // ignore: non_constant_identifier_names
-  var Cusername= new TextEditingController();
+  var Cusername = new TextEditingController();
+
   // ignore: non_constant_identifier_names
   var Cpassword = new TextEditingController();
   var email = '';
@@ -26,12 +30,9 @@ class _LoginEmployeeState extends State<LoginEmployee>{
     return Container(
       child: Stack(
         children: [
-
           ClipPath(
-
             clipper: MyClipper(),
             child: Container(
-
               color: baseColor,
               child: Center(
                 child: Column(
@@ -39,16 +40,14 @@ class _LoginEmployeeState extends State<LoginEmployee>{
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
                     Container(
-                      margin: EdgeInsets.only(left: 10,top: 10),
-                        child: _buildText()
+                        margin: EdgeInsets.only(left: 10, top: 10),
+                        child: _buildText()),
+                    SizedBox(
+                      height: 10,
                     ),
-                   SizedBox(height: 10,),
                     Container(
                       height: 350,
                     ),
-
-
-
                   ],
                 ),
               ),
@@ -58,46 +57,44 @@ class _LoginEmployeeState extends State<LoginEmployee>{
             width: double.infinity,
             margin: EdgeInsets.only(top: 100),
             child: Column(
-              children: <Widget>[
-                login
-              ],
+              children: <Widget>[login],
             ),
           )
         ],
       ),
     );
   }
+
   Widget _buildText() {
     return Container(
       width: double.infinity,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          SizedBox(height: 20,),
-          Text("LOG IN",
+          SizedBox(
+            height: 20,
+          ),
+          Text(
+            "LOG IN",
             textAlign: TextAlign.left,
             style: TextStyle(
-
                 color: Colors.black,
                 fontWeight: FontWeight.bold,
                 fontFamily: 'OpenSans',
-                fontSize: 25
-            ),
-
+                fontSize: 25),
           ),
-          SizedBox(height: 5,),
-          Text("Employee",
+          SizedBox(
+            height: 5,
+          ),
+          Text(
+            "Employee",
             textAlign: TextAlign.left,
             style: TextStyle(
-
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
                 fontFamily: 'OpenSans',
-                fontSize: 15
-            ),
-
+                fontSize: 15),
           )
-
         ],
       ),
     );
@@ -109,16 +106,12 @@ class _LoginEmployeeState extends State<LoginEmployee>{
       children: <Widget>[
         Text(
           'Username',
-          style: TextStyle(
-            color: Colors.black38
-          ),
+          style: TextStyle(color: Colors.black38),
         ),
         SizedBox(height: 10.0),
         Container(
           alignment: Alignment.centerLeft,
           decoration: BoxDecoration(
-
-
             color: Colors.white,
             borderRadius: BorderRadius.circular(5.0),
             boxShadow: [
@@ -131,7 +124,7 @@ class _LoginEmployeeState extends State<LoginEmployee>{
             ],
           ),
           height: 60.0,
-          child:TextFormField(
+          child: TextFormField(
             controller: Cusername,
             cursorColor: Colors.black38,
             keyboardType: TextInputType.name,
@@ -146,7 +139,6 @@ class _LoginEmployeeState extends State<LoginEmployee>{
                 Icons.person,
                 color: Colors.black,
               ),
-
             ),
           ),
         ),
@@ -160,16 +152,12 @@ class _LoginEmployeeState extends State<LoginEmployee>{
       children: <Widget>[
         Text(
           'Password',
-          style: TextStyle(
-              color: Colors.black38
-          ),
+          style: TextStyle(color: Colors.black38),
         ),
         SizedBox(height: 10.0),
         Container(
           alignment: Alignment.centerLeft,
           decoration: BoxDecoration(
-
-
             color: Colors.white,
             borderRadius: BorderRadius.circular(5.0),
             boxShadow: [
@@ -182,14 +170,13 @@ class _LoginEmployeeState extends State<LoginEmployee>{
             ],
           ),
           height: 60.0,
-          child:TextFormField(
+          child: TextFormField(
             cursorColor: Colors.black38,
             obscureText: true,
             controller: Cpassword,
             keyboardType: TextInputType.name,
             style: TextStyle(
               color: Colors.black,
-
               fontFamily: 'OpenSans',
             ),
             decoration: InputDecoration(
@@ -199,7 +186,6 @@ class _LoginEmployeeState extends State<LoginEmployee>{
                 Icons.lock,
                 color: Colors.black,
               ),
-
             ),
           ),
         ),
@@ -207,44 +193,36 @@ class _LoginEmployeeState extends State<LoginEmployee>{
     );
   }
 
-
   Widget _buildLoginBtn() {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 15.0),
       width: double.infinity,
       child: RaisedButton(
-
         onPressed: () {
-              validator.validation_login(context, Cusername.text, Cpassword.text);
-             //
-             //  Navigator.pop(context);
-             //  Navigator.of(context).pushReplacement(new MaterialPageRoute(
-             //      builder: (BuildContext context) => new NavBarEmployee()));
+          validator.validation_login(context, Cusername.text, Cpassword.text);
+          //
+          //  Navigator.pop(context);
+          //  Navigator.of(context).pushReplacement(new MaterialPageRoute(
+          //      builder: (BuildContext context) => new NavBarEmployee()));
         },
         padding: EdgeInsets.all(12.0),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(2.0),
         ),
         color: btnColor1,
-
         child: Text(
           'LOGIN  ',
           textAlign: TextAlign.left,
           style: TextStyle(
-
             color: Colors.white,
-
             fontSize: 14.0,
             fontWeight: FontWeight.bold,
             fontFamily: 'OpenSans',
           ),
         ),
       ),
-
     );
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -255,43 +233,39 @@ class _LoginEmployeeState extends State<LoginEmployee>{
             child: Container(
               color: Colors.white,
               child: Container(
-
-
                 child: Center(
                   child: Column(
                     children: <Widget>[
-
                       Container(
-
                           child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              _buildImage(),
-                            ],
-                          )),
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          _buildImage(),
+                        ],
+                      )),
                       Container(
-                          margin: EdgeInsets.symmetric(vertical: 5,horizontal: 20),
-
+                          margin:
+                              EdgeInsets.symmetric(vertical: 5, horizontal: 20),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
                               _buildUsername(),
-                              SizedBox(height: 10,),
+                              SizedBox(
+                                height: 10,
+                              ),
                               _buildPassword(),
-                              SizedBox(height: 20,),
+                              SizedBox(
+                                height: 20,
+                              ),
                               _buildLoginBtn(),
-
                             ],
                           )),
-
-
                     ],
                   ),
                 ),
               ),
             ),
           ),
-
         );
         break;
       case statusLogin.signIn:
@@ -299,8 +273,8 @@ class _LoginEmployeeState extends State<LoginEmployee>{
         break;
     }
   }
-  getDataPref() async {
 
+  getDataPref() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     setState(() {
       int nvalue = sharedPreferences.getInt("value");
@@ -308,31 +282,26 @@ class _LoginEmployeeState extends State<LoginEmployee>{
     });
   }
 
-
-
-
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     getDataPref();
   }
-
 }
-class MyClipper extends CustomClipper<Path>{
+
+class MyClipper extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {
-    Path path=new Path();
-    path.lineTo(0, size.height *0.75);
-    path.lineTo(size.width, size.height *0.75);
+    Path path = new Path();
+    path.lineTo(0, size.height * 0.75);
+    path.lineTo(size.width, size.height * 0.75);
     path.lineTo(size.width, 0);
     path.close();
 
-   return path;
+    return path;
   }
 
   @override
-  bool shouldReclip(covariant CustomClipper<Path> oldClipper) =>false;
-  
+  bool shouldReclip(covariant CustomClipper<Path> oldClipper) => false;
 }
-

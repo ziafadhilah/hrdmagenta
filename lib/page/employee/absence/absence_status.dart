@@ -25,6 +25,7 @@ class _absence_statusState extends State<absence_status> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       body: Container(
         child: _loading?Center(child: ShimmerAbsence(),):  ListView.builder(
@@ -248,7 +249,7 @@ class _absence_statusState extends State<absence_status> {
       setState(() {
         _loading=true;
       });
-      http.Response response=await http.get("http://${base_url}/api/employees/$user_id/attendances?type=${widget.type}");
+      http.Response response=await http.get("http://${base_url}/api/employees/$user_id/attendances?status=${widget.type}");
       _absence=jsonDecode(response.body);
       setState(() {
         _loading=false;

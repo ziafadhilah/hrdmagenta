@@ -11,7 +11,6 @@ class NavBarEmployee extends StatefulWidget {
 }
 
 class _NavBarEmployeeState extends State<NavBarEmployee> {
-
   int _currentIndex = 0;
   PageController _pageController;
 
@@ -27,12 +26,9 @@ class _NavBarEmployeeState extends State<NavBarEmployee> {
     super.dispose();
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
-
       body: SizedBox.expand(
         child: PageView(
           controller: _pageController,
@@ -57,13 +53,13 @@ class _NavBarEmployeeState extends State<NavBarEmployee> {
           BottomNavyBarItem(
               activeColor: baseColor,
               inactiveColor: Colors.black38,
-              title: Text('Home',
+              title: Text(
+                'Home',
                 style: TextStyle(
                   fontSize: 13,
                 ),
               ),
-              icon: Icon(Icons.home)
-          ),
+              icon: Icon(Icons.home)),
           // BottomNavyBarItem(
           //     activeColor: Colors.redAccent[100],
           //   inactiveColor: Colors.black,
@@ -73,23 +69,23 @@ class _NavBarEmployeeState extends State<NavBarEmployee> {
           BottomNavyBarItem(
               activeColor: baseColor,
               inactiveColor: Colors.black38,
-              title: Text('Notification',
+              title: Text(
+                'Notification',
                 style: TextStyle(
                   fontSize: 13,
                 ),
               ),
-              icon: Icon(Icons.notification_important_rounded)
-          ),
+              icon: Icon(Icons.notification_important_rounded)),
           BottomNavyBarItem(
               activeColor: baseColor,
               inactiveColor: Colors.black38,
-              title: Text('Account',
+              title: Text(
+                'Account',
                 style: TextStyle(
                   fontSize: 13,
                 ),
               ),
-              icon: Icon(Icons.person)
-          ),
+              icon: Icon(Icons.person)),
         ],
       ),
     );

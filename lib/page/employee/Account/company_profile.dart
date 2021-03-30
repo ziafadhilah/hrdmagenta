@@ -6,22 +6,20 @@ import 'package:hrdmagenta/model/companies.dart';
 import 'package:hrdmagenta/services/api_clien.dart';
 import 'package:http/http.dart' as http;
 import 'package:toast/toast.dart';
-class company_pfrofile extends StatefulWidget {
 
-  company_pfrofile({
-    this.id
-});
+class company_pfrofile extends StatefulWidget {
+  company_pfrofile({this.id});
+
   var id;
+
   @override
   _company_pfrofileState createState() => _company_pfrofileState();
 }
 
 class _company_pfrofileState extends State<company_pfrofile> {
-  Services services=new Services();
-  var company_name,company_adress,company_phonenumber,company_email;
+  Services services = new Services();
+  var company_name, company_adress, company_phonenumber, company_email;
   bool _isLoading;
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -31,41 +29,37 @@ class _company_pfrofileState extends State<company_pfrofile> {
           color: Colors.black87, //modify arrow color from here..
         ),
         backgroundColor: Colors.white,
-        title: Text("Company Profile",
+        title: Text(
+          "Company Profile",
           style: TextStyle(color: Colors.black87),
-
         ),
       ),
-      body: _isLoading==true?Center(child: CircularProgressIndicator(),): Container(
-        color: Colors.white,
-        child: Column(
-          children: <Widget>[
-            _buildname(),
-            _buildtelp(),
-            _buildemail(),
-            _buildadress()
-          ],
-
-        ),
-
-      ),
-
+      body: _isLoading == true
+          ? Center(
+              child: CircularProgressIndicator(),
+            )
+          : Container(
+              color: Colors.white,
+              child: Column(
+                children: <Widget>[
+                  _buildname(),
+                  _buildtelp(),
+                  _buildemail(),
+                  _buildadress()
+                ],
+              ),
+            ),
     );
   }
 
 //wodget name company
   Widget _buildname() {
     return Container(
-
-
       margin: EdgeInsets.all(10),
       child: Column(
-
         children: [
-
           //row company profile
           Container(
-
             child: Row(
               children: <Widget>[
                 //container icon
@@ -79,7 +73,6 @@ class _company_pfrofileState extends State<company_pfrofile> {
                       size: 25,
                     ),
                   ),
-
                 ),
 
                 //container text componey profile
@@ -89,32 +82,28 @@ class _company_pfrofileState extends State<company_pfrofile> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Text("Company",
+                        Text(
+                          "Company",
                           style: TextStyle(
                               fontSize: 14,
                               color: Colors.black87,
-                              fontWeight: FontWeight.bold
-                          ),
+                              fontWeight: FontWeight.bold),
                         ),
-                        SizedBox(height: 5,),
-
-                        SizedBox(height: 5,),
-
-                        Text(company_name,
+                        SizedBox(
+                          height: 5,
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Text(
+                          company_name,
                           style: TextStyle(
                             fontSize: 14,
                             color: Colors.black38,
-
                           ),
                         )
-
-
                       ],
-                    )
-
-                ),
-
-
+                    )),
               ],
             ),
           ),
@@ -129,16 +118,11 @@ class _company_pfrofileState extends State<company_pfrofile> {
   //wodget about
   Widget _buildtelp() {
     return Container(
-
-
       margin: EdgeInsets.all(10),
       child: Column(
-
         children: [
-
           //row company profile
           Container(
-
             child: Row(
               children: <Widget>[
                 //container icon
@@ -152,7 +136,6 @@ class _company_pfrofileState extends State<company_pfrofile> {
                       size: 25,
                     ),
                   ),
-
                 ),
 
                 //container text componey profile
@@ -162,31 +145,28 @@ class _company_pfrofileState extends State<company_pfrofile> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Text("Telephon Number",
+                        Text(
+                          "Telephon Number",
                           style: TextStyle(
                               fontSize: 14,
                               color: Colors.black87,
-                              fontWeight: FontWeight.bold
-                          ),
+                              fontWeight: FontWeight.bold),
                         ),
-                        SizedBox(height: 5,),
-
-                        SizedBox(height: 5,),
-
-                        Text(company_phonenumber,
+                        SizedBox(
+                          height: 5,
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Text(
+                          company_phonenumber,
                           style: TextStyle(
                             fontSize: 14,
                             color: Colors.black38,
-
                           ),
                         )
-
                       ],
-                    )
-
-                ),
-
-
+                    )),
               ],
             ),
           ),
@@ -197,18 +177,14 @@ class _company_pfrofileState extends State<company_pfrofile> {
       ),
     );
   } //wodget about
+
   Widget _buildemail() {
     return Container(
-
-
       margin: EdgeInsets.all(10),
       child: Column(
-
         children: [
-
           //row company profile
           Container(
-
             child: Row(
               children: <Widget>[
                 //container icon
@@ -222,7 +198,6 @@ class _company_pfrofileState extends State<company_pfrofile> {
                       size: 25,
                     ),
                   ),
-
                 ),
 
                 //container text componey profile
@@ -232,32 +207,28 @@ class _company_pfrofileState extends State<company_pfrofile> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Text("Email",
+                        Text(
+                          "Email",
                           style: TextStyle(
                               fontSize: 14,
                               color: Colors.black87,
-                              fontWeight: FontWeight.bold
-                          ),
+                              fontWeight: FontWeight.bold),
                         ),
-                        SizedBox(height: 5,),
-
-                        SizedBox(height: 5,),
-
-                        Text(company_email,
+                        SizedBox(
+                          height: 5,
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Text(
+                          company_email,
                           style: TextStyle(
                             fontSize: 14,
                             color: Colors.black38,
-
                           ),
                         )
-
-
                       ],
-                    )
-
-                ),
-
-
+                    )),
               ],
             ),
           ),
@@ -272,16 +243,11 @@ class _company_pfrofileState extends State<company_pfrofile> {
   //wodget about
   Widget _buildadress() {
     return Container(
-
-
       margin: EdgeInsets.all(10),
       child: Column(
-
         children: [
-
           //row company profile
           Container(
-
             child: Row(
               children: <Widget>[
                 //container icon
@@ -295,7 +261,6 @@ class _company_pfrofileState extends State<company_pfrofile> {
                       size: 25,
                     ),
                   ),
-
                 ),
 
                 //container text componey profile
@@ -305,32 +270,28 @@ class _company_pfrofileState extends State<company_pfrofile> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Text("Adress",
+                        Text(
+                          "Adress",
                           style: TextStyle(
                               fontSize: 14,
                               color: Colors.black87,
-                              fontWeight: FontWeight.bold
-                          ),
+                              fontWeight: FontWeight.bold),
                         ),
-                        SizedBox(height: 5,),
-
-                        SizedBox(height: 5,),
-
-                        Text(company_adress,
+                        SizedBox(
+                          height: 5,
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Text(
+                          company_adress,
                           style: TextStyle(
                             fontSize: 14,
                             color: Colors.black38,
-
                           ),
                         )
-
-
                       ],
-                    )
-
-                ),
-
-
+                    )),
               ],
             ),
           ),
@@ -346,32 +307,29 @@ class _company_pfrofileState extends State<company_pfrofile> {
 
   ///function companies
   Future _companies(BuildContext context) async {
-
     setState(() {
-      _isLoading=true;
-
+      _isLoading = true;
     });
-    final response=await http.get("http://$base_url/api/employees/${widget.id}/companies");
-    final data=jsonDecode(response.body);
+    final response =
+        await http.get("http://$base_url/api/employees/${widget.id}/companies");
+    final data = jsonDecode(response.body);
 
-    if (data['code']==200){
-      final compaymodel=companiesFromJson(response.body);
-      company_name=compaymodel.data.name;
-      company_adress=compaymodel.data.address;
-      company_email=compaymodel.data.email;
-      company_phonenumber=compaymodel.data.contactNumber;
+    if (data['code'] == 200) {
+      final compaymodel = companiesFromJson(response.body);
+      company_name = compaymodel.data.name;
+      company_adress = compaymodel.data.address;
+      company_email = compaymodel.data.email;
+      company_phonenumber = compaymodel.data.contactNumber;
 
       setState(() {
-        _isLoading=false;
+        _isLoading = false;
       });
-
-    }else{
+    } else {
       setState(() {
-        _isLoading=false;
+        _isLoading = false;
       });
     }
   }
-
 
   @override
   void initState() {
@@ -383,6 +341,5 @@ class _company_pfrofileState extends State<company_pfrofile> {
     // Toast.show("$", context)
 
     // });
-
   }
 }

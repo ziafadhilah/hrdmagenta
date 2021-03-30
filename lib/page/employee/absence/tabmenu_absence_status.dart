@@ -1,52 +1,59 @@
-
 import 'package:flutter/material.dart';
-import 'package:hrdmagenta/page/admin/l/absence/status_absence.dart';
-import 'package:hrdmagenta/page/employee/absence/absence.dart';
+import 'package:hrdmagenta/page/employee/absence/absence_status.dart';
+import 'package:hrdmagenta/utalities/constants.dart';
 
 
 
+class TabsMenuAbsencestatus extends StatelessWidget {
 
-
-class TabsAbsenceAdmin extends StatelessWidget {
-
+  final navigatorKey = GlobalKey<NavigatorState>();
   List<Widget> containers = [
-
-   absence_status_admin(
-     type: "Check In",
-
-   ),
-    absence_status_admin(
-      type: "Check Out",
+    absence_status(
+      type: "pending",
     ),
 
+
+    absence_status(
+      type: "rejected",
+    ),
+
+
+    absence_status(
+      type: "approved",
+    )
   ];
+
+
 
   @override
   Widget build(BuildContext context) {
+
     return DefaultTabController(
-      length: 2,
+
+      length: 3,
       child: Scaffold(
         appBar: AppBar(
           iconTheme: IconThemeData(
             color: Colors.black87, //modify arrow color from here..
           ),
 
+
           backgroundColor: Colors.white,
           title: Text('Absence',
             style: TextStyle(color: Colors.black87),
-
           ),
           bottom: TabBar(
             labelColor: Colors.black87,
             tabs: <Widget>[
-
               Tab(
-                text: 'Check In',
+                text: 'PENDING',
               ),
               Tab(
-                text: 'Check Out',
+                text: 'REJECT',
               ),
-
+              Tab(
+                text: 'APPROVED',
+              ),
             ],
           ),
         ),
@@ -56,4 +63,8 @@ class TabsAbsenceAdmin extends StatelessWidget {
       ),
     );
   }
+
+
+
+
 }

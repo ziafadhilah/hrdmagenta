@@ -10,15 +10,11 @@ import 'package:permission_handler/permission_handler.dart';
 class Map_absence extends StatefulWidget {
   @override
   _Map_absenceState createState() => _Map_absenceState();
-  Map_absence({
-    this.latitude,
-    this.longitude
 
-});
+  Map_absence({this.latitude, this.longitude});
 
-  var latitude,longitude;
+  var latitude, longitude;
 }
-
 
 class _Map_absenceState extends State<Map_absence> {
   GoogleMapController _controller;
@@ -57,7 +53,7 @@ class _Map_absenceState extends State<Map_absence> {
     var geolocator = Geolocator();
 
     GeolocationStatus geolocationStatus =
-    await geolocator.checkGeolocationPermissionStatus();
+        await geolocator.checkGeolocationPermissionStatus();
 
     switch (geolocationStatus) {
       case GeolocationStatus.denied:
@@ -97,7 +93,8 @@ class _Map_absenceState extends State<Map_absence> {
     return <Marker>[
       Marker(
           markerId: MarkerId('home'),
-          position: LatLng(double.parse(widget.latitude), double.parse(widget.longitude)),
+          position: LatLng(
+              double.parse(widget.latitude), double.parse(widget.longitude)),
           icon: _sourceIcon,
           onTap: () {
             setState(() {
@@ -131,7 +128,9 @@ class _Map_absenceState extends State<Map_absence> {
       mapType: MapType.normal,
       markers: _createMarker(),
       initialCameraPosition: CameraPosition(
-          target: LatLng(double.parse(widget.latitude), double.parse(widget.longitude)), zoom: 12.0),
+          target: LatLng(
+              double.parse(widget.latitude), double.parse(widget.longitude)),
+          zoom: 12.0),
       onMapCreated: (GoogleMapController controller) {
         _controller = controller;
         // _setStyle(controller);
@@ -150,7 +149,8 @@ class _Map_absenceState extends State<Map_absence> {
     _sourcePinInfo = PinData(
         pinPath: 'assets/pin.png',
         locationName: "My Location",
-        location: LatLng(double.parse(widget.latitude),double.parse(widget.longitude)),
+        location: LatLng(
+            double.parse(widget.latitude), double.parse(widget.longitude)),
         //photo profile user
         avatarPath: "assets/driver.jpg",
         labelColor: Colors.blue);

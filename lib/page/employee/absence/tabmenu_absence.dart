@@ -1,57 +1,89 @@
 
 import 'package:flutter/material.dart';
-import 'package:hrdmagenta/page/employee/absence/status_absence.dart';
+import 'package:hrdmagenta/page/employee/absence/absence.dart';
+import 'package:hrdmagenta/utalities/constants.dart';
 
 
 
 
-
-class TabsApp extends StatelessWidget {
-
+class TabsMenuAbsence extends StatelessWidget {
+BuildContext context;
+final navigatorKey = GlobalKey<NavigatorState>();
   List<Widget> containers = [
-
-
-    absence_status(
+    absence(
       type: "Check In",
     ),
-    absence_status(
+    absence(
       type: "Check Out",
     )
   ];
 
+
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 2,
-      child: Scaffold(
-        appBar: AppBar(
-          iconTheme: IconThemeData(
-            color: Colors.black87, //modify arrow color from here..
-          ),
 
-          backgroundColor: Colors.white,
-          title: Text('Absence',
-            style: TextStyle(color: Colors.black87),
+    return  DefaultTabController(
+        length: 2,
+        child: Scaffold(
+          appBar: AppBar(
+            iconTheme: IconThemeData(
+              color: Colors.black87, //modify arrow color from here..
+            ),
+            actions: <Widget>[
+              PopupMenuButton<String>(
+                onSelected: choiceAction,
 
-          ),
-          bottom: TabBar(
-            labelColor: Colors.black87,
-            tabs: <Widget>[
+                itemBuilder: (BuildContext context){
+                  return Constants.AbsenceStatus.map((String choice){
+                    return PopupMenuItem<String>(
+                      value: choice,
+                      child: Text(choice),
+                    );
+                  }).toList();
 
-
-              Tab(
-                text: 'Check In',
-              ),
-              Tab(
-                text: 'Check Out',
-              ),
+                },
+              )
             ],
+
+            backgroundColor: Colors.white,
+            title: Text('Absence',
+              style: TextStyle(color: Colors.black87),
+            ),
+            bottom: TabBar(
+              labelColor: Colors.black87,
+              tabs: <Widget>[
+                Tab(
+                  text: 'Check In',
+                ),
+                Tab(
+                  text: 'Check Out',
+                ),
+              ],
+            ),
+          ),
+          body: TabBarView(
+            children: containers,
           ),
         ),
-        body: TabBarView(
-          children: containers,
-        ),
-      ),
-    );
+      );
+
   }
+
+
+  void choiceAction(String choice) {
+    if (choice==Constants.Absence){
+      Navigator.of(context).pushNamed("/tabmenu_absence_status_employee-page");
+
+      // Navigator.push(context, MaterialPageRoute(
+      //     builder: (context) =>   TabsMenuAbsencestatus()
+      // ));
+
+
+
+
+    }
+
+  }
+
+
 }

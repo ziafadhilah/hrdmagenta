@@ -277,9 +277,7 @@ class _CheckoutState extends State<Checkout> {
               style: TextStyle(color: Colors.black),
 
               items: <String>[
-
-                'Office',
-                'Event',
+                'In',
                 'Sick',
                 'Permission',
               ].map<DropdownMenuItem<String>>((String value) {

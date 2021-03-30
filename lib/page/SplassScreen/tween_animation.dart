@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hrdmagenta/page/opening/wellcome.dart';
 
-
-
 class Opacityanimate extends StatefulWidget {
   @override
   _OpacityanimateState createState() => _OpacityanimateState();
@@ -11,6 +9,7 @@ class Opacityanimate extends StatefulWidget {
 
 class _OpacityanimateState extends State<Opacityanimate> {
   Tween<double> tween = Tween(begin: 0.0, end: 1.0);
+
   @override
   Widget build(BuildContext context) {
     Size size = Get.mediaQuery.size;
@@ -29,7 +28,9 @@ class _OpacityanimateState extends State<Opacityanimate> {
                   'assets/login.png',
                   height: size.width * 0.26,
                 ),
-                SizedBox(height: 10,),
+                SizedBox(
+                  height: 10,
+                ),
                 RichText(
                   text: TextSpan(
                     text: '',

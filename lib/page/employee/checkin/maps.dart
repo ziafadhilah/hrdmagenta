@@ -10,11 +10,11 @@ import 'package:permission_handler/permission_handler.dart';
 class Maps extends StatefulWidget {
   @override
   _MapsState createState() => _MapsState();
-  Maps({this.address,this.longitude,this.latitude});
 
-  var address,latitude,longitude;
+  Maps({this.address, this.longitude, this.latitude});
+
+  var address, latitude, longitude;
 }
-
 
 class _MapsState extends State<Maps> {
   GoogleMapController _controller;
@@ -36,8 +36,6 @@ class _MapsState extends State<Maps> {
 
   PinData _sourcePinInfo;
 
-
-
   Future<void> getPermission() async {
     PermissionStatus permission = await PermissionHandler()
         .checkPermissionStatus(PermissionGroup.location);
@@ -50,7 +48,7 @@ class _MapsState extends State<Maps> {
     var geolocator = Geolocator();
 
     GeolocationStatus geolocationStatus =
-    await geolocator.checkGeolocationPermissionStatus();
+        await geolocator.checkGeolocationPermissionStatus();
 
     switch (geolocationStatus) {
       case GeolocationStatus.denied:
@@ -100,18 +98,15 @@ class _MapsState extends State<Maps> {
           })
     ].toSet();
   }
-  Set<Circle> circles = Set.from([Circle(
-    circleId: CircleId("1"),
-    center: LatLng(-6.2081067, 106.7812203),
-    radius: 4000,
 
-    strokeColor: baseColor1,
-    strokeWidth: 1
-  )]);
-
-
-
-
+  Set<Circle> circles = Set.from([
+    Circle(
+        circleId: CircleId("1"),
+        center: LatLng(-6.2081067, 106.7812203),
+        radius: 4000,
+        strokeColor: baseColor1,
+        strokeWidth: 1)
+  ]);
 
   void showToast(message) {
     Fluttertoast.showToast(
@@ -135,8 +130,8 @@ class _MapsState extends State<Maps> {
     return GoogleMap(
       mapType: MapType.normal,
       markers: _createMarker(),
-      initialCameraPosition: CameraPosition(
-          target: LatLng(-6.9032739, 107.5731172), zoom: 8.0),
+      initialCameraPosition:
+          CameraPosition(target: LatLng(-6.9032739, 107.5731172), zoom: 8.0),
       onMapCreated: (GoogleMapController controller) {
         _controller = controller;
         // _setStyle(controller);
@@ -155,7 +150,6 @@ class _MapsState extends State<Maps> {
 
   void _setMapPins() {
     _sourcePinInfo = PinData(
-
         locationName: "My Location",
         location: LatLng(-6.9032739, 107.5731172),
         //photo profile user
@@ -166,37 +160,33 @@ class _MapsState extends State<Maps> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
         body: Stack(
-          children: <Widget>[
-            _child,
-            AnimatedPositioned(
-              bottom: _pinPillPosition,
-              right: 0,
-              left: 0,
-              duration: Duration(milliseconds: 200),
-              child: Align(
-                alignment: Alignment.bottomCenter,
-                child: Container(
-                  margin: EdgeInsets.all(20),
-                  height: 70,
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.all(Radius.circular(50)),
-                      boxShadow: <BoxShadow>[
-                        BoxShadow(
-                          blurRadius: 20,
-                          offset: Offset.zero,
-                          color: Colors.grey.withOpacity(0.5),
-                        )
-                      ]),
-
-                ),
-              ),
-            )
-          ],
-        ));
+      children: <Widget>[
+        _child,
+        AnimatedPositioned(
+          bottom: _pinPillPosition,
+          right: 0,
+          left: 0,
+          duration: Duration(milliseconds: 200),
+          child: Align(
+            alignment: Alignment.bottomCenter,
+            child: Container(
+              margin: EdgeInsets.all(20),
+              height: 70,
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.all(Radius.circular(50)),
+                  boxShadow: <BoxShadow>[
+                    BoxShadow(
+                      blurRadius: 20,
+                      offset: Offset.zero,
+                      color: Colors.grey.withOpacity(0.5),
+                    )
+                  ]),
+            ),
+          ),
+        )
+      ],
+    ));
   }
-
-
 }

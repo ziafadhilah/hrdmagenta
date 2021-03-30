@@ -26,14 +26,11 @@ class detail_absence extends StatefulWidget {
     this.rejected_by,
     this.rejected_on,
     this.rejection_note
-
-
-
-
 });
 
-  var status,employee,type,date,time,
-      latitude,longitude,image,approved_by,approved_on,rejected_by,rejected_on,note,rejection_note,approval_note;
+
+
+  var status,employee,type,date,time,latitude,longitude,image,approved_by,approved_on,rejected_by,rejected_on,note,rejection_note,approval_note;
   _detail_absenceState createState() => _detail_absenceState();
 }
 
@@ -52,7 +49,6 @@ class _detail_absenceState extends State<detail_absence> {
         iconTheme: IconThemeData(
           color: Colors.black87, //modify arrow color from here..
         ),
-
         backgroundColor: Colors.white,
         title: new Text("Absence Detail",
           style: TextStyle(color: Colors.black87),
@@ -60,38 +56,52 @@ class _detail_absenceState extends State<detail_absence> {
       ),
 
       body :Container(
-        margin: EdgeInsets.only(left: 15,right: 15,top: 15),
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
-        child: Column(
-          children: <Widget>[
-            _buildProfile(),
-            _buildType(),
-            _buildDate(),
-            _buildTime(),
-            _buildAdress(),
-            SizedBox(height: 10,),
-            _buildgridtext(),
-            _buildgrid(),
+        child: SingleChildScrollView(
+          child: Container(
+            margin: EdgeInsets.only(left: 15,right: 15,top: 15),
+            width: MediaQuery.of(context).size.width,
+
+            child: Column(
+              children: <Widget>[
+                _buildProfile(),
+                _buildAbsenceType(),
+                _buildAbsencecategory(),
+                _buildDate(),
+                _buildTime(),
+                _buildRemark(),
+                _buildAdress(),
+
+                _buildgridtext(),
+                SizedBox(height: 10,),
+                _buildgrid(),
+
+                SizedBox(height: 10,),
+                 Container(
+                   child:  widget.status=="pending"?Text(""):widget.status=="rejected"?_buildrejected():
+                       _buildapproved()
+                 ),
+                 //_buildrejected(),
 
 
+              ],
+            ),
 
-
-          ],
+          ),
         ),
-
       ),
     );
 
   }
+
+
   //convert lat dan long to address
   _getAddressFromLatLng() async {
     try {
       List<Placemark> p = await geolocator.placemarkFromCoordinates(
           double.parse(widget.latitude),double.parse(widget.longitude));
-
       Placemark place = p[0];
-
       setState(() {
         _currentAddress =
         "${place.locality}, ${place.postalCode}, ${place.country}";
@@ -99,61 +109,6 @@ class _detail_absenceState extends State<detail_absence> {
     } catch (e) {
       print(e);
     }
-  }
-  Widget _buildgridtext(){
-    return Container(
-      height: 20,
-      child: GridView.count(
-        crossAxisCount: 2,
-        children: <Widget>[
-          //photos
-          Container(
-            margin: EdgeInsets.only(left: 10),
-            child: Text("Photo",
-              style: titleAbsence,
-            )
-
-          ),
-
-          //map
-          Container(
-              margin: EdgeInsets.only(right: 10,left: 10),
-              child: Text("Location",
-                style: titleAbsence,
-              ),
-          ),
-
-
-        ],
-
-      ),
-    );
-  }
-
-  Widget _buildgrid(){
-    return Expanded(
-      child: Container(
-        child: GridView.count(
-          crossAxisCount: 2,
-          children: <Widget>[
-            //photos
-            Container(
-              child: _buildphotos(),
-
-            ),
-
-           //map
-            Container(
-                margin: EdgeInsets.only(right: 10,left: 10),
-                child: _builmap()
-            ),
-
-
-          ],
-
-        ),
-      ),
-    );
   }
 
 
@@ -198,11 +153,6 @@ class _detail_absenceState extends State<detail_absence> {
                   ),
                 ),
 
-
-
-                //detail acount
-
-
               ],
             ),
           )//Container
@@ -213,7 +163,7 @@ class _detail_absenceState extends State<detail_absence> {
   }
   //widget type
 
-Widget _buildType(){
+Widget _buildAbsenceType(){
     return Container(
       margin: EdgeInsets.only(left: 5),
       width: double.infinity,
@@ -222,10 +172,13 @@ Widget _buildType(){
         child: Row(
           children: <Widget>[
             Container(
-              child: Icon(Icons.login,
+              child: widget.type=="check in"?Icon(Icons.login,
                 color: Colors.black38,
                 size: 40,
-              ),
+              ):Icon(Icons.logout,
+                color: Colors.black38,
+                size: 40,
+              )
 
             ),
             Container(
@@ -259,6 +212,101 @@ Widget _buildType(){
       ),
     );
 }
+
+  Widget _buildRemark(){
+    return Container(
+      margin: EdgeInsets.only(left: 5),
+      width: double.infinity,
+      height: 80,
+      child: Card(
+        child: Row(
+          children: <Widget>[
+            Container(
+                child:Icon(Icons.description,
+                  color: Colors.black38,
+                  size: 40,
+                )
+
+            ),
+            Container(
+              margin: EdgeInsets.only(left: 10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+
+                children: <Widget>[
+                  Container(
+                    child: Text("Remark",
+                      style: titleAbsence,
+
+                    ),
+                  ),
+                  SizedBox(height: 10,),
+                  Container(
+                    child: Text("${widget.note}",
+                      style: subtitleAbsence,
+
+                    ),
+                  )
+
+
+                ],
+              ),
+            )
+          ],
+        ),
+
+      ),
+    );
+  }
+
+
+  Widget _buildAbsencecategory(){
+    return Container(
+      margin: EdgeInsets.only(left: 5),
+      width: double.infinity,
+      height: 80,
+      child: Card(
+        child: Row(
+          children: <Widget>[
+            Container(
+              child: Icon(Icons.login,
+                color: Colors.black38,
+                size: 40,
+              ),
+
+            ),
+            Container(
+              margin: EdgeInsets.only(left: 10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+
+                children: <Widget>[
+                  Container(
+                    child: Text("Category",
+                      style: titleAbsence,
+
+                    ),
+                  ),
+                  SizedBox(height: 10,),
+                  Container(
+                    child: Text("Masuk",
+                      style: subtitleAbsence,
+
+                    ),
+                  )
+
+
+                ],
+              ),
+            )
+          ],
+        ),
+
+      ),
+    );
+  }
 //widget date
   Widget _buildDate(){
     return Container(
@@ -328,7 +376,7 @@ Widget _buildType(){
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Container(
-                    child: Text("Adress",
+                    child: Text("Address",
                       style: titleAbsence,
 
                     ),
@@ -391,6 +439,56 @@ Widget _buildType(){
           ],
         ),
 
+      ),
+    );
+  }
+
+
+  Widget _buildgridtext(){
+    return Container(
+      height: 20,
+      child: GridView.count(
+        crossAxisCount: 2,
+        children: <Widget>[
+          //photos
+          Container(
+              margin: EdgeInsets.only(left: 10),
+              child: Text("Photo",
+                style: titleAbsence,
+              )),
+          //map
+
+          Container(
+            margin: EdgeInsets.only(right: 10,left: 10),
+            child: Text("Location",
+              style: titleAbsence,
+            ),
+          ),
+        ],
+
+      ),
+    );
+  }
+
+
+  Widget _buildgrid(){
+    return Container(
+      height: 200,
+
+
+      child: GridView.count(
+        crossAxisCount: 2,
+        children: <Widget>[
+         // photos
+          Container(
+            child: _buildphotos(),
+          ),
+          //map
+          Container(
+              margin: EdgeInsets.only(right: 10,left: 10),
+              child: _builmap()
+          ),
+        ],
       ),
     );
   }
@@ -468,6 +566,470 @@ Widget _buildType(){
     );
   }
 
+  Widget _buildrejected(){
+    return Container(
+
+      child: Column(
+        children: <Widget>[
+          Container(
+
+            color: Colors.redAccent,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Center(
+                  child: CircleAvatar(
+                    backgroundColor: Colors.redAccent,
+                    child: Icon(
+                      Icons.close,
+                      color: Colors.white,
+                    ),
+
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.only(left: 2),
+                  child:Text(
+                    "REJECTED",
+                    style: TextStyle(color: Colors.white,
+                      fontSize: 17,
+                    ),
+                  ),
+                ),
+
+              ],
+            ),
+          ),
+          SizedBox(height: 10,),
+          _buildrejectedby(),
+          _buildrejecteddate(),
+          _buildrejectedon(),
+          _buildrejectednote()
+        ],
+      ),
+
+    );
+  }
+  Widget _buildrejectedby(){
+    return Container(
+      margin: EdgeInsets.only(left: 5),
+      width: double.infinity,
+      height: 80,
+      child: Card(
+        child: Row(
+          children: <Widget>[
+            Container(
+              child: Icon(Icons.person,
+                color: Colors.black38,
+                size: 40,
+              ),
+
+            ),
+            Container(
+              margin: EdgeInsets.only(left: 10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+
+                children: <Widget>[
+                  Container(
+                    child: Text("Rejected BY",
+                      style: titleAbsence,
+
+                    ),
+                  ),
+                  SizedBox(height: 10,),
+                  Container(
+                    child: Text("${widget.rejected_by}",
+                      style: subtitleAbsence,
+
+                    ),
+                  )
+
+
+                ],
+              ),
+            )
+          ],
+        ),
+
+      ),
+    );
+  }
+
+  Widget _buildrejecteddate(){
+    return Container(
+      margin: EdgeInsets.only(left: 5),
+      width: double.infinity,
+      height: 80,
+      child: Card(
+        child: Row(
+          children: <Widget>[
+            Container(
+              child: Icon(Icons.date_range,
+                color: Colors.black38,
+                size: 40,
+              ),
+
+            ),
+            Container(
+              margin: EdgeInsets.only(left: 10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+
+                children: <Widget>[
+                  Container(
+                    child: Text("Rejected Date",
+                      style: titleAbsence,
+
+                    ),
+                  ),
+                  SizedBox(height: 10,),
+                  Container(
+                    child: Text("${widget.rejected_on}",
+                      style: subtitleAbsence,
+
+                    ),
+                  )
+
+
+                ],
+              ),
+            )
+          ],
+        ),
+
+      ),
+    );
+  }
+
+  Widget _buildrejectedon(){
+    return Container(
+      margin: EdgeInsets.only(left: 5),
+      width: double.infinity,
+      height: 80,
+      child: Card(
+        child: Row(
+          children: <Widget>[
+            Container(
+              child: Icon(Icons.timer_rounded,
+                color: Colors.black38,
+                size: 40,
+              ),
+
+            ),
+            Container(
+              margin: EdgeInsets.only(left: 10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+
+                children: <Widget>[
+                  Container(
+                    child: Text("Rejected On",
+                      style: titleAbsence,
+
+                    ),
+                  ),
+                  SizedBox(height: 10,),
+                  Container(
+                    child: Text("${widget.rejected_on}",
+                      style: subtitleAbsence,
+
+                    ),
+                  )
+
+
+                ],
+              ),
+            )
+          ],
+        ),
+
+      ),
+    );
+  }
+  Widget _buildrejectednote(){
+    return Container(
+      margin: EdgeInsets.only(left: 5),
+      width: double.infinity,
+      height: 80,
+      child: Card(
+        child: Row(
+          children: <Widget>[
+            Container(
+              child: Icon(Icons.description,
+                color: Colors.black38,
+                size: 40,
+              ),
+
+            ),
+            Container(
+              margin: EdgeInsets.only(left: 10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+
+                children: <Widget>[
+                  Container(
+                    child:  Text("Remarks",
+                      style: titleAbsence,
+
+                    ),
+                  ),
+                  SizedBox(height: 10,),
+                  Container(
+                    child: widget.rejection_note=="null"?Text("-",
+                        style: subtitleAbsence,):
+                    Text("${widget.rejection_note}",
+                      style: titleAbsence,
+                    ),
+                  ),
+                ],
+              ),
+            )
+          ],
+        ),
+
+      ),
+    );
+  }
+
+
+  ///approved
+  Widget _buildapproved(){
+    return Container(
+
+      child: Column(
+        children: <Widget>[
+          Container(
+
+            color: Colors.green,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Center(
+                  child: CircleAvatar(
+                    backgroundColor: Colors.green,
+                    child: Icon(
+                      Icons.check,
+                      color: Colors.white,
+                    ),
+
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.only(left: 2),
+                  child:Text(
+                    "APPROVED",
+                    style: TextStyle(color: Colors.white,
+                      fontSize: 17,
+
+                    ),
+                  ),
+                ),
+
+              ],
+            ),
+          ),
+          SizedBox(height: 10,),
+          _buildapprovedby(),
+          _buildapproveddate(),
+          _buildapprovedon(),
+          _buildapprovalnote()
+        ],
+      ),
+
+    );
+  }
+  Widget _buildapprovedby(){
+    return Container(
+      margin: EdgeInsets.only(left: 5),
+      width: double.infinity,
+      height: 80,
+      child: Card(
+        child: Row(
+          children: <Widget>[
+            Container(
+              child: Icon(Icons.person,
+                color: Colors.black38,
+                size: 40,
+              ),
+
+            ),
+            Container(
+              margin: EdgeInsets.only(left: 10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+
+                children: <Widget>[
+                  Container(
+                    child: Text("Approved By",
+                      style: titleAbsence,
+
+                    ),
+                  ),
+                  SizedBox(height: 10,),
+                  Container(
+                    child: Text("${widget.approved_by}",
+                      style: subtitleAbsence,
+
+                    ),
+                  )
+
+
+                ],
+              ),
+            )
+          ],
+        ),
+
+      ),
+    );
+  }
+
+  Widget _buildapproveddate(){
+    return Container(
+      margin: EdgeInsets.only(left: 5),
+      width: double.infinity,
+      height: 80,
+      child: Card(
+        child: Row(
+          children: <Widget>[
+            Container(
+              child: Icon(Icons.date_range,
+                color: Colors.black38,
+                size: 40,
+              ),
+
+            ),
+            Container(
+              margin: EdgeInsets.only(left: 10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+
+                children: <Widget>[
+                  Container(
+                    child: Text("Approved Date",
+                      style: titleAbsence,
+
+                    ),
+                  ),
+                  SizedBox(height: 10,),
+                  Container(
+                    child: Text("${widget.approved_on}",
+                      style: subtitleAbsence,
+
+                    ),
+                  )
+
+
+                ],
+              ),
+            )
+          ],
+        ),
+
+      ),
+    );
+  }
+
+  Widget _buildapprovedon(){
+    return Container(
+      margin: EdgeInsets.only(left: 5),
+      width: double.infinity,
+      height: 80,
+      child: Card(
+        child: Row(
+          children: <Widget>[
+            Container(
+              child: Icon(Icons.timer_rounded,
+                color: Colors.black38,
+                size: 40,
+              ),
+
+            ),
+            Container(
+              margin: EdgeInsets.only(left: 10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+
+                children: <Widget>[
+                  Container(
+                    child: Text("Approved On",
+                      style: titleAbsence,
+
+                    ),
+                  ),
+                  SizedBox(height: 10,),
+                  Container(
+                    child: Text("${widget.approved_on}",
+                      style: subtitleAbsence,
+
+                    ),
+                  )
+
+
+                ],
+              ),
+            )
+          ],
+        ),
+
+      ),
+    );
+  }
+  Widget _buildapprovalnote(){
+    return Container(
+      margin: EdgeInsets.only(left: 5),
+      width: double.infinity,
+      height: 80,
+      child: Card(
+        child: Row(
+          children: <Widget>[
+            Container(
+              child: Icon(Icons.description,
+                color: Colors.black38,
+                size: 40,
+              ),
+
+            ),
+            Container(
+              margin: EdgeInsets.only(left: 10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+
+                children: <Widget>[
+                  Container(
+                    child:  Text("Remarks",
+                      style: titleAbsence,
+
+                    ),
+                  ),
+                  SizedBox(height: 10,),
+                  Container(
+                    child: widget.approval_note=="null"?Text("-",
+                      style: subtitleAbsence,):
+                    Text("${widget.approval_note}",
+                      style: titleAbsence,
+                    ),
+                  ),
+                ],
+              ),
+            )
+          ],
+        ),
+
+      ),
+    );
+  }
 
 
 
@@ -478,7 +1040,11 @@ Widget _buildType(){
 
 
 
-@override
+
+
+
+
+  @override
   void initState() {
     // TODO: implement initState
     super.initState();
