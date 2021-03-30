@@ -9,6 +9,8 @@ import 'package:hrdmagenta/validasi/validator.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:geolocator/geolocator.dart';
+
 
 
 class Checkin extends StatefulWidget {
@@ -476,8 +478,7 @@ Future upload() async{
       setState(() {
         typeList = [
           "Select Type",
-          "office",
-          "Event",
+          "In"
           "Sick",
           "permission",
         ];
@@ -496,6 +497,8 @@ Future upload() async{
     _getDataPref();
     _getCurrentLocation();
     _type_absence();
+   // double distanceInMeters = Geolocator().distanceBetween(52.2165157, 6.9437819, 52.3546274, 4.8285838);
+
   }
 
 }

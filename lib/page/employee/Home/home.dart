@@ -208,6 +208,89 @@ final List<Notif> ListNotif=[];
   }
 
 
+  Widget _buildMenucuty(){
+    return Column(
+        children: <Widget>[
+
+          new Container(
+            width: 70,
+            height: 70,
+            child: InkWell(
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(
+                    builder: (context) => TabsApp()
+                ));
+
+              },
+              child: Card(
+                elevation: 1,
+                shape:  RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                child: Container(
+                    margin:EdgeInsets.all(15.0),
+                    child: absent
+                ),
+
+              ),
+            ),
+          ),
+          Text("Cuti",
+            style: TextStyle(
+                color: Colors.black38,
+                fontWeight: FontWeight.bold,
+                fontFamily: 'OpenSans',
+                fontSize: 15
+            ),
+          )
+
+        ]
+    );
+  }
+
+  Widget _buildmenupyslip(){
+    return Column(
+        children: <Widget>[
+
+          new Container(
+            width: 70,
+            height: 70,
+            child: InkWell(
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(
+                    builder: (context) => TabsApp()
+                ));
+
+              },
+              child: Card(
+                elevation: 1,
+                shape:  RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                child: Container(
+                    margin:EdgeInsets.all(15.0),
+                    child: absent
+                ),
+
+              ),
+            ),
+          ),
+          Text("pyslip",
+            style: TextStyle(
+                color: Colors.black38,
+                fontWeight: FontWeight.bold,
+                fontFamily: 'OpenSans',
+                fontSize: 15
+            ),
+          )
+
+        ]
+    );
+  }
+
+
+
+
 Widget _buildproject(){
   return Container(
     width: MediaQuery.of(context).size.width,
@@ -233,13 +316,10 @@ Widget _buildproject(){
 
     ),
   );
-
-
 }
 
 
-
-  Widget _buildCardMenu() {
+  Widget _buildMainMenu() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -254,24 +334,15 @@ Widget _buildproject(){
 
               children: <Widget>[
                 Container(
-
-
-
-
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-
                     children: <Widget>[
-
                       Row(
-
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: <Widget>[
                           _buildMenucheckin(),
                           _buildMenucheckout(),
                           _buildMenuproject(),
-                          _buildMenuaabsence()
-
 
 
                         ],
@@ -281,32 +352,21 @@ Widget _buildproject(){
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: <Widget>[
-                            _buildMenucheckin(),
-                            _buildMenucheckout(),
-                            _buildMenuproject(),
-                            _buildMenuaabsence()
-
-
-
+                            _buildMenuaabsence(),
+                            _buildMenucuty(),
+                            _buildmenupyslip()
 
                           ],
                         )
                       ),
-
-
                     ],
                   ),
                 ),
-
-
               ],
             ),
           ),
-    ),
+          ),
         )
-
-
-
       ],
     );
   }
@@ -345,10 +405,6 @@ Widget _buildInformation(){
 
           ),
         ),
-
-
-
-
       ],
     ),
   );
@@ -534,10 +590,8 @@ Widget _buildInformation(){
 
                               ),
                             ),
+                            _buildMainMenu(),
 
-
-
-                            _buildCardMenu(),
 
                             SizedBox(height: 15,),
                             Container(
@@ -582,9 +636,7 @@ Widget _buildInformation(){
 
         );
     }
-
     //notification
-
   showNotifcation(String title,String body) async{
     var android =new AndroidNotificationDetails('chanel id','chanel name', 'CHANEL DESCRIPTION');
     var ios=new IOSNotificationDetails();
