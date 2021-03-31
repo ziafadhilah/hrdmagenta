@@ -9,7 +9,7 @@ import 'package:hrdmagenta/validasi/validator.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:toast/toast.dart';
 
 class Checkin extends StatefulWidget {
   @override
@@ -23,11 +23,16 @@ class _CheckinState extends State<Checkin> {
   Position _currentPosition;
   String _currentAddress;
   var Cremark = new TextEditingController();
-  var time, _lat, _long, _employee_id, _check_in, _clock_in;
+  var time,
+      _lat,
+      _long,
+      _employee_id,
+      _check_in,
+      _distance,
+      _category_absent,
+      _departement_name;
   String base64;
   Validasi validator = new Validasi();
-  List typeList;
-  String _type, _type_absent;
 
   ///widge widget
   //Widger photo default
@@ -45,7 +50,6 @@ class _CheckinState extends State<Checkin> {
       ),
     );
   }
-
 
   // -------end photo default-----
   //Widget text
@@ -87,7 +91,6 @@ class _CheckinState extends State<Checkin> {
     );
   }
 
-
   void _startJam() {
     Timer.periodic(new Duration(seconds: 1), (_) {
       var tgl = new DateTime.now();
@@ -97,7 +100,6 @@ class _CheckinState extends State<Checkin> {
       });
     });
   }
-
 
   Widget _buildtime() {
     return Column(
@@ -128,8 +130,7 @@ class _CheckinState extends State<Checkin> {
     );
   }
 
-
-  Widget _buildtypeabsen() {
+  Widget _buildCategoryabsence() {
     return Container(
       margin: EdgeInsets.only(left: 25, right: 20),
       width: double.infinity,
@@ -149,7 +150,7 @@ class _CheckinState extends State<Checkin> {
             child: DropdownButton<String>(
               isExpanded: true,
 
-              value: _type_absent,
+              value: _category_absent,
               //elevation: 5,
               style: TextStyle(color: Colors.black),
 
@@ -172,7 +173,7 @@ class _CheckinState extends State<Checkin> {
               ),
               onChanged: (String value) {
                 setState(() {
-                  _type_absent = value;
+                  _category_absent = value;
                 });
               },
             ),
@@ -181,7 +182,6 @@ class _CheckinState extends State<Checkin> {
       ),
     );
   }
-
 
   Widget _buildLocation() {
     return Container(
@@ -301,7 +301,7 @@ class _CheckinState extends State<Checkin> {
                 SizedBox(
                   height: 15,
                 ),
-                _buildtypeabsen(),
+                _buildCategoryabsence(),
                 SizedBox(
                   height: 15,
                 ),
@@ -336,14 +336,8 @@ class _CheckinState extends State<Checkin> {
   }
 
   Future upload() async {
-    if (_check_in == true) {
-      alert_info(context, "You have been check in", "Back");
-    } else {
-      // if (_image==null){
-
-      // }else{
-      var date = DateFormat("yyyy:MM:dd").format(DateTime.now());
-      validator.validation_checkin(
+    var date = DateFormat("yyyy:MM:dd").format(DateTime.now());
+    validator.validation_checkin(
         context,
         base64.toString(),
         Cremark.text,
@@ -352,10 +346,10 @@ class _CheckinState extends State<Checkin> {
         _employee_id,
         date.toString(),
         time.toString(),
-      );
-      //Toast.show("${_long.toString()}", context);
-
-    }
+        _departement_name,
+        _distance,
+        _category_absent);
+    // Toast.show("$_category_absent", context);
   }
 
   ///fucntion
@@ -380,6 +374,7 @@ class _CheckinState extends State<Checkin> {
         _currentPosition = position;
         _lat = _currentPosition.latitude;
         _long = _currentPosition.longitude;
+        _getDistance(_lat, _long);
       });
 
       _getAddressFromLatLng();
@@ -409,12 +404,29 @@ class _CheckinState extends State<Checkin> {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     setState(() {
       _employee_id = sharedPreferences.getString("user_id");
-      _check_in = sharedPreferences.getBool("check_in");
-      _clock_in = sharedPreferences.getString("clock_in");
+      _departement_name = sharedPreferences.getString("user_id");
+      //print(_departement_name);
     });
   }
 
-
+  _getDistance(currentlat, currentlong) async {
+    try {
+      final double d = await Geolocator()
+          .distanceBetween(-6.9526871, 107.6668177, currentlat, currentlong);
+      setState(() {
+        _distance = d;
+        print("$d");
+        if (_distance > 50) {
+          print("outside");
+        } else {
+          print("inside");
+        }
+        // print(d);
+      });
+    } catch (e) {
+      print(e);
+    }
+  }
 
   @override
   void dispose() {
@@ -422,15 +434,11 @@ class _CheckinState extends State<Checkin> {
     //time.cancel();
   }
 
-
   @override
   void initState() {
     super.initState();
     _startJam();
     _getDataPref();
     _getCurrentLocation();
-
-  //double distanceInMeters = Geolocator().distanceBetween(52.2165157, 6.9437819, 52.3546274, 4.8285838);
-
   }
 }

@@ -7,7 +7,7 @@ import 'package:hrdmagenta/utalities/constants.dart';
 
 
 class TabsMenuAbsence extends StatelessWidget {
-BuildContext context;
+BuildContext _context;
 final navigatorKey = GlobalKey<NavigatorState>();
   List<Widget> containers = [
     absence(
@@ -21,6 +21,7 @@ final navigatorKey = GlobalKey<NavigatorState>();
 
   @override
   Widget build(BuildContext context) {
+    this._context = context;
 
     return  DefaultTabController(
         length: 2,
@@ -72,7 +73,7 @@ final navigatorKey = GlobalKey<NavigatorState>();
 
   void choiceAction(String choice) {
     if (choice==Constants.Absence){
-      Navigator.of(context).pushNamed("/tabmenu_absence_status_employee-page");
+      Navigator.of(_context).pushNamed("tabmenu_absence_status_employee-page");
 
       // Navigator.push(context, MaterialPageRoute(
       //     builder: (context) =>   TabsMenuAbsencestatus()

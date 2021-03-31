@@ -22,6 +22,7 @@ class _AccountEmployeeState extends State<AccountEmployee> {
       email,
       gender,
       employee_id,
+      departement_name,
       profile_background = "";
   var user_id, value;
   SharedPreference session = new SharedPreference();
@@ -66,6 +67,7 @@ class _AccountEmployeeState extends State<AccountEmployee> {
       ),
     );
   }
+
 
   //wodget company
   Widget _buildCompany() {
@@ -151,6 +153,8 @@ class _AccountEmployeeState extends State<AccountEmployee> {
       ),
     );
   }
+
+
 
   //wodget company
   Widget _buildChangepassword() {
@@ -764,7 +768,7 @@ class _AccountEmployeeState extends State<AccountEmployee> {
                 ),
                 Container(
                   child: Text(
-                    "Employee",
+                    "${departement_name}",
                     style: TextStyle(
                       fontSize: 15,
                       color: Colors.black38,
@@ -968,6 +972,8 @@ class _AccountEmployeeState extends State<AccountEmployee> {
       gender = sharedPreferences.getString("gender");
       value = sharedPreferences.getInt("value");
       user_id = sharedPreferences.getString("user_id");
+      departement_name = sharedPreferences.getString("departement_name");
+
     });
   }
 

@@ -7,17 +7,7 @@ class Create extends StatefulWidget {
 }
 
 class _CreateState extends State<Create> {
-  // @override
-  // void initState() {
-  //   bloc.fetchAllTodo();
-  //   super.initState();
-  // }
 
-  // @override
-  // void dispose() {
-  //   bloc.dispose();
-  //   super.dispose();
-  // }
 
   @override
   Widget build(BuildContext context) {

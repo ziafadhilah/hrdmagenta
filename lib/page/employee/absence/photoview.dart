@@ -26,7 +26,8 @@ class _PhotoViewPageState extends State<PhotoViewPage> {
                 imageProvider: AssetImage(
                   "assets/absen.jpeg",
                 ),
-              )),
+              ),
+              ),
             ),
           ),
         ));

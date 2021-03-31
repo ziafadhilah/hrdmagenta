@@ -64,6 +64,8 @@ class Data {
     this.isActive,
     this.isActiveAccount,
     this.hasMobileAccess,
+    this.workPlacement,
+    this.mobileAccessType,
     this.designation,
   });
 
@@ -79,8 +81,8 @@ class Data {
   String gender;
   String contactNumber;
   dynamic officeShiftId;
-  int reportTo;
-  int leaveId;
+  dynamic reportTo;
+  dynamic leaveId;
   String address;
   String email;
   String username;
@@ -93,6 +95,8 @@ class Data {
   int isActive;
   int isActiveAccount;
   int hasMobileAccess;
+  String workPlacement;
+  String mobileAccessType;
   Designation designation;
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
@@ -122,6 +126,8 @@ class Data {
     isActive: json["is_active"],
     isActiveAccount: json["is_active_account"],
     hasMobileAccess: json["has_mobile_access"],
+    workPlacement: json["work_placement"],
+    mobileAccessType: json["mobile_access_type"],
     designation: Designation.fromJson(json["designation"]),
   );
 
@@ -152,6 +158,8 @@ class Data {
     "is_active": isActive,
     "is_active_account": isActiveAccount,
     "has_mobile_access": hasMobileAccess,
+    "work_placement": workPlacement,
+    "mobile_access_type": mobileAccessType,
     "designation": designation.toJson(),
   };
 }
@@ -216,7 +224,6 @@ class Department {
     this.createdAt,
     this.updatedAt,
     this.company,
-    this.location,
   });
 
   int id;
@@ -229,7 +236,6 @@ class Department {
   DateTime createdAt;
   DateTime updatedAt;
   Company company;
-  Company location;
 
   factory Department.fromJson(Map<String, dynamic> json) => Department(
     id: json["id"],
@@ -242,7 +248,6 @@ class Department {
     createdAt: DateTime.parse(json["created_at"]),
     updatedAt: DateTime.parse(json["updated_at"]),
     company: Company.fromJson(json["company"]),
-    location: Company.fromJson(json["location"]),
   );
 
   Map<String, dynamic> toJson() => {
@@ -256,7 +261,6 @@ class Department {
     "created_at": createdAt.toIso8601String(),
     "updated_at": updatedAt.toIso8601String(),
     "company": company.toJson(),
-    "location": location.toJson(),
   };
 }
 
@@ -279,9 +283,6 @@ class Company {
     this.deletedAt,
     this.createdAt,
     this.updatedAt,
-    this.companyId,
-    this.employeeId,
-    this.locationName,
   });
 
   int id;
@@ -289,7 +290,7 @@ class Company {
   String registrationNumber;
   String contactNumber;
   String email;
-  dynamic website;
+  String website;
   String npwp;
   String address;
   String province;
@@ -301,14 +302,11 @@ class Company {
   dynamic deletedAt;
   DateTime createdAt;
   DateTime updatedAt;
-  int companyId;
-  int employeeId;
-  String locationName;
 
   factory Company.fromJson(Map<String, dynamic> json) => Company(
     id: json["id"],
-    name: json["name"] == null ? null : json["name"],
-    registrationNumber: json["registration_number"] == null ? null : json["registration_number"],
+    name: json["name"],
+    registrationNumber: json["registration_number"],
     contactNumber: json["contact_number"],
     email: json["email"],
     website: json["website"],
@@ -318,20 +316,17 @@ class Company {
     city: json["city"],
     zipCode: json["zip_code"],
     country: json["country"],
-    logo: json["logo"] == null ? null : json["logo"],
+    logo: json["logo"],
     addedBy: json["added_by"],
     deletedAt: json["deleted_at"],
     createdAt: DateTime.parse(json["created_at"]),
     updatedAt: DateTime.parse(json["updated_at"]),
-    companyId: json["company_id"] == null ? null : json["company_id"],
-    employeeId: json["employee_id"] == null ? null : json["employee_id"],
-    locationName: json["location_name"] == null ? null : json["location_name"],
   );
 
   Map<String, dynamic> toJson() => {
     "id": id,
-    "name": name == null ? null : name,
-    "registration_number": registrationNumber == null ? null : registrationNumber,
+    "name": name,
+    "registration_number": registrationNumber,
     "contact_number": contactNumber,
     "email": email,
     "website": website,
@@ -341,13 +336,10 @@ class Company {
     "city": city,
     "zip_code": zipCode,
     "country": country,
-    "logo": logo == null ? null : logo,
+    "logo": logo,
     "added_by": addedBy,
     "deleted_at": deletedAt,
     "created_at": createdAt.toIso8601String(),
     "updated_at": updatedAt.toIso8601String(),
-    "company_id": companyId == null ? null : companyId,
-    "employee_id": employeeId == null ? null : employeeId,
-    "location_name": locationName == null ? null : locationName,
   };
 }

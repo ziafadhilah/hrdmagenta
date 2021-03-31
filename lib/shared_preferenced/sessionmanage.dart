@@ -24,6 +24,10 @@ class SharedPreference {
       email,
       profile_background,
       contact,
+      depaertement_id,
+      departement_name,
+      departement_lat,
+      departement_long,
       String gender) async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     sharedPreferences.setInt("value", value);
@@ -36,6 +40,10 @@ class SharedPreference {
     sharedPreferences.setString("contact", contact);
     sharedPreferences.setString("employee_id", employee_id);
     sharedPreferences.setString("gender", gender);
+    sharedPreferences.setString("departement_lat", departement_lat);
+    sharedPreferences.setString("departement_long", departement_long);
+    sharedPreferences.setString("departement_id", depaertement_id);
+    sharedPreferences.setString("departement_name", departement_name);
   }
 
   void logout(BuildContext context) async {
