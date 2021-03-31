@@ -12,11 +12,14 @@ class TabsAbsenceAdmin extends StatelessWidget {
   List<Widget> containers = [
 
    absence_status_admin(
-     type: "Check In",
+     type: "pending",
 
    ),
     absence_status_admin(
-      type: "Check Out",
+      type: "rejected",
+    ),
+    absence_status_admin(
+      type: "approved",
     ),
 
   ];
@@ -24,7 +27,7 @@ class TabsAbsenceAdmin extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 2,
+      length: 3,
       child: Scaffold(
         appBar: AppBar(
           iconTheme: IconThemeData(
@@ -41,10 +44,13 @@ class TabsAbsenceAdmin extends StatelessWidget {
             tabs: <Widget>[
 
               Tab(
-                text: 'Check In',
+                text: 'PENDING',
               ),
               Tab(
-                text: 'Check Out',
+                text: 'REJECTED',
+              ),
+              Tab(
+                text: 'APPROVED',
               ),
 
             ],

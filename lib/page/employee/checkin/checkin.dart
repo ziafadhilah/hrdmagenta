@@ -155,7 +155,7 @@ class _CheckinState extends State<Checkin> {
               style: TextStyle(color: Colors.black),
 
               items: <String>[
-                'In',
+                'Check In',
                 'Sick',
                 'Permission',
               ].map<DropdownMenuItem<String>>((String value) {
@@ -165,7 +165,7 @@ class _CheckinState extends State<Checkin> {
                 );
               }).toList(),
               hint: Text(
-                "In",
+                "Check In",
                 style: TextStyle(
                   color: Colors.black,
                   fontSize: 16,
@@ -337,7 +337,16 @@ class _CheckinState extends State<Checkin> {
 
   Future upload() async {
     var date = DateFormat("yyyy:MM:dd").format(DateTime.now());
+    // if (_category_absent == "null")  {
+    //   _category_absent == "Check In";
+    //
+    // }
+
+
+
     validator.validation_checkin(
+
+
         context,
         base64.toString(),
         Cremark.text,
@@ -349,7 +358,8 @@ class _CheckinState extends State<Checkin> {
         _departement_name,
         _distance,
         _category_absent);
-    // Toast.show("$_category_absent", context);
+
+    // Toast.show("$_departement_name", context);
   }
 
   ///fucntion
@@ -404,7 +414,7 @@ class _CheckinState extends State<Checkin> {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     setState(() {
       _employee_id = sharedPreferences.getString("user_id");
-      _departement_name = sharedPreferences.getString("user_id");
+      _departement_name = sharedPreferences.getString("departement_name");
       //print(_departement_name);
     });
   }

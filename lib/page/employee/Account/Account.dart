@@ -959,9 +959,14 @@ class _AccountEmployeeState extends State<AccountEmployee> {
     );
   }
 
+
+
+
+
   void getDatapref() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     setState(() {
+      departement_name = sharedPreferences.getString("departement_id");
       username = sharedPreferences.getString("username");
       first_name = sharedPreferences.getString("first_name");
       last_name = sharedPreferences.getString("last_name");
@@ -972,10 +977,10 @@ class _AccountEmployeeState extends State<AccountEmployee> {
       gender = sharedPreferences.getString("gender");
       value = sharedPreferences.getInt("value");
       user_id = sharedPreferences.getString("user_id");
-      departement_name = sharedPreferences.getString("departement_name");
-
     });
   }
+
+
 
   Future<void> _showConfirmlogout(BuildContext context) async {
     showDialog(

@@ -248,7 +248,7 @@ class _absence_status_adminState extends State<absence_status_admin> {
       setState(() {
         _loading=true;
       });
-      http.Response response=await http.get("http://${base_url}/api/attendances?type=${widget.type}");
+      http.Response response=await http.get("http://${base_url}/api/attendances?status=${widget.type}");
       _absence=jsonDecode(response.body);
       setState(() {
         _loading=false;

@@ -111,6 +111,7 @@ flutter:
     - assets/google-maps.svg
     - assets/pyslip.svg
     - assets/offwork.svg
+    - assets/announcement.jpg
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 

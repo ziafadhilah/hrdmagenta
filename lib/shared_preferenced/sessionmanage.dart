@@ -31,19 +31,29 @@ class SharedPreference {
       String gender) async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     sharedPreferences.setInt("value", value);
+    sharedPreferences.setString("user_id", user_id);
+    sharedPreferences.setString("employee_id", employee_id);
+    sharedPreferences.setString("username", username);
     sharedPreferences.setString("first_name", first_name);
     sharedPreferences.setString("last_name", last_name);
+
     sharedPreferences.setString("email", email);
     sharedPreferences.setString("profile_background", profile_background);
-    sharedPreferences.setString("user_id", user_id);
-    sharedPreferences.setString("username", username);
+
+
     sharedPreferences.setString("contact", contact);
-    sharedPreferences.setString("employee_id", employee_id);
-    sharedPreferences.setString("gender", gender);
-    sharedPreferences.setString("departement_lat", departement_lat);
-    sharedPreferences.setString("departement_long", departement_long);
+
     sharedPreferences.setString("departement_id", depaertement_id);
     sharedPreferences.setString("departement_name", departement_name);
+    sharedPreferences.setString("gender", gender);
+
+    sharedPreferences.setString("departement_lat", departement_lat);
+    sharedPreferences.setString("departement_long", departement_long);
+
+
+
+
+
   }
 
   void logout(BuildContext context) async {

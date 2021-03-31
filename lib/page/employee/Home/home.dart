@@ -115,7 +115,7 @@ class _HomeEmployeeState extends State<HomeEmployee> {
         ),
       ),
       Text(
-        "Absence",
+        "Attendance",
         style: TextStyle(
             color: Colors.black38,
             fontWeight: FontWeight.bold,
@@ -124,6 +124,7 @@ class _HomeEmployeeState extends State<HomeEmployee> {
       )
     ]);
   }
+
 
   Widget _buildMenuproject() {
     return Column(children: <Widget>[
@@ -288,7 +289,6 @@ class _HomeEmployeeState extends State<HomeEmployee> {
         children: <Widget>[
           Container(
             width: double.infinity,
-            height: 270,
             child: Card(
               elevation: 1,
               child: Container(
@@ -299,7 +299,62 @@ class _HomeEmployeeState extends State<HomeEmployee> {
                   children: <Widget>[
                     Container(
                       child: Column(
-                        children: <Widget>[],
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Stack(
+                            children: [
+                              Container(
+                                color: Color.fromRGBO(255, 255, 255, 2),
+                                width: double.infinity,
+                                height: 170,
+                                child: Image.asset(
+                                  "assets/announcement.jpg",
+                                  fit: BoxFit.fill,
+                                ),
+                              ),
+                              Container(
+
+                                height: 200,
+
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Container(
+                                      margin: EdgeInsets.only(left: 20,right: 20),
+
+
+                                      width: double.maxFinite,
+                                      child: Expanded(
+                                          child: Text(
+                                              "Fungsi & Manfaat BPJS Ketenagakerjaan bagi karyawan",
+                                            style: TextStyle(color: Colors.white),
+
+                                          )
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+
+                            ],
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Container(
+                            width: double.maxFinite,
+                            child: Expanded(
+                                child: Text(
+                                    "Fungsi & Manfaat BPJS Ketenagakerjaan bagi karyawan")),
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Container(
+                            width: double.maxFinite,
+                            child: Expanded(child: Text("2 November 2021")),
+                          ),
+                        ],
                       ),
                     ),
                   ],
@@ -488,7 +543,7 @@ class _HomeEmployeeState extends State<HomeEmployee> {
                         ),
                         Container(
                           margin: EdgeInsets.only(left: 10, top: 5),
-                          child: Text("Information",
+                          child: Text("Announcement",
                               textAlign: TextAlign.left, style: titleStyle),
                         ),
                         _buildInformation(),

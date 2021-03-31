@@ -40,7 +40,6 @@ class _absenceState extends State<absence> {
                       ? _buildnodata()
                       : _buildlistabsence(index);
                 }),
-
       ),
     );
   }
@@ -187,6 +186,28 @@ class _absenceState extends State<absence> {
                                                                           'data']
                                                                       [index]
                                                                   ['note'],
+                                                              category: _absence[
+                                                                          'data']
+                                                                      [index]
+                                                                  ['category'],
+                                                              work_placement: _absence[
+                                                                          'data'][index]
+                                                                      [
+                                                                      'employee']
+                                                                  [
+                                                                  'work_placement'],
+                                                              firts_name_employee:
+                                                                  _absence['data'][index]
+                                                                          [
+                                                                          'employee']
+                                                                      [
+                                                                      'first_name'],
+                                                              last_name_employee:
+                                                                  _absence['data'][index]
+                                                                          [
+                                                                          'employee']
+                                                                      [
+                                                                      'last_name'],
                                                             )));
                                               } else {
                                                 Navigator.push(
@@ -260,6 +281,29 @@ class _absenceState extends State<absence> {
                                                                           'data']
                                                                       [index]
                                                                   ['note'],
+                                                              category: _absence[
+                                                                          'data']
+                                                                      [index]
+                                                                  ['category'],
+                                                              work_placement: _absence[
+                                                                          'data'][index]
+                                                                      [
+                                                                      'employee']
+                                                                  [
+                                                                  'work_placement'],
+                                                              firts_name_employee:
+                                                                  _absence['data'][index]
+                                                                          [
+                                                                          'employee']
+                                                                      [
+                                                                      'first_name'],
+                                                              last_name_employee:
+                                                                  _absence['data'][index]
+                                                                          [
+                                                                          'employee']
+                                                                      [
+                                                                      'last_name'],
+
                                                             )));
                                               }
                                             },

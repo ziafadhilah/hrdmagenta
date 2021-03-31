@@ -38,11 +38,11 @@ class Services {
           loginmodel.data.firstName,
           loginmodel.data.lastName,
           loginmodel.data.email,
-          "",
+         "",
           loginmodel.data.contactNumber,
-          loginmodel.data.designation.department.id,
-          loginmodel.data.designation.department.name,
-          "",
+          loginmodel.data.workPlacement,
+          loginmodel.data.workPlacement,
+          loginmodel.data.designation.department,
           "",
           loginmodel.data.gender);
 
@@ -105,7 +105,7 @@ class Services {
 
   ///function checkin employee
   Future<void> checkin(BuildContext context, var photos, var remark,
-      var employee_id, lat, long, date, time) async {
+      var employee_id, lat, long, date, time,status,category) async {
     loading(context);
     final response = await http
         .post("http://$base_url/api/attendances/action/check-in", body: {
@@ -116,7 +116,8 @@ class Services {
       "note": remark,
       "clock_in_latitude": lat,
       "clock_in_longitude": long,
-      "status": "pending"
+      "status": "$status",
+      "category":"$category"
     });
 
     final responseJson = jsonDecode(response.body);
