@@ -77,13 +77,6 @@ class _MapsState extends State<Maps> {
     });
   }
 
-  // void _setStyle(GoogleMapController controller) async {
-  //   String value = await DefaultAssetBundle.of(context)
-  //       .loadString('assets/map.json');
-  //
-  //   controller.setMapStyle(value);
-  // }
-
   Set<Marker> _createMarker() {
     return <Marker>[
       Marker(
@@ -131,7 +124,7 @@ class _MapsState extends State<Maps> {
       mapType: MapType.normal,
       markers: _createMarker(),
       initialCameraPosition:
-          CameraPosition(target: LatLng(-6.9032739, 107.5731172), zoom: 8.0),
+          CameraPosition(target: LatLng(-6.9032739, 107.5731172), zoom: 12.0),
       onMapCreated: (GoogleMapController controller) {
         _controller = controller;
         // _setStyle(controller);
@@ -185,7 +178,30 @@ class _MapsState extends State<Maps> {
                   ]),
             ),
           ),
-        )
+        ),
+        new Positioned(
+
+            top: MediaQuery.of(context).size.height *0.67,
+            child: new Container(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height /2,
+              decoration: new BoxDecoration(color: Colors.white,
+                  borderRadius: new BorderRadius.only(
+                    topLeft: const Radius.circular(380.0),
+                    topRight: const Radius.circular(180.0),
+                  )
+              ),
+
+              child: Container(
+                child: Card(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.vertical(top: Radius.circular(50))
+                    )
+
+
+                ),
+              ),
+            ))
       ],
     ));
   }

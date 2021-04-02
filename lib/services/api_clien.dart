@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:hrdmagenta/model/companies.dart';
 import 'package:hrdmagenta/model/login_employee.dart';
@@ -38,7 +39,7 @@ class Services {
           loginmodel.data.firstName,
           loginmodel.data.lastName,
           loginmodel.data.email,
-         "",
+          "",
           loginmodel.data.contactNumber,
           loginmodel.data.workPlacement,
           loginmodel.data.workPlacement,
@@ -105,7 +106,7 @@ class Services {
 
   ///function checkin employee
   Future<void> checkin(BuildContext context, var photos, var remark,
-      var employee_id, lat, long, date, time,status,category) async {
+      var employee_id, lat, long, date, time, status, category) async {
     loading(context);
     final response = await http
         .post("http://$base_url/api/attendances/action/check-in", body: {
@@ -117,7 +118,7 @@ class Services {
       "clock_in_latitude": lat,
       "clock_in_longitude": long,
       "status": "$status",
-      "category":"$category"
+      "category": "$category"
     });
 
     final responseJson = jsonDecode(response.body);

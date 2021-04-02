@@ -39,7 +39,7 @@ class TabsMenuAbsencestatus extends StatelessWidget {
 
 
           backgroundColor: Colors.white,
-          title: Text('Absence Status',
+          title: Text('Attendance Status',
             style: TextStyle(color: Colors.black87),
           ),
           bottom: TabBar(

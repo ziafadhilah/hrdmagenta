@@ -39,22 +39,22 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-	<key>UIViewControllerBasedStatusBarAppearance</key>
-	<false/>
 
-	<key>NSCameraUsageDescription</key>
-    <string>Enable myApp to access your camera to capture your photo</string>
-    <key>NSMicrophoneUsageDescription</key>
-    <string>Enable myApp to access mic to record your voice</string>
 
-    <key>NSLocationWhenInUseUsageDescription</key>
-       <string>This app needs access to location when open.</string>
 
-       <key>NSLocationAlwaysUsageDescription</key>
-       <string>This app needs access to location when in the background.</string>
+<key>NSCameraUsageDescription</key>
+<string>Enable myApp to access your camera to capture your photo</string>
+<key>NSMicrophoneUsageDescription</key>
+<string>Enable myApp to access mic to record your voice</string>
 
-       <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-       <string>This app needs access to location when open and in the background.</string>
+<key>NSLocationWhenInUseUsageDescription</key>
+   <string>This app needs access to location when open.</string>
+
+   <key>NSLocationAlwaysUsageDescription</key>
+   <string>This app needs access to location when in the background.</string>
+
+   <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+   <string>This app needs access to location when open and in the background.</string>
 
 
 </dict>

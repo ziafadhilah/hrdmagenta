@@ -47,7 +47,7 @@ final navigatorKey = GlobalKey<NavigatorState>();
             ],
 
             backgroundColor: Colors.white,
-            title: Text('Absence',
+            title: Text('Attendance',
               style: TextStyle(color: Colors.black87),
             ),
             bottom: TabBar(

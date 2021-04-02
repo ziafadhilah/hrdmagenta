@@ -48,25 +48,16 @@ class _ListEmployeeState extends State<ListEmployee> {
                   child: Container(
                     margin: EdgeInsets.only(top: 10),
                     child: Divider(
-
                       color: Colors.black,
-
                     ),
                   ),
                 )
-
-
-
               ],
             ),
-
           )
-
         ],
       ),
-
     );
-
   }
 
   Widget _listemployee(){
@@ -76,7 +67,7 @@ class _ListEmployeeState extends State<ListEmployee> {
           child:_isLoading==true?Center(child: CircularProgressIndicator(),):ListView.builder(
               itemCount: _employee['data'].length,
               itemBuilder:(context,index){
-                return _buildemployees(index);
+                return _employee['data'][index]['mobile_access_type']!="admin"?_buildemployees(index):Text("");
               }),
 
         ),

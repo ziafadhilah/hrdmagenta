@@ -24,15 +24,14 @@ final titleStyle=TextStyle(
 );
 final paragraphStyle1=TextStyle(
     color: Colors.black38,
-
     fontFamily: 'OpenSans',
     fontSize: 17
-
 );
+
+
 
 final titleStyle1=TextStyle(
     color: Colors.black,
-
     fontFamily: 'OpenSans',
     fontSize: 20
 
@@ -97,6 +96,7 @@ final Widget wellcome = SvgPicture.asset(
   semanticsLabel: 'Acme Logo',
 );
 
+
 final Widget login = SvgPicture.asset(
   "assets/login.svg",
   width: 250,
@@ -105,10 +105,21 @@ final Widget login = SvgPicture.asset(
   semanticsLabel: 'Acme Logo',
 );
 
+
 final Widget splassscreen = SvgPicture.asset(
   "assets/splassscreen.svg",
   semanticsLabel: 'Acme Logo',
 );
+
+
+final Widget pyslip_letter = SvgPicture.asset(
+  "assets/receipt.svg",
+  semanticsLabel: 'Acme Logo',
+  color: baseColor1,
+  width: 60,
+  height: 80,
+);
+
 
 final Widget male_avatar = SvgPicture.asset(
   "assets/male_avatar.svg",

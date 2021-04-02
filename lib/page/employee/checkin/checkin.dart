@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:hrdmagenta/page/employee/checkin/maps.dart';
 import 'package:hrdmagenta/utalities/alert_dialog.dart';
+import 'package:hrdmagenta/utalities/font.dart';
 import 'package:hrdmagenta/validasi/validator.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
@@ -130,10 +131,11 @@ class _CheckinState extends State<Checkin> {
     );
   }
 
+
   Widget _buildCategoryabsence() {
     return Container(
-      margin: EdgeInsets.only(left: 25, right: 20),
-      width: double.infinity,
+      margin: EdgeInsets.only(left: 25, right: 25),
+      width: double.maxFinite,
       padding: const EdgeInsets.all(0.0),
       child: Row(
         children: [
@@ -183,6 +185,7 @@ class _CheckinState extends State<Checkin> {
     );
   }
 
+
   Widget _buildLocation() {
     return Container(
       margin: EdgeInsets.only(left: 25),
@@ -218,13 +221,7 @@ class _CheckinState extends State<Checkin> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Text(
-                          "Location",
-                          style: TextStyle(
-                            fontSize: 20,
-                            color: Colors.black,
-                          ),
-                        ),
+                        Text("Location", style: subtitleMainMenu),
                         SizedBox(
                           height: 10,
                         ),
@@ -244,6 +241,7 @@ class _CheckinState extends State<Checkin> {
       ),
     );
   }
+
 
   //Widger photo
   Widget _buildfingerprint() {
@@ -342,11 +340,7 @@ class _CheckinState extends State<Checkin> {
     //
     // }
 
-
-
     validator.validation_checkin(
-
-
         context,
         base64.toString(),
         Cremark.text,

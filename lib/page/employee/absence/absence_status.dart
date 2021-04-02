@@ -5,6 +5,7 @@ import 'package:hrdmagenta/page/employee/absence/shimmer_effect.dart';
 import 'package:hrdmagenta/services/api_clien.dart';
 import 'package:hrdmagenta/utalities/color.dart';
 import 'package:hrdmagenta/utalities/constants.dart';
+import 'package:hrdmagenta/utalities/font.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -103,9 +104,7 @@ class _absence_statusState extends State<absence_status> {
                                               ),
                                               Text(
                                                   "Have been ${_absence['data'][index]['type']}",
-                                                  style: TextStyle(
-                                                      fontSize: 15,
-                                                      color: Colors.black87)),
+                                                  style: subtitleMainMenu),
                                             ],
                                           ),
                                           Text("22 years ago",
@@ -377,8 +376,8 @@ class _absence_statusState extends State<absence_status> {
             ),
             Container(
                 child: Text(
-              "No absence yet",
-              style: TextStyle(color: Colors.black38, fontSize: 18),
+              "No Attendance yet",
+              style: subtitleMainMenu,
             )),
           ],
         ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:hrdmagenta/services/api_clien.dart';
 import 'package:hrdmagenta/utalities/color.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
@@ -9,6 +10,7 @@ void loading(BuildContext context) {
   progressDialog.style(message: "Loading ...");
   progressDialog.show();
 }
+
 
 void alert_error(BuildContext context, var title, text_button) {
   Alert(
@@ -55,6 +57,7 @@ void alert_success(BuildContext context, var title, text_button) {
 
 void alert_success1(BuildContext context, var title, text_button) {
   Alert(
+
     context: context,
     title: "$title",
     type: AlertType.success,
@@ -95,6 +98,103 @@ void alert_info(BuildContext context, var title, text_button) {
       ),
     ],
   ).show();
+}
+
+void alert_approve(BuildContext context, var id_attendance, user_id, status, request_status, request_note)
+{
+  Services services=new Services();
+  var Cremarks = new TextEditingController();
+  Alert(
+    context: context,
+    type: AlertType.warning,
+    title: "Are you sure?",
+    desc: "Data will be approved",
+    content: Column(
+      children: <Widget>[
+
+        TextField(
+          controller: Cremarks,
+          decoration: InputDecoration(
+
+            labelText: 'Remarks(optional)',
+          ),
+        ),
+
+      ],
+    ),
+    buttons: [
+      DialogButton(
+        child: Text(
+          "Cancel",
+          style: TextStyle(color: Colors.white, fontSize: 20),
+        ),
+        onPressed: () => Navigator.pop(context),
+        color: Colors.grey,
+      ),
+      DialogButton(
+        child: Text(
+          "Approve",
+          style: TextStyle(color: Colors.white, fontSize: 20),
+        ),
+        onPressed: () {
+          services.approveAbsence(context, id_attendance, user_id, status, request_status, Cremarks.text , request_note);
+},
+        gradient: LinearGradient(colors: [
+          Colors.green,
+          Colors.green
+        ]),
+      )
+    ],
+  ).show();
+
+}
+void alert_reject(BuildContext context, var id_attendance, user_id, status, request_status, request_note)
+{
+  Services services=new Services();
+  var Cremarks = new TextEditingController();
+  Alert(
+    context: context,
+    type: AlertType.warning,
+    title: "Are you sure?",
+    desc: "Data will be rejected",
+    content: Column(
+      children: <Widget>[
+
+        TextField(
+          controller: Cremarks,
+          decoration: InputDecoration(
+
+            labelText: 'Remarks(optional)',
+          ),
+        ),
+
+      ],
+    ),
+    buttons: [
+      DialogButton(
+        child: Text(
+          "Cancel",
+          style: TextStyle(color: Colors.white, fontSize: 20),
+        ),
+        onPressed: () => Navigator.pop(context),
+        color: Colors.grey,
+      ),
+      DialogButton(
+        child: Text(
+          "Reject",
+          style: TextStyle(color: Colors.white, fontSize: 20),
+        ),
+        onPressed: () {
+          services.approveAbsence(context, id_attendance, user_id, status, request_status, Cremarks.text , request_note);
+        },
+        gradient: LinearGradient(colors: [
+          Colors.red,
+          Colors.red
+        ]),
+      )
+    ],
+  ).show();
+
 }
 
 void toast_success(message) {

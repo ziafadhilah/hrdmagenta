@@ -17,6 +17,7 @@ import 'package:hrdmagenta/page/employee/budget/budget_project.dart';
 import 'package:hrdmagenta/page/employee/budget/expense.dart';
 import 'package:hrdmagenta/page/employee/checkin/maps.dart';
 import 'package:hrdmagenta/page/employee/project/tabmenu_project.dart';
+import 'package:hrdmagenta/page/employee/pyslip/listpyslip.dart';
 import 'package:hrdmagenta/utalities/color.dart';
 
 
@@ -49,6 +50,8 @@ class MyApp extends StatelessWidget {
         'budget_project_employee-page':(context)=>budgetproject(),
         'expense_budget_employee-page':(context)=>expandbudget(),
         'tabmenu_absence_status_employee-page':(context)=>TabsMenuAbsencestatus(),
+
+        'pyslip_list_employee-page':(context)=>PyslipListPage(),
 
 
 

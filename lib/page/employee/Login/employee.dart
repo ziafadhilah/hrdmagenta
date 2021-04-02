@@ -199,11 +199,11 @@ class _LoginEmployeeState extends State<LoginEmployee> {
       width: double.infinity,
       child: RaisedButton(
         onPressed: () {
-          validator.validation_login(context, Cusername.text, Cpassword.text);
+         // validator.validation_login(context, Cusername.text, Cpassword.text);
           //
-          //  Navigator.pop(context);
-          //  Navigator.of(context).pushReplacement(new MaterialPageRoute(
-          //      builder: (BuildContext context) => new NavBarEmployee()));
+           Navigator.pop(context);
+           Navigator.of(context).pushReplacement(new MaterialPageRoute(
+               builder: (BuildContext context) => new NavBarEmployee()));
         },
         padding: EdgeInsets.all(12.0),
         shape: RoundedRectangleBorder(

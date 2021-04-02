@@ -2,11 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:format_indonesia/format_indonesia.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hrdmagenta/page/employee/absence/map_absence.dart';
 import 'package:hrdmagenta/utalities/constants.dart';
-import 'package:hrdmagenta/utalities/textstyle.dart';
+import 'package:hrdmagenta/utalities/font.dart';
 import 'package:intl/intl.dart';
 import 'package:photo_view/photo_view.dart';
 
@@ -60,7 +61,7 @@ class _detail_absenceState extends State<detail_absence> {
   Position _currentPosition;
   String _currentAddress;
   final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
-  var _time;
+  var _time,_date;
 
   @override
   Widget build(BuildContext context) {
@@ -352,7 +353,7 @@ class _detail_absenceState extends State<detail_absence> {
                   ),
                   Container(
                     child: Text(
-                      "${widget.date}",
+                      "${_date}",
                       style: subtitleAbsence,
                     ),
                   )
@@ -602,7 +603,7 @@ class _detail_absenceState extends State<detail_absence> {
                   ),
                   _buildrejectedby(),
                   _buildrejecteddate(),
-                  _buildrejectedon(),
+                 // _buildrejectedon(),
                   _buildrejectednote()
                 ],
               )
@@ -632,7 +633,7 @@ class _detail_absenceState extends State<detail_absence> {
                 children: <Widget>[
                   Container(
                     child: Text(
-                      "Rejected BY",
+                      "Rejected By",
                       style: titleAbsence,
                     ),
                   ),
@@ -677,7 +678,7 @@ class _detail_absenceState extends State<detail_absence> {
                 children: <Widget>[
                   Container(
                     child: Text(
-                      "Rejected Date",
+                      "Rejected at",
                       style: titleAbsence,
                     ),
                   ),
@@ -782,7 +783,7 @@ class _detail_absenceState extends State<detail_absence> {
                           )
                         : Text(
                             "${widget.rejection_note}",
-                            style: titleAbsence,
+                            style: subtitleAbsence,
                           ),
                   ),
                 ],
@@ -833,7 +834,7 @@ class _detail_absenceState extends State<detail_absence> {
                   ),
                   _buildapprovedby(),
                   _buildapproveddate(),
-                  _buildapprovedon(),
+                //  _buildapprovedon(),
                   _buildapprovalnote()
                 ],
               )
@@ -908,7 +909,7 @@ class _detail_absenceState extends State<detail_absence> {
                 children: <Widget>[
                   Container(
                     child: Text(
-                      "Approved Date",
+                      "Approved at",
                       style: titleAbsence,
                     ),
                   ),
@@ -1013,7 +1014,7 @@ class _detail_absenceState extends State<detail_absence> {
                           )
                         : Text(
                             "${widget.approval_note}",
-                            style: titleAbsence,
+                            style: subtitleAbsence,
                           ),
                   ),
                 ],
@@ -1030,6 +1031,16 @@ class _detail_absenceState extends State<detail_absence> {
     // TODO: implement initState
     super.initState();
     _getAddressFromLatLng();
+    var waktu = Waktu();
+    print(waktu.yMMMMEEEEd());
+
     _time = DateFormat('hh:mm:ss').format(DateTime.parse(widget.time));
+    // _date=DateFormat(
+    //     "EEEE, d MMMM yyyy","id_ID"
+    // ).format(DateTime.now());
+
+   _date = Waktu(DateTime.parse(widget.date)).yMMMd();
+
+
   }
 }

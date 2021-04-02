@@ -13,10 +13,12 @@ import 'package:hrdmagenta/page/employee/project/tabmenu_project.dart';
 import 'package:hrdmagenta/services/api_clien.dart';
 import 'package:hrdmagenta/utalities/color.dart';
 import 'package:hrdmagenta/utalities/constants.dart';
+import 'package:hrdmagenta/utalities/font.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:toast/toast.dart';
 
 class HomeEmployee extends StatefulWidget {
   @override
@@ -54,14 +56,7 @@ class _HomeEmployeeState extends State<HomeEmployee> {
           ),
         ),
       ),
-      Text(
-        "Check In",
-        style: TextStyle(
-            color: Colors.black38,
-            fontWeight: FontWeight.bold,
-            fontFamily: 'OpenSans',
-            fontSize: 15),
-      )
+      Text("Check In", style: subtitleMainMenu)
     ]);
   }
 
@@ -84,14 +79,7 @@ class _HomeEmployeeState extends State<HomeEmployee> {
           ),
         ),
       ),
-      Text(
-        "Check Out",
-        style: TextStyle(
-            color: Colors.black38,
-            fontWeight: FontWeight.bold,
-            fontFamily: 'OpenSans',
-            fontSize: 15),
-      )
+      Text("Check Out", style: subtitleMainMenu)
     ]);
   }
 
@@ -116,15 +104,10 @@ class _HomeEmployeeState extends State<HomeEmployee> {
       ),
       Text(
         "Attendance",
-        style: TextStyle(
-            color: Colors.black38,
-            fontWeight: FontWeight.bold,
-            fontFamily: 'OpenSans',
-            fontSize: 15),
+        style: subtitleMainMenu,
       )
     ]);
   }
-
 
   Widget _buildMenuproject() {
     return Column(children: <Widget>[
@@ -145,14 +128,7 @@ class _HomeEmployeeState extends State<HomeEmployee> {
           ),
         ),
       ),
-      Text(
-        "Project",
-        style: TextStyle(
-            color: Colors.black38,
-            fontWeight: FontWeight.bold,
-            fontFamily: 'OpenSans',
-            fontSize: 15),
-      )
+      Text("Project", style: subtitleMainMenu)
     ]);
   }
 
@@ -172,14 +148,7 @@ class _HomeEmployeeState extends State<HomeEmployee> {
           ),
         ),
       ),
-      Text(
-        "Off Work",
-        style: TextStyle(
-            color: Colors.black38,
-            fontWeight: FontWeight.bold,
-            fontFamily: 'OpenSans',
-            fontSize: 15),
-      )
+      Text("Off Work", style: subtitleMainMenu)
     ]);
   }
 
@@ -189,7 +158,10 @@ class _HomeEmployeeState extends State<HomeEmployee> {
         width: 70,
         height: 70,
         child: InkWell(
-          onTap: () {},
+          onTap: () {
+            Navigator.pushNamed(context, "pyslip_list_employee-page");
+
+          },
           child: Card(
             elevation: 1,
             shape: RoundedRectangleBorder(
@@ -199,14 +171,7 @@ class _HomeEmployeeState extends State<HomeEmployee> {
           ),
         ),
       ),
-      Text(
-        "pyslip",
-        style: TextStyle(
-            color: Colors.black38,
-            fontWeight: FontWeight.bold,
-            fontFamily: 'OpenSans',
-            fontSize: 15),
-      )
+      Text("pyslip", style: subtitleMainMenu)
     ]);
   }
 
@@ -224,10 +189,14 @@ class _HomeEmployeeState extends State<HomeEmployee> {
                       child: CircularProgressIndicator(),
                     )
                   : ListView.builder(
-                      itemCount: _projects['data'].length,
-                      scrollDirection: Axis.horizontal,
-                      itemBuilder: (context, indext) {
-                        return _buildProgress(indext);
+                      // itemCount: _budgeting['data']['cash_flow'].length,
+                      itemCount: _projects['data'].length == 0
+                          ? 1
+                          : _projects['data'].length,
+                      itemBuilder: (context, index) {
+                        return _projects['data'].length == 0
+                            ? _buildNoproject()
+                            : _buildProgress(index);
                       }),
               //   child: _buildNoproject(),
             ),
@@ -313,29 +282,23 @@ class _HomeEmployeeState extends State<HomeEmployee> {
                                 ),
                               ),
                               Container(
-
                                 height: 200,
-
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Container(
-                                      margin: EdgeInsets.only(left: 20,right: 20),
-
-
+                                      margin:
+                                          EdgeInsets.only(left: 20, right: 20),
                                       width: double.maxFinite,
                                       child: Expanded(
                                           child: Text(
-                                              "Fungsi & Manfaat BPJS Ketenagakerjaan bagi karyawan",
-                                            style: TextStyle(color: Colors.white),
-
-                                          )
-                                      ),
+                                        "Fungsi & Manfaat BPJS Ketenagakerjaan bagi karyawan",
+                                        style: titlteannoucement1,
+                                      )),
                                     ),
                                   ],
                                 ),
                               ),
-
                             ],
                           ),
                           SizedBox(
@@ -345,14 +308,18 @@ class _HomeEmployeeState extends State<HomeEmployee> {
                             width: double.maxFinite,
                             child: Expanded(
                                 child: Text(
-                                    "Fungsi & Manfaat BPJS Ketenagakerjaan bagi karyawan")),
+                                    "Fungsi & Manfaat BPJS Ketenagakerjaan bagi karyawan",
+                                  style: titlteannoucement,
+                                )),
                           ),
                           SizedBox(
                             height: 20,
                           ),
                           Container(
                             width: double.maxFinite,
-                            child: Expanded(child: Text("2 November 2021")),
+                            child: Expanded(child: Text("2 November 2021",
+                              style: TextStyle(color: Colors.black38),
+                            )),
                           ),
                         ],
                       ),
@@ -431,6 +398,8 @@ class _HomeEmployeeState extends State<HomeEmployee> {
       http.Response response = await http.get(
           "http://${base_url}/api/employees/$user_id/events?status=approved");
       _projects = jsonDecode(response.body);
+      print(_projects['data'].length);
+
 
       setState(() {
         _loading = false;
@@ -440,18 +409,23 @@ class _HomeEmployeeState extends State<HomeEmployee> {
 
   Widget _buildNoproject() {
     return Container(
-      color: Colors.redAccent,
+
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height / 3.5,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          Icon(Icons.icecream),
+         Container(
+           child: no_data_project,
+
+         ),
           SizedBox(
-            height: 20,
+            height: 30,
           ),
-          Text("No Available project in progress")
+          Text("No Available project in progress",
+            style: subtitleMainMenu,
+          )
         ],
       ),
     );
@@ -523,7 +497,7 @@ class _HomeEmployeeState extends State<HomeEmployee> {
                         Container(
                           margin: EdgeInsets.only(left: 10, top: 5),
                           child: Text("Main Menu",
-                              textAlign: TextAlign.left, style: titleStyle),
+                              textAlign: TextAlign.left, style: titleMainMenu),
                         ),
                         _buildMainMenu(),
 
@@ -532,8 +506,8 @@ class _HomeEmployeeState extends State<HomeEmployee> {
                         ),
                         Container(
                           margin: EdgeInsets.only(left: 10, top: 5),
-                          child: Text("Project",
-                              textAlign: TextAlign.left, style: titleStyle),
+                          child: Text("Projects",
+                              textAlign: TextAlign.left, style: titleMainMenu),
                         ),
                         _buildproject(),
                         // _buildgrafik(),
@@ -544,7 +518,7 @@ class _HomeEmployeeState extends State<HomeEmployee> {
                         Container(
                           margin: EdgeInsets.only(left: 10, top: 5),
                           child: Text("Announcement",
-                              textAlign: TextAlign.left, style: titleStyle),
+                              textAlign: TextAlign.left, style: titleMainMenu),
                         ),
                         _buildInformation(),
                       ],

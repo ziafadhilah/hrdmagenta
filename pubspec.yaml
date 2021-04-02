@@ -33,7 +33,7 @@ dependencies:
   provider: ^4.3.2 # source :: https://pub.dev/packages/provider
   charts_flutter: ^0.9.0 # source :: https://pub.dev/packages/charts_flutter
   bottom_navy_bar: ^5.6.0
-  flutter_svg: ^0.18.0
+  flutter_svg: ^0.19.3
   percent_indicator: ^2.1.7+2
   shared_preferences: ^0.5.12+4
   firebase_messaging: ^7.0.3
@@ -57,6 +57,14 @@ dependencies:
   progress_dialog: ^1.2.4
   cached_network_image: ^2.0.0-rc
   pull_to_refresh: ^1.6.4
+  open_file: ^3.1.0
+
+
+  format_indonesia: ^0.1.0
+
+
+  # open pdf document
+ 
   location:
   google_maps_flutter:
 
@@ -112,6 +120,7 @@ flutter:
     - assets/pyslip.svg
     - assets/offwork.svg
     - assets/announcement.jpg
+    - assets/receipt.svg
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 
@@ -127,6 +136,18 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   # fonts:
+  fonts:
+    - family: SFReguler
+      fonts:
+        - asset: fonts/SF-UI-Display-Regular.ttf
+
+    - family: SFBlack
+      fonts:
+        - asset: fonts/SF-UI-Display-Black.otf
+
+    - family: Ultralight
+      fonts:
+        - asset: fonts/SF-UI-Display-Ultralight.otf
   #   - family: Schyler
   #     fonts:
   #       - asset: fonts/Schyler-Regular.ttf
