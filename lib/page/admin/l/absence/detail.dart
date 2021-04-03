@@ -35,7 +35,7 @@ class detail_absence_admin extends StatefulWidget {
       this.firts_name_employee,
       this.last_name_employee,
       this.work_placement,
-        this.id_attandance,
+      this.id_attandance,
       this.category});
 
   var status,
@@ -76,7 +76,7 @@ class _detail_absence_adminState extends State<detail_absence_admin> {
         ),
         backgroundColor: Colors.white,
         title: new Text(
-          "Absence Detail",
+          "Attendance Detail",
           style: TextStyle(color: Colors.black87),
         ),
       ),
@@ -85,7 +85,7 @@ class _detail_absence_adminState extends State<detail_absence_admin> {
         height: MediaQuery.of(context).size.height,
         child: SingleChildScrollView(
           child: Container(
-            margin: EdgeInsets.only(left: 15, right: 15, top: 15),
+            margin: EdgeInsets.only(left: 15, right: 15, top: 15, bottom: 15),
             width: MediaQuery.of(context).size.width,
             child: Column(
               children: <Widget>[
@@ -97,6 +97,7 @@ class _detail_absence_adminState extends State<detail_absence_admin> {
                 _buildRemark(),
                 _buildAdress(),
                 _buildgridtext(),
+
                 SizedBox(
                   height: 10,
                 ),
@@ -469,6 +470,9 @@ class _detail_absence_adminState extends State<detail_absence_admin> {
     return Container(
       height: 20,
       child: GridView.count(
+        shrinkWrap: true,
+        primary: true,
+        physics: const NeverScrollableScrollPhysics(),
         crossAxisCount: 2,
         children: <Widget>[
           //photos
@@ -608,7 +612,7 @@ class _detail_absence_adminState extends State<detail_absence_admin> {
                   ),
                   _buildrejectedby(),
                   _buildrejecteddate(),
-                  _buildrejectedon(),
+                //  _buildrejectedon(),
                   _buildrejectednote()
                 ],
               )
@@ -638,7 +642,7 @@ class _detail_absence_adminState extends State<detail_absence_admin> {
                 children: <Widget>[
                   Container(
                     child: Text(
-                      "Rejected BY",
+                      "Rejected By",
                       style: titleAbsence,
                     ),
                   ),
@@ -683,7 +687,7 @@ class _detail_absence_adminState extends State<detail_absence_admin> {
                 children: <Widget>[
                   Container(
                     child: Text(
-                      "Rejected Date",
+                      "Rejected at",
                       style: titleAbsence,
                     ),
                   ),
@@ -788,7 +792,7 @@ class _detail_absence_adminState extends State<detail_absence_admin> {
                           )
                         : Text(
                             "${widget.rejection_note}",
-                            style: titleAbsence,
+                            style: subtitleAbsence,
                           ),
                   ),
                 ],
@@ -839,7 +843,7 @@ class _detail_absence_adminState extends State<detail_absence_admin> {
                   ),
                   _buildapprovedby(),
                   _buildapproveddate(),
-                  _buildapprovedon(),
+                 // _buildapprovedon(),
                   _buildapprovalnote()
                 ],
               )
@@ -914,7 +918,7 @@ class _detail_absence_adminState extends State<detail_absence_admin> {
                 children: <Widget>[
                   Container(
                     child: Text(
-                      "Approved Date",
+                      "Approved at",
                       style: titleAbsence,
                     ),
                   ),
@@ -1033,37 +1037,58 @@ class _detail_absence_adminState extends State<detail_absence_admin> {
 
   Widget _buildpending() {
     return Container(
-      height: 40,
+      width: double.infinity,
+      height: 150,
       child: GridView.count(
+        shrinkWrap: true,
+        primary: true,
+        physics: const NeverScrollableScrollPhysics(),
         crossAxisCount: 2,
         children: <Widget>[
           //photos
           Container(
-            margin: EdgeInsets.only(left: 10),
-            child: new RaisedButton(
-              padding: const EdgeInsets.all(8.0),
-              color: Colors.red,
-              onPressed: () {
-                alert_reject(context, widget.id_attandance, _user_id,
-                    "reject", "rejected_by", "rejection_note");
-              },
-              child: new Text("Not Approve"),
+            margin: EdgeInsets.only(bottom: 110),
+            child: Container(
+              child: new RaisedButton(
+                color: Colors.red,
+                onPressed: () {
+                  alert_reject(context, widget.id_attandance, _user_id,
+                      "reject", "rejected_by", "rejection_note");
+                },
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Center(
+                        child: new Text(
+                      "Not Approve",
+                      style: subtitleMainMenu,
+                    )),
+                  ],
+                ),
+              ),
             ),
           ),
           //map
 
           Container(
-            margin: EdgeInsets.only(right: 10, left: 10),
-            child: new RaisedButton(
-              padding: const EdgeInsets.all(8.0),
-              color: Colors.green,
-              onPressed: () {
-                alert_approve(context, widget.id_attandance, _user_id,
-                    "approve", "approved_by", "approval_note");
-              },
-              child: new Text(
-                "Approve",
-                style: TextStyle(fontSize: 26, color: Colors.black38),
+            margin: EdgeInsets.only(bottom: 110, left: 10),
+            child: Container(
+              child: new RaisedButton(
+                color: Colors.green,
+                onPressed: () {
+                  alert_approve(context, widget.id_attandance, _user_id,
+                      "approve", "approved_by", "approval_note");
+                },
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Container(
+                      child: new Text("Approve", style: subtitleMainMenu),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

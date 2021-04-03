@@ -26,47 +26,9 @@ class _LoginEmployeeState extends State<LoginEmployee> {
   var email = '';
   var password = '';
 
-  Widget _buildImage() {
-    return Container(
-      child: Stack(
-        children: [
-          ClipPath(
-            clipper: MyClipper(),
-            child: Container(
-              color: baseColor,
-              child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    Container(
-                        margin: EdgeInsets.only(left: 10, top: 10),
-                        child: _buildText()),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Container(
-                      height: 350,
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-          Container(
-            width: double.infinity,
-            margin: EdgeInsets.only(top: 100),
-            child: Column(
-              children: <Widget>[login],
-            ),
-          )
-        ],
-      ),
-    );
-  }
-
   Widget _buildText() {
     return Container(
+      margin: EdgeInsets.symmetric(horizontal: 20,vertical: 10),
       width: double.infinity,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -90,7 +52,7 @@ class _LoginEmployeeState extends State<LoginEmployee> {
             "Employee",
             textAlign: TextAlign.left,
             style: TextStyle(
-                color: Colors.white,
+                color: baseColor1,
                 fontWeight: FontWeight.bold,
                 fontFamily: 'OpenSans',
                 fontSize: 15),
@@ -199,11 +161,11 @@ class _LoginEmployeeState extends State<LoginEmployee> {
       width: double.infinity,
       child: RaisedButton(
         onPressed: () {
-         // validator.validation_login(context, Cusername.text, Cpassword.text);
+          validator.validation_login(context, Cusername.text, Cpassword.text);
           //
-           Navigator.pop(context);
-           Navigator.of(context).pushReplacement(new MaterialPageRoute(
-               builder: (BuildContext context) => new NavBarEmployee()));
+          //  Navigator.pop(context);
+          //  Navigator.of(context).pushReplacement(new MaterialPageRoute(
+          //      builder: (BuildContext context) => new NavBarEmployee()));
         },
         padding: EdgeInsets.all(12.0),
         shape: RoundedRectangleBorder(
@@ -224,6 +186,26 @@ class _LoginEmployeeState extends State<LoginEmployee> {
     );
   }
 
+  Widget _buildForgetPassword(){
+    return Container(
+      width: double.infinity,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          Container(
+
+            child: Text(
+              "Forget Password?",style: TextStyle(
+              color: Colors.blue
+            ),
+            ),
+
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     switch (_loginStatus) {
@@ -233,33 +215,35 @@ class _LoginEmployeeState extends State<LoginEmployee> {
             child: Container(
               color: Colors.white,
               child: Container(
+                height: MediaQuery.of(context).size.height,
                 child: Center(
                   child: Column(
                     children: <Widget>[
-                      Container(
-                          child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          _buildImage(),
-                        ],
-                      )),
-                      Container(
-                          margin:
-                              EdgeInsets.symmetric(vertical: 5, horizontal: 20),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              _buildUsername(),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              _buildPassword(),
-                              SizedBox(
-                                height: 20,
-                              ),
-                              _buildLoginBtn(),
-                            ],
-                          )),
+                      _buildText(),
+                      Expanded(
+                        child: Container(
+                            height: MediaQuery.of(context).size.height - 30,
+                            margin: EdgeInsets.symmetric(horizontal: 20),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                _buildUsername(),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                _buildPassword(),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                _buildForgetPassword(),
+
+                                SizedBox(
+                                  height: 20,
+                                ),
+                                _buildLoginBtn(),
+                              ],
+                            )),
+                      ),
                     ],
                   ),
                 ),

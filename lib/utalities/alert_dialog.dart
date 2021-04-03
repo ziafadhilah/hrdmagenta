@@ -69,6 +69,7 @@ void alert_success1(BuildContext context, var title, text_button) {
         ),
         onPressed: () {
           Navigator.pop(context);
+          Navigator.pop(context);
           Navigator.pushReplacementNamed(context, "tabmenu_absence_admin");
         },
         color: btnColor2,

@@ -106,7 +106,7 @@ class _absence_status_adminState extends State<absence_status_admin> {
                                                       color: Colors.black87)),
                                             ],
                                           ),
-                                          Text("22 years ago",
+                                          Text("${_absence['data'][index]['clock_in']}",
                                               style: TextStyle(
                                                   fontSize: 15,
                                                   color: Colors.black26)),

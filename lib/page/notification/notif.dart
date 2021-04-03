@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hrdmagenta/utalities/color.dart';
+import 'package:hrdmagenta/utalities/constants.dart';
 import 'package:hrdmagenta/utalities/font.dart';
 
 class Notifpage extends StatefulWidget {
@@ -8,7 +9,49 @@ class Notifpage extends StatefulWidget {
 }
 
 class _NotifPaggeState extends State<Notifpage> {
-  Widget _buildnotif() {
+  bool _loading = true;
+  Map _notif;
+
+  @override
+  Widget build(BuildContext context) {
+    return new MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          title: Center(
+            child: new Text(
+              "Notifications",
+              style: TextStyle(color: Colors.black87),
+            ),
+          ),
+        ),
+        body: Container(
+          color: Colors.white,
+          child: Column(
+            children: <Widget>[
+              Expanded(
+                child: _loading == false
+                    ? Center(
+                        child: CircularProgressIndicator(),
+                      )
+                    : ListView.builder(
+                        // itemCount: _budgeting['data']['cash_flow'].length,
+                        itemCount: 1,
+                        itemBuilder: (context, index) {
+                          return _buildNonotif();
+                        }),
+                //   child: _buildNoproject(),
+              ),
+              // Text("tes")
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildnotif(index) {
     return Stack(
       children: <Widget>[
         Container(
@@ -116,29 +159,33 @@ class _NotifPaggeState extends State<Notifpage> {
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return new MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.white,
-          title: Center(
-            child: new Text(
-              "Notifications",
-              style: TextStyle(color: Colors.black87),
+  Widget _buildNonotif() {
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      height: MediaQuery.of(context).size.height * 0.8,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  child: no_data_notification,
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                Text(
+                  "No notification yet",
+                  style: subtitleMainMenu,
+                )
+              ],
             ),
           ),
-        ),
-        body: Container(
-          color: Colors.white,
-          child: Column(
-            children: <Widget>[
-              _buildnotif()
-              // Text("tes")
-            ],
-          ),
-        ),
+        ],
       ),
     );
   }

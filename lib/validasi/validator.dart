@@ -39,12 +39,12 @@ class Validasi {
     }
   }
 
-  //validasi checkin
+  ///validasi checkin
   void validation_checkin(BuildContext context, var photos, remark, lat, long,
       employee_id, date, time, departement_name, distance, category) {
     if (departement_name == "office") {
       if (category == "Check In") {
-        if (distance < 30) {
+        if (distance < 50) {
           if (photos.isEmpty) {
             Toast.show("Ambil terlebih dahulu photo anda", context,
                 duration: 5, gravity: Toast.BOTTOM);
@@ -110,20 +110,75 @@ class Validasi {
     }
   }
 
-  //validasi checkout
+  ///check out
   void validation_checkout(BuildContext context, var photos, remark, lat, long,
-      employee_id, date, time) {
-    // if (photos=="null"){
-    //   Toast.show("Ambil terlebih dahulu photo anda", context, duration: 5, gravity: Toast.BOTTOM);
-    //
-    // }else if ((lat==null) || (long==null)) {
-    //   Toast.show("system tidak menemukan lokasi anda,aktifkan terlebih dahulu GPS device anda", context, duration: 5, gravity: Toast.BOTTOM);
-    //
-    // }else{
-    //   services.checkout(context, photos, remark,employee_id, lat, long,date,time);
-    // }
-    services.checkout(
-        context, photos, remark, employee_id, lat, long, date, time);
+      employee_id, date, time, departement_name, distance, category) {
+    if (departement_name == "office") {
+      if (category == "Check Out") {
+        if (distance < 50) {
+          if (photos.isEmpty) {
+            Toast.show("Ambil terlebih dahulu photo anda", context,
+                duration: 5, gravity: Toast.BOTTOM);
+          } else if ((lat == null) || (long == null)) {
+            Toast.show(
+                "system tidak menemukan lokasi anda,aktifkan terlebih dahulu GPS device anda",
+                context,
+                duration: 5,
+                gravity: Toast.BOTTOM);
+          } else {
+            services.checkout(context, photos, remark, employee_id, lat, long,
+                date, time, "approved", category);
+          }
+        } else {
+          Toast.show("Anda di luar radius perusahaan", context,
+              duration: 5, gravity: Toast.BOTTOM);
+        }
+      } else {
+        if (photos.isEmpty) {
+          Toast.show("Ambil terlebih dahulu photo anda", context,
+              duration: 5, gravity: Toast.BOTTOM);
+        } else if ((lat == null) || (long == null)) {
+          Toast.show(
+              "system tidak menemukan lokasi anda,aktifkan terlebih dahulu GPS device anda",
+              context,
+              duration: 5,
+              gravity: Toast.BOTTOM);
+        } else {
+          services.checkout(context, photos, remark, employee_id, lat, long,
+              date, time, "pending", category);
+        }
+      }
+    } else {
+      if ((category == "Check In")) {
+        if (photos.isEmpty) {
+          Toast.show("Ambil terlebih dahulu photo anda", context,
+              duration: 5, gravity: Toast.BOTTOM);
+        } else if ((lat == null) || (long == null)) {
+          Toast.show(
+              "system tidak menemukan lokasi anda,aktifkan terlebih dahulu GPS device anda",
+              context,
+              duration: 5,
+              gravity: Toast.BOTTOM);
+        } else {
+          services.checkout(context, photos, remark, employee_id, lat, long,
+              date, time, "approved", category);
+        }
+      } else {
+        if (photos.isEmpty) {
+          Toast.show("Ambil terlebih dahulu photo anda", context,
+              duration: 5, gravity: Toast.BOTTOM);
+        } else if ((lat == null) || (long == null)) {
+          Toast.show(
+              "system tidak menemukan lokasi anda,aktifkan terlebih dahulu GPS device anda",
+              context,
+              duration: 5,
+              gravity: Toast.BOTTOM);
+        } else {
+          services.checkout(context, photos, remark, employee_id, lat, long,
+              date, time, "pending", category);
+        }
+      }
+    }
   }
 
   void validation_change_password(BuildContext context, var password, username,

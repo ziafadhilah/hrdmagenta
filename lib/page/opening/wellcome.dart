@@ -20,7 +20,7 @@ class _WellcomeState extends State<Wellcome> {
 
   Widget _buildImage() {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
        wellcome
 

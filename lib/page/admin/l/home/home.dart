@@ -11,6 +11,7 @@ import 'package:hrdmagenta/page/employee/project/tabmenu_project.dart';
 import 'package:hrdmagenta/services/api_clien.dart';
 import 'package:hrdmagenta/utalities/color.dart';
 import 'package:hrdmagenta/utalities/constants.dart';
+import 'package:hrdmagenta/utalities/font.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:http/http.dart' as http;
 
@@ -26,7 +27,7 @@ class _HomeAdminState extends State<HomeAdmin> {
 
   final GlobalKey<ScaffoldState> scaffoldState = new GlobalKey<ScaffoldState>();
 
-  Widget _buildMenuTask() {
+  Widget _buildMenuOffwork() {
     return Column(children: <Widget>[
       new Container(
         width: 70,
@@ -36,25 +37,18 @@ class _HomeAdminState extends State<HomeAdmin> {
             // Navigator.push(context, MaterialPageRoute(
             //     builder: (context) => Tabstask()
             // ));
-            sendNotification("pesan", "title");
+            //sendNotification("pesan", "title");
           },
           child: Card(
             elevation: 1,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10.0),
             ),
-            child: Container(margin: EdgeInsets.all(15.0), child: task),
+            child: Container(margin: EdgeInsets.all(15.0), child: offwork),
           ),
         ),
       ),
-      Text(
-        "Task",
-        style: TextStyle(
-            color: Colors.black38,
-            fontWeight: FontWeight.bold,
-            fontFamily: 'OpenSans',
-            fontSize: 15),
-      )
+      Text("Off Work", style: subtitleMainMenu)
     ]);
   }
 
@@ -78,19 +72,13 @@ class _HomeAdminState extends State<HomeAdmin> {
         ),
       ),
       Text(
-        "Absence",
-        style: TextStyle(
-            color: Colors.black38,
-            fontWeight: FontWeight.bold,
-            fontFamily: 'OpenSans',
-            fontSize: 15),
+        "Attendance",
+        style: subtitleMainMenu,
       )
     ]);
   }
 
-
-
-  Widget _buildMenubudget() {
+  Widget _buildMenupayslip() {
     return Column(children: <Widget>[
       new Container(
         width: 70,
@@ -109,14 +97,7 @@ class _HomeAdminState extends State<HomeAdmin> {
           ),
         ),
       ),
-      Text(
-        "Budget",
-        style: TextStyle(
-            color: Colors.black38,
-            fontWeight: FontWeight.bold,
-            fontFamily: 'OpenSans',
-            fontSize: 15),
-      )
+      Text("Payslip", style: subtitleMainMenu)
     ]);
   }
 
@@ -140,11 +121,7 @@ class _HomeAdminState extends State<HomeAdmin> {
       ),
       Text(
         "Project",
-        style: TextStyle(
-            color: Colors.black38,
-            fontWeight: FontWeight.bold,
-            fontFamily: 'OpenSans',
-            fontSize: 15),
+        style: subtitleMainMenu,
       )
     ]);
   }
@@ -163,10 +140,14 @@ class _HomeAdminState extends State<HomeAdmin> {
                       child: CircularProgressIndicator(),
                     )
                   : ListView.builder(
-                      itemCount: _projects['data'].length,
+                      itemCount: _projects['data'].length == 0
+                          ? 1
+                          : _projects['data'].length,
                       scrollDirection: Axis.horizontal,
                       itemBuilder: (context, index) {
-                        return _buildProgress(index);
+                        return _projects['data'].length == 0
+                            ? _buildNoproject()
+                            : _buildProgress(index);
                       }),
               //   child: _buildNoproject(),
             ),
@@ -195,9 +176,9 @@ class _HomeAdminState extends State<HomeAdmin> {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: <Widget>[
                             _buildMenuproject(),
-                            _buildMenuTask(),
+                            _buildMenuOffwork(),
                             _buildMenuaabsence(),
-                            _buildMenubudget(),
+                            _buildMenupayslip(),
                           ],
                         ),
                         Container(
@@ -260,7 +241,11 @@ class _HomeAdminState extends State<HomeAdmin> {
                             itemCount: _employee['data'].length,
                             scrollDirection: Axis.horizontal,
                             itemBuilder: (context, index) {
-                              return _employee['data'][index]['mobile_access_type']!="admin"? _buildemployee(index):Text("");
+                              return _employee['data'][index]
+                                          ['mobile_access_type'] !=
+                                      "admin"
+                                  ? _buildemployee(index)
+                                  : Text("");
                             }),
                   ),
                 ),
@@ -401,7 +386,7 @@ class _HomeAdminState extends State<HomeAdmin> {
                         Container(
                           margin: EdgeInsets.only(left: 10, top: 5),
                           child: Text("Main Menu",
-                              textAlign: TextAlign.left, style: titleStyle),
+                              textAlign: TextAlign.left, style: titleMainMenu),
                         ),
                         _buildCardMenu(),
                         SizedBox(
@@ -410,7 +395,7 @@ class _HomeAdminState extends State<HomeAdmin> {
                         Container(
                           margin: EdgeInsets.only(left: 10, top: 5),
                           child: Text("Project",
-                              textAlign: TextAlign.left, style: titleStyle),
+                              textAlign: TextAlign.left, style: titleMainMenu),
                         ),
                         _buildproject(),
                       ],
@@ -439,9 +424,7 @@ class _HomeAdminState extends State<HomeAdmin> {
       setState(() {
         _isLoading_employee = false;
       });
-    } catch (e) {
-
-    }
+    } catch (e) {}
   }
 
   //ge data from api--------------------------------
@@ -459,6 +442,31 @@ class _HomeAdminState extends State<HomeAdmin> {
         _isLoading_project = false;
       });
     } catch (e) {}
+  }
+
+  Widget _buildNoproject() {
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      height: MediaQuery.of(context).size.height / 3.5,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          Expanded(
+            child: Container(
+              child: no_data_project,
+            ),
+          ),
+          SizedBox(
+            height: 30,
+          ),
+          Text(
+            "No Available project in progress",
+            style: subtitleMainMenu,
+          )
+        ],
+      ),
+    );
   }
 
   @override

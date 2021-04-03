@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
 
 
     return MaterialApp(
-      title: 'HRD ',
+      title: 'Magenta HRD ',
       color: baseColor,
       debugShowCheckedModeBanner: false,
       //iniliasasi route

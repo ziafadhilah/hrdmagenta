@@ -22,7 +22,7 @@ class _PyslipListPageState extends State<PyslipListPage> {
           ),
           backgroundColor: Colors.white,
           title: Text(
-            "Pyslip",
+            "Payslip",
             style: TextStyle(color: Colors.black87),
           ),
         ),
@@ -32,9 +32,9 @@ class _PyslipListPageState extends State<PyslipListPage> {
             children: <Widget>[
               Expanded(
                 child: ListView.builder(
-                  itemCount: 100,
+                  itemCount: 1,
                   itemBuilder:(contex,index){
-                    return _buildpyslip(index);
+                    return _buildNopyslip();
 
                   }
 
@@ -115,7 +115,7 @@ class _PyslipListPageState extends State<PyslipListPage> {
                                         children: <Widget>[
                                           Row(
                                             children: [
-                                              Text("Pyslip Employee",
+                                              Text("Payslip Employee",
                                                   style: subtitleMainMenu),
                                             ],
                                           ),
@@ -144,6 +144,36 @@ class _PyslipListPageState extends State<PyslipListPage> {
                     ),
                   ),
                 ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+  Widget _buildNopyslip() {
+    return Container(
+
+      width: MediaQuery.of(context).size.width,
+      height: MediaQuery.of(context).size.height * 0.8,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+
+                  child: no_data_payslip,
+                ),
+                SizedBox(height: 20,),
+                Text(
+                  "No payslip yet",
+                  style: subtitleMainMenu,
+                )
               ],
             ),
           ),

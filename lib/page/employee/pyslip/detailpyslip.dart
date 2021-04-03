@@ -18,38 +18,41 @@ class _DetailPyslipState extends State<DetailPyslip> {
         ),
         backgroundColor: Colors.white,
         title: Text(
-          "Pyslip Detail",
+          "Payslip Detail",
           style: TextStyle(color: Colors.black87),
         ),
       ),
-      body: SingleChildScrollView(
-        child: Container(
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height+50,
+      body: Container(
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height,
+        child: SingleChildScrollView(
           child: Container(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Container(
-                  margin: EdgeInsets.only(top: 10, left: 10),
-                  child: Text(
-                    "2 maret 2021 - 2 April 2021",
-                    style: titleMainMenu,
+
+            child: Container(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Container(
+                    margin: EdgeInsets.only(top: 10, left: 10),
+                    child: Text(
+                      "2 maret 2021 - 2 April 2021",
+                      style: titleMainMenu,
+                    ),
                   ),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                _buildDataPersonal(),
-                SizedBox(
-                  height: 10,
-                ),
-                _buildIcome(),
-                SizedBox(
-                  height: 10,
-                ),
-                _builddeduction()
-              ],
+                  SizedBox(
+                    height: 10,
+                  ),
+                  _buildDataPersonal(),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  _buildIcome(),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  _builddeduction(),
+                ],
+              ),
             ),
           ),
         ),
@@ -199,189 +202,184 @@ class _DetailPyslipState extends State<DetailPyslip> {
   Widget _buildIcome() {
     return Container(
       margin: EdgeInsets.only(top: 10),
-      child: Expanded(
-        child: DataTable(
-          headingRowColor: MaterialStateColor.resolveWith(
-              (states) => Colors.green.withOpacity(0.25)),
-          columnSpacing: 150,
-          columns: const <DataColumn>[
-            DataColumn(
-              label: Text(
-                'Income',
-                style: TextStyle(fontStyle: FontStyle.italic),
-              ),
+      child: DataTable(
+        headingRowColor: MaterialStateColor.resolveWith(
+            (states) => Colors.green.withOpacity(0.25)),
+        columnSpacing: 150,
+        columns: const <DataColumn>[
+          DataColumn(
+            label: Text(
+              'Income',
+              style: TextStyle(fontStyle: FontStyle.italic),
             ),
-            DataColumn(
-              label: Text(
-                'Amount',
-                style: TextStyle(fontStyle: FontStyle.italic),
-              ),
+          ),
+          DataColumn(
+            label: Text(
+              'Amount',
+              style: TextStyle(fontStyle: FontStyle.italic),
             ),
-          ],
-          rows: const <DataRow>[
-            DataRow(
-              cells: <DataCell>[
-                DataCell(Text('Gaji Pokok',
-                    style: TextStyle(fontFamily: 'SFReguler', fontSize: 15))),
-                DataCell(Text(
-                  'IDR ',
-                  style: TextStyle(fontFamily: 'SFReguler', fontSize: 15),
-                )),
-              ],
-            ),
-            DataRow(
-              cells: <DataCell>[
-                DataCell(Text(
-                  'Tunjangan Harian',
-                  style: TextStyle(fontFamily: 'SFReguler', fontSize: 15),
-                )),
-                DataCell(Text(
-                  'IDR',
-                  style: TextStyle(fontFamily: 'SFReguler', fontSize: 15),
-                )),
-              ],
-            ),
-            DataRow(
-              cells: <DataCell>[
-                DataCell(Text(
-                  'Tunjangan Jabatan',
-                  style: TextStyle(fontFamily: 'SFReguler', fontSize: 15),
-                )),
-                DataCell(Text(
-                  'IDR',
-                  style: TextStyle(fontFamily: 'SFReguler', fontSize: 15),
-                )),
-              ],
-            ),
-            DataRow(
-              cells: <DataCell>[
-                DataCell(Text(
-                  'Tunjangan Komunikasi',
-                  style: TextStyle(fontFamily: 'SFReguler', fontSize: 15),
-                )),
-                DataCell(Text(
-                  'IDR',
-                  style: TextStyle(fontFamily: 'SFReguler', fontSize: 15),
-                )),
-              ],
-            ),
-            DataRow(
-              cells: <DataCell>[
-                DataCell(Text(
-                  'Total Income',
-                  style: TextStyle(fontFamily: 'SFReguler', fontSize: 15,fontWeight: FontWeight.bold),
-                )),
-                DataCell(Text(
-                  'IDR',
-                  style: TextStyle(fontFamily: 'SFReguler', fontSize: 15,fontWeight: FontWeight.bold),
-                )),
-              ],
-            ),
-          ],
-        ),
+          ),
+        ],
+        rows: const <DataRow>[
+          DataRow(
+            cells: <DataCell>[
+              DataCell(Text('Gaji Pokok',
+                  style: TextStyle(fontFamily: 'SFReguler', fontSize: 15))),
+              DataCell(Text(
+                'IDR ',
+                style: TextStyle(fontFamily: 'SFReguler', fontSize: 15),
+              )),
+            ],
+          ),
+          DataRow(
+            cells: <DataCell>[
+              DataCell(Text(
+                'Tunjangan Harian',
+                style: TextStyle(fontFamily: 'SFReguler', fontSize: 15),
+              )),
+              DataCell(Text(
+                'IDR',
+                style: TextStyle(fontFamily: 'SFReguler', fontSize: 15),
+              )),
+            ],
+          ),
+          DataRow(
+            cells: <DataCell>[
+              DataCell(Text(
+                'Tunjangan Jabatan',
+                style: TextStyle(fontFamily: 'SFReguler', fontSize: 15),
+              )),
+              DataCell(Text(
+                'IDR',
+                style: TextStyle(fontFamily: 'SFReguler', fontSize: 15),
+              )),
+            ],
+          ),
+          DataRow(
+            cells: <DataCell>[
+              DataCell(Text(
+                'Tunjangan Komunikasi',
+                style: TextStyle(fontFamily: 'SFReguler', fontSize: 15),
+              )),
+              DataCell(Text(
+                'IDR',
+                style: TextStyle(fontFamily: 'SFReguler', fontSize: 15),
+              )),
+            ],
+          ),
+          DataRow(
+            cells: <DataCell>[
+              DataCell(Text(
+                'Total Income',
+                style: TextStyle(fontFamily: 'SFReguler', fontSize: 15,fontWeight: FontWeight.bold),
+              )),
+              DataCell(Text(
+                'IDR',
+                style: TextStyle(fontFamily: 'SFReguler', fontSize: 15,fontWeight: FontWeight.bold),
+              )),
+            ],
+          ),
+        ],
       ),
     );
   }
 
 
   Widget _builddeduction() {
-    return Expanded(
+    return Container(
+      width: MediaQuery.of(context).size.width,
 
+      child: DataTable(
 
-      child: Container(
-        width: MediaQuery.of(context).size.width-10,
-        child: DataTable(
-
-          headingRowColor: MaterialStateColor.resolveWith(
-                  (states) => Colors.green.withOpacity(0.25)),
-          columnSpacing: 150,
-          columns: const <DataColumn>[
-            DataColumn(
-              label: Text(
-                'Deduction',
-                style: TextStyle(fontStyle: FontStyle.italic),
-              ),
+        headingRowColor: MaterialStateColor.resolveWith(
+                (states) => Colors.green.withOpacity(0.25)),
+        columnSpacing: 150,
+        columns: const <DataColumn>[
+          DataColumn(
+            label: Text(
+              'Deduction',
+              style: TextStyle(fontStyle: FontStyle.italic),
             ),
-            DataColumn(
-              label: Text(
-                'Amount',
-                style: TextStyle(fontStyle: FontStyle.italic),
-              ),
+          ),
+          DataColumn(
+            label: Text(
+              'Amount',
+              style: TextStyle(fontStyle: FontStyle.italic),
             ),
-          ],
-          rows: const <DataRow>[
-            DataRow(
-              cells: <DataCell>[
-                DataCell(Text('PPh21',
-                    style: TextStyle(fontFamily: 'SFReguler', fontSize: 15))),
-                DataCell(Text(
-                  'IDR 0',
-                  style: TextStyle(fontFamily: 'SFReguler', fontSize: 15),
-                )),
-              ],
-            ),
-            DataRow(
-              cells: <DataCell>[
-                DataCell(Text(
-                  '',
-                  style: TextStyle(fontFamily: 'SFReguler', fontSize: 15),
-                )),
-                DataCell(Text(
-                  '',
-                  style: TextStyle(fontFamily: 'SFReguler', fontSize: 15),
-                )),
-              ],
-            ),
-            DataRow(
-              cells: <DataCell>[
-                DataCell(Text(
-                  '',
-                  style: TextStyle(fontFamily: 'SFReguler', fontSize: 15),
-                )),
-                DataCell(Text(
-                  '',
-                  style: TextStyle(fontFamily: 'SFReguler', fontSize: 15),
-                )),
-              ],
-            ),
-            DataRow(
-              cells: <DataCell>[
-                DataCell(Text(
-                  '',
-                  style: TextStyle(fontFamily: 'SFReguler', fontSize: 15),
-                )),
-                DataCell(Text(
-                  '',
-                  style: TextStyle(fontFamily: 'SFReguler', fontSize: 15),
-                )),
-              ],
-            ),
-            DataRow(
-              cells: <DataCell>[
-                DataCell(Text(
-                  'Total Deduction',
-                  style: TextStyle(fontFamily: 'SFReguler', fontSize: 15,fontWeight: FontWeight.bold),
-                )),
-                DataCell(Text(
-                  'IDR 0434343242',
-                  style: TextStyle(fontFamily: 'SFReguler', fontSize: 15,fontWeight: FontWeight.bold),
-                )),
-              ],
-            ),
-            DataRow(
-              cells: <DataCell>[
-                DataCell(Text(
-                  'Take Home Pay',
-                  style: TextStyle(fontFamily: 'SFReguler', fontSize: 15,fontWeight: FontWeight.bold),
-                )),
-                DataCell(Text(
-                  'IDR 0',
-                  style: TextStyle(fontFamily: 'SFReguler', fontSize: 15,fontWeight: FontWeight.bold),
-                )),
-              ],
-            ),
-          ],
-        ),
+          ),
+        ],
+        rows: const <DataRow>[
+          DataRow(
+            cells: <DataCell>[
+              DataCell(Text('PPh21',
+                  style: TextStyle(fontFamily: 'SFReguler', fontSize: 15))),
+              DataCell(Text(
+                'IDR 0',
+                style: TextStyle(fontFamily: 'SFReguler', fontSize: 15),
+              )),
+            ],
+          ),
+          DataRow(
+            cells: <DataCell>[
+              DataCell(Text(
+                '',
+                style: TextStyle(fontFamily: 'SFReguler', fontSize: 15),
+              )),
+              DataCell(Text(
+                '',
+                style: TextStyle(fontFamily: 'SFReguler', fontSize: 15),
+              )),
+            ],
+          ),
+          DataRow(
+            cells: <DataCell>[
+              DataCell(Text(
+                '',
+                style: TextStyle(fontFamily: 'SFReguler', fontSize: 15),
+              )),
+              DataCell(Text(
+                '',
+                style: TextStyle(fontFamily: 'SFReguler', fontSize: 15),
+              )),
+            ],
+          ),
+          DataRow(
+            cells: <DataCell>[
+              DataCell(Text(
+                '',
+                style: TextStyle(fontFamily: 'SFReguler', fontSize: 15),
+              )),
+              DataCell(Text(
+                '',
+                style: TextStyle(fontFamily: 'SFReguler', fontSize: 15),
+              )),
+            ],
+          ),
+          DataRow(
+            cells: <DataCell>[
+              DataCell(Text(
+                'Total Deduction',
+                style: TextStyle(fontFamily: 'SFReguler', fontSize: 15,fontWeight: FontWeight.bold),
+              )),
+              DataCell(Text(
+                'IDR 0434343242',
+                style: TextStyle(fontFamily: 'SFReguler', fontSize: 15,fontWeight: FontWeight.bold),
+              )),
+            ],
+          ),
+          DataRow(
+            cells: <DataCell>[
+              DataCell(Text(
+                'Take Home Pay',
+                style: TextStyle(fontFamily: 'SFReguler', fontSize: 15,fontWeight: FontWeight.bold),
+              )),
+              DataCell(Text(
+                'IDR 0',
+                style: TextStyle(fontFamily: 'SFReguler', fontSize: 15,fontWeight: FontWeight.bold),
+              )),
+            ],
+          ),
+        ],
       ),
     );
   }

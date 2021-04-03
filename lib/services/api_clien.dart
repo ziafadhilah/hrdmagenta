@@ -10,7 +10,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toast/toast.dart';
 
-String base_url = "127.0.0.1:8000";
+String base_url = "192.168.1.113:8000";
 
 class Services {
   SharedPreference sharedPreference = new SharedPreference();
@@ -126,9 +126,7 @@ class Services {
       SharedPreferences sharedPreferences =
           await SharedPreferences.getInstance();
       Navigator.pop(context);
-      sharedPreferences.setString("clock_in", time.toString());
-      sharedPreferences.setBool("check_in", true);
-      sharedPreferences.setBool("check_out", false);
+
       // alert_success(context, "${responseJson['message']}", "Back");
       toast_success("${responseJson['message']}");
       Navigator.pop(context);
@@ -140,7 +138,7 @@ class Services {
 
   ///function checkout employee
   Future<void> checkout(BuildContext context, var photos, var remark,
-      var employee_id, lat, long, date, time) async {
+      var employee_id, lat, long, date, time,status,category) async {
     loading(context);
     final response = await http
         .post("http://$base_url/api/attendances/action/check-out", body: {
@@ -151,7 +149,9 @@ class Services {
       "note": remark,
       "clock_out_latitude": lat,
       "clock_out_longitude": long,
-      "status": "pending"
+      "status": "$status",
+      "category": "$category"
+
     });
 
     final responseJson = jsonDecode(response.body);
@@ -275,6 +275,8 @@ class Services {
     //
     final data = jsonDecode(response.body);
     if (data['code'] == 200) {
+      Navigator.pop(context);
+      Navigator.pop(context);
       alert_success1(context, "${data['message']}", "Back");
     } else {
       Navigator.pop(context);

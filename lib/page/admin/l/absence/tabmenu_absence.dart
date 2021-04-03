@@ -35,7 +35,7 @@ class TabsAbsenceAdmin extends StatelessWidget {
           ),
 
           backgroundColor: Colors.white,
-          title: Text('Absence',
+          title: Text('Attendance',
             style: TextStyle(color: Colors.black87),
 
           ),

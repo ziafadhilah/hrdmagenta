@@ -72,7 +72,7 @@ class _detail_absenceState extends State<detail_absence> {
         ),
         backgroundColor: Colors.white,
         title: new Text(
-          "Absence Detail",
+          "Attendance Detail",
           style: TextStyle(color: Colors.black87),
         ),
       ),
@@ -461,9 +461,13 @@ class _detail_absenceState extends State<detail_absence> {
 
   Widget _buildgridtext() {
     return Container(
-      height: 20,
+     height: 20,
+
       child: GridView.count(
         crossAxisCount: 2,
+        physics: ClampingScrollPhysics(),
+        shrinkWrap: true,
+        primary: true,
         children: <Widget>[
           //photos
           Container(
@@ -490,6 +494,9 @@ class _detail_absenceState extends State<detail_absence> {
     return Container(
       height: 200,
       child: GridView.count(
+        physics: ClampingScrollPhysics(),
+        shrinkWrap: true,
+        primary: true,
         crossAxisCount: 2,
         children: <Widget>[
           // photos
@@ -571,7 +578,7 @@ class _detail_absenceState extends State<detail_absence> {
             ? Column(
                 children: <Widget>[
                   Container(
-                    color: Colors.redAccent,
+                    color: Colors.redAccent.withOpacity(0.5),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,

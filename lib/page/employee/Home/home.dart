@@ -18,7 +18,6 @@ import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:toast/toast.dart';
 
 class HomeEmployee extends StatefulWidget {
   @override
@@ -160,7 +159,6 @@ class _HomeEmployeeState extends State<HomeEmployee> {
         child: InkWell(
           onTap: () {
             Navigator.pushNamed(context, "pyslip_list_employee-page");
-
           },
           child: Card(
             elevation: 1,
@@ -290,11 +288,10 @@ class _HomeEmployeeState extends State<HomeEmployee> {
                                       margin:
                                           EdgeInsets.only(left: 20, right: 20),
                                       width: double.maxFinite,
-                                      child: Expanded(
-                                          child: Text(
+                                      child: Text(
                                         "Fungsi & Manfaat BPJS Ketenagakerjaan bagi karyawan",
                                         style: titlteannoucement1,
-                                      )),
+                                      ),
                                     ),
                                   ],
                                 ),
@@ -306,20 +303,20 @@ class _HomeEmployeeState extends State<HomeEmployee> {
                           ),
                           Container(
                             width: double.maxFinite,
-                            child: Expanded(
-                                child: Text(
-                                    "Fungsi & Manfaat BPJS Ketenagakerjaan bagi karyawan",
-                                  style: titlteannoucement,
-                                )),
+                            child: Text(
+                              "Fungsi & Manfaat BPJS Ketenagakerjaan bagi karyawan",
+                              style: titlteannoucement,
+                            ),
                           ),
                           SizedBox(
                             height: 20,
                           ),
                           Container(
                             width: double.maxFinite,
-                            child: Expanded(child: Text("2 November 2021",
+                            child: Text(
+                              "2 November 2021",
                               style: TextStyle(color: Colors.black38),
-                            )),
+                            ),
                           ),
                         ],
                       ),
@@ -400,7 +397,6 @@ class _HomeEmployeeState extends State<HomeEmployee> {
       _projects = jsonDecode(response.body);
       print(_projects['data'].length);
 
-
       setState(() {
         _loading = false;
       });
@@ -409,21 +405,22 @@ class _HomeEmployeeState extends State<HomeEmployee> {
 
   Widget _buildNoproject() {
     return Container(
-
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height / 3.5,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-         Container(
-           child: no_data_project,
-
-         ),
+          Expanded(
+            child: Container(
+              child: no_data_project,
+            ),
+          ),
           SizedBox(
             height: 30,
           ),
-          Text("No Available project in progress",
+          Text(
+            "No Available project in progress",
             style: subtitleMainMenu,
           )
         ],

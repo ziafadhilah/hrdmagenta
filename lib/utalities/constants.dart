@@ -99,8 +99,8 @@ final Widget wellcome = SvgPicture.asset(
 
 final Widget login = SvgPicture.asset(
   "assets/login.svg",
-  width: 250,
-  height: 250,
+  width: 200,
+  height: 200,
   fit: BoxFit.fill,
   semanticsLabel: 'Acme Logo',
 );
@@ -142,11 +142,28 @@ final Widget no_data_project = SvgPicture.asset(
   width: 150,
   height: 150,
 );
-final Widget no_data_transacation = SvgPicture.asset(
-  "assets/no_data_project.svg",
+
+final Widget no_data_payslip = SvgPicture.asset(
+  "assets/nobudget.svg",
   semanticsLabel: 'Acme Logo',
   width: 150,
   height: 150,
+  color: Colors.black45,
+);
+final Widget no_data_notification = SvgPicture.asset(
+  "assets/notification.svg",
+  semanticsLabel: 'Acme Logo',
+  width: 150,
+  height: 150,
+  color: Colors.black45,
+);
+
+final Widget no_data_transacation = SvgPicture.asset(
+  "assets/nobudget.svg",
+  semanticsLabel: 'Acme Logo',
+  width: 150,
+  height: 150,
+  color: Colors.black45,
 
 );
 

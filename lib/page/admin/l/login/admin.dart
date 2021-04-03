@@ -22,82 +22,37 @@ class _LoginAdminState extends State<LoginAdmin>{
   var email = '';
   var password = '';
 
-  Widget _buildImage() {
-    return Container(
-      child: Stack(
-        children: [
-
-          ClipPath(
-
-            clipper: MyClipper(),
-            child: Container(
-
-              color: baseColor,
-              child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    Container(
-                        margin: EdgeInsets.only(left: 10,top: 10),
-                        child: _buildText()
-                    ),
-                    SizedBox(height: 10,),
-                    Container(
-                      height: 350,
-                    ),
-
-
-
-                  ],
-                ),
-              ),
-            ),
-          ),
-          Container(
-            width: double.infinity,
-            margin: EdgeInsets.only(top: 100),
-            child: Column(
-              children: <Widget>[
-                login
-              ],
-            ),
-          )
-        ],
-      ),
-    );
-  }
   Widget _buildText() {
     return Container(
+      margin: EdgeInsets.symmetric(horizontal: 20,vertical: 10),
       width: double.infinity,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          SizedBox(height: 20,),
-          Text("LOG IN",
+          SizedBox(
+            height: 20,
+          ),
+          Text(
+            "LOG IN",
             textAlign: TextAlign.left,
             style: TextStyle(
-
                 color: Colors.black,
                 fontWeight: FontWeight.bold,
                 fontFamily: 'OpenSans',
-                fontSize: 25
-            ),
-
+                fontSize: 25),
           ),
-          SizedBox(height: 5,),
-          Text("Admin",
+          SizedBox(
+            height: 5,
+          ),
+          Text(
+            "Admin",
             textAlign: TextAlign.left,
             style: TextStyle(
-
-                color: Colors.white,
+                color: baseColor1,
                 fontWeight: FontWeight.bold,
                 fontFamily: 'OpenSans',
-                fontSize: 15
-            ),
-
+                fontSize: 15),
           )
-
         ],
       ),
     );
@@ -256,61 +211,36 @@ class _LoginAdminState extends State<LoginAdmin>{
           body: SingleChildScrollView(
             child: Container(
               color: Colors.white,
+              height: MediaQuery.of(context).size.height,
               child: Container(
 
 
                 child: Center(
                   child: Column(
                     children: <Widget>[
+                      _buildText(),
 
-                      Container(
+                      Expanded(
+                        child: Container(
+                            height: MediaQuery.of(context).size.height - 30,
+                            margin: EdgeInsets.symmetric(horizontal: 20),
 
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              _buildImage(),
-                            ],
-                          )),
-                      Container(
-                          margin: EdgeInsets.symmetric(vertical: 10,horizontal: 20),
 
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              _buildUsername(),
-                              SizedBox(height: 10,),
-                              _buildPassword(),
-                              SizedBox(height: 20,),
-                              _buildLoginBtn(),
-                              // TextFormField(
-                              //   keyboardType: TextInputType.text,
-                              //   controller: _userPasswordController,
-                              //   obscureText: !_passwordVisible,//This will obscure text dynamically
-                              //   decoration: InputDecoration(
-                              //     labelText: 'Password',
-                              //     hintText: 'Enter your password',
-                              //     // Here is key idea
-                              //     suffixIcon: IconButton(
-                              //       icon: Icon(
-                              //         // Based on passwordVisible state choose the icon
-                              //         _passwordVisible
-                              //             ? Icons.visibility
-                              //             : Icons.visibility_off,
-                              //         color: Theme.of(context).primaryColorDark,
-                              //       ),
-                              //       onPressed: () {
-                              //         // Update the state i.e. toogle the state of passwordVisible variable
-                              //         setState(() {
-                              //
-                              //           _passwordVisible = !_passwordVisible;
-                              //
-                              //         });
-                              //       },
-                              //     ),
-                              //   ),
-                              // );
-                            ],
-                          )),
+
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                _buildUsername(),
+                                SizedBox(height: 10,),
+                                _buildPassword(),
+                                SizedBox(height: 10,),
+                                _buildForgetPassword(),
+                                SizedBox(height: 20,),
+                                _buildLoginBtn(),
+
+                              ],
+                            )),
+                      ),
 
 
                     ],
@@ -338,7 +268,25 @@ class _LoginAdminState extends State<LoginAdmin>{
 
 
 
+  Widget _buildForgetPassword(){
+    return Container(
+      width: double.infinity,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          Container(
 
+            child: Text(
+              "Forget Password?",style: TextStyle(
+                color: Colors.blue
+            ),
+            ),
+
+          ),
+        ],
+      ),
+    );
+  }
   @override
   void initState() {
     // TODO: implement initState

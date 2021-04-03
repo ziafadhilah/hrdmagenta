@@ -95,11 +95,13 @@ class _company_pfrofileState extends State<company_pfrofile> {
                         SizedBox(
                           height: 5,
                         ),
-                        Text(
-                          company_name,
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.black38,
+                        Container(
+                          child: company_name==null?Text("-"): Text(
+                            company_name,
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.black38,
+                            ),
                           ),
                         )
                       ],
@@ -158,11 +160,13 @@ class _company_pfrofileState extends State<company_pfrofile> {
                         SizedBox(
                           height: 5,
                         ),
-                        Text(
-                          company_phonenumber,
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.black38,
+                        Container(
+                          child: company_phonenumber==null?Text("-"):Text(
+                            company_phonenumber,
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.black38,
+                            ),
                           ),
                         )
                       ],
@@ -220,11 +224,13 @@ class _company_pfrofileState extends State<company_pfrofile> {
                         SizedBox(
                           height: 5,
                         ),
-                        Text(
-                          company_email,
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.black38,
+                        Container(
+                          child: company_email==null?Text("-"): Text(
+                            company_email,
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.black38,
+                            ),
                           ),
                         )
                       ],
@@ -283,11 +289,13 @@ class _company_pfrofileState extends State<company_pfrofile> {
                         SizedBox(
                           height: 5,
                         ),
-                        Text(
-                          company_adress,
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.black38,
+                        Container(
+                          child: company_adress==null?Text("-"): Text(
+                            company_adress,
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.black38,
+                            ),
                           ),
                         )
                       ],
@@ -323,6 +331,7 @@ class _company_pfrofileState extends State<company_pfrofile> {
 
       setState(() {
         _isLoading = false;
+        Toast.show("$company_phonenumber", context);
       });
     } else {
       setState(() {

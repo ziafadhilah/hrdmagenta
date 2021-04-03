@@ -121,6 +121,11 @@ flutter:
     - assets/offwork.svg
     - assets/announcement.jpg
     - assets/receipt.svg
+    - assets/map_style.json
+    - assets/office.svg
+    - assets/home.png
+    - assets/nobudget.svg
+    - assets/notification.svg
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 
