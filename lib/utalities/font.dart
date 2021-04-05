@@ -11,6 +11,11 @@ final subtitleMainMenu=TextStyle(
     fontFamily: 'SFReguler',
     fontSize: 15);
 
+final subtitleapprove=TextStyle(
+    fontFamily: 'SFReguler',
+    color: Colors.white,
+    fontSize: 18);
+
 /// annoucement
 final titlteannoucement1 =TextStyle(
     fontFamily: 'Ultralight',

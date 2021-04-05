@@ -5,13 +5,11 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:hrdmagenta/page/employee/checkin/maps.dart';
-
 import 'package:hrdmagenta/utalities/font.dart';
 import 'package:hrdmagenta/validasi/validator.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:toast/toast.dart';
 
 class Checkin extends StatefulWidget {
   @override
@@ -21,6 +19,7 @@ class Checkin extends StatefulWidget {
 class _CheckinState extends State<Checkin> {
   ///variable
   File _image;
+  bool _disposed = false;
   final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
   Position _currentPosition;
   String _currentAddress;
@@ -170,11 +169,16 @@ class _CheckinState extends State<Checkin> {
     Timer.periodic(new Duration(seconds: 1), (_) {
       var tgl = new DateTime.now();
       var formatedjam = new DateFormat.Hms().format(tgl);
-      setState(() {
-        time = formatedjam;
-      });
+      if (!_disposed){
+        setState(() {
+          time = formatedjam;
+        });
+
+      }
+
     });
   }
+
 
   Widget _buildtime() {
     return Column(
@@ -185,8 +189,14 @@ class _CheckinState extends State<Checkin> {
           height: 20,
           margin: EdgeInsets.only(left: 25),
           child: TextFormField(
+            enabled: false,
             cursorColor: Theme.of(context).cursorColor,
             decoration: InputDecoration(
+              border: InputBorder.none,
+              focusedBorder: InputBorder.none,
+              enabledBorder: InputBorder.none,
+              errorBorder: InputBorder.none,
+              disabledBorder: InputBorder.none,
               icon: Icon(
                 Icons.timer,
                 color: Colors.black12,
@@ -196,14 +206,15 @@ class _CheckinState extends State<Checkin> {
               labelStyle: TextStyle(
                 color: Colors.black38,
               ),
-              enabledBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Colors.white)),
+
             ),
           ),
         ),
       ],
     );
   }
+
+
 
   Widget _buildCategoryabsence() {
     return Container(
@@ -231,9 +242,9 @@ class _CheckinState extends State<Checkin> {
                 style: TextStyle(color: Colors.black),
 
                 items: <String>[
-                  'Check In',
-                  'Sick',
-                  'Permission',
+                  'present',
+                  'sick',
+                  'permission',
                 ].map<DropdownMenuItem<String>>((String value) {
                   return DropdownMenuItem<String>(
                     value: value,
@@ -241,7 +252,7 @@ class _CheckinState extends State<Checkin> {
                   );
                 }).toList(),
                 hint: Text(
-                  "Check In",
+                  "present",
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: 16,
@@ -307,7 +318,7 @@ class _CheckinState extends State<Checkin> {
                         ),
                         if (_currentPosition != null && _currentAddress != null)
                           Container(
-                            width: MediaQuery.of(context).size.height * 0.4,
+                            width: MediaQuery.of(context).size.width - 100,
                             child: Text(
                               "$_currentAddress ",
                               style: TextStyle(color: Colors.black38),
@@ -350,24 +361,25 @@ class _CheckinState extends State<Checkin> {
     );
   }
 
+
   Future upload() async {
     var date = DateFormat("yyyy:MM:dd").format(DateTime.now());
     if (_category_absent == null) {
-      _category_absent = "Check In";
+      _category_absent = "present";
     }
     //
-    // validator.validation_checkin(
-    //     context,
-    //     base64.toString(),
-    //     Cremark.text,
-    //     _lat.toString().trim(),
-    //     _long.toString().trim(),
-    //     _employee_id,
-    //     date.toString(),
-    //     time.toString(),
-    //     _departement_name,
-    //     _distance,
-    //     _category_absent);
+    validator.validation_checkin(
+        context,
+        base64.toString(),
+        Cremark.text,
+        _lat.toString().trim(),
+        _long.toString().trim(),
+        _employee_id,
+        date.toString(),
+        time.toString(),
+        _departement_name,
+        _distance,
+        _category_absent);
 
     //Toast.show("$_category_absent", context);
     print(base64.toString());
@@ -479,8 +491,8 @@ class _CheckinState extends State<Checkin> {
 
   @override
   void dispose() {
+    _disposed = true;
     super.dispose();
-    //time.cancel();
   }
 
   @override

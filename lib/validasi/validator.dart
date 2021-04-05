@@ -44,7 +44,7 @@ class Validasi {
       employee_id, date, time, departement_name, distance, category) {
     if (departement_name == "office") {
       if (category == "Check In") {
-        if (distance < 50) {
+        if (distance < 20) {
           if (photos.isEmpty) {
             Toast.show("Ambil terlebih dahulu photo anda", context,
                 duration: 5, gravity: Toast.BOTTOM);
@@ -115,7 +115,7 @@ class Validasi {
       employee_id, date, time, departement_name, distance, category) {
     if (departement_name == "office") {
       if (category == "Check Out") {
-        if (distance < 50) {
+        if (distance < 20) {
           if (photos.isEmpty) {
             Toast.show("Ambil terlebih dahulu photo anda", context,
                 duration: 5, gravity: Toast.BOTTOM);
@@ -149,7 +149,7 @@ class Validasi {
         }
       }
     } else {
-      if ((category == "Check In")) {
+      if ((category == "Check Out")) {
         if (photos.isEmpty) {
           Toast.show("Ambil terlebih dahulu photo anda", context,
               duration: 5, gravity: Toast.BOTTOM);

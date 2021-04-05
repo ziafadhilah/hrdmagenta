@@ -137,7 +137,9 @@ class _HomeEmployeeState extends State<HomeEmployee> {
         width: 70,
         height: 70,
         child: InkWell(
-          onTap: () {},
+          onTap: () {
+            Navigator.pushNamed(context, "leave_list_employee-page");
+          },
           child: Card(
             elevation: 1,
             shape: RoundedRectangleBorder(
@@ -147,7 +149,7 @@ class _HomeEmployeeState extends State<HomeEmployee> {
           ),
         ),
       ),
-      Text("Off Work", style: subtitleMainMenu)
+      Text("Leave", style: subtitleMainMenu)
     ]);
   }
 
@@ -169,7 +171,7 @@ class _HomeEmployeeState extends State<HomeEmployee> {
           ),
         ),
       ),
-      Text("pyslip", style: subtitleMainMenu)
+      Text("payslip", style: subtitleMainMenu)
     ]);
   }
 

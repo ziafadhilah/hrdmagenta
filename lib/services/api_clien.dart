@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:hrdmagenta/model/companies.dart';
 import 'package:hrdmagenta/model/login_employee.dart';
@@ -10,7 +9,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toast/toast.dart';
 
-String base_url = "192.168.1.113:8000";
+String base_url = "192.168.100.58:8000";
 
 class Services {
   SharedPreference sharedPreference = new SharedPreference();

@@ -107,10 +107,21 @@ class _absence_statusState extends State<absence_status> {
                                                   style: subtitleMainMenu),
                                             ],
                                           ),
-                                          Text("22 years ago",
-                                              style: TextStyle(
-                                                  fontSize: 15,
-                                                  color: Colors.black26)),
+                                          Container(
+                                            child: _absence['data'][index]
+                                            ['type'] ==
+                                                "check in"
+                                                ? Text(
+                                                "${_absence['data'][index]['clock_in']}",
+                                                style: TextStyle(
+                                                    fontSize: 15,
+                                                    color: Colors.black26))
+                                                : Text(
+                                                "${_absence['data'][index]['clock_out']}",
+                                                style: TextStyle(
+                                                    fontSize: 15,
+                                                    color: Colors.black26)),
+                                          ),
                                           InkWell(
                                             onTap: () {
                                               if (_absence['data'][index]

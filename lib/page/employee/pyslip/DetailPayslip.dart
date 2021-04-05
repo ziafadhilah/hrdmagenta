@@ -1,5 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:hrdmagenta/page/employee/pyslip/PPFView.dart';
 import 'package:hrdmagenta/utalities/font.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:pdf/pdf.dart';
+import 'package:pdf/widgets.dart' as pw;
 
 class DetailPyslip extends StatefulWidget {
   @override
@@ -13,6 +19,38 @@ class _DetailPyslipState extends State<DetailPyslip> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        actions: <Widget>[
+          IconButton(
+            icon: InkWell(
+              onTap: () async {
+                writeOnPdf();
+                await savePdf();
+
+                Directory documentDirectory = await getApplicationDocumentsDirectory();
+
+                String documentPath = documentDirectory.path;
+
+                String fullPath = "$documentPath/example.pdf";
+
+                Navigator.push(context, MaterialPageRoute(
+                    builder: (context) => PdfPreview(path: fullPath,)
+                ));
+
+
+              },
+              child: Icon(
+                Icons.picture_as_pdf,
+                color: Colors.black45,
+              ),
+            ),
+
+            onPressed: () {
+              // do something
+              Navigator.pushNamed(context, "pdf_employee-page");
+
+            },
+          )
+        ],
         iconTheme: IconThemeData(
           color: Colors.black87, //modify arrow color from here..
         ),
@@ -27,7 +65,6 @@ class _DetailPyslipState extends State<DetailPyslip> {
         height: MediaQuery.of(context).size.height,
         child: SingleChildScrollView(
           child: Container(
-
             child: Container(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -271,11 +308,17 @@ class _DetailPyslipState extends State<DetailPyslip> {
             cells: <DataCell>[
               DataCell(Text(
                 'Total Income',
-                style: TextStyle(fontFamily: 'SFReguler', fontSize: 15,fontWeight: FontWeight.bold),
+                style: TextStyle(
+                    fontFamily: 'SFReguler',
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold),
               )),
               DataCell(Text(
                 'IDR',
-                style: TextStyle(fontFamily: 'SFReguler', fontSize: 15,fontWeight: FontWeight.bold),
+                style: TextStyle(
+                    fontFamily: 'SFReguler',
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold),
               )),
             ],
           ),
@@ -284,15 +327,12 @@ class _DetailPyslipState extends State<DetailPyslip> {
     );
   }
 
-
   Widget _builddeduction() {
     return Container(
       width: MediaQuery.of(context).size.width,
-
       child: DataTable(
-
         headingRowColor: MaterialStateColor.resolveWith(
-                (states) => Colors.green.withOpacity(0.25)),
+            (states) => Colors.green.withOpacity(0.25)),
         columnSpacing: 150,
         columns: const <DataColumn>[
           DataColumn(
@@ -359,11 +399,17 @@ class _DetailPyslipState extends State<DetailPyslip> {
             cells: <DataCell>[
               DataCell(Text(
                 'Total Deduction',
-                style: TextStyle(fontFamily: 'SFReguler', fontSize: 15,fontWeight: FontWeight.bold),
+                style: TextStyle(
+                    fontFamily: 'SFReguler',
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold),
               )),
               DataCell(Text(
                 'IDR 0434343242',
-                style: TextStyle(fontFamily: 'SFReguler', fontSize: 15,fontWeight: FontWeight.bold),
+                style: TextStyle(
+                    fontFamily: 'SFReguler',
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold),
               )),
             ],
           ),
@@ -371,16 +417,78 @@ class _DetailPyslipState extends State<DetailPyslip> {
             cells: <DataCell>[
               DataCell(Text(
                 'Take Home Pay',
-                style: TextStyle(fontFamily: 'SFReguler', fontSize: 15,fontWeight: FontWeight.bold),
+                style: TextStyle(
+                    fontFamily: 'SFReguler',
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold),
               )),
               DataCell(Text(
                 'IDR 0',
-                style: TextStyle(fontFamily: 'SFReguler', fontSize: 15,fontWeight: FontWeight.bold),
+                style: TextStyle(
+                    fontFamily: 'SFReguler',
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold),
               )),
             ],
           ),
         ],
       ),
     );
+  }
+
+  final pdf = pw.Document();
+
+  writeOnPdf(){
+    pdf.addPage(
+        pw.MultiPage(
+          pageFormat: PdfPageFormat.a5,
+          margin: pw.EdgeInsets.all(32),
+
+          build: (pw.Context context){
+            return <pw.Widget>  [
+              pw.Header(
+                  level: 0,
+                  child: pw.Text("Easy Approach Document")
+              ),
+
+              pw.Paragraph(
+                  text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Malesuada fames ac turpis egestas sed tempus urna. Quisque sagittis purus sit amet. A arcu cursus vitae congue mauris rhoncus aenean vel elit. Ipsum dolor sit amet consectetur adipiscing elit pellentesque. Viverra justo nec ultrices dui sapien eget mi proin sed."
+              ),
+
+              pw.Paragraph(
+                  text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Malesuada fames ac turpis egestas sed tempus urna. Quisque sagittis purus sit amet. A arcu cursus vitae congue mauris rhoncus aenean vel elit. Ipsum dolor sit amet consectetur adipiscing elit pellentesque. Viverra justo nec ultrices dui sapien eget mi proin sed."
+              ),
+
+              pw.Header(
+                  level: 1,
+                  child: pw.Text("Second Heading")
+              ),
+
+              pw.Paragraph(
+                  text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Malesuada fames ac turpis egestas sed tempus urna. Quisque sagittis purus sit amet. A arcu cursus vitae congue mauris rhoncus aenean vel elit. Ipsum dolor sit amet consectetur adipiscing elit pellentesque. Viverra justo nec ultrices dui sapien eget mi proin sed."
+              ),
+
+              pw.Paragraph(
+                  text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Malesuada fames ac turpis egestas sed tempus urna. Quisque sagittis purus sit amet. A arcu cursus vitae congue mauris rhoncus aenean vel elit. Ipsum dolor sit amet consectetur adipiscing elit pellentesque. Viverra justo nec ultrices dui sapien eget mi proin sed."
+              ),
+
+              pw.Paragraph(
+                  text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Malesuada fames ac turpis egestas sed tempus urna. Quisque sagittis purus sit amet. A arcu cursus vitae congue mauris rhoncus aenean vel elit. Ipsum dolor sit amet consectetur adipiscing elit pellentesque. Viverra justo nec ultrices dui sapien eget mi proin sed."
+              ),
+            ];
+          },
+
+
+        )
+    );
+  }
+  Future savePdf() async{
+    Directory documentDirectory = await getApplicationDocumentsDirectory();
+
+    String documentPath = documentDirectory.path;
+
+    File file = File("$documentPath/example.pdf");
+
+    //file.writeAsBytesSync(pdf.save());
   }
 }

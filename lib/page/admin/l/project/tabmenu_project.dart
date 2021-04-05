@@ -41,11 +41,11 @@ class TabsprojectAdmin extends StatelessWidget {
             labelColor: Colors.black87,
             tabs: <Widget>[
               Tab(
-                text: 'In Progress',
+                text: 'IN PROGRESS',
 
               ),
               Tab(
-                text: 'Finished',
+                text: 'CLOSED',
               ),
 
             ],

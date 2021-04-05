@@ -24,22 +24,26 @@ class _absence_status_adminState extends State<absence_status_admin> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        child: _loading
-            ? Center(
-                child: ShimmerAbsence(),
-              )
-            : ListView.builder(
-                // itemCount: _budgeting['data']['cash_flow'].length,
-                itemCount:
-                    _absence['data'].length == 0 ? 1 : _absence['data'].length,
-                itemBuilder: (context, index) {
-                  return _absence['data'].length == 0
-                      ? _buildnodata()
-                      : _buildlistabsence(index);
-                }),
+      body: RefreshIndicator(
+        child: Container(
+          child: _loading
+              ? Center(
+                  child: ShimmerAbsence(),
+                )
+              : ListView.builder(
+                  // itemCount: _budgeting['data']['cash_flow'].length,
+                  itemCount: _absence['data'].length == 0
+                      ? 1
+                      : _absence['data'].length,
+                  itemBuilder: (context, index) {
+                    return _absence['data'].length == 0
+                        ? _buildnodata()
+                        : _buildlistabsence(index);
+                  }),
 
-        //
+          //
+        ),
+        onRefresh: _dataAbsence,
       ),
     );
   }
@@ -106,10 +110,21 @@ class _absence_status_adminState extends State<absence_status_admin> {
                                                       color: Colors.black87)),
                                             ],
                                           ),
-                                          Text("${_absence['data'][index]['clock_in']}",
-                                              style: TextStyle(
-                                                  fontSize: 15,
-                                                  color: Colors.black26)),
+                                          Container(
+                                            child: _absence['data'][index]
+                                                        ['type'] ==
+                                                    "check in"
+                                                ? Text(
+                                                    "${_absence['data'][index]['clock_in']}",
+                                                    style: TextStyle(
+                                                        fontSize: 15,
+                                                        color: Colors.black26))
+                                                : Text(
+                                                    "${_absence['data'][index]['clock_out']}",
+                                                    style: TextStyle(
+                                                        fontSize: 15,
+                                                        color: Colors.black26)),
+                                          ),
                                           InkWell(
                                             onTap: () {
                                               if (_absence['data'][index]
@@ -157,7 +172,7 @@ class _absence_status_adminState extends State<absence_status_admin> {
                                                                           [
                                                                           'rejected_by'] ==
                                                                       null
-                                                                  ? "null"
+                                                                  ? null
                                                                   : "${_absence['data'][index]['rejected_by']['first_name']} ${_absence['data'][index]['rejected_by']['last_name']}",
                                                               approved_by: _absence['data']
                                                                               [
@@ -165,7 +180,7 @@ class _absence_status_adminState extends State<absence_status_admin> {
                                                                           [
                                                                           'approved_by'] ==
                                                                       null
-                                                                  ? "null"
+                                                                  ? null
                                                                   : "${_absence['data'][index]['approved_by']['first_name']} ${_absence['data'][index]['approved_by']['last_name']}",
                                                               rejected_on: _absence[
                                                                           'data']
@@ -263,7 +278,7 @@ class _absence_status_adminState extends State<absence_status_admin> {
                                                                           [
                                                                           'rejected_by'] ==
                                                                       null
-                                                                  ? "null"
+                                                                  ? null
                                                                   : "${_absence['data'][index]['rejected_by']['first_name']} ${_absence['data'][index]['rejected_by']['last_name']}",
                                                               approved_by: _absence['data']
                                                                               [
@@ -271,7 +286,7 @@ class _absence_status_adminState extends State<absence_status_admin> {
                                                                           [
                                                                           'approved_by'] ==
                                                                       null
-                                                                  ? "null"
+                                                                  ? null
                                                                   : "${_absence['data'][index]['approved_by']['first_name']} ${_absence['data'][index]['approved_by']['last_name']}",
                                                               rejected_on: _absence[
                                                                           'data']

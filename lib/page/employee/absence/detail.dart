@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:format_indonesia/format_indonesia.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:hrdmagenta/page/employee/absence/map_absence.dart';
+import 'package:hrdmagenta/page/employee/absence/MapsDetail.dart';
 import 'package:hrdmagenta/utalities/constants.dart';
 import 'package:hrdmagenta/utalities/font.dart';
 import 'package:intl/intl.dart';
@@ -33,7 +33,6 @@ class detail_absence extends StatefulWidget {
       this.work_placement,
       this.category});
 
-
   var status,
       employee,
       type,
@@ -58,10 +57,10 @@ class detail_absence extends StatefulWidget {
 }
 
 class _detail_absenceState extends State<detail_absence> {
-  Position _currentPosition;
   String _currentAddress;
+
   final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
-  var _time,_date;
+  var _time, _date, _category;
 
   @override
   Widget build(BuildContext context) {
@@ -258,12 +257,15 @@ class _detail_absenceState extends State<detail_absence> {
                     height: 10,
                   ),
                   Container(
-                    child: (widget.note == "null") ?Text("-",
-                      style: titleAbsence,
-                    ): Text(
-                      "${widget.note}",
-                      style: subtitleAbsence,
-                    ),
+                    child: (widget.note == null)
+                        ? Text(
+                            "-",
+                            style: titleAbsence,
+                          )
+                        : Text(
+                            "${widget.note}",
+                            style: subtitleAbsence,
+                          ),
                   )
                 ],
               ),
@@ -273,7 +275,6 @@ class _detail_absenceState extends State<detail_absence> {
       ),
     );
   }
-
 
   Widget _buildAbsencecategory() {
     return Container(
@@ -461,13 +462,12 @@ class _detail_absenceState extends State<detail_absence> {
 
   Widget _buildgridtext() {
     return Container(
-     height: 20,
-
+      height: 20,
       child: GridView.count(
         crossAxisCount: 2,
-        physics: ClampingScrollPhysics(),
         shrinkWrap: true,
         primary: true,
+        physics: const NeverScrollableScrollPhysics(),
         children: <Widget>[
           //photos
           Container(
@@ -478,11 +478,27 @@ class _detail_absenceState extends State<detail_absence> {
               )),
           //map
 
-          Container(
-            margin: EdgeInsets.only(right: 10, left: 10),
-            child: Text(
-              "Location",
-              style: titleAbsence,
+          InkWell(
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => MapsDetail(
+                            latitude: widget.latitude,
+                            longitude: widget.longitude,
+                            departement_name: widget.work_placement,
+                            address: _currentAddress,
+                            profile_background: "",
+                            firts_name: widget.firts_name_employee,
+                            last_name: widget.last_name_employee,
+                          )));
+            },
+            child: Container(
+              margin: EdgeInsets.only(right: 10, left: 10),
+              child: Text(
+                "Location",
+                style: titleAbsence,
+              ),
             ),
           ),
         ],
@@ -517,10 +533,11 @@ class _detail_absenceState extends State<detail_absence> {
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => Map_absence(
+                builder: (context) => MapsDetail(
                       latitude: widget.latitude,
                       longitude: widget.longitude,
                     )));
+        print("tes");
       },
       child: Container(
           child: Center(
@@ -571,14 +588,13 @@ class _detail_absenceState extends State<detail_absence> {
     );
   }
 
-
   Widget _buildrejected() {
     return Container(
-        child: widget.category != "Check In"
+        child: _category == true
             ? Column(
                 children: <Widget>[
                   Container(
-                    color: Colors.redAccent.withOpacity(0.5),
+                    color: Colors.redAccent,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -610,7 +626,7 @@ class _detail_absenceState extends State<detail_absence> {
                   ),
                   _buildrejectedby(),
                   _buildrejecteddate(),
-                 // _buildrejectedon(),
+                  // _buildrejectedon(),
                   _buildrejectednote()
                 ],
               )
@@ -783,7 +799,7 @@ class _detail_absenceState extends State<detail_absence> {
                     height: 10,
                   ),
                   Container(
-                    child: widget.rejection_note == "null"
+                    child: widget.rejection_note == null
                         ? Text(
                             "-",
                             style: subtitleAbsence,
@@ -805,7 +821,7 @@ class _detail_absenceState extends State<detail_absence> {
   ///approved
   Widget _buildapproved() {
     return Container(
-        child: widget.category != "Check In"
+        child: _category == true
             ? Column(
                 children: <Widget>[
                   Container(
@@ -841,7 +857,7 @@ class _detail_absenceState extends State<detail_absence> {
                   ),
                   _buildapprovedby(),
                   _buildapproveddate(),
-                //  _buildapprovedon(),
+                  //  _buildapprovedon(),
                   _buildapprovalnote()
                 ],
               )
@@ -1014,7 +1030,7 @@ class _detail_absenceState extends State<detail_absence> {
                     height: 10,
                   ),
                   Container(
-                    child: widget.approval_note == "null"
+                    child: widget.approval_note == null
                         ? Text(
                             "-",
                             style: subtitleAbsence,
@@ -1042,12 +1058,11 @@ class _detail_absenceState extends State<detail_absence> {
     print(waktu.yMMMMEEEEd());
 
     _time = DateFormat('hh:mm:ss').format(DateTime.parse(widget.time));
-    // _date=DateFormat(
-    //     "EEEE, d MMMM yyyy","id_ID"
-    // ).format(DateTime.now());
-
-   _date = Waktu(DateTime.parse(widget.date)).yMMMd();
-
-
+    _date = Waktu(DateTime.parse(widget.date)).yMMMd();
+    if ((widget.category == "present") || (widget.category == "Present")) {
+      _category = false;
+    } else {
+      _category = true;
+    }
   }
 }

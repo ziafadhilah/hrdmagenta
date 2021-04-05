@@ -215,6 +215,7 @@ final Widget budget = SvgPicture.asset(
 class Constants{
   static const String Buget ="Budget History";
   static const String Absence ="Absence Status";
+  static const String Leave ="Leave Status";
 
   static const List<String> choicesM=<String>[
     Buget
@@ -222,6 +223,10 @@ class Constants{
   ];
   static const List<String> AbsenceStatus=<String>[
     Absence
+
+  ];
+  static const List<String> LeaveStatus=<String>[
+    Leave
 
   ];
 

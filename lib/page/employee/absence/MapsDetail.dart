@@ -6,22 +6,22 @@ import 'package:hrdmagenta/model/map.dart';
 import 'package:hrdmagenta/utalities/color.dart';
 import 'package:hrdmagenta/utalities/constants.dart';
 import 'package:hrdmagenta/utalities/font.dart';
-import 'package:hrdmagenta/utalities/thema.dart';
+
 import 'package:permission_handler/permission_handler.dart';
 
-class Maps extends StatefulWidget {
+class MapsDetail extends StatefulWidget {
   @override
-  _MapsState createState() => _MapsState();
+  _MapsDetailState createState() => _MapsDetailState();
 
-  Maps({this.address,
-    this.longitude,
-    this.latitude,
-    this.gender,
-    this.last_name,
-    this.firts_name,
-    this.profile_background,
-    this.distance,
-    this.departement_name});
+  MapsDetail(
+      {this.address,
+      this.longitude,
+      this.latitude,
+      this.gender,
+      this.last_name,
+      this.firts_name,
+      this.profile_background,
+      this.departement_name});
 
   var address,
       latitude,
@@ -34,7 +34,7 @@ class Maps extends StatefulWidget {
       departement_name;
 }
 
-class _MapsState extends State<Maps> {
+class _MapsDetailState extends State<MapsDetail> {
   GoogleMapController _controller;
   Position position;
   BitmapDescriptor companyIcon;
@@ -67,7 +67,7 @@ class _MapsState extends State<Maps> {
     var geolocator = Geolocator();
 
     GeolocationStatus geolocationStatus =
-    await geolocator.checkGeolocationPermissionStatus();
+        await geolocator.checkGeolocationPermissionStatus();
 
     switch (geolocationStatus) {
       case GeolocationStatus.denied:
@@ -98,24 +98,20 @@ class _MapsState extends State<Maps> {
 
   Set<Marker> _createMarker() {
     return <Marker>[
-
       ///company marker
-      ///
-
       Marker(
-        markerId: MarkerId('company'),
-        position: LatLng(-6.9526871, 107.6688696),
-        icon: BitmapDescriptor.fromAsset("assets/emplyee_maps.png"),
-      ),
+          markerId: MarkerId('company'),
+          position: LatLng(-6.9526871, 107.6688696),
+    icon: BitmapDescriptor.fromAsset("assets/emplyee_maps.png")),
 
       ///user marker
       Marker(
-        markerId: MarkerId('user'),
-        position: LatLng(widget.latitude,widget.longitude),
-        icon: BitmapDescriptor.fromAsset("assets/office.png"),
-      )
+          markerId: MarkerId('user'),
+          position: LatLng(double.parse(widget.latitude), double.parse(widget.longitude)),
+    icon: BitmapDescriptor.fromAsset("assets/office.png")),
     ].toSet();
   }
+
 
   ///set raidus
   Set<Circle> circles = Set.from([
@@ -156,8 +152,8 @@ class _MapsState extends State<Maps> {
     return GoogleMap(
       mapType: MapType.normal,
       markers: _createMarker(),
-      initialCameraPosition:
-      CameraPosition(target: LatLng(widget.latitude, widget.longitude), zoom: 16.0),
+      initialCameraPosition: CameraPosition(
+          target: LatLng(double.parse(widget.latitude), double.parse(widget.longitude)), zoom: 16.0),
       onMapCreated: (GoogleMapController controller) {
         _controller = controller;
         // _setStyle(controller);
@@ -179,66 +175,55 @@ class _MapsState extends State<Maps> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: Stack(
-          children: <Widget>[
-            _child,
-            AnimatedPositioned(
-              bottom: _pinPillPosition,
-              right: 0,
-              left: 0,
-              duration: Duration(milliseconds: 200),
-              child: Align(
-                alignment: Alignment.bottomCenter,
-                child: Container(
-                  margin: EdgeInsets.all(20),
-                  height: 70,
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.all(Radius.circular(50)),
-                      boxShadow: <BoxShadow>[
-                        BoxShadow(
-                          blurRadius: 20,
-                          offset: Offset.zero,
-                          color: Colors.grey.withOpacity(0.5),
-                        )
-                      ]),
-                ),
-              ),
+      children: <Widget>[
+        _child,
+        AnimatedPositioned(
+          bottom: _pinPillPosition,
+          right: 0,
+          left: 0,
+          duration: Duration(milliseconds: 200),
+          child: Align(
+            alignment: Alignment.bottomCenter,
+            child: Container(
+              margin: EdgeInsets.all(20),
+              height: 70,
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.all(Radius.circular(50)),
+                  boxShadow: <BoxShadow>[
+                    BoxShadow(
+                      blurRadius: 20,
+                      offset: Offset.zero,
+                      color: Colors.grey.withOpacity(0.5),
+                    )
+                  ]),
             ),
-            new Positioned(
-                top: MediaQuery
-                    .of(context)
-                    .size
-                    .height * 0.6,
-                child: new Container(
-                    width: MediaQuery
-                        .of(context)
-                        .size
-                        .width,
-                    height: MediaQuery
-                        .of(context)
-                        .size
-                        .height / 2,
-                    decoration: new BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: new BorderRadius.only(
-                          topLeft: const Radius.circular(380.0),
-                          topRight: const Radius.circular(180.0),
-                        )),
-                    child: _info()))
-          ],
-        ));
+          ),
+        ),
+        new Positioned(
+            top: MediaQuery.of(context).size.height * 0.6,
+            child: new Container(
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height / 2,
+                decoration: new BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: new BorderRadius.only(
+                      topLeft: const Radius.circular(380.0),
+                      topRight: const Radius.circular(180.0),
+                    )),
+                child: _info()))
+      ],
+    ));
   }
 
   Widget _info() {
     return Container(
-
       child: Card(
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(top: Radius.circular(50))),
         child: Container(
           child: Column(
             children: <Widget>[
-
               ///widget profile
               Container(
                 child: Row(
@@ -247,17 +232,17 @@ class _MapsState extends State<Maps> {
                       margin: EdgeInsets.only(top: 20, left: 20, right: 20),
                       child: widget.profile_background == ""
                           ? CircleAvatar(
-                          backgroundColor: Colors.transparent,
-                          radius: 40,
-                          child: widget.gender == "male"
-                              ? male_avatar
-                              : female_avatar)
+                              backgroundColor: Colors.transparent,
+                              radius: 40,
+                              child: widget.gender == "male"
+                                  ? employee_profile
+                                  : employee_profile)
                           : CircleAvatar(
-                        radius: 40,
-                        child: Icon(
-                          Icons.person_pin,
-                        ),
-                      ),
+                              radius: 40,
+                              child: Icon(
+                                Icons.person_pin,
+                              ),
+                            ),
                     ),
                     Container(
                       child: Column(
@@ -336,33 +321,6 @@ class _MapsState extends State<Maps> {
                   ],
                 ),
               ),
-              Container(
-
-                color: Colors.amber.withOpacity(0.5),
-                margin: EdgeInsets.only(left: 20, right: 20, top: 20),
-
-                child: Row(
-                  children: <Widget>[
-                    Container(
-                      margin: EdgeInsets.only(
-                          left: 10, right: 20, top: 5, bottom: 5),
-
-                      child: Icon(Icons.info,
-                        color: Colors.black45,
-                      ),
-
-
-                    ),
-                    Container(
-                      child: widget.distance>50? Text(
-                          "Anda berada di luar radius kantor",style: subtitleMainMenu,
-                      ):Text(
-                        "Anda berada didalam radius kantor",style: subtitleMainMenu,
-                      )
-                    )
-                  ],
-                ),
-              )
 
               ///widget location
             ],
@@ -377,7 +335,6 @@ class _MapsState extends State<Maps> {
     getPermission();
     // _setSourceIcon();
     super.initState();
-    print(widget.longitude);
-    print(widget.latitude);
+
   }
 }

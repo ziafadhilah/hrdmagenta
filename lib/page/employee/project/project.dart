@@ -665,6 +665,16 @@ class _ProjectState extends State<Project> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        iconTheme: IconThemeData(
+          color: Colors.black87, //modify arrow color from here..
+        ),
+        backgroundColor: Colors.white,
+        title: new Text(
+          "Leave",
+          style: TextStyle(color: Colors.black87),
+        ),
+      ),
       body: RefreshIndicator(
         child: Container(
           child: Container(

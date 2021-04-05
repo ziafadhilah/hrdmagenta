@@ -21,6 +21,7 @@ class Checkout extends StatefulWidget {
 class _CheckoutState extends State<Checkout> {
   ///variable
   File _image;
+  bool _disposed = false;
   final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
   Position _currentPosition;
   String _currentAddress;
@@ -170,9 +171,11 @@ class _CheckoutState extends State<Checkout> {
     Timer.periodic(new Duration(seconds: 1), (_) {
       var tgl = new DateTime.now();
       var formatedjam = new DateFormat.Hms().format(tgl);
-      setState(() {
-        time = formatedjam;
-      });
+      if (!_disposed) {
+        setState(() {
+          time = formatedjam;
+        });
+      }
     });
   }
 
@@ -185,8 +188,14 @@ class _CheckoutState extends State<Checkout> {
           height: 20,
           margin: EdgeInsets.only(left: 25),
           child: TextFormField(
+            enabled: false,
             cursorColor: Theme.of(context).cursorColor,
             decoration: InputDecoration(
+              border: InputBorder.none,
+              focusedBorder: InputBorder.none,
+              enabledBorder: InputBorder.none,
+              errorBorder: InputBorder.none,
+              disabledBorder: InputBorder.none,
               icon: Icon(
                 Icons.timer,
                 color: Colors.black12,
@@ -196,8 +205,7 @@ class _CheckoutState extends State<Checkout> {
               labelStyle: TextStyle(
                 color: Colors.black38,
               ),
-              enabledBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Colors.white)),
+
             ),
           ),
         ),
@@ -231,9 +239,9 @@ class _CheckoutState extends State<Checkout> {
                 style: TextStyle(color: Colors.black),
 
                 items: <String>[
-                  'Check Out',
-                  'Sick',
-                  'Permission',
+                  'present',
+                  'sick',
+                  'permission',
                 ].map<DropdownMenuItem<String>>((String value) {
                   return DropdownMenuItem<String>(
                     value: value,
@@ -241,7 +249,7 @@ class _CheckoutState extends State<Checkout> {
                   );
                 }).toList(),
                 hint: Text(
-                  "Check Out",
+                  "present",
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: 16,
@@ -307,7 +315,7 @@ class _CheckoutState extends State<Checkout> {
                         ),
                         if (_currentPosition != null && _currentAddress != null)
                           Container(
-                            width: MediaQuery.of(context).size.height * 0.4,
+                            width: MediaQuery.of(context).size.width - 100,
                             child: Text(
                               "$_currentAddress ",
                               style: TextStyle(color: Colors.black38),
@@ -353,7 +361,7 @@ class _CheckoutState extends State<Checkout> {
   Future upload() async {
     var date = DateFormat("yyyy:MM:dd").format(DateTime.now());
     if (_category_absent == null) {
-      _category_absent = "Check Out";
+      _category_absent = "present";
     }
 
     validator.validation_checkout(
@@ -368,6 +376,7 @@ class _CheckoutState extends State<Checkout> {
         _departement_name,
         _distance,
         _category_absent);
+    //Toast.show("$_category_absent", context);
 
     // validator.validation_checkout(
 // context,
@@ -490,9 +499,10 @@ class _CheckoutState extends State<Checkout> {
 
   @override
   void dispose() {
+    _disposed = true;
     super.dispose();
-    //time.cancel();
   }
+
 
   @override
   void initState() {

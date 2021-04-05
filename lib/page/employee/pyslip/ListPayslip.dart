@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hrdmagenta/page/admin/l/absence/detail.dart';
-import 'package:hrdmagenta/page/employee/pyslip/detailpyslip.dart';
+import 'package:hrdmagenta/page/employee/pyslip/DetailPayslip.dart';
 import 'package:hrdmagenta/utalities/color.dart';
 import 'package:hrdmagenta/utalities/constants.dart';
 import 'package:hrdmagenta/utalities/font.dart';
@@ -17,6 +17,11 @@ class _PyslipListPageState extends State<PyslipListPage> {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
+
+
+          leading: BackButton(
+            onPressed: () => Navigator.pop(context, false),
+          ),
           iconTheme: IconThemeData(
             color: Colors.black87, //modify arrow color from here..
           ),
@@ -34,7 +39,8 @@ class _PyslipListPageState extends State<PyslipListPage> {
                 child: ListView.builder(
                   itemCount: 1,
                   itemBuilder:(contex,index){
-                    return _buildNopyslip();
+                    //return _buildNopyslip();
+                    return _buildpyslip(index);
 
                   }
 

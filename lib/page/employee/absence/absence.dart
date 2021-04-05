@@ -105,10 +105,21 @@ class _absenceState extends State<absence> {
                                                   style: subtitleMainMenu),
                                             ],
                                           ),
-                                          Text("22 years ago",
-                                              style: TextStyle(
-                                                  fontSize: 15,
-                                                  color: Colors.black26)),
+                                          Container(
+                                            child: _absence['data'][index]
+                                                        ['type'] ==
+                                                    "check in"
+                                                ? Text(
+                                                    "${_absence['data'][index]['clock_in']}",
+                                                    style: TextStyle(
+                                                        fontSize: 15,
+                                                        color: Colors.black26))
+                                                : Text(
+                                                    "${_absence['data'][index]['clock_out']}",
+                                                    style: TextStyle(
+                                                        fontSize: 15,
+                                                        color: Colors.black26)),
+                                          ),
                                           InkWell(
                                             onTap: () {
                                               if (_absence['data'][index]
@@ -190,19 +201,25 @@ class _absenceState extends State<absence> {
                                                                       [index]
                                                                   ['category'],
                                                               work_placement: _absence[
-                                                                          'data'][index]
+                                                                              'data']
+                                                                          [
+                                                                          index]
                                                                       [
                                                                       'employee']
                                                                   [
                                                                   'work_placement'],
                                                               firts_name_employee:
-                                                                  _absence['data'][index]
+                                                                  _absence['data']
+                                                                              [
+                                                                              index]
                                                                           [
                                                                           'employee']
                                                                       [
                                                                       'first_name'],
                                                               last_name_employee:
-                                                                  _absence['data'][index]
+                                                                  _absence['data']
+                                                                              [
+                                                                              index]
                                                                           [
                                                                           'employee']
                                                                       [
@@ -285,24 +302,29 @@ class _absenceState extends State<absence> {
                                                                       [index]
                                                                   ['category'],
                                                               work_placement: _absence[
-                                                                          'data'][index]
+                                                                              'data']
+                                                                          [
+                                                                          index]
                                                                       [
                                                                       'employee']
                                                                   [
                                                                   'work_placement'],
                                                               firts_name_employee:
-                                                                  _absence['data'][index]
+                                                                  _absence['data']
+                                                                              [
+                                                                              index]
                                                                           [
                                                                           'employee']
                                                                       [
                                                                       'first_name'],
                                                               last_name_employee:
-                                                                  _absence['data'][index]
+                                                                  _absence['data']
+                                                                              [
+                                                                              index]
                                                                           [
                                                                           'employee']
                                                                       [
                                                                       'last_name'],
-
                                                             )));
                                               }
                                             },

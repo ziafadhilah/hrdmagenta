@@ -1,42 +1,53 @@
+
 import 'package:flutter/material.dart';
-import 'package:hrdmagenta/page/employee/project/status_finished.dart';
-import 'package:hrdmagenta/page/employee/project/project.dart';
+import 'package:hrdmagenta/page/admin/l/leave/offwork_status.dart';
 
-import 'package:hrdmagenta/utalities/constants.dart';
+class TabsMenuOffworkAdmin extends StatelessWidget {
 
-class Tabsproject extends StatelessWidget {
   List<Widget> containers = [
-    Project(
-      status: "approved",
+
+   offwork_status_admin(
+     type: "pending",
+
+   ),
+    offwork_status_admin(
+      type: "rejected",
     ),
-    Project(
-      status: "closed",
+    offwork_status_admin(
+      type: "approved",
     ),
+
   ];
 
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 2,
+      length: 3,
       child: Scaffold(
         appBar: AppBar(
           iconTheme: IconThemeData(
             color: Colors.black87, //modify arrow color from here..
           ),
+
           backgroundColor: Colors.white,
-          title: Text(
-            'Project',
+          title: Text('Leave',
             style: TextStyle(color: Colors.black87),
+
           ),
           bottom: TabBar(
             labelColor: Colors.black87,
             tabs: <Widget>[
+
               Tab(
-                text: 'IN PROGRESS',
+                text: 'PENDING',
               ),
               Tab(
-                text: 'CLOSED',
+                text: 'REJECTED',
               ),
+              Tab(
+                text: 'APPROVED',
+              ),
+
             ],
           ),
         ),

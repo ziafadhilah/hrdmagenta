@@ -75,13 +75,6 @@ final navigatorKey = GlobalKey<NavigatorState>();
     if (choice==Constants.Absence){
       Navigator.of(_context).pushNamed("tabmenu_absence_status_employee-page");
 
-      // Navigator.push(context, MaterialPageRoute(
-      //     builder: (context) =>   TabsMenuAbsencestatus()
-      // ));
-
-
-
-
     }
 
   }

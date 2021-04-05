@@ -5,9 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hrdmagenta/page/admin/l/absence/tabmenu_absence.dart';
 import 'package:hrdmagenta/page/admin/l/employees/list.dart';
-import 'package:hrdmagenta/page/employee/absence/tabmenu_absence.dart';
-import 'package:hrdmagenta/page/employee/budget/tabmenu_budget.dart';
-import 'package:hrdmagenta/page/employee/project/tabmenu_project.dart';
 import 'package:hrdmagenta/services/api_clien.dart';
 import 'package:hrdmagenta/utalities/color.dart';
 import 'package:hrdmagenta/utalities/constants.dart';
@@ -37,7 +34,8 @@ class _HomeAdminState extends State<HomeAdmin> {
             // Navigator.push(context, MaterialPageRoute(
             //     builder: (context) => Tabstask()
             // ));
-            //sendNotification("pesan", "title");
+            Navigator.pushNamed(context, "tabmenu_offwork_admin-page");
+
           },
           child: Card(
             elevation: 1,
@@ -48,7 +46,7 @@ class _HomeAdminState extends State<HomeAdmin> {
           ),
         ),
       ),
-      Text("Off Work", style: subtitleMainMenu)
+      Text("Leave", style: subtitleMainMenu)
     ]);
   }
 
@@ -85,15 +83,16 @@ class _HomeAdminState extends State<HomeAdmin> {
         height: 70,
         child: InkWell(
           onTap: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => Tabsappbudget()));
+            // Navigator.push(context,
+            //     MaterialPageRoute(builder: (context) => Tabsappbudget()));
+            Navigator.pushNamed(context, "pyslip_list_employee-page");
           },
           child: Card(
             elevation: 1,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10.0),
             ),
-            child: Container(margin: EdgeInsets.all(15.0), child: budget),
+            child: Container(margin: EdgeInsets.all(15.0), child: pyslip),
           ),
         ),
       ),
