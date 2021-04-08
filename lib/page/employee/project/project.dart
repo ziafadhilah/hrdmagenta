@@ -665,16 +665,7 @@ class _ProjectState extends State<Project> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        iconTheme: IconThemeData(
-          color: Colors.black87, //modify arrow color from here..
-        ),
-        backgroundColor: Colors.white,
-        title: new Text(
-          "Leave",
-          style: TextStyle(color: Colors.black87),
-        ),
-      ),
+
       body: RefreshIndicator(
         child: Container(
           child: Container(
@@ -707,9 +698,13 @@ class _ProjectState extends State<Project> {
       setState(() {
         _loading = true;
       });
+      print("tes");
       http.Response response = await http.get(
-          "http://${base_url}/api/employees/$user_id/events?status=${widget.status}");
+          "$base_url/api/employees/$user_id/events?status=${widget.status}");
       _projects = jsonDecode(response.body);
+
+      print(_projects);
+
 
       setState(() {
         _loading = false;

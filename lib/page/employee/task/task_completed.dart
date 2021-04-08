@@ -179,7 +179,7 @@ class _task_complatedState extends State<task_complated> {
         _loading = true;
       });
       http.Response response = await http
-          .get("http://${base_url}/api/employees/1/events?status=approved");
+          .get("$base_url/api/employees/1/events?status=approved");
       _task = jsonDecode(response.body);
 
       setState(() {

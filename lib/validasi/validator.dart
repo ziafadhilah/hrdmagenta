@@ -41,9 +41,9 @@ class Validasi {
 
   ///validasi checkin
   void validation_checkin(BuildContext context, var photos, remark, lat, long,
-      employee_id, date, time, departement_name, distance, category) {
+      employee_id, date, time, departement_name, distance,office_latitude,office_longitude, category) {
     if (departement_name == "office") {
-      if (category == "Check In") {
+      if (category == "present") {
         if (distance < 20) {
           if (photos.isEmpty) {
             Toast.show("Ambil terlebih dahulu photo anda", context,
@@ -56,7 +56,7 @@ class Validasi {
                 gravity: Toast.BOTTOM);
           } else {
             services.checkin(context, photos, remark, employee_id, lat, long,
-                date, time, "approved", category);
+                date, time, "approved",office_latitude,office_longitude, category);
           }
         } else {
           Toast.show("Anda di luar radius perusahaan", context,
@@ -74,11 +74,11 @@ class Validasi {
               gravity: Toast.BOTTOM);
         } else {
           services.checkin(context, photos, remark, employee_id, lat, long,
-              date, time, "pending", category);
+              date, time, "pending",office_latitude,office_longitude, category);
         }
       }
     } else {
-      if ((category == "Check In")) {
+      if ((category == "present")) {
         if (photos.isEmpty) {
           Toast.show("Ambil terlebih dahulu photo anda", context,
               duration: 5, gravity: Toast.BOTTOM);
@@ -90,7 +90,7 @@ class Validasi {
               gravity: Toast.BOTTOM);
         } else {
           services.checkin(context, photos, remark, employee_id, lat, long,
-              date, time, "approved", category);
+              date, time, "approved",office_latitude,office_longitude, category);
         }
       } else {
         if (photos.isEmpty) {
@@ -104,7 +104,7 @@ class Validasi {
               gravity: Toast.BOTTOM);
         } else {
           services.checkin(context, photos, remark, employee_id, lat, long,
-              date, time, "pending", category);
+              date, time, "pending", office_latitude,office_longitude ,category);
         }
       }
     }
@@ -112,9 +112,9 @@ class Validasi {
 
   ///check out
   void validation_checkout(BuildContext context, var photos, remark, lat, long,
-      employee_id, date, time, departement_name, distance, category) {
+      employee_id, date, time, departement_name, distance, office_latitude,office_longitude, category) {
     if (departement_name == "office") {
-      if (category == "Check Out") {
+      if (category == "present") {
         if (distance < 20) {
           if (photos.isEmpty) {
             Toast.show("Ambil terlebih dahulu photo anda", context,
@@ -127,7 +127,7 @@ class Validasi {
                 gravity: Toast.BOTTOM);
           } else {
             services.checkout(context, photos, remark, employee_id, lat, long,
-                date, time, "approved", category);
+                date, time, "approved",office_latitude,office_longitude, category);
           }
         } else {
           Toast.show("Anda di luar radius perusahaan", context,
@@ -145,11 +145,11 @@ class Validasi {
               gravity: Toast.BOTTOM);
         } else {
           services.checkout(context, photos, remark, employee_id, lat, long,
-              date, time, "pending", category);
+              date, time, "pending", office_latitude,office_longitude,category);
         }
       }
     } else {
-      if ((category == "Check Out")) {
+      if ((category == "present")) {
         if (photos.isEmpty) {
           Toast.show("Ambil terlebih dahulu photo anda", context,
               duration: 5, gravity: Toast.BOTTOM);
@@ -161,7 +161,7 @@ class Validasi {
               gravity: Toast.BOTTOM);
         } else {
           services.checkout(context, photos, remark, employee_id, lat, long,
-              date, time, "approved", category);
+              date, time, "approved",office_latitude,office_longitude, category);
         }
       } else {
         if (photos.isEmpty) {
@@ -175,7 +175,7 @@ class Validasi {
               gravity: Toast.BOTTOM);
         } else {
           services.checkout(context, photos, remark, employee_id, lat, long,
-              date, time, "pending", category);
+              date, time, "pending",office_latitude,office_longitude, category);
         }
       }
     }

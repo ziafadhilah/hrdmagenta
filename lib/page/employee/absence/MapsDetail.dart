@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
@@ -21,6 +23,8 @@ class MapsDetail extends StatefulWidget {
       this.last_name,
       this.firts_name,
       this.profile_background,
+      this.office_latitude,
+      this.office_longitude,
       this.departement_name});
 
   var address,
@@ -31,6 +35,8 @@ class MapsDetail extends StatefulWidget {
       last_name,
       profile_background,
       distance,
+      office_latitude,
+      office_longitude,
       departement_name;
 }
 
@@ -38,6 +44,7 @@ class _MapsDetailState extends State<MapsDetail> {
   GoogleMapController _controller;
   Position position;
   BitmapDescriptor companyIcon;
+  Set<Circle> _circles = HashSet<Circle>();
 
   Widget _child = Center(
     child: Text('Loading...'),
@@ -101,28 +108,28 @@ class _MapsDetailState extends State<MapsDetail> {
       ///company marker
       Marker(
           markerId: MarkerId('company'),
-          position: LatLng(-6.9526871, 107.6688696),
-    icon: BitmapDescriptor.fromAsset("assets/emplyee_maps.png")),
+          position: LatLng(double.parse(widget.office_latitude), double.parse(widget.office_longitude)),
+          icon: BitmapDescriptor.fromAsset("assets/office.png")),
 
       ///user marker
       Marker(
           markerId: MarkerId('user'),
-          position: LatLng(double.parse(widget.latitude), double.parse(widget.longitude)),
-    icon: BitmapDescriptor.fromAsset("assets/office.png")),
+          position: LatLng(
+              double.parse(widget.latitude), double.parse(widget.longitude)),
+          icon: BitmapDescriptor.fromAsset("assets/emplyee_maps.png")),
     ].toSet();
   }
 
-
   ///set raidus
-  Set<Circle> circles = Set.from([
-    Circle(
-        circleId: CircleId("1"),
-        center: LatLng(-6.9526871, 107.6688696),
-        radius: 20,
-        strokeColor: baseColor1,
-        fillColor: baseColor.withOpacity(0.25),
-        strokeWidth: 1)
-  ]);
+  // Set<Circle> circles = Set.from([
+  //   Circle(
+  //       circleId: CircleId("1"),
+  //       center: LatLng(-6.9529516, 107.6684227),
+  //       radius: 20,
+  //       strokeColor: baseColor1,
+  //       fillColor: baseColor.withOpacity(0.25),
+  //       strokeWidth: 1)
+  // ]);
 
   void showToast(message) {
     Fluttertoast.showToast(
@@ -153,12 +160,14 @@ class _MapsDetailState extends State<MapsDetail> {
       mapType: MapType.normal,
       markers: _createMarker(),
       initialCameraPosition: CameraPosition(
-          target: LatLng(double.parse(widget.latitude), double.parse(widget.longitude)), zoom: 16.0),
+          target: LatLng(
+              double.parse(widget.latitude), double.parse(widget.longitude)),
+          zoom: 16.0),
       onMapCreated: (GoogleMapController controller) {
         _controller = controller;
         // _setStyle(controller);
 
-        _setStyle(controller);
+       // _setStyle(controller);
       },
       tiltGesturesEnabled: false,
       onTap: (LatLng location) {
@@ -167,7 +176,7 @@ class _MapsDetailState extends State<MapsDetail> {
         });
       },
       onCameraMove: null,
-      circles: circles,
+      circles: _circles,
     );
   }
 
@@ -330,11 +339,25 @@ class _MapsDetailState extends State<MapsDetail> {
     );
   }
 
+  void _setCircles() {
+    _circles.add(
+      Circle(
+          circleId: CircleId("0"),
+          center: LatLng(double.parse(widget.office_latitude), double.parse(widget.office_longitude)),
+          // center: LatLng(double.parse(widget.latmainoffice),
+          //     double.parse(widget.longMainoffice)),
+          radius: 20,
+          strokeColor: baseColor1,
+          fillColor: baseColor.withOpacity(0.25),
+          strokeWidth: 1),
+    );
+  }
+
   @override
   void initState() {
     getPermission();
     // _setSourceIcon();
     super.initState();
-
+    _setCircles();
   }
 }

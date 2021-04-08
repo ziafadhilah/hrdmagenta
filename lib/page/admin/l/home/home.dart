@@ -1,8 +1,12 @@
 import 'dart:convert';
 
+import 'package:double_back_to_close_app/double_back_to_close_app.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:hrdmagenta/model/notifacations.dart';
+import 'package:hrdmagenta/page/admin/l/absence/DetailAbsenceNotifAdmin.dart';
 import 'package:hrdmagenta/page/admin/l/absence/tabmenu_absence.dart';
 import 'package:hrdmagenta/page/admin/l/employees/list.dart';
 import 'package:hrdmagenta/services/api_clien.dart';
@@ -11,6 +15,7 @@ import 'package:hrdmagenta/utalities/constants.dart';
 import 'package:hrdmagenta/utalities/font.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:http/http.dart' as http;
+import 'package:toast/toast.dart';
 
 class HomeAdmin extends StatefulWidget {
   @override
@@ -19,8 +24,14 @@ class HomeAdmin extends StatefulWidget {
 
 class _HomeAdminState extends State<HomeAdmin> {
   Map _employee, _projects;
+  Map _absence;
   bool _isLoading_employee = true;
   bool _isLoading_project = true;
+  bool _isLoading_absence = true;
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
+  final List<Notif> ListNotif = [];
+  var _absenPending;
 
   final GlobalKey<ScaffoldState> scaffoldState = new GlobalKey<ScaffoldState>();
 
@@ -35,7 +46,6 @@ class _HomeAdminState extends State<HomeAdmin> {
             //     builder: (context) => Tabstask()
             // ));
             Navigator.pushNamed(context, "tabmenu_offwork_admin-page");
-
           },
           child: Card(
             elevation: 1,
@@ -60,12 +70,41 @@ class _HomeAdminState extends State<HomeAdmin> {
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => TabsAbsenceAdmin()));
           },
-          child: Card(
-            elevation: 1,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10.0),
-            ),
-            child: Container(margin: EdgeInsets.all(15.0), child: absent),
+          child: Stack(
+            children: [
+              Card(
+                elevation: 1,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                child: Container(margin: EdgeInsets.all(15.0), child: absent),
+              ),
+              Container(
+                child: _isLoading_absence == true
+                    ? Text("")
+                    : Container(
+                        margin: EdgeInsets.only(top: 15, right: 10),
+                        width: double.maxFinite,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Container(
+                              child: _absence['data'].length == 0
+                                  ? Text("")
+                                  : CircleAvatar(
+                                      radius: 10,
+                                      backgroundColor: Colors.redAccent,
+                                      child: Text(
+                                        "${_absence['data'].length}",
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                    ),
+                            ),
+                          ],
+                        ),
+                      ),
+              )
+            ],
           ),
         ),
       ),
@@ -175,8 +214,8 @@ class _HomeAdminState extends State<HomeAdmin> {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: <Widget>[
                             _buildMenuproject(),
-                            _buildMenuOffwork(),
                             _buildMenuaabsence(),
+                            _buildMenuOffwork(),
                             _buildMenupayslip(),
                           ],
                         ),
@@ -332,80 +371,85 @@ class _HomeAdminState extends State<HomeAdmin> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: scaffoldState,
-      body: RefreshIndicator(
-        child: AnnotatedRegion<SystemUiOverlayStyle>(
-          value: SystemUiOverlayStyle.light,
-          child: GestureDetector(
-            onTap: () => FocusScope.of(context).unfocus(),
-            child: Stack(
-              children: <Widget>[
-                Container(
-                    height: double.infinity,
-                    width: double.infinity,
-                    color: Colors.white),
-                Container(
-                  child: SingleChildScrollView(
-                    physics: AlwaysScrollableScrollPhysics(),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Container(
-                          child: Stack(
-                            children: <Widget>[
-                              Container(
-                                width: double.infinity,
-                                color: baseColor,
-                                height: 230,
-                                child: Container(
-                                  margin: EdgeInsets.only(left: 10, top: 75),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      Text(
-                                        "employees",
-                                        style: TextStyle(
-                                            color: Colors.white, fontSize: 16),
-                                      ),
-                                    ],
+      body: DoubleBackToCloseApp(
+        snackBar: const SnackBar(
+          content: Text('Tap back again to leave'),
+        ),
+        child: RefreshIndicator(
+          child: AnnotatedRegion<SystemUiOverlayStyle>(
+            value: SystemUiOverlayStyle.light,
+            child: GestureDetector(
+              onTap: () => FocusScope.of(context).unfocus(),
+              child: Stack(
+                children: <Widget>[
+                  Container(
+                      height: double.infinity,
+                      width: double.infinity,
+                      color: Colors.white),
+                  Container(
+                    child: SingleChildScrollView(
+                      physics: AlwaysScrollableScrollPhysics(),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Container(
+                            child: Stack(
+                              children: <Widget>[
+                                Container(
+                                  width: double.infinity,
+                                  color: baseColor,
+                                  height: 230,
+                                  child: Container(
+                                    margin: EdgeInsets.only(left: 10, top: 75),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: <Widget>[
+                                        Text(
+                                          "employees",
+                                          style: TextStyle(
+                                              color: Colors.white, fontSize: 16),
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
-                              ),
 
-                              ///wodget employee
-                              //_buildemployee(),
-                              _listEmployee(),
-                            ],
+                                ///wodget employee
+                                //_buildemployee(),
+                                _listEmployee(),
+                              ],
+                            ),
                           ),
-                        ),
-                        SizedBox(
-                          height: 15,
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(left: 10, top: 5),
-                          child: Text("Main Menu",
-                              textAlign: TextAlign.left, style: titleMainMenu),
-                        ),
-                        _buildCardMenu(),
-                        SizedBox(
-                          height: 15,
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(left: 10, top: 5),
-                          child: Text("Project",
-                              textAlign: TextAlign.left, style: titleMainMenu),
-                        ),
-                        _buildproject(),
-                      ],
+                          SizedBox(
+                            height: 15,
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(left: 10, top: 5),
+                            child: Text("Main Menu",
+                                textAlign: TextAlign.left, style: titleMainMenu),
+                          ),
+                          _buildCardMenu(),
+                          SizedBox(
+                            height: 15,
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(left: 10, top: 5),
+                            child: Text("Project",
+                                textAlign: TextAlign.left, style: titleMainMenu),
+                          ),
+                          _buildproject(),
+                        ],
+                      ),
                     ),
-                  ),
-                )
-              ],
+                  )
+                ],
+              ),
             ),
           ),
+          onRefresh: dataProject,
         ),
-        onRefresh: dataProject,
       ),
     );
   }
@@ -416,8 +460,7 @@ class _HomeAdminState extends State<HomeAdmin> {
       setState(() {
         _isLoading_employee = true;
       });
-      http.Response response =
-          await http.get("http://${base_url}/api/employees");
+      http.Response response = await http.get("$base_url/api/employees");
       _employee = jsonDecode(response.body);
 
       setState(() {
@@ -434,11 +477,27 @@ class _HomeAdminState extends State<HomeAdmin> {
         _isLoading_project = true;
       });
       http.Response response =
-          await http.get("http://${base_url}/api/events?status=approved");
+          await http.get("$base_url/api/events?status=approved");
       _projects = jsonDecode(response.body);
 
       setState(() {
         _isLoading_project = false;
+      });
+    } catch (e) {}
+  }
+
+  //ge data from api--------------------------------
+  Future _dataAbsence() async {
+    try {
+      setState(() {
+        _isLoading_absence = true;
+      });
+
+      http.Response response =
+          await http.get("$base_url/api/attendances?status=pending");
+      _absence = jsonDecode(response.body);
+      setState(() {
+        _isLoading_absence = false;
       });
     } catch (e) {}
   }
@@ -468,30 +527,106 @@ class _HomeAdminState extends State<HomeAdmin> {
     );
   }
 
-  @override
-  Future<void> sendNotification(String body, String title) async {
-    String to = await FirebaseMessaging().getToken();
-    String serverToken =
-        'AAAAd5a4eRw:APA91bGlFuCRH2hAfwDLiUNdFeiYCXcnwyszIj0xwa_RF4IILoZjJiJ3NqbRfab6xI4Wn3DyfvdVMmrhVjUsmAzHRPClh6R5gb3aLEsFpZTm-ZAyDL28BFX6GrIQGnhpcnMfA6wTmdJJ';
-    await http.post('https://fcm.googleapis.com/fcm/send',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'key=$serverToken'
-        },
-        body: jsonEncode({
-          'notification': {'title': title, 'body': body},
-          'priority': 'high',
-          'data': {'click_action': 'FLUTTER_NOTIFICATION_CLICK'},
-          'to': '$to'
-        }));
+ // @override
+  // Future<void> sendNotification() async {
+  //   String to = await FirebaseMessaging().getToken();
+  //   print(to);
+  //   String serverToken =
+  //       'AAAAd5a4eRw:APA91bGlFuCRH2hAfwDLiUNdFeiYCXcnwyszIj0xwa_RF4IILoZjJiJ3NqbRfab6xI4Wn3DyfvdVMmrhVjUsmAzHRPClh6R5gb3aLEsFpZTm-ZAyDL28BFX6GrIQGnhpcnMfA6wTmdJJ';
+  //   await http.post('https://fcm.googleapis.com/fcm/send',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //         'Authorization': 'key=$serverToken'
+  //       },
+  //       body: jsonEncode({
+  //         'notification': {'title': title, 'body': body},
+  //         'priority': 'high',
+  //         'data': {'click_action': 'FLUTTER_NOTIFICATION_CLICK'},
+  //         'to': '$to'
+  //       }));
+  // }
+  //notification
+  //notification
+  showNotifcation(String title, String body, String data) async {
+    var android = new AndroidNotificationDetails(
+        'chanel id', 'chanel name', 'CHANEL DESCRIPTION');
+    var ios = new IOSNotificationDetails();
+    var platform = new NotificationDetails(android: android, iOS: ios);
+
+    await flutterLocalNotificationsPlugin.show(0, '$title', '$body', platform,
+        payload: "$data");
   }
 
+
+  Future onSelectNotification(var payload) {
+    debugPrint("payload : ${payload}");
+
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => detail_absence_admin_notif(
+              id: payload,
+
+
+            )));
+  }
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+
+    _dataAbsence();
     _dataEmployee();
     dataProject();
-    print("tes");
+
+    _firebaseMessaging.configure(
+      onMessage: (Map<String, dynamic> message) async {
+        print("onMessage: ${message['notification']['data']}");
+        final notif = message['notification'];
+        final data = message['data'];
+
+        setState(() {
+          ListNotif.add(
+            Notif(
+                title: notif['title'],
+                body: notif['body'],
+                id: data['id'],
+                screen: data['id']),
+
+          );
+        });
+        setState(() {
+          showNotifcation(notif['title'], notif['body'], data['id']);
+        });
+      },
+      onLaunch: (Map<String, dynamic> message) async {
+        print("onLaunch: $message");
+
+        final notification = message['data'];
+        setState(() {
+          ListNotif.add(Notif(
+            title: '${notification['title']}',
+
+            body: '${notification['body']}',
+
+
+          ));
+        });
+      },
+      onResume: (Map<String, dynamic> message) async {
+        print("onResume: $message");
+      },
+    );
+    _firebaseMessaging.requestNotificationPermissions(
+        const IosNotificationSettings(sound: true, badge: true, alert: true));
+    super.initState();
+    flutterLocalNotificationsPlugin = new FlutterLocalNotificationsPlugin();
+    var android = new AndroidInitializationSettings('@mipmap/ic_launcher');
+    var iOS = new IOSInitializationSettings();
+    var initSetttings =
+    new InitializationSettings(android: android, iOS: iOS);
+    flutterLocalNotificationsPlugin.initialize(initSetttings,
+        onSelectNotification: onSelectNotification);
   }
+  
 }

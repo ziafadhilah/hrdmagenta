@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
@@ -6,6 +7,8 @@ import 'package:format_indonesia/format_indonesia.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hrdmagenta/page/employee/absence/MapsDetail.dart';
+import 'package:hrdmagenta/page/employee/absence/photoview.dart';
+import 'package:hrdmagenta/services/api_clien.dart';
 import 'package:hrdmagenta/utalities/constants.dart';
 import 'package:hrdmagenta/utalities/font.dart';
 import 'package:intl/intl.dart';
@@ -31,6 +34,8 @@ class detail_absence extends StatefulWidget {
       this.firts_name_employee,
       this.last_name_employee,
       this.work_placement,
+      this.office_latitude,
+      this.office_longitude,
       this.category});
 
   var status,
@@ -51,6 +56,8 @@ class detail_absence extends StatefulWidget {
       firts_name_employee,
       last_name_employee,
       work_placement,
+      office_latitude,
+      office_longitude,
       category;
 
   _detail_absenceState createState() => _detail_absenceState();
@@ -372,7 +379,6 @@ class _detail_absenceState extends State<detail_absence> {
     return Container(
       margin: EdgeInsets.only(left: 5),
       width: double.infinity,
-      height: 80,
       child: Card(
         child: Row(
           children: <Widget>[
@@ -384,7 +390,7 @@ class _detail_absenceState extends State<detail_absence> {
               ),
             ),
             Container(
-              margin: EdgeInsets.only(left: 10),
+              margin: EdgeInsets.only(left: 10, bottom: 10),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -398,13 +404,18 @@ class _detail_absenceState extends State<detail_absence> {
                   SizedBox(
                     height: 10,
                   ),
-                  Container(
-                    child: _currentAddress == null
-                        ? Text("")
-                        : Text(
-                            "$_currentAddress",
-                            style: subtitleAbsence,
-                          ),
+                  Column(
+                    children: [
+                      Container(
+                        width: MediaQuery.of(context).size.width - 100,
+                        child: _currentAddress == null
+                            ? Text("")
+                            : Text(
+                                "$_currentAddress ",
+                                style: subtitleAbsence,
+                              ),
+                      ),
+                    ],
                   )
                 ],
               ),
@@ -491,6 +502,8 @@ class _detail_absenceState extends State<detail_absence> {
                             profile_background: "",
                             firts_name: widget.firts_name_employee,
                             last_name: widget.last_name_employee,
+                            office_latitude: widget.office_latitude,
+                            office_longitude: widget.office_longitude,
                           )));
             },
             child: Container(
@@ -536,56 +549,107 @@ class _detail_absenceState extends State<detail_absence> {
                 builder: (context) => MapsDetail(
                       latitude: widget.latitude,
                       longitude: widget.longitude,
+                      departement_name: widget.work_placement,
+                      address: _currentAddress,
+                      profile_background: "",
+                      firts_name: widget.firts_name_employee,
+                      last_name: widget.last_name_employee,
+                      office_latitude: widget.office_latitude,
+                      office_longitude: widget.office_longitude,
                     )));
-        print("tes");
       },
-      child: Container(
-          child: Center(
-        child: SizedBox(
-          width: 300.0,
-          height: 300.0,
-          child: GoogleMap(
-              initialCameraPosition: CameraPosition(
-                  target: LatLng(double.parse(widget.latitude),
-                      double.parse(widget.longitude)),
-                  zoom: 11.0),
-              markers: Set<Marker>.of(<Marker>[
-                Marker(
-                  markerId: MarkerId("1"),
-                  position: LatLng(double.parse(widget.latitude),
-                      double.parse(widget.longitude)),
-                ),
-              ]),
-              gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>[
-                Factory<OneSequenceGestureRecognizer>(
-                  () => ScaleGestureRecognizer(),
-                ),
-              ].toSet()),
-        ),
-      )),
+      child: InkWell(
+        onTap: () {
+          print("tes");
+        },
+        child: Container(
+            color: Colors.redAccent,
+            child: SizedBox(
+              width: 300.0,
+              height: 300.0,
+              child: Stack(
+                children: [
+                  GoogleMap(
+                      initialCameraPosition: CameraPosition(
+                          target: LatLng(double.parse(widget.latitude),
+                              double.parse(widget.longitude)),
+                          zoom: 11.0),
+                      markers: Set<Marker>.of(<Marker>[
+                        Marker(
+                          markerId: MarkerId("1"),
+                          position: LatLng(double.parse(widget.latitude),
+                              double.parse(widget.longitude)),
+                        ),
+                      ]),
+                      gestureRecognizers:
+                          <Factory<OneSequenceGestureRecognizer>>[
+                        Factory<OneSequenceGestureRecognizer>(
+                          () => ScaleGestureRecognizer(),
+                        ),
+                      ].toSet()),
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => MapsDetail(
+                                    latitude: widget.latitude,
+                                    longitude: widget.longitude,
+                                    departement_name: widget.work_placement,
+                                    address: _currentAddress,
+                                    profile_background: "",
+                                    firts_name: widget.firts_name_employee,
+                                    last_name: widget.last_name_employee,
+                                    office_latitude: widget.office_latitude,
+                                    office_longitude: widget.office_longitude,
+                                  )));
+                    },
+                    child: Container(
+                      width: 300,
+                      height: 200,
+                      color: Colors.transparent,
+                    ),
+                  )
+                ],
+              ),
+            )),
+      ),
     );
   }
 
   Widget _buildphotos() {
     return Hero(
-      tag: "avatar-1",
-      child: Container(
-        margin: EdgeInsets.only(left: 10),
-        color: Colors.black87,
-        height: double.infinity,
-        child: InkWell(
-          onTap: () {
-            Navigator.pushNamed(context, "photoview_employee-page");
-          },
-          child: Image.asset(
-            "assets/absen.jpeg",
-            width: double.infinity,
+        tag: "avatar-1",
+        child: Container(
+            margin: EdgeInsets.only(left: 10),
+            color: Colors.black87,
             height: double.infinity,
-            fit: BoxFit.fill,
-          ),
-        ), // tambahkan property berikut
-      ),
-    );
+            child: InkWell(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => PhotoViewPage(
+                            image: widget.image,
+                          )),
+                );
+              },
+              child: widget.image == null
+                  ? Image.asset(
+                      "assets/absen.jpeg",
+                      width: double.infinity,
+                      height: double.infinity,
+                      fit: BoxFit.fill,
+                    )
+                  : CachedNetworkImage(
+                      imageUrl: "$base_url/images/${widget.image}",
+                      fit: BoxFit.fill,
+                      placeholder: (context, url) =>
+                          Center(child: new CircularProgressIndicator()),
+                      errorWidget: (context, url, error) =>
+                          new Icon(Icons.error),
+                    ),
+            )));
   }
 
   Widget _buildrejected() {
@@ -1059,7 +1123,7 @@ class _detail_absenceState extends State<detail_absence> {
 
     _time = DateFormat('hh:mm:ss').format(DateTime.parse(widget.time));
     _date = Waktu(DateTime.parse(widget.date)).yMMMd();
-    if ((widget.category == "present") || (widget.category == "Present")) {
+    if ((widget.category == "present") || (widget.category == "present")) {
       _category = false;
     } else {
       _category = true;

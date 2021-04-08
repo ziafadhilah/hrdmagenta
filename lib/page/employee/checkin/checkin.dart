@@ -5,11 +5,16 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:hrdmagenta/page/employee/checkin/maps.dart';
+import 'package:hrdmagenta/services/api_clien.dart';
+import 'package:hrdmagenta/utalities/alert_dialog.dart';
 import 'package:hrdmagenta/utalities/font.dart';
 import 'package:hrdmagenta/validasi/validator.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'package:http/http.dart' as http;
+import 'package:toast/toast.dart';
 
 class Checkin extends StatefulWidget {
   @override
@@ -19,8 +24,12 @@ class Checkin extends StatefulWidget {
 class _CheckinState extends State<Checkin> {
   ///variable
   File _image;
+  Map _employee;
+  bool _isLoading = true;
+  bool _loading_image = true;
   bool _disposed = false;
-  final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
+  final Geolocator geolocator = Geolocator()
+    ..forceAndroidLocationManager;
   Position _currentPosition;
   String _currentAddress;
   var Cremark = new TextEditingController();
@@ -29,15 +38,17 @@ class _CheckinState extends State<Checkin> {
       _long,
       _employee_id,
       _check_in,
-      _distance,
       _category_absent,
       _firts_name,
       _last_name,
       _profile_background,
       _gender,
-      _departement_name;
+      _departement_name,
+      _lat_mainoffice,
+      _long_mainoffice;
   String base64;
   Validasi validator = new Validasi();
+  double _distance = 0.0;
 
   ///main context
   @override
@@ -53,22 +64,35 @@ class _CheckinState extends State<Checkin> {
           style: TextStyle(color: Colors.black87),
         ),
       ),
-      body: SingleChildScrollView(
+      body: _isLoading == true
+          ? Center(
+        child: CircularProgressIndicator(),
+      )
+          : SingleChildScrollView(
         child: Container(
           color: Colors.white,
-          height: MediaQuery.of(context).size.height + 50,
+          height: MediaQuery
+              .of(context)
+              .size
+              .height + 50,
           child: Container(
             child: Column(
               children: <Widget>[
                 Container(
-                  child: _distance > 50 ? _builddistaceCompany() : Text(""),
+                  child:
+                  _distance > 20 ? _builddistaceCompany() : Text(""),
                 ),
                 Container(
                   margin: EdgeInsets.only(top: 15),
                   child: _image == null
                       ? _buildPhoto()
-                      : new Image.file(_image,
-                          width: 200, height: 200, fit: BoxFit.fill),
+                      : InkWell(
+                    onTap: () {
+                      aksesCamera();
+                    },
+                    child: new Image.file(_image,
+                        width: 200, height: 200, fit: BoxFit.fill),
+                  ),
                 ),
                 _buildText(),
                 SizedBox(
@@ -91,7 +115,10 @@ class _CheckinState extends State<Checkin> {
                   child: Container(
                     margin: EdgeInsets.only(bottom: 10),
                     width: double.infinity,
-                    height: MediaQuery.of(context).size.height,
+                    height: MediaQuery
+                        .of(context)
+                        .size
+                        .height,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: <Widget>[
@@ -145,7 +172,9 @@ class _CheckinState extends State<Checkin> {
       margin: EdgeInsets.only(left: 25, right: 20),
       child: TextFormField(
         controller: Cremark,
-        cursorColor: Theme.of(context).cursorColor,
+        cursorColor: Theme
+            .of(context)
+            .cursorColor,
         maxLength: 100,
         decoration: InputDecoration(
           icon: Icon(
@@ -158,8 +187,8 @@ class _CheckinState extends State<Checkin> {
           ),
           enabledBorder: UnderlineInputBorder(
               borderSide: BorderSide(
-            color: Colors.black38,
-          )),
+                color: Colors.black38,
+              )),
         ),
       ),
     );
@@ -169,16 +198,15 @@ class _CheckinState extends State<Checkin> {
     Timer.periodic(new Duration(seconds: 1), (_) {
       var tgl = new DateTime.now();
       var formatedjam = new DateFormat.Hms().format(tgl);
-      if (!_disposed){
+      if (!_disposed) {
         setState(() {
           time = formatedjam;
+          _getCurrentLocation();
+          _getDistance(_lat_mainoffice, _long_mainoffice, _lat, _long);
         });
-
       }
-
     });
   }
-
 
   Widget _buildtime() {
     return Column(
@@ -190,7 +218,9 @@ class _CheckinState extends State<Checkin> {
           margin: EdgeInsets.only(left: 25),
           child: TextFormField(
             enabled: false,
-            cursorColor: Theme.of(context).cursorColor,
+            cursorColor: Theme
+                .of(context)
+                .cursorColor,
             decoration: InputDecoration(
               border: InputBorder.none,
               focusedBorder: InputBorder.none,
@@ -206,15 +236,12 @@ class _CheckinState extends State<Checkin> {
               labelStyle: TextStyle(
                 color: Colors.black38,
               ),
-
             ),
           ),
         ),
       ],
     );
   }
-
-
 
   Widget _buildCategoryabsence() {
     return Container(
@@ -242,9 +269,10 @@ class _CheckinState extends State<Checkin> {
                 style: TextStyle(color: Colors.black),
 
                 items: <String>[
-                  'present',
-                  'sick',
-                  'permission',
+                  'Present',
+                  'Sick',
+                  'Permission',
+                  'Business Trip'
                 ].map<DropdownMenuItem<String>>((String value) {
                   return DropdownMenuItem<String>(
                     value: value,
@@ -252,7 +280,7 @@ class _CheckinState extends State<Checkin> {
                   );
                 }).toList(),
                 hint: Text(
-                  "present",
+                  "Present",
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: 16,
@@ -294,7 +322,8 @@ class _CheckinState extends State<Checkin> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => Maps(
+                            builder: (context) =>
+                                Maps(
                                   address: _currentAddress,
                                   longitude: _long,
                                   latitude: _lat,
@@ -304,6 +333,8 @@ class _CheckinState extends State<Checkin> {
                                   gender: _gender,
                                   departement_name: _departement_name,
                                   distance: _distance,
+                                  latmainoffice: _lat_mainoffice,
+                                  longMainoffice: _long_mainoffice,
                                 )));
                   },
                   child: Container(
@@ -318,7 +349,10 @@ class _CheckinState extends State<Checkin> {
                         ),
                         if (_currentPosition != null && _currentAddress != null)
                           Container(
-                            width: MediaQuery.of(context).size.width - 100,
+                            width: MediaQuery
+                                .of(context)
+                                .size
+                                .width - 100,
                             child: Text(
                               "$_currentAddress ",
                               style: TextStyle(color: Colors.black38),
@@ -361,35 +395,35 @@ class _CheckinState extends State<Checkin> {
     );
   }
 
-
   Future upload() async {
     var date = DateFormat("yyyy:MM:dd").format(DateTime.now());
     if (_category_absent == null) {
-      _category_absent = "present";
+      _category_absent = "Present";
     }
-    //
-    validator.validation_checkin(
+
+
+    validation_checkin(
         context,
         base64.toString(),
         Cremark.text,
-        _lat.toString().trim(),
-        _long.toString().trim(),
+        _lat.toString(),
+        _long.toString(),
         _employee_id,
-        date.toString(),
-        time.toString(),
+        date,
+        time,
         _departement_name,
         _distance,
-        _category_absent);
-
-    //Toast.show("$_category_absent", context);
-    print(base64.toString());
+        _lat_mainoffice,
+        _long_mainoffice,
+        _category_absent.toString().toLowerCase());
   }
 
   ///fucntion
   //akses kamera
   aksesCamera() async {
     print('Picker is Called');
-    File img = (await ImagePicker.pickImage(source: ImageSource.camera));
+    File img = (await ImagePicker.pickImage(
+        source: ImageSource.camera, imageQuality: 10));
     if (img != null) {
       setState(() {
         _image = File(img.path);
@@ -413,9 +447,9 @@ class _CheckinState extends State<Checkin> {
           ),
           Container(
               child: Text(
-            "Anda berada di luar radius kantor",
-            style: subtitleMainMenu,
-          ))
+                "Anda  berada di luar area kantor",
+                style: subtitleMainMenu,
+              ))
         ],
       ),
     );
@@ -430,7 +464,6 @@ class _CheckinState extends State<Checkin> {
         _currentPosition = position;
         _lat = _currentPosition.latitude;
         _long = _currentPosition.longitude;
-        _getDistance(_lat, _long);
       });
 
       _getAddressFromLatLng();
@@ -449,7 +482,7 @@ class _CheckinState extends State<Checkin> {
 
       setState(() {
         _currentAddress =
-            "${place.locality}, ${place.postalCode}, ${place.country}";
+        "${place.locality}, ${place.postalCode}, ${place.country}";
       });
     } catch (e) {
       print(e);
@@ -460,28 +493,23 @@ class _CheckinState extends State<Checkin> {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     setState(() {
       _employee_id = sharedPreferences.getString("user_id");
-      _departement_name = sharedPreferences.getString("departement_name");
-      _gender = sharedPreferences.getString("gender");
-      _profile_background = sharedPreferences.getString("profile_background");
-      _firts_name = sharedPreferences.getString("first_name");
-      _last_name = sharedPreferences.getString("last_name");
 
-      //print(_departement_name);
+      dataEmployee(_employee_id.toString());
     });
   }
 
-  _getDistance(currentlat, currentlong) async {
+  /**/
+  _getDistance(latMainoffice, longMainoffice, currentlat, currentlong) async {
     try {
-      final double d = await Geolocator()
-          .distanceBetween(-6.9526871, 107.6668177, currentlat, currentlong);
+      _distance = 0;
+      final double d = await Geolocator().distanceBetween(
+          double.parse(latMainoffice),
+          double.parse(longMainoffice),
+          currentlat,
+          currentlong);
       setState(() {
         _distance = d;
         print("$d");
-        if (_distance > 50) {
-          print("outside");
-        } else {
-          print("inside");
-        }
         // print(d);
       });
     } catch (e) {
@@ -497,10 +525,39 @@ class _CheckinState extends State<Checkin> {
 
   @override
   void initState() {
-    _distance = 0;
     super.initState();
+    _getCurrentLocation();
     _startJam();
     _getDataPref();
-    _getCurrentLocation();
+  }
+
+  Future dataEmployee(var id) async {
+    try {
+      setState(() {
+        _isLoading = true;
+      });
+      http.Response response = await http.get("$base_url/api/employees/$id");
+      _employee = jsonDecode(response.body);
+
+      setState(() {
+        _departement_name = _employee['data']['work_placement'];
+
+        _gender = _employee['data']['gender'];
+        _last_name = _employee['data']['last_name'];
+        _profile_background = _employee['data']['photo'];
+        _firts_name = _employee['data']['first_name'];
+        _lat_mainoffice = _employee['data']['location']['latitude'];
+        _long_mainoffice = _employee['data']['location']['longitude'];
+
+        // print(_lat_mainoffice);
+
+        _isLoading = false;
+      });
+
+      setState(() {
+        _getCurrentLocation();
+        _getDistance(_lat_mainoffice, _long_mainoffice, _lat, _long);
+      });
+    } catch (e) {}
   }
 }

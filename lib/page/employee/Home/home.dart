@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:hrdmagenta/model/notifacations.dart';
+import 'package:hrdmagenta/page/employee/absence/DetailAbsenceNotifEmplyee.dart';
 import 'package:hrdmagenta/page/employee/absence/tabmenu_absence.dart';
 import 'package:hrdmagenta/page/employee/checkin/checkin.dart';
 import 'package:hrdmagenta/page/employee/checkout/checkout.dart';
@@ -178,7 +179,7 @@ class _HomeEmployeeState extends State<HomeEmployee> {
   Widget _buildproject() {
     return Container(
       width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.height / 3.5,
+      height: MediaQuery.of(context).size.height / 3,
       child: Container(
         child: Flex(
           direction: Axis.horizontal,
@@ -189,10 +190,10 @@ class _HomeEmployeeState extends State<HomeEmployee> {
                       child: CircularProgressIndicator(),
                     )
                   : ListView.builder(
-                      // itemCount: _budgeting['data']['cash_flow'].length,
                       itemCount: _projects['data'].length == 0
                           ? 1
                           : _projects['data'].length,
+                      scrollDirection: Axis.horizontal,
                       itemBuilder: (context, index) {
                         return _projects['data'].length == 0
                             ? _buildNoproject()
@@ -304,6 +305,7 @@ class _HomeEmployeeState extends State<HomeEmployee> {
                             height: 10,
                           ),
                           Container(
+                            margin: EdgeInsets.only(left: 10, right: 10),
                             width: double.maxFinite,
                             child: Text(
                               "Fungsi & Manfaat BPJS Ketenagakerjaan bagi karyawan",
@@ -314,6 +316,7 @@ class _HomeEmployeeState extends State<HomeEmployee> {
                             height: 20,
                           ),
                           Container(
+                            margin: EdgeInsets.only(left: 10, right: 10),
                             width: double.maxFinite,
                             child: Text(
                               "2 November 2021",
@@ -334,54 +337,96 @@ class _HomeEmployeeState extends State<HomeEmployee> {
   }
 
   Widget _buildProgress(index) {
-    return Center(
-      child: Container(
-        height: MediaQuery.of(context).size.width / 2,
-        width: MediaQuery.of(context).size.width / 2,
-        child: Card(
-          child: Container(
-            child: Center(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  SizedBox(
-                    height: 5,
-                  ),
-                  Text(
-                    "${_projects['data'][index]['title']}",
-                    style: TextStyle(
-                      fontSize: 15,
-                      color: Colors.black,
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      child: Card(
+        child: Container(
+          margin: EdgeInsets.only(left: 10, right: 10),
+          child: Row(
+            children: [
+              Container(
+                width: MediaQuery.of(context).size.width * 0.65,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    SizedBox(
+                      height: 5,
                     ),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Row(
-                    children: [
-                      Container(
-                        child: Expanded(
-                          flex: 1,
-                          child: new CircularPercentIndicator(
-                            radius: 100.0,
-                            lineWidth: 7.0,
-                            animation: true,
-                            percent: _projects['data'][index]['progress'] / 100,
-                            center: new Text(
-                              "${_projects['data'][index]['progress']}%",
-                              style: new TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 10.0),
+                    Text("${_projects['data'][index]['title']}",
+                        style: subtitleMainMenu),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Container(
+                      child: Text(
+                          "${_projects['data'][index]['city']['name']}, ${_projects['data'][index]['city']['province']['name']}",
+                          style: TextStyle(
+                              color: Colors.black38,
+                              fontFamily: "SFReguler",
+                              fontSize: 14)),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                  ],
+                ),
+              ),
+              Expanded(
+                child: Container(
+                    width: MediaQuery.of(context).size.width * 0.35 - 25,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Container(
+                          child: Container(
+                              alignment: Alignment.center,
+                              margin: EdgeInsets.only(top: 3, bottom: 3),
+                              child: Text(
+                                "in progress",
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 10),
+                              )),
+                          decoration: BoxDecoration(
+                            color: Colors.green,
+                            borderRadius: new BorderRadius.only(
+                              topLeft: const Radius.circular(10.0),
+                              topRight: const Radius.circular(10.0),
+                              bottomLeft: const Radius.circular(10.0),
+                              bottomRight: const Radius.circular(10.0),
                             ),
-                            circularStrokeCap: CircularStrokeCap.round,
-                            progressColor: baseColor,
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
+                        Expanded(
+                          flex: 1,
+                          child: Container(
+                            margin: EdgeInsets.only(bottom: 10),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                new CircularPercentIndicator(
+                                  radius: 90.0,
+                                  lineWidth: 10.0,
+                                  animation: true,
+                                  percent: _projects['data'][index]
+                                          ['progress'] /
+                                      100,
+                                  center: new Text(
+                                    "${_projects['data'][index]['progress']}%",
+                                    style: new TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 17.0),
+                                  ),
+                                  circularStrokeCap: CircularStrokeCap.round,
+                                  progressColor: baseColor,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    )),
+              )
+            ],
           ),
         ),
       ),
@@ -394,8 +439,8 @@ class _HomeEmployeeState extends State<HomeEmployee> {
       setState(() {
         _loading = true;
       });
-      http.Response response = await http.get(
-          "http://${base_url}/api/employees/$user_id/events?status=approved");
+      http.Response response = await http
+          .get("$base_url/api/employees/$user_id/events?status=approved");
       _projects = jsonDecode(response.body);
       print(_projects['data'].length);
 
@@ -534,25 +579,25 @@ class _HomeEmployeeState extends State<HomeEmployee> {
   }
 
   //notification
-  showNotifcation(String title, String body) async {
+  showNotifcation(String title, String body, String data) async {
     var android = new AndroidNotificationDetails(
         'chanel id', 'chanel name', 'CHANEL DESCRIPTION');
     var ios = new IOSNotificationDetails();
     var platform = new NotificationDetails(android: android, iOS: ios);
 
     await flutterLocalNotificationsPlugin.show(0, '$title', '$body', platform,
-        payload: "tes");
+        payload: "$data");
   }
 
-  Future onSelectNotification(String payload) {
-    debugPrint("payload : $payload");
-    showDialog(
-      context: context,
-      builder: (_) => new AlertDialog(
-        title: new Text('Notification'),
-        content: new Text('$payload'),
-      ),
-    );
+  Future onSelectNotification(var payload) {
+    debugPrint("payload : ${payload}");
+
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => detail_absence_employee_notif(
+                  id: payload,
+                )));
   }
 
   Future getDatapref() async {
@@ -572,13 +617,21 @@ class _HomeEmployeeState extends State<HomeEmployee> {
 
     _firebaseMessaging.configure(
       onMessage: (Map<String, dynamic> message) async {
-        print("onMessage: $message");
+        print("onMessage: ${message['notification']['data']}");
         final notif = message['notification'];
+        final data = message['data'];
+
         setState(() {
-          ListNotif.add(Notif(title: notif['title'], body: notif['body']));
+          ListNotif.add(
+            Notif(
+                title: notif['title'],
+                body: notif['body'],
+                id: data['id'],
+                screen: data['id']),
+          );
         });
         setState(() {
-          showNotifcation(notif['title'], notif['body']);
+          showNotifcation(notif['title'], notif['body'], data['id']);
         });
       },
       onLaunch: (Map<String, dynamic> message) async {
@@ -600,10 +653,9 @@ class _HomeEmployeeState extends State<HomeEmployee> {
         const IosNotificationSettings(sound: true, badge: true, alert: true));
     super.initState();
     flutterLocalNotificationsPlugin = new FlutterLocalNotificationsPlugin();
-    var androidd = new AndroidInitializationSettings('@mipmap/ic_launcher');
-    var iOSs = new IOSInitializationSettings();
-    var initSetttings =
-        new InitializationSettings(android: androidd, iOS: iOSs);
+    var android = new AndroidInitializationSettings('@mipmap/ic_launcher');
+    var iOS = new IOSInitializationSettings();
+    var initSetttings = new InitializationSettings(android: android, iOS: iOS);
     flutterLocalNotificationsPlugin.initialize(initSetttings,
         onSelectNotification: onSelectNotification);
   }

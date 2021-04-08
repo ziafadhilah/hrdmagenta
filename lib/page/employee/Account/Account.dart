@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hrdmagenta/page/change_password/change_password.dart';
 import 'package:hrdmagenta/page/employee/Account/company_profile.dart';
+import 'package:hrdmagenta/services/api_clien.dart';
 import 'package:hrdmagenta/shared_preferenced/sessionmanage.dart';
 import 'package:hrdmagenta/utalities/color.dart';
 import 'package:hrdmagenta/utalities/constants.dart';
@@ -26,6 +27,7 @@ class _AccountEmployeeState extends State<AccountEmployee> {
       profile_background = "";
   var user_id, value;
   SharedPreference session = new SharedPreference();
+  Services services =new Services();
 
   //text settings
   Widget _buildText() {
@@ -48,6 +50,7 @@ class _AccountEmployeeState extends State<AccountEmployee> {
     );
   }
 
+  
   Widget _buildTextacount() {
     return Container(
       width: double.infinity,
@@ -1013,6 +1016,7 @@ class _AccountEmployeeState extends State<AccountEmployee> {
                             child: Text("Yes"),
                             onPressed: () async {
                               session.logout(context);
+                              services.clearTokenemployee(user_id);
                             },
                           ),
                         ),

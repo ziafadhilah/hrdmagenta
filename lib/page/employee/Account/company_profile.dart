@@ -96,13 +96,15 @@ class _company_pfrofileState extends State<company_pfrofile> {
                           height: 5,
                         ),
                         Container(
-                          child: company_name==null?Text("-"): Text(
-                            company_name,
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: Colors.black38,
-                            ),
-                          ),
+                          child: company_name == null
+                              ? Text("-")
+                              : Text(
+                                  company_name,
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.black38,
+                                  ),
+                                ),
                         )
                       ],
                     )),
@@ -161,13 +163,15 @@ class _company_pfrofileState extends State<company_pfrofile> {
                           height: 5,
                         ),
                         Container(
-                          child: company_phonenumber==null?Text("-"):Text(
-                            company_phonenumber,
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: Colors.black38,
-                            ),
-                          ),
+                          child: company_phonenumber == null
+                              ? Text("-")
+                              : Text(
+                                  company_phonenumber,
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.black38,
+                                  ),
+                                ),
                         )
                       ],
                     )),
@@ -225,13 +229,15 @@ class _company_pfrofileState extends State<company_pfrofile> {
                           height: 5,
                         ),
                         Container(
-                          child: company_email==null?Text("-"): Text(
-                            company_email,
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: Colors.black38,
-                            ),
-                          ),
+                          child: company_email == null
+                              ? Text("-")
+                              : Text(
+                                  company_email,
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.black38,
+                                  ),
+                                ),
                         )
                       ],
                     )),
@@ -290,13 +296,15 @@ class _company_pfrofileState extends State<company_pfrofile> {
                           height: 5,
                         ),
                         Container(
-                          child: company_adress==null?Text("-"): Text(
-                            company_adress,
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: Colors.black38,
-                            ),
-                          ),
+                          child: company_adress == null
+                              ? Text("-")
+                              : Text(
+                                  company_adress,
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.black38,
+                                  ),
+                                ),
                         )
                       ],
                     )),
@@ -319,7 +327,7 @@ class _company_pfrofileState extends State<company_pfrofile> {
       _isLoading = true;
     });
     final response =
-        await http.get("http://$base_url/api/employees/${widget.id}/companies");
+        await http.get("$base_url/api/employees/${widget.id}/companies");
     final data = jsonDecode(response.body);
 
     if (data['code'] == 200) {
@@ -331,7 +339,6 @@ class _company_pfrofileState extends State<company_pfrofile> {
 
       setState(() {
         _isLoading = false;
-        Toast.show("$company_phonenumber", context);
       });
     } else {
       setState(() {

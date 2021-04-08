@@ -444,7 +444,7 @@ class _budgetprojectState extends State<budgetproject> {
         _loading = true;
       });
       http.Response response = await http
-          .get("http://${base_url}/api/events/${widget.event_id}/budgets");
+          .get("$base_url/api/events/${widget.event_id}/budgets");
       _transaction = jsonDecode(response.body);
 
       setState(() {

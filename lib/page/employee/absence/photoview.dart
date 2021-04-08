@@ -1,10 +1,15 @@
 import 'package:flutter/cupertino.dart';
 
 import 'package:flutter/material.dart';
+import 'package:hrdmagenta/services/api_clien.dart';
 
 import 'package:photo_view/photo_view.dart';
 
 class PhotoViewPage extends StatefulWidget {
+  PhotoViewPage({this.image});
+
+  var image;
+
   @override
   _PhotoViewPageState createState() => _PhotoViewPageState();
 }
@@ -22,12 +27,16 @@ class _PhotoViewPageState extends State<PhotoViewPage> {
             child: Hero(
               tag: "avatar-1",
               child: Container(
-                  child: PhotoView(
-                imageProvider: AssetImage(
-                  "assets/absen.jpeg",
-                ),
-              ),
-              ),
+                  child: widget.image == "null"
+                      ? PhotoView(
+                          imageProvider: AssetImage(
+                          "assets/absen.jpeg",
+                        ))
+                      : PhotoView(
+                          imageProvider: NetworkImage(
+                            "$base_url/images/${widget.image}",
+                        )
+                  )),
             ),
           ),
         ));

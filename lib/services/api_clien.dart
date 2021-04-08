@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:hrdmagenta/model/companies.dart';
 import 'package:hrdmagenta/model/login_employee.dart';
@@ -9,7 +10,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toast/toast.dart';
 
-String base_url = "192.168.100.58:8000";
+String base_url = "https://arenzha.my.id";
 
 class Services {
   SharedPreference sharedPreference = new SharedPreference();
@@ -20,10 +21,12 @@ class Services {
   Future<void> loginEmployee(
       BuildContext context, var username, var password) async {
     loading(context);
+    String fcm_registration_token = await FirebaseMessaging().getToken();
     final response =
-        await http.post("http://$base_url/api/login/mobile/employee", body: {
+        await http.post("$base_url/api/login/mobile/employee", body: {
       "username": username.toString().trim(),
       "password": password,
+      "fcm_registration_token": fcm_registration_token
     });
 
     //
@@ -45,7 +48,6 @@ class Services {
           loginmodel.data.designation.department,
           "",
           loginmodel.data.gender);
-
       Navigator.pop(context);
       Navigator.pushNamedAndRemoveUntil(
           context, "navbar_employee-page", (route) => false);
@@ -55,31 +57,11 @@ class Services {
     }
   }
 
-  ///project employee
-//  Future<List<Project>> dataProject(BuildContext context) async {
-//
-//
-//         final response = await http.get("http://192.168.1.105/magentaeo/api/quotation");
-//         if (200==response.statusCode){
-//           var projects= projectFromJson(response.body);
-//           //return projects;
-//            //var responseJson = json.decode(response.body);
-//            return compute(projectFromJson,response.body);
-//
-//         }else{
-//           Toast.show("else ", context, duration: 5, gravity: Toast.BOTTOM);
-//
-//           return List<Project>();
-//         }
-//
-//   }
-
   ///expense budget employee
   Future<void> expenseBudget(BuildContext context, var amount, date, note,
       event_id, budget_category_id, requested_by, image) async {
     loading(context);
-    final response =
-        await http.post("http://$base_url/api/event-budgets", body: {
+    final response = await http.post("$base_url/api/event-budgets", body: {
       "note": note,
       "amount": amount,
       "type": "expense",
@@ -104,11 +86,22 @@ class Services {
   }
 
   ///function checkin employee
-  Future<void> checkin(BuildContext context, var photos, var remark,
-      var employee_id, lat, long, date, time, status, category) async {
+  Future<void> checkin(
+      BuildContext context,
+      var photos,
+      var remark,
+      var employee_id,
+      lat,
+      long,
+      date,
+      time,
+      status,
+      office_latitude,
+      office_longitude,
+      category) async {
     loading(context);
-    final response = await http
-        .post("http://$base_url/api/attendances/action/check-in", body: {
+    final response =
+        await http.post("$base_url/api/attendances/action/check-in", body: {
       "employee_id": employee_id.toString(),
       "date": date.toString(),
       "clock_in": "${date.toString()} ${time.toString()}",
@@ -117,7 +110,10 @@ class Services {
       "clock_in_latitude": lat,
       "clock_in_longitude": long,
       "status": "$status",
-      "category": "$category"
+      "category": "$category",
+      "office_latitude": office_latitude,
+      "office_longitude": office_longitude,
+      "screen": "DetailAttendanceAdmin"
     });
 
     final responseJson = jsonDecode(response.body);
@@ -136,11 +132,22 @@ class Services {
   }
 
   ///function checkout employee
-  Future<void> checkout(BuildContext context, var photos, var remark,
-      var employee_id, lat, long, date, time,status,category) async {
+  Future<void> checkout(
+      BuildContext context,
+      var photos,
+      var remark,
+      var employee_id,
+      lat,
+      long,
+      date,
+      time,
+      status,
+      office_latitude,
+      office_longitude,
+      category) async {
     loading(context);
-    final response = await http
-        .post("http://$base_url/api/attendances/action/check-out", body: {
+    final response =
+        await http.post("$base_url/api/attendances/action/check-out", body: {
       "employee_id": employee_id.toString(),
       "date": date.toString(),
       "clock_out": "${date.toString()} ${time.toString()}",
@@ -149,8 +156,10 @@ class Services {
       "clock_out_latitude": lat,
       "clock_out_longitude": long,
       "status": "$status",
-      "category": "$category"
-
+      "category": "$category",
+      "office_latitude": office_latitude,
+      "office_longitude": office_longitude,
+      "screen": "DetailAttendanceAdmin"
     });
 
     final responseJson = jsonDecode(response.body);
@@ -176,8 +185,8 @@ class Services {
   Future<void> change_password(
       BuildContext context, var password, username, email, id) async {
     loading(context);
-    final response = await http
-        .patch("http://$base_url/api/employees/$id/edit-account", body: {
+    final response =
+        await http.patch("$base_url/api/employees/$id/edit-account", body: {
       "username": username,
       "email": email,
       "password": password,
@@ -196,8 +205,7 @@ class Services {
 
   ///finihed task
   Future<void> finished_task(BuildContext context, var id) async {
-    final response =
-        await http.post("http://$base_url/api/event-tasks/$id/finish");
+    final response = await http.post("$base_url/api/event-tasks/$id/finish");
     final responseJson = jsonDecode(response.body);
     if (responseJson['code'] == 200) {
       return "200";
@@ -209,8 +217,7 @@ class Services {
   ///function companies
   Future<List<Companies>> companies(BuildContext context, var id) async {
     loading(context);
-    final response =
-        await http.get("http://$base_url/api/employees/1/companies");
+    final response = await http.get("$base_url/api/employees/1/companies");
     final data = jsonDecode(response.body);
     Toast.show("$data", context);
     if (data['code'] == 200) {
@@ -223,17 +230,37 @@ class Services {
     }
   }
 
+  Future<void> clearTokenemployee(var id) async{
+    final response = await http.patch("$base_url/api/logout/mobile/employee", body: {
+      "employee_id": id,
+
+    });
+    final data = jsonDecode(response.body);
+
+    if (data['200']){
+      print("berhasil");
+
+    }else{
+      print("gagal");
+
+    }
+
+  }
+
   //-----------end fucnction employeee-------
 
   //fuction admin
 
   Future<void> loginAdmin(
       BuildContext context, var username, var password) async {
+    String fcm_registration_token = await FirebaseMessaging().getToken();
+
     loading(context);
-    final response =
-        await http.post("http://$base_url/api/login/mobile/admin", body: {
+
+    final response = await http.post("$base_url/api/login/mobile/admin", body: {
       "username": username.toString().trim(),
       "password": password,
+      "fcm_registration_token": fcm_registration_token
     });
     //
     final data = jsonDecode(response.body);
@@ -267,9 +294,10 @@ class Services {
       status, request_status, note, request_note) async {
     loading(context);
     final response = await http
-        .post("http://$base_url/api/attendances/$id_attendance/$status", body: {
+        .post("$base_url/api/attendances/$id_attendance/$status", body: {
       "$request_status": "${user_id}",
       "${request_note}": "${note}",
+      "screen": "DetailAttendanceEmployee",
     });
     //
     final data = jsonDecode(response.body);
@@ -282,4 +310,22 @@ class Services {
       alert_error(context, "${data['message']}", "Close");
     }
   }
+
+  Future<void> clearTokenadmin(var id) async{
+    final response = await http.patch("$base_url/api/logout/mobile/admin", body: {
+      "employee_id": id,
+
+    });
+    final data = jsonDecode(response.body);
+
+    if (data['200']){
+      print("berhasil");
+
+    }else{
+      print("gagal");
+
+    }
+
+  }
+
 }

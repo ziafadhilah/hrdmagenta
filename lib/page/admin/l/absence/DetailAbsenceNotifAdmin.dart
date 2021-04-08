@@ -1,10 +1,13 @@
+import 'dart:convert';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:format_indonesia/format_indonesia.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:hrdmagenta/page/admin/l/home/navbar.dart';
 import 'package:hrdmagenta/page/employee/absence/MapsDetail.dart';
 import 'package:hrdmagenta/page/employee/absence/photoview.dart';
 import 'package:hrdmagenta/services/api_clien.dart';
@@ -12,63 +15,32 @@ import 'package:hrdmagenta/utalities/alert_dialog.dart';
 import 'package:hrdmagenta/utalities/constants.dart';
 import 'package:hrdmagenta/utalities/font.dart';
 import 'package:intl/intl.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 
-class detail_absence_admin extends StatefulWidget {
-  detail_absence_admin(
-      {this.status,
-      this.employee,
-      this.date,
-      this.time,
-      this.latitude,
-      this.image,
-      this.type,
-      this.longitude,
-      this.note,
-      this.approval_note,
-      this.approved_by,
-      this.approved_on,
-      this.rejected_by,
-      this.rejected_on,
-      this.rejection_note,
-      this.firts_name_employee,
-      this.last_name_employee,
-      this.work_placement,
-      this.id_attandance,
-      this.office_latitude,
-      this.office_longitude,
-      this.category});
+class detail_absence_admin_notif extends StatefulWidget {
+  detail_absence_admin_notif({this.id});
 
-  var status,
-      employee,
-      type,
-      date,
-      time,
-      latitude,
-      longitude,
-      image,
-      approved_by,
-      approved_on,
-      rejected_by,
-      rejected_on,
-      note,
-      rejection_note,
-      approval_note,
-      firts_name_employee,
-      last_name_employee,
-      work_placement,
-      id_attandance,
-      office_latitude,
-      office_longitude,
-      category;
+  var id;
 
-  _detail_absence_adminState createState() => _detail_absence_adminState();
+  _detail_absence_admin_notifState createState() =>
+      _detail_absence_admin_notifState();
 }
 
-class _detail_absence_adminState extends State<detail_absence_admin> {
+class _detail_absence_admin_notifState
+    extends State<detail_absence_admin_notif> {
   String _currentAddress;
+
   final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
-  var _time, _user_id, _category;
+  var _time, _date, _category, _loading;
+
+  Map _absence;
+
+  Future<bool> _onBackPressed() {
+    Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (BuildContext context) => NavBarAdmin()),
+        ModalRoute.withName('/'));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -83,52 +55,59 @@ class _detail_absence_adminState extends State<detail_absence_admin> {
           style: TextStyle(color: Colors.black87),
         ),
       ),
-      body: Container(
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height,
-        child: SingleChildScrollView(
-          child: Container(
-            margin: EdgeInsets.only(left: 15, right: 15, top: 15, bottom: 15),
-            width: MediaQuery.of(context).size.width,
-            child: Column(
-              children: <Widget>[
-                _buildProfile(),
-                _buildAbsenceType(),
-                _buildAbsencecategory(),
-                _buildDate(),
-                _buildTime(),
-                _buildRemark(),
-                _buildAdress(),
-                _buildgridtext(),
+      body: _loading == true
+          ? Center(
+              child: CircularProgressIndicator(),
+            )
+          : WillPopScope(
+              onWillPop: _onBackPressed,
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height,
+                child: SingleChildScrollView(
+                  child: Container(
+                    margin: EdgeInsets.only(left: 15, right: 15, top: 15),
+                    width: MediaQuery.of(context).size.width,
+                    child: Column(
+                      children: <Widget>[
+                        _buildProfile(),
+                        _buildAbsenceType(),
+                        _buildAbsencecategory(),
+                        _buildDate(),
+                        _buildTime(),
+                        _buildRemark(),
+                        _buildAdress(),
+                        _buildgridtext(),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        _buildgrid(),
 
-                SizedBox(
-                  height: 10,
-                ),
-                _buildgrid(),
+                        SizedBox(
+                          height: 10,
+                        ),
 
-                SizedBox(
-                  height: 10,
+                        Container(
+                            child: _absence['data']['status'] == "pending"
+                                ? _buildpending()
+                                : _absence['data']['status'] == "rejected"
+                                    ? _buildrejected()
+                                    : _buildapproved()),
+                        //_buildrejected(),
+                      ],
+                    ),
+                  ),
                 ),
-                Container(
-                    child: widget.status == "pending"
-                        ? _buildpending()
-                        : widget.status == "rejected"
-                            ? _buildrejected()
-                            : _buildapproved()),
-                //_buildrejected(),
-              ],
+              ),
             ),
-          ),
-        ),
-      ),
     );
   }
 
   //convert lat dan long to address
-  _getAddressFromLatLng() async {
+  _getAddressFromLatLng(double _lat, double _long) async {
     try {
-      List<Placemark> p = await geolocator.placemarkFromCoordinates(
-          double.parse(widget.latitude), double.parse(widget.longitude));
+      List<Placemark> p =
+          await geolocator.placemarkFromCoordinates(_lat, _long);
       Placemark place = p[0];
       setState(() {
         _currentAddress =
@@ -158,7 +137,7 @@ class _detail_absence_adminState extends State<detail_absence_admin> {
               children: <Widget>[
                 Container(
                   child: Text(
-                    "${widget.firts_name_employee} ${widget.last_name_employee}",
+                    "${_absence['data']['employee']['first_name']} ${_absence['data']['employee']['last_name']}",
                     style: TextStyle(
                         fontSize: 18,
                         color: Colors.black87,
@@ -170,7 +149,7 @@ class _detail_absence_adminState extends State<detail_absence_admin> {
                 ),
                 Container(
                   child: Text(
-                    "${widget.work_placement}",
+                    "${_absence['data']['employee']['work_placement']}",
                     style: TextStyle(
                       fontSize: 15,
                       color: Colors.black38,
@@ -195,7 +174,7 @@ class _detail_absence_adminState extends State<detail_absence_admin> {
         child: Row(
           children: <Widget>[
             Container(
-                child: widget.type == "check in"
+                child: _absence['data']['type'] == "check in"
                     ? Icon(
                         Icons.login,
                         color: Colors.black38,
@@ -214,7 +193,7 @@ class _detail_absence_adminState extends State<detail_absence_admin> {
                 children: <Widget>[
                   Container(
                     child: Text(
-                      "Type ",
+                      "Type",
                       style: titleAbsence,
                     ),
                   ),
@@ -223,7 +202,7 @@ class _detail_absence_adminState extends State<detail_absence_admin> {
                   ),
                   Container(
                     child: Text(
-                      "${widget.type}",
+                      "${_absence['data']['type']}",
                       style: subtitleAbsence,
                     ),
                   )
@@ -266,13 +245,13 @@ class _detail_absence_adminState extends State<detail_absence_admin> {
                     height: 10,
                   ),
                   Container(
-                    child: (widget.note == null)
+                    child: (_absence['data']['note'] == null)
                         ? Text(
                             "-",
                             style: titleAbsence,
                           )
                         : Text(
-                            "${widget.note}",
+                            "${_absence['data']['note']}",
                             style: subtitleAbsence,
                           ),
                   )
@@ -317,7 +296,7 @@ class _detail_absence_adminState extends State<detail_absence_admin> {
                   ),
                   Container(
                     child: Text(
-                      "${widget.category}",
+                      "${_absence['data']['category']}",
                       style: subtitleAbsence,
                     ),
                   )
@@ -354,7 +333,7 @@ class _detail_absence_adminState extends State<detail_absence_admin> {
                 children: <Widget>[
                   Container(
                     child: Text(
-                      "Date",
+                      "Date ",
                       style: titleAbsence,
                     ),
                   ),
@@ -363,7 +342,7 @@ class _detail_absence_adminState extends State<detail_absence_admin> {
                   ),
                   Container(
                     child: Text(
-                      "${widget.date}",
+                      "${_date}",
                       style: subtitleAbsence,
                     ),
                   )
@@ -477,10 +456,10 @@ class _detail_absence_adminState extends State<detail_absence_admin> {
     return Container(
       height: 20,
       child: GridView.count(
+        crossAxisCount: 2,
         shrinkWrap: true,
         primary: true,
         physics: const NeverScrollableScrollPhysics(),
-        crossAxisCount: 2,
         children: <Widget>[
           //photos
           Container(
@@ -497,15 +476,26 @@ class _detail_absence_adminState extends State<detail_absence_admin> {
                   context,
                   MaterialPageRoute(
                       builder: (context) => MapsDetail(
-                            latitude: widget.latitude,
-                            longitude: widget.longitude,
-                            departement_name: widget.work_placement,
+                            latitude:
+                                _absence['data']['clock_in_latitude'] != null
+                                    ? _absence['data']['clock_in_latitude']
+                                    : _absence['data']['clock_out_latitude'],
+                            longitude:
+                                _absence['data']['clock_in_longitude'] != null
+                                    ? _absence['data']['clock_in_longitude']
+                                    : _absence['data']['clock_out_longitude'],
+                            departement_name: _absence['data']['employee']
+                                ['work_placement'],
                             address: _currentAddress,
                             profile_background: "",
-                            firts_name: widget.firts_name_employee,
-                            last_name: widget.last_name_employee,
-                            office_latitude: widget.office_latitude,
-                            office_longitude: widget.office_longitude,
+                            firts_name: _absence['data']['employee']
+                                ['first_name'],
+                            last_name: _absence['data']['employee']
+                                ['last_name'],
+                            office_latitude: _absence['data']
+                                ['office_latitude'],
+                            office_longitude: _absence['data']
+                                ['office_longitude'],
                           )));
             },
             child: Container(
@@ -525,6 +515,9 @@ class _detail_absence_adminState extends State<detail_absence_admin> {
     return Container(
       height: 200,
       child: GridView.count(
+        physics: ClampingScrollPhysics(),
+        shrinkWrap: true,
+        primary: true,
         crossAxisCount: 2,
         children: <Widget>[
           // photos
@@ -546,15 +539,20 @@ class _detail_absence_adminState extends State<detail_absence_admin> {
             context,
             MaterialPageRoute(
                 builder: (context) => MapsDetail(
-                      latitude: widget.latitude,
-                      longitude: widget.longitude,
-                      departement_name: widget.work_placement,
+                      latitude: _absence['data']['clock_in_latitude'] != null
+                          ? _absence['data']['clock_in_latitude']
+                          : _absence['data']['clock_out_latitude'],
+                      longitude: _absence['data']['clock_in_longitude'] != null
+                          ? _absence['data']['clock_in_longitude']
+                          : _absence['data']['clock_out_longitude'],
+                      departement_name: _absence['data']['employee']
+                          ['work_placement'],
                       address: _currentAddress,
                       profile_background: "",
-                      firts_name: widget.firts_name_employee,
-                      last_name: widget.last_name_employee,
-                      office_latitude: widget.office_latitude,
-                      office_longitude: widget.office_longitude,
+                      firts_name: _absence['data']['employee']['first_name'],
+                      last_name: _absence['data']['employee']['last_name'],
+                      office_latitude: _absence['data']['office_latitude'],
+                      office_longitude: _absence['data']['office_longitude'],
                     )));
       },
       child: Container(
@@ -565,14 +563,28 @@ class _detail_absence_adminState extends State<detail_absence_admin> {
           children: [
             GoogleMap(
                 initialCameraPosition: CameraPosition(
-                    target: LatLng(double.parse(widget.latitude),
-                        double.parse(widget.longitude)),
+                    target: LatLng(
+                        double.parse(
+                            _absence['data']['clock_in_latitude'] != null
+                                ? _absence['data']['clock_in_latitude']
+                                : _absence['data']['clock_out_latitude']),
+                        double.parse(
+                            _absence['data']['clock_in_longitude'] != null
+                                ? _absence['data']['clock_in_longitude']
+                                : _absence['data']['clock_out_longitude'])),
                     zoom: 11.0),
                 markers: Set<Marker>.of(<Marker>[
                   Marker(
                     markerId: MarkerId("1"),
-                    position: LatLng(double.parse(widget.latitude),
-                        double.parse(widget.longitude)),
+                    position: LatLng(
+                        double.parse(
+                            _absence['data']['clock_in_latitude'] != null
+                                ? _absence['data']['clock_in_latitude']
+                                : _absence['data']['clock_out_latitude']),
+                        double.parse(
+                            _absence['data']['clock_in_longitude'] != null
+                                ? _absence['data']['clock_in_longitude']
+                                : _absence['data']['clock_out_longitude'])),
                   ),
                 ]),
                 gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>[
@@ -586,15 +598,26 @@ class _detail_absence_adminState extends State<detail_absence_admin> {
                     context,
                     MaterialPageRoute(
                         builder: (context) => MapsDetail(
-                              latitude: widget.latitude,
-                              longitude: widget.longitude,
-                              departement_name: widget.work_placement,
+                              latitude:
+                                  _absence['data']['clock_in_latitude'] != null
+                                      ? _absence['data']['clock_in_latitude']
+                                      : _absence['data']['clock_out_latitude'],
+                              longitude:
+                                  _absence['data']['clock_in_longitude'] != null
+                                      ? _absence['data']['clock_in_longitude']
+                                      : _absence['data']['clock_out_longitude'],
+                              departement_name: _absence['data']['employee']
+                                  ['work_placement'],
                               address: _currentAddress,
                               profile_background: "",
-                              firts_name: widget.firts_name_employee,
-                              last_name: widget.last_name_employee,
-                              office_latitude: widget.office_latitude,
-                              office_longitude: widget.office_longitude,
+                              firts_name: _absence['data']['employee']
+                                  ['first_name'],
+                              last_name: _absence['data']['employee']
+                                  ['last_name'],
+                              office_latitude: _absence['data']
+                                  ['office_latitude'],
+                              office_longitude: _absence['data']
+                                  ['office_longitude'],
                             )));
               },
               child: Container(
@@ -622,11 +645,11 @@ class _detail_absence_adminState extends State<detail_absence_admin> {
                   context,
                   MaterialPageRoute(
                       builder: (context) => PhotoViewPage(
-                            image: widget.image,
+                            image: _absence['data']['image'],
                           )),
                 );
               },
-              child: widget.image == null
+              child: _absence['data']['image'] == null
                   ? Image.asset(
                       "assets/absen.jpeg",
                       width: double.infinity,
@@ -634,7 +657,7 @@ class _detail_absence_adminState extends State<detail_absence_admin> {
                       fit: BoxFit.fill,
                     )
                   : CachedNetworkImage(
-                      imageUrl:  "$base_url/images/${widget.image}",
+                      imageUrl: "$base_url/images/${_absence['data']['image']}",
                       fit: BoxFit.fill,
                       placeholder: (context, url) =>
                           Center(child: new CircularProgressIndicator()),
@@ -682,7 +705,7 @@ class _detail_absence_adminState extends State<detail_absence_admin> {
                   ),
                   _buildrejectedby(),
                   _buildrejecteddate(),
-                  //  _buildrejectedon(),
+                  // _buildrejectedon(),
                   _buildrejectednote()
                 ],
               )
@@ -721,7 +744,7 @@ class _detail_absence_adminState extends State<detail_absence_admin> {
                   ),
                   Container(
                     child: Text(
-                      "${widget.rejected_by}",
+                      "${_absence['data']['rejected_by']['first_name']} ${_absence['data']['rejected_by']['last_name']}",
                       style: subtitleAbsence,
                     ),
                   )
@@ -766,7 +789,7 @@ class _detail_absence_adminState extends State<detail_absence_admin> {
                   ),
                   Container(
                     child: Text(
-                      "${widget.rejected_on}",
+                      "${_absence['data']['rejected_at']}",
                       style: subtitleAbsence,
                     ),
                   )
@@ -810,11 +833,11 @@ class _detail_absence_adminState extends State<detail_absence_admin> {
                     height: 10,
                   ),
                   Container(
-                    child: Text(
-                      "${widget.rejected_on}",
-                      style: subtitleAbsence,
-                    ),
-                  )
+                      // child: Text(
+                      //   "${widget.rejected_on}",
+                      //   style: subtitleAbsence,
+                      // ),
+                      )
                 ],
               ),
             )
@@ -855,13 +878,13 @@ class _detail_absence_adminState extends State<detail_absence_admin> {
                     height: 10,
                   ),
                   Container(
-                    child: widget.rejection_note == null
+                    child: _absence['data']['rejection_note'] == null
                         ? Text(
                             "-",
                             style: subtitleAbsence,
                           )
                         : Text(
-                            "${widget.rejection_note}",
+                            "${_absence['data']['rejection_note']}",
                             style: subtitleAbsence,
                           ),
                   ),
@@ -913,7 +936,7 @@ class _detail_absence_adminState extends State<detail_absence_admin> {
                   ),
                   _buildapprovedby(),
                   _buildapproveddate(),
-                  // _buildapprovedon(),
+                  //  _buildapprovedon(),
                   _buildapprovalnote()
                 ],
               )
@@ -952,7 +975,7 @@ class _detail_absence_adminState extends State<detail_absence_admin> {
                   ),
                   Container(
                     child: Text(
-                      "${widget.approved_by}",
+                      "${_absence['data']['approved_by']['first_name']} ${_absence['data']['approved_by']['last_name']}",
                       style: subtitleAbsence,
                     ),
                   )
@@ -997,7 +1020,7 @@ class _detail_absence_adminState extends State<detail_absence_admin> {
                   ),
                   Container(
                     child: Text(
-                      "${widget.approved_on}",
+                      "${_absence['data']['approved_at'] == null ? Text("") : _absence['data']['approved_at']}",
                       style: subtitleAbsence,
                     ),
                   )
@@ -1041,11 +1064,11 @@ class _detail_absence_adminState extends State<detail_absence_admin> {
                     height: 10,
                   ),
                   Container(
-                    child: Text(
-                      "${widget.approved_on}",
-                      style: subtitleAbsence,
-                    ),
-                  )
+                      // child: Text(
+                      //   "${widget.approved_on}",
+                      //   style: subtitleAbsence,
+                      // ),
+                      )
                 ],
               ),
             )
@@ -1086,13 +1109,13 @@ class _detail_absence_adminState extends State<detail_absence_admin> {
                     height: 10,
                   ),
                   Container(
-                    child: widget.approval_note == null
+                    child: _absence['data']['approval_note'] == null
                         ? Text(
                             "-",
                             style: subtitleAbsence,
                           )
                         : Text(
-                            "${widget.approval_note}",
+                            "${_absence['data']['approval_note']}",
                             style: subtitleAbsence,
                           ),
                   ),
@@ -1103,6 +1126,33 @@ class _detail_absence_adminState extends State<detail_absence_admin> {
         ),
       ),
     );
+  }
+
+  Future _dataAbsence() async {
+    try {
+      setState(() {
+        _loading = true;
+      });
+      http.Response response =
+          await http.get("$base_url/api/attendances/${widget.id}");
+      _absence = jsonDecode(response.body);
+      setState(() {
+        _loading = false;
+
+        _time = DateFormat('hh:mm:ss').format(DateTime.parse(
+            _absence['data']['clock_in'] != null
+                ? _absence['data']['clock_in']
+                : _absence['data']['clock_out']));
+        _date = Waktu(DateTime.parse(_absence['data']['date'])).yMMMd();
+        //  _getAddressFromLatLng(_absence['data']['clock_in_latitude']!=null?_absence['data']['clock_in_latitude']:_absence['data']['clock_out_latitude'],_absence['data']['clock_in_longitude']!=null?_absence['data']['clock_in_longitude']:_absence['data']['clock_out_longitude']);
+        if ((_absence['data']['category'] == "present") ||
+            (_absence['data']['category'] == "present")) {
+          _category = false;
+        } else {
+          _category = true;
+        }
+      });
+    } catch (e) {}
   }
 
   Widget _buildpending() {
@@ -1122,8 +1172,8 @@ class _detail_absence_adminState extends State<detail_absence_admin> {
               child: new RaisedButton(
                 color: Colors.red,
                 onPressed: () {
-                  alert_reject(context, widget.id_attandance, _user_id,
-                      "reject", "rejected_by", "rejection_note");
+                  alert_reject(context, widget.id, "1", "reject", "rejected_by",
+                      "rejection_note");
                 },
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -1147,8 +1197,8 @@ class _detail_absence_adminState extends State<detail_absence_admin> {
               child: new RaisedButton(
                 color: Colors.green,
                 onPressed: () {
-                  alert_approve(context, widget.id_attandance, _user_id,
-                      "approve", "approved_by", "approval_note");
+                  alert_approve(context, widget.id, "1", "approve",
+                      "approved_by", "approval_note");
                 },
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -1167,24 +1217,13 @@ class _detail_absence_adminState extends State<detail_absence_admin> {
     );
   }
 
-  void getDatapref() async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    setState(() {
-      _user_id = sharedPreferences.getString("user_id");
-    });
-  }
-
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    _getAddressFromLatLng();
-    _time = DateFormat('hh:mm:ss').format(DateTime.parse(widget.time));
-    getDatapref();
-    if ((widget.category == "present") || (widget.category == "present")) {
-      _category = false;
-    } else {
-      _category = true;
-    }
+    _dataAbsence();
+
+    var waktu = Waktu();
+    print(waktu.yMMMMEEEEd());
   }
 }

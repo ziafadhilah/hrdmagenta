@@ -1,13 +1,11 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:hrdmagenta/page/employee/budget/budget_project.dart';
-import 'package:hrdmagenta/page/employee/task/tabmenu_task.dart';
+import 'package:get/get.dart';
+import 'package:hrdmagenta/page/employee/leave/TabMenuLeave.dart';
 import 'package:hrdmagenta/page/employee/project/shimmer_project.dart';
-import 'package:hrdmagenta/services/api_clien.dart';
+
 import 'package:hrdmagenta/utalities/color.dart';
 import 'package:hrdmagenta/utalities/constants.dart';
-import 'package:percent_indicator/circular_percent_indicator.dart';
-import 'package:http/http.dart' as http;
+
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LeaveListEmployee extends StatefulWidget {
@@ -35,7 +33,7 @@ class _LeaveListEmployeeState extends State<LeaveListEmployee> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Container(
-              child: no_data_project,
+              child: no_data_leave,
             ),
             SizedBox(
               height: 20,
@@ -59,15 +57,13 @@ class _LeaveListEmployeeState extends State<LeaveListEmployee> {
         actions: <Widget>[
           PopupMenuButton<String>(
             onSelected: choiceAction,
-
-            itemBuilder: (BuildContext context){
-              return Constants.LeaveStatus.map((String choice){
+            itemBuilder: (BuildContext context) {
+              return Constants.LeaveStatus.map((String choice) {
                 return PopupMenuItem<String>(
                   value: choice,
                   child: Text(choice),
                 );
               }).toList();
-
             },
           )
         ],
@@ -79,10 +75,11 @@ class _LeaveListEmployeeState extends State<LeaveListEmployee> {
           "Leave",
           style: TextStyle(color: Colors.black87),
         ),
-
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.pushNamed(context, "leave_add_employee-page");
+        },
         child: Icon(Icons.add),
         backgroundColor: btnColor1,
       ),
@@ -115,18 +112,24 @@ class _LeaveListEmployeeState extends State<LeaveListEmployee> {
     });
   }
 
-  //inislisasi state------------------------------------
   @override
   void initState() {
     super.initState();
     //show modal detail project
     getDatapref();
   }
+
   void choiceAction(String choice) {
-    if (choice==Constants.Leave){
-      //Navigator.of(context).pushNamed("tabmenu_absence_status_employee-page");
+    if (choice == Constants.Leave) {
+      Get.testMode = true;
+
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => TabsMenuLeavestatus()),
+      );
+
+      //print(choice);
 
     }
-
   }
 }

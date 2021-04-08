@@ -137,7 +137,7 @@ class _ListEmployeeState extends State<ListEmployee> {
       setState(() {
         _isLoading=true;
       });
-      http.Response response=await http.get("http://${base_url}/api/employees");
+      http.Response response=await http.get("$base_url/api/employees");
       _employee=jsonDecode(response.body);
 
       setState(() {
@@ -146,8 +146,8 @@ class _ListEmployeeState extends State<ListEmployee> {
     }catch(e){
 
     }
-
   }
+
   @override
   void initState() {
     // TODO: implement initState

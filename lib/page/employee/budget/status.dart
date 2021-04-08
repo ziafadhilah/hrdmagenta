@@ -228,7 +228,7 @@ class _budget_statusState extends State<budget_status> {
         _loading = true;
       });
       http.Response response = await http.get(
-          "http://${base_url}/api/events/${widget.event_id}/budgets?type=expense&type=${widget.status}");
+          "$base_url/api/events/${widget.event_id}/budgets?type=expense&type=${widget.status}");
       _budgeting = jsonDecode(response.body);
       setState(() {
         _loading = false;

@@ -5,6 +5,8 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:hrdmagenta/page/employee/checkin/maps.dart';
+import 'package:hrdmagenta/services/api_clien.dart';
+import 'package:hrdmagenta/utalities/alert_dialog.dart';
 
 import 'package:hrdmagenta/utalities/font.dart';
 import 'package:hrdmagenta/validasi/validator.dart';
@@ -12,6 +14,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toast/toast.dart';
+import 'package:http/http.dart' as http;
 
 class Checkout extends StatefulWidget {
   @override
@@ -21,8 +24,11 @@ class Checkout extends StatefulWidget {
 class _CheckoutState extends State<Checkout> {
   ///variable
   File _image;
+  Map _employee;
+  bool _isLoading = true;
   bool _disposed = false;
-  final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
+  final Geolocator geolocator = Geolocator()
+    ..forceAndroidLocationManager;
   Position _currentPosition;
   String _currentAddress;
   var Cremark = new TextEditingController();
@@ -37,7 +43,9 @@ class _CheckoutState extends State<Checkout> {
       _last_name,
       _profile_background,
       _gender,
-      _departement_name;
+      _departement_name,
+      _lat_mainoffice,
+      _long_mainoffice;
   String base64;
   Validasi validator = new Validasi();
 
@@ -55,22 +63,35 @@ class _CheckoutState extends State<Checkout> {
           style: TextStyle(color: Colors.black87),
         ),
       ),
-      body: SingleChildScrollView(
+      body: _isLoading == true
+          ? Center(
+        child: CircularProgressIndicator(),
+      )
+          : SingleChildScrollView(
         child: Container(
           color: Colors.white,
-          height: MediaQuery.of(context).size.height + 50,
+          height: MediaQuery
+              .of(context)
+              .size
+              .height + 50,
           child: Container(
             child: Column(
               children: <Widget>[
                 Container(
-                  child: _distance > 50 ? _builddistaceCompany() : Text(""),
+                  child:
+                  _distance > 20 ? _builddistaceCompany() : Text(""),
                 ),
                 Container(
                   margin: EdgeInsets.only(top: 15),
                   child: _image == null
                       ? _buildPhoto()
-                      : new Image.file(_image,
-                          width: 200, height: 200, fit: BoxFit.fill),
+                      : InkWell(
+                    onTap: () {
+                      aksesCamera();
+                    },
+                    child: new Image.file(_image,
+                        width: 200, height: 200, fit: BoxFit.fill),
+                  ),
                 ),
                 _buildText(),
                 SizedBox(
@@ -93,7 +114,10 @@ class _CheckoutState extends State<Checkout> {
                   child: Container(
                     margin: EdgeInsets.only(bottom: 10),
                     width: double.infinity,
-                    height: MediaQuery.of(context).size.height,
+                    height: MediaQuery
+                        .of(context)
+                        .size
+                        .height,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: <Widget>[
@@ -147,7 +171,9 @@ class _CheckoutState extends State<Checkout> {
       margin: EdgeInsets.only(left: 25, right: 20),
       child: TextFormField(
         controller: Cremark,
-        cursorColor: Theme.of(context).cursorColor,
+        cursorColor: Theme
+            .of(context)
+            .cursorColor,
         maxLength: 100,
         decoration: InputDecoration(
           icon: Icon(
@@ -160,8 +186,8 @@ class _CheckoutState extends State<Checkout> {
           ),
           enabledBorder: UnderlineInputBorder(
               borderSide: BorderSide(
-            color: Colors.black38,
-          )),
+                color: Colors.black38,
+              )),
         ),
       ),
     );
@@ -174,6 +200,8 @@ class _CheckoutState extends State<Checkout> {
       if (!_disposed) {
         setState(() {
           time = formatedjam;
+          _getCurrentLocation();
+          _getDistance(_lat_mainoffice, _long_mainoffice, _lat, _long);
         });
       }
     });
@@ -189,7 +217,9 @@ class _CheckoutState extends State<Checkout> {
           margin: EdgeInsets.only(left: 25),
           child: TextFormField(
             enabled: false,
-            cursorColor: Theme.of(context).cursorColor,
+            cursorColor: Theme
+                .of(context)
+                .cursorColor,
             decoration: InputDecoration(
               border: InputBorder.none,
               focusedBorder: InputBorder.none,
@@ -205,7 +235,6 @@ class _CheckoutState extends State<Checkout> {
               labelStyle: TextStyle(
                 color: Colors.black38,
               ),
-
             ),
           ),
         ),
@@ -239,9 +268,10 @@ class _CheckoutState extends State<Checkout> {
                 style: TextStyle(color: Colors.black),
 
                 items: <String>[
-                  'present',
-                  'sick',
-                  'permission',
+                  'Present',
+                  'Sick',
+                  'Permission',
+                  'Business Trip'
                 ].map<DropdownMenuItem<String>>((String value) {
                   return DropdownMenuItem<String>(
                     value: value,
@@ -249,7 +279,7 @@ class _CheckoutState extends State<Checkout> {
                   );
                 }).toList(),
                 hint: Text(
-                  "present",
+                  "Present",
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: 16,
@@ -291,7 +321,8 @@ class _CheckoutState extends State<Checkout> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => Maps(
+                            builder: (context) =>
+                                Maps(
                                   address: _currentAddress,
                                   longitude: _long,
                                   latitude: _lat,
@@ -301,6 +332,8 @@ class _CheckoutState extends State<Checkout> {
                                   gender: _gender,
                                   departement_name: _departement_name,
                                   distance: _distance,
+                                  latmainoffice: _lat_mainoffice,
+                                  longMainoffice: _long_mainoffice,
                                 )));
                   },
                   child: Container(
@@ -315,7 +348,10 @@ class _CheckoutState extends State<Checkout> {
                         ),
                         if (_currentPosition != null && _currentAddress != null)
                           Container(
-                            width: MediaQuery.of(context).size.width - 100,
+                            width: MediaQuery
+                                .of(context)
+                                .size
+                                .width - 100,
                             child: Text(
                               "$_currentAddress ",
                               style: TextStyle(color: Colors.black38),
@@ -361,43 +397,34 @@ class _CheckoutState extends State<Checkout> {
   Future upload() async {
     var date = DateFormat("yyyy:MM:dd").format(DateTime.now());
     if (_category_absent == null) {
-      _category_absent = "present";
+      _category_absent = "Present";
     }
 
-    validator.validation_checkout(
+
+
+    //Toast.show("$_category_absent", context);
+    validation_checkout(
         context,
         base64.toString(),
         Cremark.text,
         _lat.toString().trim(),
         _long.toString().trim(),
         _employee_id,
-        date.toString(),
-        time.toString(),
+        date,
+        time,
         _departement_name,
         _distance,
-        _category_absent);
-    //Toast.show("$_category_absent", context);
-
-    // validator.validation_checkout(
-// context,
-// base64.toString(),
-// Cremark.text,
-// _lat.toString().trim(),
-// _long.toString().trim(),
-// _employee_id,
-// date.toString(),
-// time.toString(),
-// );
-// }
-
-    //Toast.show("$_category_absent", context);
+        _lat_mainoffice,
+        _long_mainoffice,
+        _category_absent.toString().toLowerCase());
   }
 
   ///fucntion
   //akses kamera
   aksesCamera() async {
     print('Picker is Called');
-    File img = (await ImagePicker.pickImage(source: ImageSource.camera));
+    File img = (await ImagePicker.pickImage(
+        source: ImageSource.camera, imageQuality: 20));
     if (img != null) {
       setState(() {
         _image = File(img.path);
@@ -421,9 +448,9 @@ class _CheckoutState extends State<Checkout> {
           ),
           Container(
               child: Text(
-            "Anda berada di luar radius kantor",
-            style: subtitleMainMenu,
-          ))
+                "Anda berada di luar radius kantor",
+                style: subtitleMainMenu,
+              ))
         ],
       ),
     );
@@ -438,7 +465,6 @@ class _CheckoutState extends State<Checkout> {
         _currentPosition = position;
         _lat = _currentPosition.latitude;
         _long = _currentPosition.longitude;
-        _getDistance(_lat, _long);
       });
 
       _getAddressFromLatLng();
@@ -457,7 +483,7 @@ class _CheckoutState extends State<Checkout> {
 
       setState(() {
         _currentAddress =
-            "${place.locality}, ${place.postalCode}, ${place.country}";
+        "${place.locality}, ${place.postalCode}, ${place.country}";
       });
     } catch (e) {
       print(e);
@@ -468,24 +494,19 @@ class _CheckoutState extends State<Checkout> {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     setState(() {
       _employee_id = sharedPreferences.getString("user_id");
-      _departement_name = sharedPreferences.getString("departement_name");
-      _gender = sharedPreferences.getString("gender");
-      _profile_background = sharedPreferences.getString("profile_background");
-      _firts_name = sharedPreferences.getString("first_name");
-      _last_name = sharedPreferences.getString("last_name");
 
-      //print(_departement_name);
+      dataEmployee(_employee_id.toString());
     });
   }
 
-  _getDistance(currentlat, currentlong) async {
+  _getDistance(latMainoffice, longMainoffice, currentlat, currentlong) async {
     try {
-      final double d = await Geolocator()
-          .distanceBetween(-6.9526871, 107.6668177, currentlat, currentlong);
+      final double d = await Geolocator().distanceBetween(
+          latMainoffice, longMainoffice, currentlat, currentlong);
       setState(() {
         _distance = d;
         print("$d");
-        if (_distance > 50) {
+        if (_distance > 20) {
           print("outside");
         } else {
           print("inside");
@@ -503,6 +524,30 @@ class _CheckoutState extends State<Checkout> {
     super.dispose();
   }
 
+  Future dataEmployee(var id) async {
+    try {
+      setState(() {
+        _isLoading = true;
+      });
+      http.Response response = await http.get("$base_url/api/employees/$id");
+      _employee = jsonDecode(response.body);
+
+      setState(() {
+        _departement_name = _employee['data']['work_placement'];
+
+        _gender = _employee['data']['gender'];
+        _last_name = _employee['data']['last_name'];
+        _profile_background = _employee['data']['photo'];
+        _firts_name = _employee['data']['first_name'];
+        _lat_mainoffice = _employee['data']['location']['latitude'];
+        _long_mainoffice = _employee['data']['location']['longitude'];
+        _getCurrentLocation();
+        _getDistance(_lat_mainoffice, _long_mainoffice, _lat, _long);
+
+        _isLoading = false;
+      });
+    } catch (e) {}
+  }
 
   @override
   void initState() {

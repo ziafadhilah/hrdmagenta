@@ -464,7 +464,7 @@ class _expandBudgettState extends State<expandbudget> {
   Future _data_expense() async{
     try{
 
-      http.Response response=await http.get("http://${base_url}/api/budget-categories?type=expense");
+      http.Response response=await http.get("$base_url/api/budget-categories?type=expense");
       var data=jsonDecode(response.body);
         setState(() {
           typeList = data['data'];

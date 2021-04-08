@@ -94,31 +94,58 @@ class _absenceState extends State<absence> {
                                         children: <Widget>[
                                           Row(
                                             children: [
-                                              Text(
-                                                "you ",
-                                                style: TextStyle(
-                                                    fontSize: 18,
-                                                    color: textColor1),
-                                              ),
-                                              Text(
-                                                  "Have been ${_absence['data'][index]['type']}",
-                                                  style: subtitleMainMenu),
+                                              Container(
+                                                  child: _absence['data'][index]
+                                                              ['approved_at'] ==
+                                                          null
+                                                      ? Text(
+                                                          "You has been ${_absence['data'][index]['type']} ",
+                                                          style:
+                                                              subtitleMainMenu)
+                                                      : Text(
+                                                          "Your ${_absence['data'][index]['type']} has been approved")),
                                             ],
                                           ),
                                           Container(
                                             child: _absence['data'][index]
                                                         ['type'] ==
                                                     "check in"
-                                                ? Text(
-                                                    "${_absence['data'][index]['clock_in']}",
-                                                    style: TextStyle(
-                                                        fontSize: 15,
-                                                        color: Colors.black26))
-                                                : Text(
-                                                    "${_absence['data'][index]['clock_out']}",
-                                                    style: TextStyle(
-                                                        fontSize: 15,
-                                                        color: Colors.black26)),
+                                                ? Container(
+                                                    child: _absence['data']
+                                                                    [index][
+                                                                'approved_at'] ==
+                                                            null
+                                                        ? Text(
+                                                            "${_absence['data'][index]['clock_in']}",
+                                                            style: TextStyle(
+                                                                fontSize: 15,
+                                                                color: Colors
+                                                                    .black26))
+                                                        : Text(
+                                                            "${_absence['data'][index]['approved_at']}",
+                                                            style: TextStyle(
+                                                                fontSize: 15,
+                                                                color: Colors
+                                                                    .black26)),
+                                                  )
+                                                : Container(
+                                                    child: _absence['data']
+                                                                    [index][
+                                                                'approved_at'] ==
+                                                            null
+                                                        ? Text(
+                                                            "${_absence['data'][index]['clock_out']}",
+                                                            style: TextStyle(
+                                                                fontSize: 15,
+                                                                color: Colors
+                                                                    .black26))
+                                                        : Text(
+                                                            "${_absence['data'][index]['approved_at']}",
+                                                            style: TextStyle(
+                                                                fontSize: 15,
+                                                                color: Colors
+                                                                    .black26)),
+                                                  ),
                                           ),
                                           InkWell(
                                             onTap: () {
@@ -224,6 +251,18 @@ class _absenceState extends State<absence> {
                                                                           'employee']
                                                                       [
                                                                       'last_name'],
+                                                              office_latitude:
+                                                                  _absence['data']
+                                                                          [
+                                                                          index]
+                                                                      [
+                                                                      'office_latitude'],
+                                                              office_longitude:
+                                                                  _absence['data']
+                                                                          [
+                                                                          index]
+                                                                      [
+                                                                      'office_longitude'],
                                                             )));
                                               } else {
                                                 Navigator.push(
@@ -325,6 +364,18 @@ class _absenceState extends State<absence> {
                                                                           'employee']
                                                                       [
                                                                       'last_name'],
+                                                              office_latitude:
+                                                                  _absence['data']
+                                                                          [
+                                                                          index]
+                                                                      [
+                                                                      'office_latitude'],
+                                                              office_longitude:
+                                                                  _absence['data']
+                                                                          [
+                                                                          index]
+                                                                      [
+                                                                      'office_longitude'],
                                                             )));
                                               }
                                             },
@@ -401,7 +452,7 @@ class _absenceState extends State<absence> {
         _loading = true;
       });
       http.Response response = await http.get(
-          "http://${base_url}/api/employees/$user_id/attendances?type=${widget.type}&status=approved");
+          "$base_url/api/employees/$user_id/attendances?type=${widget.type}&status=approved");
       _absence = jsonDecode(response.body);
       setState(() {
         _loading = false;

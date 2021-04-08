@@ -185,8 +185,8 @@ final Widget camera = SvgPicture.asset(
 );
 final Widget google_maps = SvgPicture.asset(
   "assets/google-maps.svg",
-  width: 50,
-  height: 60,
+  fit: BoxFit.fill,
+
 
   semanticsLabel: 'Acme Logo',
 
@@ -198,6 +198,13 @@ final Widget no_data_absence = SvgPicture.asset(
   semanticsLabel: 'Acme Logo',
   width: 150,
   height: 150,
+);
+final Widget no_data_leave = SvgPicture.asset(
+  "assets/leave.svg",
+  semanticsLabel: 'Acme Logo',
+  width: 150,
+  height: 150,
+  color: Colors.black45,
 );
 
 
@@ -214,7 +221,7 @@ final Widget budget = SvgPicture.asset(
 
 class Constants{
   static const String Buget ="Budget History";
-  static const String Absence ="Absence Status";
+  static const String Absence ="Attendance Status";
   static const String Leave ="Leave Status";
 
   static const List<String> choicesM=<String>[

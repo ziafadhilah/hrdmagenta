@@ -63,14 +63,14 @@ class Data {
   String contactNumber;
   String email;
   dynamic website;
-  String npwp;
+  dynamic npwp;
   String address;
   String province;
   String city;
   String zipCode;
   String country;
   String logo;
-  int addedBy;
+  String addedBy;
   dynamic deletedAt;
   DateTime createdAt;
   DateTime updatedAt;

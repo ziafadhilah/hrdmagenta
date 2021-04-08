@@ -190,7 +190,7 @@ class _offwork_status_adminState extends State<offwork_status_admin> {
         _loading = true;
       });
       http.Response response = await http
-          .get("http://${base_url}/api/attendances?status=${widget.type}");
+          .get("$base_url/api/attendances?status=${widget.type}");
       _absence = jsonDecode(response.body);
       setState(() {
         _loading = false;

@@ -2,15 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hrdmagenta/services/api_clien.dart';
 import 'package:hrdmagenta/utalities/color.dart';
+import 'package:hrdmagenta/validasi/validator.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
 void loading(BuildContext context) {
   ProgressDialog progressDialog = ProgressDialog(context);
+
   progressDialog.style(message: "Loading ...");
+
   progressDialog.show();
 }
-
 
 void alert_error(BuildContext context, var title, text_button) {
   Alert(
@@ -57,7 +59,6 @@ void alert_success(BuildContext context, var title, text_button) {
 
 void alert_success1(BuildContext context, var title, text_button) {
   Alert(
-
     context: context,
     title: "$title",
     type: AlertType.success,
@@ -101,9 +102,9 @@ void alert_info(BuildContext context, var title, text_button) {
   ).show();
 }
 
-void alert_approve(BuildContext context, var id_attendance, user_id, status, request_status, request_note)
-{
-  Services services=new Services();
+void alert_approve(BuildContext context, var id_attendance, user_id, status,
+    request_status, request_note) {
+  Services services = new Services();
   var Cremarks = new TextEditingController();
   Alert(
     context: context,
@@ -112,15 +113,12 @@ void alert_approve(BuildContext context, var id_attendance, user_id, status, req
     desc: "Data will be approved",
     content: Column(
       children: <Widget>[
-
         TextField(
           controller: Cremarks,
           decoration: InputDecoration(
-
             labelText: 'Remarks(optional)',
           ),
         ),
-
       ],
     ),
     buttons: [
@@ -138,20 +136,18 @@ void alert_approve(BuildContext context, var id_attendance, user_id, status, req
           style: TextStyle(color: Colors.white, fontSize: 20),
         ),
         onPressed: () {
-          services.approveAbsence(context, id_attendance, user_id, status, request_status, Cremarks.text , request_note);
-},
-        gradient: LinearGradient(colors: [
-          Colors.green,
-          Colors.green
-        ]),
+          services.approveAbsence(context, id_attendance, user_id, status,
+              request_status, Cremarks.text, request_note);
+        },
+        gradient: LinearGradient(colors: [Colors.green, Colors.green]),
       )
     ],
   ).show();
-
 }
-void alert_reject(BuildContext context, var id_attendance, user_id, status, request_status, request_note)
-{
-  Services services=new Services();
+
+void alert_reject(BuildContext context, var id_attendance, user_id, status,
+    request_status, request_note) {
+  Services services = new Services();
   var Cremarks = new TextEditingController();
   Alert(
     context: context,
@@ -160,15 +156,12 @@ void alert_reject(BuildContext context, var id_attendance, user_id, status, requ
     desc: "Data will be rejected",
     content: Column(
       children: <Widget>[
-
         TextField(
           controller: Cremarks,
           decoration: InputDecoration(
-
             labelText: 'Remarks(optional)',
           ),
         ),
-
       ],
     ),
     buttons: [
@@ -186,16 +179,127 @@ void alert_reject(BuildContext context, var id_attendance, user_id, status, requ
           style: TextStyle(color: Colors.white, fontSize: 20),
         ),
         onPressed: () {
-          services.approveAbsence(context, id_attendance, user_id, status, request_status, Cremarks.text , request_note);
+          services.approveAbsence(context, id_attendance, user_id, status,
+              request_status, Cremarks.text, request_note);
         },
-        gradient: LinearGradient(colors: [
-          Colors.red,
-          Colors.red
-        ]),
+        gradient: LinearGradient(colors: [Colors.red, Colors.red]),
       )
     ],
   ).show();
+}
 
+void validation_checkin(
+    BuildContext context,
+    var photos,
+    remark,
+    lat,
+    long,
+    employee_id,
+    date,
+    time,
+    departement_name,
+    distance,
+    office_latitude,
+    office_longitude,
+    category) {
+  Validasi validator = new Validasi();
+  Alert(
+    context: context,
+    type: AlertType.warning,
+    title: "Are your sure?",
+    desc: "",
+    buttons: [
+      DialogButton(
+        child: Text(
+          "Yes",
+          style: TextStyle(color: Colors.white, fontSize: 20),
+        ),
+        onPressed: () => {
+          Navigator.pop(context),
+          validator.validation_checkin(
+              context,
+              photos,
+              remark,
+              lat,
+              long,
+              employee_id,
+              date,
+              time,
+              departement_name,
+              distance,
+              office_latitude,
+              office_longitude,
+              category)
+        },
+        color: btnColor1,
+      ),
+      DialogButton(
+        child: Text(
+          "Cancel",
+          style: TextStyle(color: Colors.white, fontSize: 20),
+        ),
+        onPressed: () => Navigator.pop(context),
+        color: Colors.black38,
+      )
+    ],
+  ).show();
+}
+
+void validation_checkout(
+    BuildContext context,
+    var photos,
+    remark,
+    lat,
+    long,
+    employee_id,
+    date,
+    time,
+    departement_name,
+    distance,
+    office_latitude,
+    office_longitude,
+    category) {
+  Validasi validator = new Validasi();
+  Alert(
+    context: context,
+    type: AlertType.warning,
+    title: "Are your sure?",
+    desc: "",
+    buttons: [
+      DialogButton(
+        child: Text(
+          "Yes",
+          style: TextStyle(color: Colors.white, fontSize: 20),
+        ),
+        onPressed: () => {
+          Navigator.pop(context),
+          validator.validation_checkout(
+              context,
+              photos,
+              remark,
+              lat,
+              long,
+              employee_id,
+              date,
+              time,
+              departement_name,
+              distance,
+              office_latitude,
+              office_longitude,
+              category)
+        },
+        color: btnColor1,
+      ),
+      DialogButton(
+        child: Text(
+          "Cancel",
+          style: TextStyle(color: Colors.white, fontSize: 20),
+        ),
+        onPressed: () => Navigator.pop(context),
+        color: Colors.black38,
+      )
+    ],
+  ).show();
 }
 
 void toast_success(message) {

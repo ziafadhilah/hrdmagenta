@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:hrdmagenta/page/admin/l/absence/detail.dart';
+import 'package:hrdmagenta/page/admin/l/home/navbar.dart';
 import 'package:hrdmagenta/page/employee/absence/detail.dart';
 import 'package:hrdmagenta/page/employee/absence/shimmer_effect.dart';
 import 'package:hrdmagenta/services/api_clien.dart';
@@ -21,29 +22,39 @@ class _absence_status_adminState extends State<absence_status_admin> {
   Map _absence;
   bool _loading = true;
 
+  Future<bool> _onBackPressed() {
+    Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (BuildContext context) => NavBarAdmin()),
+        ModalRoute.withName('/'));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: RefreshIndicator(
-        child: Container(
-          child: _loading
-              ? Center(
-                  child: ShimmerAbsence(),
-                )
-              : ListView.builder(
-                  // itemCount: _budgeting['data']['cash_flow'].length,
-                  itemCount: _absence['data'].length == 0
-                      ? 1
-                      : _absence['data'].length,
-                  itemBuilder: (context, index) {
-                    return _absence['data'].length == 0
-                        ? _buildnodata()
-                        : _buildlistabsence(index);
-                  }),
+      body: WillPopScope(
+        onWillPop: _onBackPressed,
+        child: RefreshIndicator(
+          child: Container(
+            child: _loading
+                ? Center(
+                    child: ShimmerAbsence(),
+                  )
+                : ListView.builder(
+                    // itemCount: _budgeting['data']['cash_flow'].length,
+                    itemCount: _absence['data'].length == 0
+                        ? 1
+                        : _absence['data'].length,
+                    itemBuilder: (context, index) {
+                      return _absence['data'].length == 0
+                          ? _buildnodata()
+                          : _buildlistabsence(index);
+                    }),
 
-          //
+            //
+          ),
+          onRefresh: _dataAbsence,
         ),
-        onRefresh: _dataAbsence,
       ),
     );
   }
@@ -97,33 +108,66 @@ class _absence_status_adminState extends State<absence_status_admin> {
                                         children: <Widget>[
                                           Row(
                                             children: [
-                                              Text(
-                                                "you ",
-                                                style: TextStyle(
-                                                    fontSize: 18,
-                                                    color: textColor1),
-                                              ),
-                                              Text(
-                                                  "Have been ${_absence['data'][index]['type']}",
-                                                  style: TextStyle(
-                                                      fontSize: 15,
-                                                      color: Colors.black87)),
+                                              Container(
+                                                  child: _absence['data'][index]
+                                                              ['status'] ==
+                                                          "pending"
+                                                      ? Text(
+                                                          "${_absence['data'][index]['employee']['first_name']}'s ${_absence['data'][index]['type']} is  needed approval",
+                                                          style: TextStyle(
+                                                              fontSize: 15,
+                                                              color: Colors
+                                                                  .black87))
+                                                      : _absence['data'][index]
+                                                                  ['status'] ==
+                                                              "rejected"
+                                                          ? Text(
+                                                              "${_absence['data'][index]['employee']['first_name']}'s  ${_absence['data'][index]['type']} has been rejected",
+                                                              style: TextStyle(
+                                                                  fontSize: 15,
+                                                                  color: Colors
+                                                                      .black87))
+                                                          : _absence['data']
+                                                                          [index]
+                                                                      ['status'] ==
+                                                                  "approved"
+                                                              ? Container(child: _absence['data'][index]['approved_at'] != null ? Text("${_absence['data'][index]['employee']['first_name']}'s ${_absence['data'][index]['type']} has been approved", style: TextStyle(fontSize: 15, color: Colors.black87)) : Text("${_absence['data'][index]['employee']['first_name']} has been ${_absence['data'][index]['type']}", style: TextStyle(fontSize: 15, color: Colors.black87)))
+                                                              : Text(""))
                                             ],
                                           ),
                                           Container(
                                             child: _absence['data'][index]
                                                         ['type'] ==
                                                     "check in"
-                                                ? Text(
-                                                    "${_absence['data'][index]['clock_in']}",
-                                                    style: TextStyle(
-                                                        fontSize: 15,
-                                                        color: Colors.black26))
-                                                : Text(
-                                                    "${_absence['data'][index]['clock_out']}",
-                                                    style: TextStyle(
-                                                        fontSize: 15,
-                                                        color: Colors.black26)),
+                                                ? Container(
+                                                    child: _absence['data']
+                                                                    [index]
+                                                                ['status'] ==
+                                                            "pending"
+                                                        ? Text(
+                                                            "${_absence['data'][index]['clock_in']}",
+                                                            style: TextStyle(
+                                                                fontSize: 15,
+                                                                color: Colors
+                                                                    .black26))
+                                                        : _absence['data'][index]['status'] ==
+                                                                "rejected"
+                                                            ? Text(
+                                                                "${_absence['data'][index]['rejected_at']}",
+                                                                style: TextStyle(
+                                                                    fontSize: 15,
+                                                                    color: Colors.black26))
+                                                            : _absence['data'][index]['status'] == "approved"
+                                                                ? Container(child: _absence['data'][index]['approved_at'] != null ? Text("${_absence['data'][index]['approved_at']}", style: TextStyle(fontSize: 15, color: Colors.black26)) : Text("${_absence['data'][index]['clock_in']}", style: TextStyle(fontSize: 15, color: Colors.black26)))
+                                                                : Text(""))
+                                                : Container(
+                                                    child: _absence['data'][index]['status'] == "pending"
+                                                        ? Text("${_absence['data'][index]['clock_out']}", style: TextStyle(fontSize: 15, color: Colors.black26))
+                                                        : _absence['data'][index]['status'] == "rejected"
+                                                            ? Text("${_absence['data'][index]['rejected_at']}", style: TextStyle(fontSize: 15, color: Colors.black26))
+                                                            : _absence['data'][index]['status'] == "approved"
+                                                                ? Container(child: _absence['data'][index]['approved_at'] != null ? Text("${_absence['data'][index]['approved_at']}", style: TextStyle(fontSize: 15, color: Colors.black26)) : Text("${_absence['data'][index]['clock_out']}", style: TextStyle(fontSize: 15, color: Colors.black26)))
+                                                                : Text("")),
                                           ),
                                           InkWell(
                                             onTap: () {
@@ -234,6 +278,8 @@ class _absence_status_adminState extends State<absence_status_admin> {
                                                                           'employee']
                                                                       [
                                                                       'last_name'],
+                                                              office_latitude: _absence['data'][index]['office_latitude'],
+                                                              office_longitude: _absence['data'][index]['office_longitude'],
                                                             )));
                                               } else {
                                                 Navigator.push(
@@ -340,6 +386,8 @@ class _absence_status_adminState extends State<absence_status_admin> {
                                                                           'employee']
                                                                       [
                                                                       'last_name'],
+                                                              office_latitude: _absence['data'][index]['office_latitude'],
+                                                              office_longitude: _absence['data'][index]['office_longitude'],
                                                             )));
                                               }
                                             },
@@ -355,7 +403,7 @@ class _absence_status_adminState extends State<absence_status_admin> {
                                                 children: <Widget>[
                                                   Container(
                                                     child: Text(
-                                                      "See Details",
+                                                      "See Details ",
                                                       style: TextStyle(
                                                           color: textColor1),
                                                     ),
@@ -415,8 +463,8 @@ class _absence_status_adminState extends State<absence_status_admin> {
       setState(() {
         _loading = true;
       });
-      http.Response response = await http
-          .get("http://${base_url}/api/attendances?status=${widget.type}");
+      http.Response response =
+          await http.get("$base_url/api/attendances?status=${widget.type}");
       _absence = jsonDecode(response.body);
       setState(() {
         _loading = false;

@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hrdmagenta/page/change_password/change_password.dart';
 import 'package:hrdmagenta/page/employee/Account/company_profile.dart';
+import 'package:hrdmagenta/services/api_clien.dart';
 import 'package:hrdmagenta/shared_preferenced/sessionmanage.dart';
 import 'package:hrdmagenta/utalities/color.dart';
 import 'package:hrdmagenta/utalities/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 
 class AccountAdmin extends StatefulWidget {
   @override
@@ -14,15 +14,22 @@ class AccountAdmin extends StatefulWidget {
 }
 
 class _AccountAdminState extends State<AccountAdmin> {
-  bool _detailData=false;
-  bool _lessData=true;
-  String username,contac,first_name,last_name,email,gender,employee_id,profile_background="";
-  var user_id,value;
-  SharedPreference session=new SharedPreference();
-
+  bool _detailData = false;
+  bool _lessData = true;
+  String username,
+      contac,
+      first_name,
+      last_name,
+      email,
+      gender,
+      employee_id,
+      profile_background = "";
+  var user_id, value;
+  SharedPreference session = new SharedPreference();
+  Services services=new Services();
 
   //text settings
-  Widget _buildText(){
+  Widget _buildText() {
     return Container(
       width: double.infinity,
       margin: EdgeInsets.all(10),
@@ -33,21 +40,17 @@ class _AccountAdminState extends State<AccountAdmin> {
               style: TextStyle(
                   fontSize: 18,
                   color: Colors.black87,
-                  fontWeight: FontWeight.bold
-              )
-          ),
+                  fontWeight: FontWeight.bold)),
           new Divider(
             color: Colors.black12,
           ),
-
         ],
       ),
     );
   }
-  Widget _buildTextacount(){
+
+  Widget _buildTextacount() {
     return Container(
-
-
       width: double.infinity,
       margin: EdgeInsets.all(10),
       child: Column(
@@ -57,87 +60,75 @@ class _AccountAdminState extends State<AccountAdmin> {
               style: TextStyle(
                   fontSize: 18,
                   color: Colors.black87,
-                  fontWeight: FontWeight.bold
-              )
-          ),
+                  fontWeight: FontWeight.bold)),
           new Divider(
             color: Colors.black12,
           ),
-
         ],
       ),
     );
   }
+
   //wodget company
-  Widget _buildCompany(){
+  Widget _buildCompany() {
     return InkWell(
-      onTap: (){
-        Navigator.push(context, MaterialPageRoute(
-            builder: (context) => company_pfrofile(id: user_id)
-        ));
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => company_pfrofile(id: user_id)));
       },
       child: Container(
-
-
         margin: EdgeInsets.all(5),
         child: Column(
-
           children: [
-
             //row company profile
             Container(
-
               child: Row(
                 children: <Widget>[
                   //container icon
                   Container(
-                    child:CircleAvatar(
+                    child: CircleAvatar(
                       backgroundColor: Colors.white,
                       radius: 20,
                       child: Icon(
                         Icons.home_work,
                         color: Colors.black38,
-                        size:25,
+                        size: 25,
                       ),
                     ),
-
                   ),
                   //container text componey profile
                   Container(
                       margin: EdgeInsets.only(left: 10),
-                      child:Column(
+                      child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget> [
-                          Text("Company Profile",
+                        children: <Widget>[
+                          Text(
+                            "Company Profile",
                             style: TextStyle(
                                 fontSize: 14,
                                 color: Colors.black87,
-                                fontWeight: FontWeight.bold
-                            ),
+                                fontWeight: FontWeight.bold),
                           ),
-                          SizedBox(height: 5,),
-                          Text("View your company profile",
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Text(
+                            "View your company profile",
                             style: TextStyle(
                               fontSize: 14,
                               color: Colors.black38,
-
                             ),
                           )
-
-
                         ],
-                      )
-
-                  ),
+                      )),
 
                   //container arrow right
                   Flexible(
                     child: Container(
                       width: MediaQuery.of(context).size.width,
-
-
-
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.end,
                         crossAxisAlignment: CrossAxisAlignment.end,
@@ -146,16 +137,11 @@ class _AccountAdminState extends State<AccountAdmin> {
                             Icons.arrow_forward_ios_rounded,
                             color: Colors.black38,
                             size: 20,
-
                           ),
                         ],
                       ),
-
                     ),
                   )
-
-
-
                 ],
               ),
             ),
@@ -167,82 +153,72 @@ class _AccountAdminState extends State<AccountAdmin> {
       ),
     );
   }
+
   //wodget company
-  Widget _buildChangepassword(){
+  Widget _buildChangepassword() {
     return InkWell(
-      onTap: (){
-        Navigator.push(context, MaterialPageRoute(
-            builder: (context) => change_password(
-              id: user_id,
-              username: username,
-              email: email,
-            )
-        ));
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => change_password(
+                      id: user_id,
+                      username: username,
+                      email: email,
+                    )));
       },
       child: Container(
-
-
-
         margin: EdgeInsets.all(5),
         child: Column(
-
           children: [
-
             //row company profile
             Container(
-
               child: Row(
                 children: <Widget>[
                   //container icon
                   Container(
-                    child:CircleAvatar(
+                    child: CircleAvatar(
                       backgroundColor: Colors.white,
                       radius: 20,
                       child: Icon(
                         Icons.lock,
                         color: Colors.black38,
-                        size:25,
+                        size: 25,
                       ),
                     ),
-
                   ),
 
                   //container text componey profile
                   Container(
                       margin: EdgeInsets.only(left: 10),
-                      child:Column(
+                      child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget> [
-                          Text("Change Password",
+                        children: <Widget>[
+                          Text(
+                            "Change Password",
                             style: TextStyle(
                                 fontSize: 14,
                                 color: Colors.black87,
-                                fontWeight: FontWeight.bold
-                            ),
+                                fontWeight: FontWeight.bold),
                           ),
-                          SizedBox(height: 5,),
-                          Text("Change Password",
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Text(
+                            "Change Password",
                             style: TextStyle(
                               fontSize: 14,
                               color: Colors.black38,
-
                             ),
                           )
-
-
                         ],
-                      )
-
-                  ),
+                      )),
 
                   //container arrow right
                   Flexible(
                     child: Container(
                       width: MediaQuery.of(context).size.width,
-
-
-
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.end,
                         crossAxisAlignment: CrossAxisAlignment.end,
@@ -251,16 +227,11 @@ class _AccountAdminState extends State<AccountAdmin> {
                             Icons.arrow_forward_ios_rounded,
                             color: Colors.black38,
                             size: 20,
-
                           ),
                         ],
                       ),
-
                     ),
                   )
-
-
-
                 ],
               ),
             ),
@@ -272,72 +243,64 @@ class _AccountAdminState extends State<AccountAdmin> {
       ),
     );
   }
+
   //wodget about
-  Widget _buildabout(){
+  Widget _buildabout() {
     return Container(
-
-
       margin: EdgeInsets.all(5),
       child: Column(
-
         children: [
-
           //row company profile
           Container(
-
             child: Row(
               children: <Widget>[
                 //container icon
                 Container(
-                  child:CircleAvatar(
+                  child: CircleAvatar(
                     backgroundColor: Colors.white,
                     radius: 20,
                     child: Icon(
                       Icons.info,
                       color: Colors.black38,
-                      size:25,
+                      size: 25,
                     ),
                   ),
-
                 ),
 
                 //container text componey profile
                 Container(
                     margin: EdgeInsets.only(left: 5),
-                    child:Column(
+                    child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget> [
-                        Text("About",
+                      children: <Widget>[
+                        Text(
+                          "About",
                           style: TextStyle(
                               fontSize: 14,
                               color: Colors.black87,
-                              fontWeight: FontWeight.bold
-                          ),
+                              fontWeight: FontWeight.bold),
                         ),
-                        SizedBox(height: 5,),
-                        SizedBox(height: 5,),
-                        Text(version,
+                        SizedBox(
+                          height: 5,
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Text(
+                          version,
                           style: TextStyle(
                             fontSize: 14,
                             color: Colors.black12,
-
                           ),
                         )
-
-
                       ],
-                    )
-
-                ),
+                    )),
 
                 //container arrow right
                 Flexible(
                   child: Container(
                     width: MediaQuery.of(context).size.width,
-
-
-
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.end,
                       crossAxisAlignment: CrossAxisAlignment.end,
@@ -346,16 +309,11 @@ class _AccountAdminState extends State<AccountAdmin> {
                           Icons.arrow_forward_ios_rounded,
                           color: Colors.black38,
                           size: 20,
-
                         ),
                       ],
                     ),
-
                   ),
                 )
-
-
-
               ],
             ),
           ),
@@ -366,17 +324,16 @@ class _AccountAdminState extends State<AccountAdmin> {
       ),
     );
   }
+
 //---end about----
 
-
   //wodget logout
-  Widget _buildlogout(){
+  Widget _buildlogout() {
     return InkWell(
-      onTap: (){
+      onTap: () {
         //session.logout(context);
 
         _showConfirmlogout(context);
-
       },
       child: Container(
         margin: EdgeInsets.all(10),
@@ -384,51 +341,47 @@ class _AccountAdminState extends State<AccountAdmin> {
           children: [
             //row company profile
             Container(
-
               child: Row(
                 children: <Widget>[
                   //container icon
                   Container(
-                    child:CircleAvatar(
+                    child: CircleAvatar(
                       backgroundColor: Colors.white,
                       radius: 20,
                       child: Icon(
                         Icons.logout,
                         color: Colors.black38,
-                        size:25,
+                        size: 25,
                       ),
                     ),
-
                   ),
 
                   //container text componey profile
                   Container(
                       margin: EdgeInsets.only(left: 5),
-                      child:Column(
+                      child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget> [
-                          Text("Logout",
+                        children: <Widget>[
+                          Text(
+                            "Logout",
                             style: TextStyle(
                                 fontSize: 14,
                                 color: Colors.black87,
-                                fontWeight: FontWeight.bold
-                            ),
+                                fontWeight: FontWeight.bold),
                           ),
-                          SizedBox(height: 5,),
-                          Text("logout as $first_name $last_name",
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Text(
+                            "logout as $first_name $last_name",
                             style: TextStyle(
                               fontSize: 14,
                               color: Colors.black38,
-
                             ),
                           )
-
-
                         ],
-                      )
-
-                  ),
+                      )),
 
                   //container arrow right
                   Flexible(
@@ -442,304 +395,264 @@ class _AccountAdminState extends State<AccountAdmin> {
                             Icons.arrow_forward_ios_rounded,
                             color: Colors.black38,
                             size: 20,
-
                           ),
                         ],
                       ),
-
                     ),
                   )
-
                 ],
               ),
             ),
-
           ],
         ),
       ),
     );
   }
+
 //-----end ogout----
 
   //wodget username
-  Widget _buildusername(){
+  Widget _buildusername() {
     return Container(
       margin: EdgeInsets.all(10),
       child: Column(
         children: [
           //row company profile
           Container(
-
             child: Row(
               children: <Widget>[
                 //container icon
                 Container(
-                  child:CircleAvatar(
+                  child: CircleAvatar(
                     backgroundColor: Colors.white,
                     radius: 20,
                     child: Icon(
                       Icons.person,
                       color: Colors.black38,
-                      size:25,
+                      size: 25,
                     ),
                   ),
-
                 ),
 
                 //container text componey profile
                 Container(
                     margin: EdgeInsets.only(left: 5),
-                    child:Column(
+                    child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget> [
-                        Text("Username",
+                      children: <Widget>[
+                        Text(
+                          "Username",
                           style: TextStyle(
                               fontSize: 14,
                               color: Colors.black87,
-                              fontWeight: FontWeight.bold
-                          ),
+                              fontWeight: FontWeight.bold),
                         ),
-                        SizedBox(height: 5,),
-                        Text("$username",
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Text(
+                          "$username",
                           style: TextStyle(
                             fontSize: 14,
                             color: Colors.black38,
-
                           ),
                         )
-
-
                       ],
-                    )
-
-                ),
-
-
-
-
+                    )),
               ],
             ),
           ),
-
         ],
       ),
     );
   }
+
 //-----end username----
 
   //wodget gender
-  Widget _buildgender(){
+  Widget _buildgender() {
     return Container(
       margin: EdgeInsets.all(10),
       child: Column(
         children: [
           //row company profile
           Container(
-
             child: Row(
               children: <Widget>[
                 //container icon
                 Container(
-                  child:CircleAvatar(
+                  child: CircleAvatar(
                     backgroundColor: Colors.white,
                     radius: 20,
                     child: Icon(
                       Icons.image,
                       color: Colors.black38,
-                      size:25,
+                      size: 25,
                     ),
                   ),
-
                 ),
 
                 //container text componey profile
                 Container(
                     margin: EdgeInsets.only(left: 5),
-                    child:Column(
+                    child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget> [
-                        Text("Gender",
+                      children: <Widget>[
+                        Text(
+                          "Gender",
                           style: TextStyle(
                               fontSize: 14,
                               color: Colors.black87,
-                              fontWeight: FontWeight.bold
-                          ),
+                              fontWeight: FontWeight.bold),
                         ),
-                        SizedBox(height: 5,),
-                        Text("$gender",
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Text(
+                          "$gender",
                           style: TextStyle(
                             fontSize: 14,
                             color: Colors.black38,
-
                           ),
                         )
-
-
                       ],
-                    )
-
-                ),
-
-
-
-
+                    )),
               ],
             ),
           ),
-
         ],
       ),
     );
   }
+
 //-----end gender----
 
-
-
   //wodget email
-  Widget _buildemail(){
+  Widget _buildemail() {
     return Container(
       margin: EdgeInsets.all(10),
       child: Column(
         children: [
           //row company profile
           Container(
-
             child: Row(
               children: <Widget>[
                 //container icon
                 Container(
-                  child:CircleAvatar(
+                  child: CircleAvatar(
                     backgroundColor: Colors.white,
                     radius: 20,
                     child: Icon(
                       Icons.email,
                       color: Colors.black38,
-                      size:25,
+                      size: 25,
                     ),
                   ),
-
                 ),
 
                 //container text componey profile
                 Container(
                     margin: EdgeInsets.only(left: 5),
-                    child:Column(
+                    child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget> [
-                        Text("Email",
+                      children: <Widget>[
+                        Text(
+                          "Email",
                           style: TextStyle(
                               fontSize: 14,
                               color: Colors.black87,
-                              fontWeight: FontWeight.bold
-                          ),
+                              fontWeight: FontWeight.bold),
                         ),
-                        SizedBox(height: 5,),
-                        Text("$email",
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Text(
+                          "$email",
                           style: TextStyle(
                             fontSize: 14,
                             color: Colors.black38,
-
                           ),
                         )
-
-
                       ],
-                    )
-
-                ),
-
-
-
-
+                    )),
               ],
             ),
           ),
-
         ],
       ),
     );
   }
+
 //-----end username----
 
   //wodget phone number
-  Widget _buildphone(){
+  Widget _buildphone() {
     return Container(
       margin: EdgeInsets.all(10),
       child: Column(
         children: [
           //row company profile
           Container(
-
             child: Row(
               children: <Widget>[
                 //container icon
                 Container(
-                  child:CircleAvatar(
+                  child: CircleAvatar(
                     backgroundColor: Colors.white,
                     radius: 20,
                     child: Icon(
                       Icons.phone,
                       color: Colors.black38,
-                      size:25,
+                      size: 25,
                     ),
                   ),
-
                 ),
 
                 //container text componey profile
                 Container(
                     margin: EdgeInsets.only(left: 10),
-                    child:Column(
+                    child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget> [
-                        Text("Phone",
+                      children: <Widget>[
+                        Text(
+                          "Phone",
                           style: TextStyle(
                               fontSize: 14,
                               color: Colors.black87,
-                              fontWeight: FontWeight.bold
-                          ),
+                              fontWeight: FontWeight.bold),
                         ),
-                        SizedBox(height: 5,),
-                        Text("$contac",
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Text(
+                          "$contac",
                           style: TextStyle(
                             fontSize: 14,
                             color: Colors.black38,
-
                           ),
                         )
-
-
                       ],
-                    )
-
-                ),
-
-
-
-
+                    )),
               ],
             ),
           ),
-
         ],
       ),
     );
   }
+
 //-----end phone number----
 
-
-
 //main menu settings
-  Widget _buildSettings(){
+  Widget _buildSettings() {
     return Container(
-        margin: EdgeInsets.only(top: 10,left: 5,right: 5),
+        margin: EdgeInsets.only(top: 10, left: 5, right: 5),
         width: double.infinity,
-
-        child:Card(
+        child: Card(
           elevation: 1,
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -753,88 +666,72 @@ class _AccountAdminState extends State<AccountAdmin> {
               _buildlogout()
             ],
           ),
-
-        )
-    );
-
-
+        ));
   }
 
   //--------end settings---------
 
-  Widget _buildphoto(){
+  Widget _buildphoto() {
     return Container(
       margin: EdgeInsets.all(20),
       child: Row(
         children: <Widget>[
           Container(
-            child: profile_background==""? CircleAvatar(
-                backgroundColor: Colors.transparent,
-                radius: 40,
-                child: gender=="male"? male_avatar:female_avatar
-
-
-            ): CircleAvatar(
-
-              radius: 40,
-              child: Icon(
-                Icons.person_pin,
-
-              ),
-
-
-            ),
+            child: profile_background == ""
+                ? CircleAvatar(
+                    backgroundColor: Colors.transparent,
+                    radius: 40,
+                    child: gender == "male" ? male_avatar : female_avatar)
+                : CircleAvatar(
+                    radius: 40,
+                    child: Icon(
+                      Icons.person_pin,
+                    ),
+                  ),
           ),
           Container(
-            margin: EdgeInsets.only(left: 10,right: 10),
+            margin: EdgeInsets.only(left: 10, right: 10),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start ,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Container(
-                  child: Text("$first_name $last_name",
+                  child: Text(
+                    "$first_name $last_name",
                     style: TextStyle(
                         fontSize: 18,
                         color: Colors.black87,
-                        fontWeight: FontWeight.bold
-                    ),
-
+                        fontWeight: FontWeight.bold),
                   ),
                 ),
-                SizedBox(height: 10,),
+                SizedBox(
+                  height: 10,
+                ),
                 Container(
-                  child: Text("Admin",
+                  child: Text(
+                    "Admin",
                     style: TextStyle(
                       fontSize: 15,
                       color: Colors.black38,
-
                     ),
                   ),
                 ),
 
-
-
                 //detail acount
-
-
               ],
             ),
-          )//Container
-
+          ) //Container
         ],
       ),
     );
   }
 
   //main Account
-  Widget _builddetailAccount(){
+  Widget _builddetailAccount() {
     return Container(
-
-      margin: EdgeInsets.only(top: 10,left: 5,right: 5),
-
+      margin: EdgeInsets.only(top: 10, left: 5, right: 5),
       child: Card(
         elevation: 1,
         child: Container(
-
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
@@ -849,29 +746,25 @@ class _AccountAdminState extends State<AccountAdmin> {
               Visibility(
                 visible: _lessData,
                 child: InkWell(
-                  onTap: (){
+                  onTap: () {
                     setState(() {
-                      _detailData=true;
-                      _lessData=false;
+                      _detailData = true;
+                      _lessData = false;
                     });
-
                   },
                   child: Container(
-
                     width: double.infinity,
-                    margin: EdgeInsets.only(right: 2,left: 20,top: 5,bottom: 5),
+                    margin:
+                        EdgeInsets.only(right: 2, left: 20, top: 5, bottom: 5),
                     child: Row(
                       children: <Widget>[
                         Container(
-
                           child: Column(
                             children: <Widget>[
-                              Text("Show Detail",
+                              Text(
+                                "Show Detail",
                                 style: TextStyle(
-                                    fontSize: 15,
-                                    color: Colors.black38
-                                ),
-
+                                    fontSize: 15, color: Colors.black38),
                               )
                             ],
                           ),
@@ -884,10 +777,8 @@ class _AccountAdminState extends State<AccountAdmin> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: <Widget>[
-                                Icon(
-                                    Icons.keyboard_arrow_left_sharp,
-                                    color: Colors.black38
-                                )
+                                Icon(Icons.keyboard_arrow_left_sharp,
+                                    color: Colors.black38)
                               ],
                             ),
                           ),
@@ -900,29 +791,25 @@ class _AccountAdminState extends State<AccountAdmin> {
               Visibility(
                 visible: _detailData,
                 child: InkWell(
-                  onTap: (){
+                  onTap: () {
                     setState(() {
-                      _detailData=false;
-                      _lessData=true;
+                      _detailData = false;
+                      _lessData = true;
                     });
-
                   },
                   child: Container(
-
                     width: double.infinity,
-                    margin: EdgeInsets.only(right: 2,left: 20,top: 5,bottom: 5),
+                    margin:
+                        EdgeInsets.only(right: 2, left: 20, top: 5, bottom: 5),
                     child: Row(
                       children: <Widget>[
                         Container(
-
                           child: Column(
                             children: <Widget>[
-                              Text("Show Less",
+                              Text(
+                                "Show Less",
                                 style: TextStyle(
-                                    fontSize: 15,
-                                    color: Colors.black38
-                                ),
-
+                                    fontSize: 15, color: Colors.black38),
                               )
                             ],
                           ),
@@ -935,16 +822,12 @@ class _AccountAdminState extends State<AccountAdmin> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: <Widget>[
-                                Icon(
-                                    Icons.keyboard_arrow_down_rounded,
-                                    color: Colors.black38
-                                )
+                                Icon(Icons.keyboard_arrow_down_rounded,
+                                    color: Colors.black38)
                               ],
                             ),
                           ),
                         )
-
-
                       ],
                     ),
                   ),
@@ -955,42 +838,32 @@ class _AccountAdminState extends State<AccountAdmin> {
                   visible: _detailData,
                   child: Column(
                     children: <Widget>[
-
                       _buildusername(),
                       _buildemail(),
                       _buildphone(),
                       _buildgender()
                     ],
-                  )
-              )
-
-
+                  ))
             ],
           ),
         ),
-
       ),
-
     );
   }
 
-
-
-
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-
         backgroundColor: Colors.white,
         title: Center(
-          child: new Text("Account",
+          child: new Text(
+            "Account",
             style: TextStyle(color: Colors.black87),
           ),
-        ),),
-
+        ),
+      ),
       body: AnnotatedRegion<SystemUiOverlayStyle>(
         value: SystemUiOverlayStyle.light,
         child: GestureDetector(
@@ -1000,29 +873,20 @@ class _AccountAdminState extends State<AccountAdmin> {
               Container(
                 height: double.infinity,
                 width: double.infinity,
-
               ),
               Container(
-                color: Colors.white ,
+                color: Colors.white,
                 height: double.infinity,
-
                 child: SingleChildScrollView(
                   physics: AlwaysScrollableScrollPhysics(),
                   padding: EdgeInsets.symmetric(
-
                     vertical: 5.0,
                   ),
-
-
                   child: Column(
-
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       _builddetailAccount(),
                       _buildSettings(),
-
-
-
                     ],
                   ),
                 ),
@@ -1032,39 +896,31 @@ class _AccountAdminState extends State<AccountAdmin> {
         ),
       ),
     );
-
   }
-  void getDatapref() async{
+
+  void getDatapref() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     setState(() {
-      username=sharedPreferences.getString("username");
-      first_name=sharedPreferences.getString("first_name");
-      last_name=sharedPreferences.getString("last_name");
-      email=sharedPreferences.getString("email");
-      contac=sharedPreferences.getString("contact");
-      employee_id=sharedPreferences.getString("employee_id");
-      profile_background=sharedPreferences.getString("profile_background");
-      gender=sharedPreferences.getString("gender");
-      value=sharedPreferences.getInt("value");
-      user_id=sharedPreferences.getString("user_id");
-
+      username = sharedPreferences.getString("username");
+      first_name = sharedPreferences.getString("first_name");
+      last_name = sharedPreferences.getString("last_name");
+      email = sharedPreferences.getString("email");
+      contac = sharedPreferences.getString("contact");
+      employee_id = sharedPreferences.getString("employee_id");
+      profile_background = sharedPreferences.getString("profile_background");
+      gender = sharedPreferences.getString("gender");
+      value = sharedPreferences.getInt("value");
+      user_id = sharedPreferences.getString("user_id");
     });
-
-
-
-
-
-
   }
 
   Future<void> _showConfirmlogout(BuildContext context) async {
-
     showDialog(
         context: context,
         builder: (context) {
           return AlertDialog(
             shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
             content: Container(
               margin: EdgeInsets.symmetric(vertical: 24),
               child: Column(
@@ -1073,7 +929,7 @@ class _AccountAdminState extends State<AccountAdmin> {
                 children: <Widget>[
                   Text(" Logout?",
                       style:
-                      TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
                   Container(
                     margin: EdgeInsets.only(top: 32),
                     child: Row(
@@ -1088,8 +944,8 @@ class _AccountAdminState extends State<AccountAdmin> {
                             color: btnColor1,
                             child: Text("Yes"),
                             onPressed: () async {
-
                               session.logout(context);
+                              services.clearTokenemployee(user_id);
                             },
                           ),
                         ),
@@ -1115,14 +971,10 @@ class _AccountAdminState extends State<AccountAdmin> {
         });
   }
 
-
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     getDatapref();
-
   }
-
-
 }

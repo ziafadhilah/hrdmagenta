@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
@@ -6,7 +8,6 @@ import 'package:hrdmagenta/model/map.dart';
 import 'package:hrdmagenta/utalities/color.dart';
 import 'package:hrdmagenta/utalities/constants.dart';
 import 'package:hrdmagenta/utalities/font.dart';
-import 'package:hrdmagenta/utalities/thema.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class Maps extends StatefulWidget {
@@ -21,6 +22,8 @@ class Maps extends StatefulWidget {
     this.firts_name,
     this.profile_background,
     this.distance,
+    this.longMainoffice,
+    this.latmainoffice,
     this.departement_name});
 
   var address,
@@ -31,13 +34,17 @@ class Maps extends StatefulWidget {
       last_name,
       profile_background,
       distance,
+      latmainoffice,
+      longMainoffice,
       departement_name;
 }
 
 class _MapsState extends State<Maps> {
   GoogleMapController _controller;
+  Set<Circle> _circles = HashSet<Circle>();
   Position position;
   BitmapDescriptor companyIcon;
+  var _latmainoffice,_longmainoffice;
 
   Widget _child = Center(
     child: Text('Loading...'),
@@ -46,12 +53,7 @@ class _MapsState extends State<Maps> {
 
   double _pinPillPosition = -100;
 
-  PinData _currentPinData = PinData(
-      pinPath: '',
-      avatarPath: '',
-      location: LatLng(0, 0),
-      locationName: '',
-      labelColor: Colors.grey);
+
 
   PinData _sourcePinInfo;
 
@@ -104,29 +106,30 @@ class _MapsState extends State<Maps> {
 
       Marker(
         markerId: MarkerId('company'),
-        position: LatLng(-6.9526871, 107.6688696),
-        icon: BitmapDescriptor.fromAsset("assets/emplyee_maps.png"),
+        position: LatLng(double.parse(widget.latmainoffice), double.parse(widget.longMainoffice)),
+        icon: BitmapDescriptor.fromAsset("assets/office.png"),
       ),
 
       ///user marker
       Marker(
         markerId: MarkerId('user'),
-        position: LatLng(widget.latitude,widget.longitude),
-        icon: BitmapDescriptor.fromAsset("assets/office.png"),
+        position: LatLng(widget.latitude, widget.longitude),
+        icon: BitmapDescriptor.fromAsset("assets/emplyee_maps.png"),
       )
     ].toSet();
   }
 
   ///set raidus
-  Set<Circle> circles = Set.from([
-    Circle(
-        circleId: CircleId("1"),
-        center: LatLng(-6.9526871, 107.6688696),
-        radius: 20,
-        strokeColor: baseColor1,
-        fillColor: baseColor.withOpacity(0.25),
-        strokeWidth: 1)
-  ]);
+  // Set<Circle> circles = Set.from([
+  //
+  //   Circle(
+  //       circleId: CircleId("1"),
+  //       center: LatLng(_longmainoffice, _longmainoffice),
+  //       radius: 20,
+  //       strokeColor: baseColor1,
+  //       fillColor: baseColor.withOpacity(0.25),
+  //       strokeWidth: 1)
+  // ]);
 
   void showToast(message) {
     Fluttertoast.showToast(
@@ -156,13 +159,13 @@ class _MapsState extends State<Maps> {
     return GoogleMap(
       mapType: MapType.normal,
       markers: _createMarker(),
-      initialCameraPosition:
-      CameraPosition(target: LatLng(widget.latitude, widget.longitude), zoom: 16.0),
+      initialCameraPosition: CameraPosition(
+          target: LatLng(widget.latitude, widget.longitude), zoom: 20.0),
       onMapCreated: (GoogleMapController controller) {
         _controller = controller;
         // _setStyle(controller);
 
-        _setStyle(controller);
+       // _setStyle(controller);
       },
       tiltGesturesEnabled: false,
       onTap: (LatLng location) {
@@ -171,7 +174,7 @@ class _MapsState extends State<Maps> {
         });
       },
       onCameraMove: null,
-      circles: circles,
+      circles: _circles,
     );
   }
 
@@ -231,7 +234,6 @@ class _MapsState extends State<Maps> {
 
   Widget _info() {
     return Container(
-
       child: Card(
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(top: Radius.circular(50))),
@@ -250,13 +252,11 @@ class _MapsState extends State<Maps> {
                           backgroundColor: Colors.transparent,
                           radius: 40,
                           child: widget.gender == "male"
-                              ? male_avatar
-                              : female_avatar)
+                              ? employee_profile
+                              : employee_profile)
                           : CircleAvatar(
                         radius: 40,
-                        child: Icon(
-                          Icons.person_pin,
-                        ),
+                        child: employee_profile
                       ),
                     ),
                     Container(
@@ -337,29 +337,28 @@ class _MapsState extends State<Maps> {
                 ),
               ),
               Container(
-
                 color: Colors.amber.withOpacity(0.5),
                 margin: EdgeInsets.only(left: 20, right: 20, top: 20),
-
                 child: Row(
                   children: <Widget>[
                     Container(
                       margin: EdgeInsets.only(
                           left: 10, right: 20, top: 5, bottom: 5),
-
-                      child: Icon(Icons.info,
+                      child: Icon(
+                        Icons.info,
                         color: Colors.black45,
                       ),
-
-
                     ),
                     Container(
-                      child: widget.distance>50? Text(
-                          "Anda berada di luar radius kantor",style: subtitleMainMenu,
-                      ):Text(
-                        "Anda berada didalam radius kantor",style: subtitleMainMenu,
-                      )
-                    )
+                        child: widget.distance > 20
+                            ? Text(
+                          "Anda berada di luar area kantor",
+                          style: subtitleMainMenu,
+                        )
+                            : Text(
+                          "Anda berada di dalam area kantor",
+                          style: subtitleMainMenu,
+                        ))
                   ],
                 ),
               )
@@ -371,13 +370,24 @@ class _MapsState extends State<Maps> {
       ),
     );
   }
+  void _setCircles() {
+    _circles.add(
+      Circle(
+          circleId: CircleId("0"),
+          center: LatLng(double.parse(widget.latmainoffice), double.parse(widget.longMainoffice)),
+          radius: 10,
+          strokeColor: baseColor1,
+          fillColor: baseColor.withOpacity(0.25),
+          strokeWidth: 1),
+    );
+  }
 
   @override
   void initState() {
     getPermission();
     // _setSourceIcon();
     super.initState();
-    print(widget.longitude);
-    print(widget.latitude);
+    _setCircles();
+
   }
 }

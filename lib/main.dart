@@ -17,6 +17,7 @@ import 'package:hrdmagenta/page/employee/absence/tabmenu_absence_status.dart';
 import 'package:hrdmagenta/page/employee/budget/budget_project.dart';
 import 'package:hrdmagenta/page/employee/budget/expense.dart';
 import 'package:hrdmagenta/page/employee/checkin/maps.dart';
+import 'package:hrdmagenta/page/employee/leave/LeaveAdd.dart';
 import 'package:hrdmagenta/page/employee/leave/LeaveList.dart';
 import 'package:hrdmagenta/page/employee/project/tabmenu_project.dart';
 import 'package:hrdmagenta/page/employee/pyslip/ListPayslip.dart';
@@ -55,6 +56,7 @@ class MyApp extends StatelessWidget {
         'pyslip_list_employee-page':(context)=>PyslipListPage(),
         'pyslip_list_employe':(context)=>PyslipListPage(),
         'leave_list_employee-page':(context)=>LeaveListEmployee(),
+        'leave_add_employee-page':(context)=>LeaveAdd(),
 
 
         //page admin

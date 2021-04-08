@@ -35,7 +35,7 @@ class _WellcomeState extends State<Wellcome> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           SizedBox(height: 10,),
-          Text("WELLCOME",
+          Text("WELCOME",
             textAlign: TextAlign.left,
             style: TextStyle(
 

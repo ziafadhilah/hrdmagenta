@@ -66,6 +66,8 @@ class Data {
     this.hasMobileAccess,
     this.workPlacement,
     this.mobileAccessType,
+    this.photo,
+    this.fcmRegistrationToken,
     this.designation,
   });
 
@@ -74,29 +76,31 @@ class Data {
   String firstName;
   String lastName;
   dynamic companyId;
-  int companyLocationId;
+  String companyLocationId;
   dynamic departmentId;
-  int designationId;
+  String designationId;
   DateTime dateOfBirth;
   String gender;
   String contactNumber;
-  dynamic officeShiftId;
-  dynamic reportTo;
-  dynamic leaveId;
+  String officeShiftId;
+  String reportTo;
+  String leaveId;
   String address;
   String email;
   String username;
   String password;
   String pin;
-  int roleId;
+  String roleId;
   dynamic deletedAt;
   DateTime createdAt;
   DateTime updatedAt;
-  int isActive;
-  int isActiveAccount;
-  int hasMobileAccess;
+  String isActive;
+  String isActiveAccount;
+  String hasMobileAccess;
   String workPlacement;
   String mobileAccessType;
+  dynamic photo;
+  String fcmRegistrationToken;
   Designation designation;
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
@@ -128,6 +132,8 @@ class Data {
     hasMobileAccess: json["has_mobile_access"],
     workPlacement: json["work_placement"],
     mobileAccessType: json["mobile_access_type"],
+    photo: json["photo"],
+    fcmRegistrationToken: json["fcm_registration_token"],
     designation: Designation.fromJson(json["designation"]),
   );
 
@@ -160,6 +166,8 @@ class Data {
     "has_mobile_access": hasMobileAccess,
     "work_placement": workPlacement,
     "mobile_access_type": mobileAccessType,
+    "photo": photo,
+    "fcm_registration_token": fcmRegistrationToken,
     "designation": designation.toJson(),
   };
 }
@@ -179,12 +187,12 @@ class Designation {
 
   int id;
   String name;
-  int departmentId;
+  String departmentId;
   String description;
   dynamic deletedAt;
   DateTime createdAt;
   DateTime updatedAt;
-  int addedBy;
+  String addedBy;
   Department department;
 
   factory Designation.fromJson(Map<String, dynamic> json) => Designation(
@@ -224,18 +232,20 @@ class Department {
     this.createdAt,
     this.updatedAt,
     this.company,
+    this.location,
   });
 
   int id;
   String name;
-  int companyId;
-  int employeeId;
-  int companyLocationId;
-  int addedBy;
+  String companyId;
+  String employeeId;
+  String companyLocationId;
+  String addedBy;
   dynamic deletedAt;
   DateTime createdAt;
   DateTime updatedAt;
   Company company;
+  Location location;
 
   factory Department.fromJson(Map<String, dynamic> json) => Department(
     id: json["id"],
@@ -248,6 +258,7 @@ class Department {
     createdAt: DateTime.parse(json["created_at"]),
     updatedAt: DateTime.parse(json["updated_at"]),
     company: Company.fromJson(json["company"]),
+    location: Location.fromJson(json["location"]),
   );
 
   Map<String, dynamic> toJson() => {
@@ -261,6 +272,7 @@ class Department {
     "created_at": createdAt.toIso8601String(),
     "updated_at": updatedAt.toIso8601String(),
     "company": company.toJson(),
+    "location": location.toJson(),
   };
 }
 
@@ -290,15 +302,15 @@ class Company {
   String registrationNumber;
   String contactNumber;
   String email;
-  String website;
-  String npwp;
+  dynamic website;
+  dynamic npwp;
   String address;
   String province;
   String city;
   String zipCode;
   String country;
   String logo;
-  int addedBy;
+  String addedBy;
   dynamic deletedAt;
   DateTime createdAt;
   DateTime updatedAt;
@@ -341,5 +353,89 @@ class Company {
     "deleted_at": deletedAt,
     "created_at": createdAt.toIso8601String(),
     "updated_at": updatedAt.toIso8601String(),
+  };
+}
+
+class Location {
+  Location({
+    this.id,
+    this.companyId,
+    this.employeeId,
+    this.locationName,
+    this.contactNumber,
+    this.email,
+    this.npwp,
+    this.address,
+    this.province,
+    this.city,
+    this.zipCode,
+    this.country,
+    this.addedBy,
+    this.deletedAt,
+    this.createdAt,
+    this.updatedAt,
+    this.latitude,
+    this.longitude,
+  });
+
+  int id;
+  String companyId;
+  String employeeId;
+  String locationName;
+  String contactNumber;
+  String email;
+  String npwp;
+  String address;
+  String province;
+  String city;
+  String zipCode;
+  String country;
+  String addedBy;
+  dynamic deletedAt;
+  DateTime createdAt;
+  DateTime updatedAt;
+  String latitude;
+  String longitude;
+
+  factory Location.fromJson(Map<String, dynamic> json) => Location(
+    id: json["id"],
+    companyId: json["company_id"],
+    employeeId: json["employee_id"],
+    locationName: json["location_name"],
+    contactNumber: json["contact_number"],
+    email: json["email"],
+    npwp: json["npwp"],
+    address: json["address"],
+    province: json["province"],
+    city: json["city"],
+    zipCode: json["zip_code"],
+    country: json["country"],
+    addedBy: json["added_by"],
+    deletedAt: json["deleted_at"],
+    createdAt: DateTime.parse(json["created_at"]),
+    updatedAt: DateTime.parse(json["updated_at"]),
+    latitude: json["latitude"],
+    longitude: json["longitude"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "id": id,
+    "company_id": companyId,
+    "employee_id": employeeId,
+    "location_name": locationName,
+    "contact_number": contactNumber,
+    "email": email,
+    "npwp": npwp,
+    "address": address,
+    "province": province,
+    "city": city,
+    "zip_code": zipCode,
+    "country": country,
+    "added_by": addedBy,
+    "deleted_at": deletedAt,
+    "created_at": createdAt.toIso8601String(),
+    "updated_at": updatedAt.toIso8601String(),
+    "latitude": latitude,
+    "longitude": longitude,
   };
 }
