@@ -11,6 +11,7 @@ final Color baseColor1 = HexColor('#3498db');
 final Color btnColor1 = HexColor('#2980b9');
 final Color btnColor2 = HexColor('#3498db');
 final Color textColor1 = HexColor('#3498db');
+final Color iconColor=HexColor("#B6B6B6");
 
 //warna transaparant
 final hitamTransparant = HexColor('#26000000');

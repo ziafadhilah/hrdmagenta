@@ -375,6 +375,7 @@ class _AccountEmployeeState extends State<AccountEmployee> {
                                 color: Colors.black87,
                                 fontWeight: FontWeight.bold),
                           ),
+
                           SizedBox(
                             height: 5,
                           ),
@@ -998,9 +999,19 @@ class _AccountEmployeeState extends State<AccountEmployee> {
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Text(" Logout?",
+                  Text(" Logout",
                       style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 16,fontFamily: "SFReguler")),
+                  SizedBox(height: 10,),
+                  Text(
+                    "Are you sure?",
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontFamily: "SFReguler",
+
+                    )
+                    ,
+                  ),
                   Container(
                     margin: EdgeInsets.only(top: 32),
                     child: Row(

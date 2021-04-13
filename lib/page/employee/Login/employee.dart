@@ -25,10 +25,11 @@ class _LoginEmployeeState extends State<LoginEmployee> {
   var Cpassword = new TextEditingController();
   var email = '';
   var password = '';
+  bool _obscureText = false;
 
   Widget _buildText() {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 20,vertical: 10),
+      margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       width: double.infinity,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -68,7 +69,7 @@ class _LoginEmployeeState extends State<LoginEmployee> {
       children: <Widget>[
         Text(
           'Username',
-          style: TextStyle(color: Colors.black38),
+          style: TextStyle(color: Colors.black38,fontFamily: "SFReguler"),
         ),
         SizedBox(height: 10.0),
         Container(
@@ -99,7 +100,7 @@ class _LoginEmployeeState extends State<LoginEmployee> {
               contentPadding: EdgeInsets.only(top: 14.0),
               prefixIcon: Icon(
                 Icons.person,
-                color: Colors.black,
+                color: Colors.black38,
               ),
             ),
           ),
@@ -114,7 +115,7 @@ class _LoginEmployeeState extends State<LoginEmployee> {
       children: <Widget>[
         Text(
           'Password',
-          style: TextStyle(color: Colors.black38),
+          style: TextStyle(color: Colors.black38,fontFamily: "SFReguler"),
         ),
         SizedBox(height: 10.0),
         Container(
@@ -134,7 +135,7 @@ class _LoginEmployeeState extends State<LoginEmployee> {
           height: 60.0,
           child: TextFormField(
             cursorColor: Colors.black38,
-            obscureText: true,
+            obscureText: !_obscureText,
             controller: Cpassword,
             keyboardType: TextInputType.name,
             style: TextStyle(
@@ -142,11 +143,27 @@ class _LoginEmployeeState extends State<LoginEmployee> {
               fontFamily: 'OpenSans',
             ),
             decoration: InputDecoration(
+              suffixIcon: IconButton(
+                color: Colors.black38,
+                icon: Icon(
+
+
+                  // Based on passwordVisible state choose the icon
+                  _obscureText ? Icons.visibility : Icons.visibility_off,
+                  color: Colors.black38,
+                ),
+                onPressed: () {
+                  // Update the state i.e. toogle the state of passwordVisible variable
+                  setState(() {
+                    _obscureText = !_obscureText;
+                  });
+                },
+              ),
               border: InputBorder.none,
               contentPadding: EdgeInsets.only(top: 14.0),
               prefixIcon: Icon(
                 Icons.lock,
-                color: Colors.black,
+                color: Colors.black38,
               ),
             ),
           ),
@@ -186,20 +203,17 @@ class _LoginEmployeeState extends State<LoginEmployee> {
     );
   }
 
-  Widget _buildForgetPassword(){
+  Widget _buildForgetPassword() {
     return Container(
       width: double.infinity,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           Container(
-
             child: Text(
-              "Forget Password?",style: TextStyle(
-              color: Colors.blue
+              "Forget Password?",
+              style: TextStyle(color: Colors.blue),
             ),
-            ),
-
           ),
         ],
       ),
@@ -236,7 +250,6 @@ class _LoginEmployeeState extends State<LoginEmployee> {
                                   height: 10,
                                 ),
                                 _buildForgetPassword(),
-
                                 SizedBox(
                                   height: 20,
                                 ),

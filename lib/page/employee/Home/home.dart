@@ -1,11 +1,14 @@
 import 'dart:convert';
 
 import 'package:carousel_pro/carousel_pro.dart';
+import 'package:double_back_to_close_app/double_back_to_close_app.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:get/get.dart';
 import 'package:hrdmagenta/model/notifacations.dart';
+import 'package:hrdmagenta/page/admin/l/announcement/DetailAnnouncement.dart';
 import 'package:hrdmagenta/page/employee/absence/DetailAbsenceNotifEmplyee.dart';
 import 'package:hrdmagenta/page/employee/absence/tabmenu_absence.dart';
 import 'package:hrdmagenta/page/employee/checkin/checkin.dart';
@@ -252,86 +255,91 @@ class _HomeEmployeeState extends State<HomeEmployee> {
   }
 
   Widget _buildInformation() {
-    return Container(
-      width: double.infinity,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Container(
-            width: double.infinity,
-            child: Card(
-              elevation: 1,
-              child: Container(
-                margin: EdgeInsets.only(top: 15, bottom: 15),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: <Widget>[
-                    Container(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Stack(
-                            children: [
-                              Container(
-                                color: Color.fromRGBO(255, 255, 255, 2),
-                                width: double.infinity,
-                                height: 170,
-                                child: Image.asset(
-                                  "assets/announcement.jpg",
-                                  fit: BoxFit.fill,
+    return InkWell(
+      onTap: (){
+        Get.to(DetailAnnouncement());
+      },
+      child: Container(
+        width: double.infinity,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Container(
+              width: double.infinity,
+              child: Card(
+                elevation: 1,
+                child: Container(
+                  margin: EdgeInsets.only(top: 15, bottom: 15),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                      Container(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Stack(
+                              children: [
+                                Container(
+                                  color: Color.fromRGBO(255, 255, 255, 2),
+                                  width: double.infinity,
+                                  height: 170,
+                                  child: Image.asset(
+                                    "assets/announcement.jpg",
+                                    fit: BoxFit.fill,
+                                  ),
                                 ),
-                              ),
-                              Container(
-                                height: 200,
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                      margin:
-                                          EdgeInsets.only(left: 20, right: 20),
-                                      width: double.maxFinite,
-                                      child: Text(
-                                        "Fungsi & Manfaat BPJS Ketenagakerjaan bagi karyawan",
-                                        style: titlteannoucement1,
+                                Container(
+                                  height: 200,
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Container(
+                                        margin:
+                                            EdgeInsets.only(left: 20, right: 20),
+                                        width: double.maxFinite,
+                                        child: Text(
+                                          "Fungsi & Manfaat BPJS Ketenagakerjaan bagi karyawan",
+                                          style: titlteannoucement1,
+                                        ),
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Container(
+                              margin: EdgeInsets.only(left: 10, right: 10),
+                              width: double.maxFinite,
+                              child: Text(
+                                "Fungsi & Manfaat BPJS Ketenagakerjaan bagi karyawan",
+                                style: titlteannoucement,
                               ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Container(
-                            margin: EdgeInsets.only(left: 10, right: 10),
-                            width: double.maxFinite,
-                            child: Text(
-                              "Fungsi & Manfaat BPJS Ketenagakerjaan bagi karyawan",
-                              style: titlteannoucement,
                             ),
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          Container(
-                            margin: EdgeInsets.only(left: 10, right: 10),
-                            width: double.maxFinite,
-                            child: Text(
-                              "2 November 2021",
-                              style: TextStyle(color: Colors.black38),
+                            SizedBox(
+                              height: 20,
                             ),
-                          ),
-                        ],
+                            Container(
+                              margin: EdgeInsets.only(left: 10, right: 10),
+                              width: double.maxFinite,
+                              child: Text(
+                                "2 November 2021",
+                                style: TextStyle(color: Colors.black38),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -367,6 +375,32 @@ class _HomeEmployeeState extends State<HomeEmployee> {
                     ),
                     SizedBox(
                       height: 10,
+                    ),
+                    Expanded(
+                      child: _loading
+                          ? Center(
+                              child: CircularProgressIndicator(),
+                            )
+                          : Center(
+                              child: Container(
+                                margin: EdgeInsets.only(top: 20),
+                                child: Column(
+                                  children: [
+                                    Expanded(
+                                      child: ListView.builder(
+                                          itemCount:1,
+                                          scrollDirection: Axis.horizontal,
+                                          itemBuilder: (context, index_member) {
+                                            return _buildteam(
+
+                                                index_member, index);
+                                          }),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                      //   child: _buildNoproject(),
                     ),
                   ],
                 ),
@@ -404,7 +438,7 @@ class _HomeEmployeeState extends State<HomeEmployee> {
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
                                 new CircularPercentIndicator(
-                                  radius: 90.0,
+                                  radius: 110.0,
                                   lineWidth: 10.0,
                                   animation: true,
                                   percent: _projects['data'][index]
@@ -429,6 +463,25 @@ class _HomeEmployeeState extends State<HomeEmployee> {
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildteam(index_member, index) {
+    return Container(
+      margin: EdgeInsets.only(top: 10),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: <Widget>[
+          //container image
+          Container(
+            child: CircleAvatar(
+              radius: 30,
+              child: employee_profile,
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -488,92 +541,97 @@ class _HomeEmployeeState extends State<HomeEmployee> {
         ),
       ),
       key: scaffoldState,
-      body: RefreshIndicator(
-        child: AnnotatedRegion<SystemUiOverlayStyle>(
-          value: SystemUiOverlayStyle.light,
-          child: GestureDetector(
-            onTap: () => FocusScope.of(context).unfocus(),
-            child: Stack(
-              children: <Widget>[
-                Container(
+      body: DoubleBackToCloseApp(
+        snackBar: const SnackBar(
+          content: Text('Tap back again to leave'),
+        ),
+        child: RefreshIndicator(
+          child: AnnotatedRegion<SystemUiOverlayStyle>(
+            value: SystemUiOverlayStyle.light,
+            child: GestureDetector(
+              onTap: () => FocusScope.of(context).unfocus(),
+              child: Stack(
+                children: <Widget>[
+                  Container(
+                      height: double.infinity,
+                      width: double.infinity,
+                      color: Colors.white),
+                  Container(
                     height: double.infinity,
-                    width: double.infinity,
-                    color: Colors.white),
-                Container(
-                  height: double.infinity,
-                  child: SingleChildScrollView(
-                    physics: AlwaysScrollableScrollPhysics(),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Padding(
-                          padding: EdgeInsets.all(0),
-                          child: Center(
-                            child: Column(
-                              children: <Widget>[
-                                Container(
-                                    height: 250,
-                                    child: Carousel(
-                                      autoplay: true,
-                                      indicatorBgPadding: 8,
-                                      images: [
-                                        NetworkImage(
-                                            "https://vip.keluargaallah.com/assets/uploads/projects/56/Project-header---EO.jpg"),
-                                        NetworkImage(
-                                            "https://www.ruangkerja.id/hs-fs/hubfs/membangun%20perusahaan.jpg?width=600&name=membangun%20perusahaan.jpg"),
-                                        NetworkImage(
-                                            "https://pintek.id/blog/wp-content/uploads/2020/12/perusahaan-startup-1024x683.jpg"),
-                                        NetworkImage(
-                                            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRdARQSAn3H0I4m52-7Co7fLa6Eff0mPgumPg&usqp=CAU"),
-                                        NetworkImage(
-                                            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRQtZSosUkHA8evWPkN_nNOzKaUt1woUQse-A&usqp=CAU"),
-                                      ],
-                                    ))
-                              ],
+                    child: SingleChildScrollView(
+                      physics: AlwaysScrollableScrollPhysics(),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Padding(
+                            padding: EdgeInsets.all(0),
+                            child: Center(
+                              child: Column(
+                                children: <Widget>[
+                                  Container(
+                                      height: 250,
+                                      child: Carousel(
+                                        autoplay: true,
+                                        indicatorBgPadding: 8,
+                                        images: [
+                                          NetworkImage(
+                                              "https://vip.keluargaallah.com/assets/uploads/projects/56/Project-header---EO.jpg"),
+                                          NetworkImage(
+                                              "https://www.ruangkerja.id/hs-fs/hubfs/membangun%20perusahaan.jpg?width=600&name=membangun%20perusahaan.jpg"),
+                                          NetworkImage(
+                                              "https://pintek.id/blog/wp-content/uploads/2020/12/perusahaan-startup-1024x683.jpg"),
+                                          NetworkImage(
+                                              "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRdARQSAn3H0I4m52-7Co7fLa6Eff0mPgumPg&usqp=CAU"),
+                                          NetworkImage(
+                                              "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRQtZSosUkHA8evWPkN_nNOzKaUt1woUQse-A&usqp=CAU"),
+                                        ],
+                                      ))
+                                ],
+                              ),
                             ),
                           ),
-                        ),
 
-                        SizedBox(
-                          height: 15,
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(left: 10, top: 5),
-                          child: Text("Main Menu",
-                              textAlign: TextAlign.left, style: titleMainMenu),
-                        ),
-                        _buildMainMenu(),
+                          SizedBox(
+                            height: 15,
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(left: 10, top: 5),
+                            child: Text("Main Menu",
+                                textAlign: TextAlign.left, style: titleMainMenu),
+                          ),
+                          _buildMainMenu(),
 
-                        SizedBox(
-                          height: 15,
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(left: 10, top: 5),
-                          child: Text("Projects",
-                              textAlign: TextAlign.left, style: titleMainMenu),
-                        ),
-                        _buildproject(),
-                        // _buildgrafik(),
+                          SizedBox(
+                            height: 15,
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(left: 10, top: 5),
+                            child: Text("Projects",
+                                textAlign: TextAlign.left, style: titleMainMenu),
+                          ),
+                          _buildproject(),
+                          // _buildgrafik(),
 
-                        SizedBox(
-                          height: 15,
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(left: 10, top: 5),
-                          child: Text("Announcement",
-                              textAlign: TextAlign.left, style: titleMainMenu),
-                        ),
-                        _buildInformation(),
-                      ],
+                          SizedBox(
+                            height: 15,
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(left: 10, top: 5),
+                            child: Text("Announcement",
+                                textAlign: TextAlign.left, style: titleMainMenu),
+                          ),
+                          _buildInformation(),
+                        ],
+                      ),
                     ),
-                  ),
-                )
-              ],
+                  )
+                ],
+              ),
             ),
           ),
+          onRefresh: getDatapref,
         ),
-        onRefresh: getDatapref,
       ),
     );
   }

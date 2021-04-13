@@ -1,9 +1,13 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:hrdmagenta/page/admin/l/absence/detail.dart';
 import 'package:hrdmagenta/page/employee/pyslip/DetailPayslip.dart';
+import 'package:hrdmagenta/services/api_clien.dart';
 import 'package:hrdmagenta/utalities/color.dart';
 import 'package:hrdmagenta/utalities/constants.dart';
 import 'package:hrdmagenta/utalities/font.dart';
+import 'package:http/http.dart' as http;
 
 class PyslipListPage extends StatefulWidget {
   @override
@@ -11,14 +15,15 @@ class PyslipListPage extends StatefulWidget {
 }
 
 class _PyslipListPageState extends State<PyslipListPage> {
+  Map _payslips;
+  bool _loading = false;
+
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
-
-
           leading: BackButton(
             onPressed: () => Navigator.pop(context, false),
           ),
@@ -31,22 +36,19 @@ class _PyslipListPageState extends State<PyslipListPage> {
             style: TextStyle(color: Colors.black87),
           ),
         ),
-        body: Container(
+        body: _loading==true?Center(child: CircularProgressIndicator(),):Container(
           color: Colors.white,
           child: Column(
             children: <Widget>[
               Expanded(
                 child: ListView.builder(
-                  itemCount: 1,
-                  itemBuilder:(contex,index){
-                    //return _buildNopyslip();
-                    return _buildpyslip(index);
-
-                  }
-
-                ),
+                    itemCount: 1,
+                    itemBuilder: (contex, index) {
+                      //return _buildNopyslip();
+                      return _buildpyslip(index);
+                    }),
               )
-             // _buildpyslip(),
+              // _buildpyslip(),
 
               // Text("tes")
             ],
@@ -58,8 +60,9 @@ class _PyslipListPageState extends State<PyslipListPage> {
 
   Widget _buildpyslip(index) {
     return InkWell(
-      onTap: (){
-        Navigator.push(context, MaterialPageRoute(builder: (context)=>DetailPyslip()));
+      onTap: () {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => DetailPyslip()));
       },
       child: Stack(
         children: <Widget>[
@@ -111,7 +114,8 @@ class _PyslipListPageState extends State<PyslipListPage> {
                                   ),
                                   Flexible(
                                     child: Container(
-                                      margin: EdgeInsets.only(top: 10, left: 10),
+                                      margin:
+                                          EdgeInsets.only(top: 10, left: 10),
                                       width: MediaQuery.of(context).size.width,
                                       child: Column(
                                         mainAxisAlignment:
@@ -157,9 +161,9 @@ class _PyslipListPageState extends State<PyslipListPage> {
       ),
     );
   }
+
   Widget _buildNopyslip() {
     return Container(
-
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height * 0.8,
       child: Column(
@@ -172,10 +176,11 @@ class _PyslipListPageState extends State<PyslipListPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Container(
-
                   child: no_data_payslip,
                 ),
-                SizedBox(height: 20,),
+                SizedBox(
+                  height: 20,
+                ),
                 Text(
                   "No payslip yet",
                   style: subtitleMainMenu,
@@ -186,5 +191,28 @@ class _PyslipListPageState extends State<PyslipListPage> {
         ],
       ),
     );
+  }
+
+  Future dataPayslip() async {
+    try {
+      setState(() {
+        _loading = false;
+      });
+      print("tes");
+      http.Response response =
+          await http.get("$base_url/api/");
+      _payslips = jsonDecode(response.body);
+
+      setState(() {
+        _loading = false;
+      });
+    } catch (e) {}
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    dataPayslip();
   }
 }

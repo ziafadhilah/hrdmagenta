@@ -206,8 +206,8 @@ void validation_checkin(
   Alert(
     context: context,
     type: AlertType.warning,
-    title: "Are your sure?",
-    desc: "",
+    title: "Check In",
+    desc: "Are you sure?",
     buttons: [
       DialogButton(
         child: Text(
@@ -263,8 +263,8 @@ void validation_checkout(
   Alert(
     context: context,
     type: AlertType.warning,
-    title: "Are your sure?",
-    desc: "",
+    title: "Check Out ",
+    desc: "Are you sure ",
     buttons: [
       DialogButton(
         child: Text(

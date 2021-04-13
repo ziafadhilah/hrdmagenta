@@ -1,9 +1,11 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:hrdmagenta/page/admin/l/employees/DetailEmployee.dart';
 import 'package:hrdmagenta/services/api_clien.dart';
 import 'package:hrdmagenta/utalities/constants.dart';
 import 'package:http/http.dart' as http;
+
 class ListEmployee extends StatefulWidget {
   @override
   _ListEmployeeState createState() => _ListEmployeeState();
@@ -13,63 +15,88 @@ class _ListEmployeeState extends State<ListEmployee> {
   ///widget
   Map _employee;
   bool _isLoading;
-  Widget _buildemployees(index){
-    return Container(
-      margin: EdgeInsets.only(left: 5,top: 15),
-      child: Row(
-        children: <Widget>[
-          Container(
-            child:CircleAvatar(
-              radius: 30,
-              child: employee_profile,
 
+  Widget _buildemployees(index) {
+    return InkWell(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => DetailEmployee(
+                    first_name: "${_employee['data'][index]['first_name']}",
+                    last_name: "${_employee['data'][index]['last_name']}",
+                    address: "${_employee['data'][index]['address']}",
+                    email: "${_employee['data'][index]['email']}",
+                    work_palcement:
+                        "${_employee['data'][index]['work_placement']}",
+                    contact_number:
+                        "${_employee['data'][index]['contact_number']}",
+                    date_of_birth:
+                        "${_employee['data'][index]['date_of_birth']}",
+                    gender: "${_employee['data'][index]['gender']}",
+                  )),
+        );
+      },
+      child: Container(
+        margin: EdgeInsets.only(left: 5, top: 15),
+        child: Row(
+          children: <Widget>[
+            Container(
+              child: CircleAvatar(
+                radius: 30,
+                child: employee_profile,
+              ),
             ),
-          ),
-          Container(
-            margin: EdgeInsets.only(left: 20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text("${_employee['data'][index]["first_name"]} ${_employee['data'][index]["last_name"]}",
-                style: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                ),
-                ),
-                Text(_employee['data'][index]["work_placement"],
-                  style: TextStyle(
-                    color: Colors.black38
-                  ),
-
-                ),
-                Container(
-
-                  width:MediaQuery.of(context).size.width-100,
-                  child: Container(
-                    margin: EdgeInsets.only(top: 10),
-                    child: Divider(
+            Container(
+              margin: EdgeInsets.only(left: 20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    "${_employee['data'][index]["first_name"]} ${_employee['data'][index]["last_name"]}",
+                    style: TextStyle(
                       color: Colors.black,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
-                )
-              ],
-            ),
-          )
-        ],
+                  Text(
+                    _employee['data'][index]["work_placement"],
+                    style: TextStyle(color: Colors.black38),
+                  ),
+                  Container(
+                    width: MediaQuery.of(context).size.width - 100,
+                    child: Container(
+                      margin: EdgeInsets.only(top: 10),
+                      child: Divider(
+                        color: Colors.black,
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
 
-  Widget _listemployee(){
+  Widget _listemployee() {
     return Container(
       child: Expanded(
         child: Container(
-          child:_isLoading==true?Center(child: CircularProgressIndicator(),):ListView.builder(
-              itemCount: _employee['data'].length,
-              itemBuilder:(context,index){
-                return _employee['data'][index]['mobile_access_type']!="admin"?_buildemployees(index):Text("");
-              }),
-
+          child: _isLoading == true
+              ? Center(
+                  child: CircularProgressIndicator(),
+                )
+              : ListView.builder(
+                  itemCount: _employee['data'].length,
+                  itemBuilder: (context, index) {
+                    return _employee['data'][index]['mobile_access_type'] !=
+                            "admin"
+                        ? _buildemployees(index)
+                        : Text("");
+                  }),
         ),
       ),
     );
@@ -80,11 +107,7 @@ class _ListEmployeeState extends State<ListEmployee> {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: TextField(
-
-        decoration: InputDecoration(
-
-            hintText: 'Search...'
-        ),
+        decoration: InputDecoration(hintText: 'Search...'),
         onChanged: (text) {
           // text = text.toLowerCase();
           // setState(() {
@@ -98,7 +121,6 @@ class _ListEmployeeState extends State<ListEmployee> {
     );
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -107,9 +129,9 @@ class _ListEmployeeState extends State<ListEmployee> {
           color: Colors.black87, //modify arrow color from here..
         ),
         backgroundColor: Colors.white,
-        title: Text("Employess",
+        title: Text(
+          "Employess",
           style: TextStyle(color: Colors.black87),
-
         ),
       ),
       body: Container(
@@ -122,30 +144,25 @@ class _ListEmployeeState extends State<ListEmployee> {
             // ),
             _searchBar(),
             _listemployee()
-
-
           ],
         ),
-
       ),
     );
   }
 
   //ge data from api--------------------------------
-  Future dataEmployee() async{
-    try{
+  Future dataEmployee() async {
+    try {
       setState(() {
-        _isLoading=true;
+        _isLoading = true;
       });
-      http.Response response=await http.get("$base_url/api/employees");
-      _employee=jsonDecode(response.body);
+      http.Response response = await http.get("$base_url/api/employees");
+      _employee = jsonDecode(response.body);
 
       setState(() {
-        _isLoading=false;
+        _isLoading = false;
       });
-    }catch(e){
-
-    }
+    } catch (e) {}
   }
 
   @override

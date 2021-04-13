@@ -28,8 +28,7 @@ class _CheckinState extends State<Checkin> {
   bool _isLoading = true;
   bool _loading_image = true;
   bool _disposed = false;
-  final Geolocator geolocator = Geolocator()
-    ..forceAndroidLocationManager;
+  final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
   Position _currentPosition;
   String _currentAddress;
   var Cremark = new TextEditingController();
@@ -66,72 +65,66 @@ class _CheckinState extends State<Checkin> {
       ),
       body: _isLoading == true
           ? Center(
-        child: CircularProgressIndicator(),
-      )
+              child: CircularProgressIndicator(),
+            )
           : SingleChildScrollView(
-        child: Container(
-          color: Colors.white,
-          height: MediaQuery
-              .of(context)
-              .size
-              .height + 50,
-          child: Container(
-            child: Column(
-              children: <Widget>[
-                Container(
-                  child:
-                  _distance > 20 ? _builddistaceCompany() : Text(""),
-                ),
-                Container(
-                  margin: EdgeInsets.only(top: 15),
-                  child: _image == null
-                      ? _buildPhoto()
-                      : InkWell(
-                    onTap: () {
-                      aksesCamera();
-                    },
-                    child: new Image.file(_image,
-                        width: 200, height: 200, fit: BoxFit.fill),
+              child: Container(
+                color: Colors.white,
+                height: MediaQuery.of(context).size.height + 50,
+                child: Container(
+                  child: Column(
+                    children: <Widget>[
+                      Container(
+                        child:
+                            _distance > 20 ? _builddistaceCompany() : Text(""),
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(top: 15),
+                        child: _image == null
+                            ? _buildPhoto()
+                            : InkWell(
+                                onTap: () {
+                                  aksesCamera();
+                                },
+                                child: new Image.file(_image,
+                                    width: 200, height: 200, fit: BoxFit.fill),
+                              ),
+                      ),
+                      _buildText(),
+                      SizedBox(
+                        height: 15,
+                      ),
+                      _buildCategoryabsence(),
+                      SizedBox(
+                        height: 15,
+                      ),
+                      _buildLocation(),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      _buildremark(),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      _buildtime(),
+                      Expanded(
+                        child: Container(
+                          margin: EdgeInsets.only(bottom: 10),
+                          width: double.infinity,
+                          height: MediaQuery.of(context).size.height,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: <Widget>[
+                              _buildfingerprint(),
+                            ],
+                          ),
+                        ),
+                      )
+                    ],
                   ),
                 ),
-                _buildText(),
-                SizedBox(
-                  height: 15,
-                ),
-                _buildCategoryabsence(),
-                SizedBox(
-                  height: 15,
-                ),
-                _buildLocation(),
-                SizedBox(
-                  height: 10,
-                ),
-                _buildremark(),
-                SizedBox(
-                  height: 10,
-                ),
-                _buildtime(),
-                Expanded(
-                  child: Container(
-                    margin: EdgeInsets.only(bottom: 10),
-                    width: double.infinity,
-                    height: MediaQuery
-                        .of(context)
-                        .size
-                        .height,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: <Widget>[
-                        _buildfingerprint(),
-                      ],
-                    ),
-                  ),
-                )
-              ],
+              ),
             ),
-          ),
-        ),
-      ),
     );
   }
 
@@ -172,9 +165,7 @@ class _CheckinState extends State<Checkin> {
       margin: EdgeInsets.only(left: 25, right: 20),
       child: TextFormField(
         controller: Cremark,
-        cursorColor: Theme
-            .of(context)
-            .cursorColor,
+        cursorColor: Theme.of(context).cursorColor,
         maxLength: 100,
         decoration: InputDecoration(
           icon: Icon(
@@ -187,8 +178,8 @@ class _CheckinState extends State<Checkin> {
           ),
           enabledBorder: UnderlineInputBorder(
               borderSide: BorderSide(
-                color: Colors.black38,
-              )),
+            color: Colors.black38,
+          )),
         ),
       ),
     );
@@ -201,7 +192,7 @@ class _CheckinState extends State<Checkin> {
       if (!_disposed) {
         setState(() {
           time = formatedjam;
-          _getCurrentLocation();
+          // _getCurrentLocation();
           _getDistance(_lat_mainoffice, _long_mainoffice, _lat, _long);
         });
       }
@@ -218,9 +209,7 @@ class _CheckinState extends State<Checkin> {
           margin: EdgeInsets.only(left: 25),
           child: TextFormField(
             enabled: false,
-            cursorColor: Theme
-                .of(context)
-                .cursorColor,
+            cursorColor: Theme.of(context).cursorColor,
             decoration: InputDecoration(
               border: InputBorder.none,
               focusedBorder: InputBorder.none,
@@ -322,8 +311,7 @@ class _CheckinState extends State<Checkin> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) =>
-                                Maps(
+                            builder: (context) => Maps(
                                   address: _currentAddress,
                                   longitude: _long,
                                   latitude: _lat,
@@ -349,10 +337,7 @@ class _CheckinState extends State<Checkin> {
                         ),
                         if (_currentPosition != null && _currentAddress != null)
                           Container(
-                            width: MediaQuery
-                                .of(context)
-                                .size
-                                .width - 100,
+                            width: MediaQuery.of(context).size.width - 100,
                             child: Text(
                               "$_currentAddress ",
                               style: TextStyle(color: Colors.black38),
@@ -401,21 +386,46 @@ class _CheckinState extends State<Checkin> {
       _category_absent = "Present";
     }
 
-
-    validation_checkin(
-        context,
-        base64.toString(),
-        Cremark.text,
-        _lat.toString(),
-        _long.toString(),
-        _employee_id,
-        date,
-        time,
-        _departement_name,
-        _distance,
-        _lat_mainoffice,
-        _long_mainoffice,
-        _category_absent.toString().toLowerCase());
+    if (_category_absent.toString().toLowerCase() != 'present') {
+      if (base64.toString() == "null") {
+        Toast.show("Foto wajib digunakan", context,
+            duration: 5, gravity: Toast.BOTTOM);
+      } else if (Cremark.text.toString().isEmpty) {
+        Toast.show("Remarks tidak boleh kosong", context,
+            duration: 5, gravity: Toast.BOTTOM);
+      } else {
+        //Toast.show("$_category_absent", context);
+        validation_checkin(
+            context,
+            base64.toString(),
+            Cremark.text,
+            _lat.toString(),
+            _long.toString(),
+            _employee_id,
+            date,
+            time,
+            _departement_name,
+            _distance,
+            _lat_mainoffice,
+            _long_mainoffice,
+            _category_absent.toString().toLowerCase());
+      }
+    } else {
+      validation_checkin(
+          context,
+          base64.toString(),
+          Cremark.text,
+          _lat.toString(),
+          _long.toString(),
+          _employee_id,
+          date,
+          time,
+          _departement_name,
+          _distance,
+          _lat_mainoffice,
+          _long_mainoffice,
+          _category_absent.toString().toLowerCase());
+    }
   }
 
   ///fucntion
@@ -423,7 +433,7 @@ class _CheckinState extends State<Checkin> {
   aksesCamera() async {
     print('Picker is Called');
     File img = (await ImagePicker.pickImage(
-        source: ImageSource.camera, imageQuality: 10));
+        source: ImageSource.camera, maxHeight: 600, maxWidth: 600));
     if (img != null) {
       setState(() {
         _image = File(img.path);
@@ -447,9 +457,9 @@ class _CheckinState extends State<Checkin> {
           ),
           Container(
               child: Text(
-                "Anda  berada di luar area kantor",
-                style: subtitleMainMenu,
-              ))
+            "Anda  berada di luar area kantor",
+            style: subtitleMainMenu,
+          ))
         ],
       ),
     );
@@ -482,7 +492,7 @@ class _CheckinState extends State<Checkin> {
 
       setState(() {
         _currentAddress =
-        "${place.locality}, ${place.postalCode}, ${place.country}";
+            "${place.locality}, ${place.postalCode}, ${place.country}";
       });
     } catch (e) {
       print(e);

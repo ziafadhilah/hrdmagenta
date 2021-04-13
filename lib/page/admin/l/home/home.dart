@@ -8,6 +8,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:hrdmagenta/model/notifacations.dart';
 import 'package:hrdmagenta/page/admin/l/absence/DetailAbsenceNotifAdmin.dart';
 import 'package:hrdmagenta/page/admin/l/absence/tabmenu_absence.dart';
+import 'package:hrdmagenta/page/admin/l/employees/DetailEmployee.dart';
 import 'package:hrdmagenta/page/admin/l/employees/list.dart';
 import 'package:hrdmagenta/services/api_clien.dart';
 import 'package:hrdmagenta/utalities/color.dart';
@@ -15,7 +16,6 @@ import 'package:hrdmagenta/utalities/constants.dart';
 import 'package:hrdmagenta/utalities/font.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:http/http.dart' as http;
-import 'package:toast/toast.dart';
 
 class HomeAdmin extends StatefulWidget {
   @override
@@ -28,6 +28,7 @@ class _HomeAdminState extends State<HomeAdmin> {
   bool _isLoading_employee = true;
   bool _isLoading_project = true;
   bool _isLoading_absence = true;
+
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
   final List<Notif> ListNotif = [];
@@ -115,6 +116,29 @@ class _HomeAdminState extends State<HomeAdmin> {
     ]);
   }
 
+  Widget _buildMenuannouncement() {
+    return Column(children: <Widget>[
+      new Container(
+        width: 70,
+        height: 70,
+        child: InkWell(
+          onTap: () {
+            // Navigator.push(context,
+            //     MaterialPageRoute(builder: (context) => Tabsappbudget()));
+            Navigator.pushNamed(context, "Announcement_list_employee-page");
+          },
+          child: Card(
+            elevation: 1,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+            child: Container(margin: EdgeInsets.all(15.0), child: announcement),
+          ),
+        ),
+      ),
+      Text("announcement", style: subtitleMainMenu)
+    ]);
+  }
   Widget _buildMenupayslip() {
     return Column(children: <Widget>[
       new Container(
@@ -213,16 +237,20 @@ class _HomeAdminState extends State<HomeAdmin> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: <Widget>[
-                            _buildMenuproject(),
                             _buildMenuaabsence(),
+                            _buildMenuproject(),
                             _buildMenuOffwork(),
-                            _buildMenupayslip(),
+
                           ],
                         ),
                         Container(
                             child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: <Widget>[],
+                          children: <Widget>[
+                            _buildMenupayslip(),
+                            _buildMenuannouncement(),
+                            _buildMenupayslip(),
+                          ],
                         )),
                       ],
                     ),
@@ -237,22 +265,43 @@ class _HomeAdminState extends State<HomeAdmin> {
   }
 
   Widget _buildemployee(index) {
-    return Container(
-      margin: EdgeInsets.only(left: 10),
-      child: Column(
-        children: <Widget>[
-          CircleAvatar(
-            radius: 30,
-            child: employee_profile,
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          Text(
-            "${_employee['data'][index]['first_name']}",
-            style: TextStyle(color: Colors.white),
-          ),
-        ],
+    return InkWell(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => DetailEmployee(
+                    first_name: "${_employee['data'][index]['first_name']}",
+                    last_name: "${_employee['data'][index]['last_name']}",
+                    address: "${_employee['data'][index]['address']}",
+                    email: "${_employee['data'][index]['email']}",
+                    work_palcement:
+                        "${_employee['data'][index]['work_placement']}",
+                    contact_number:
+                        "${_employee['data'][index]['contact_number']}",
+                    date_of_birth:
+                        "${_employee['data'][index]['date_of_birth']}",
+                    gender: "${_employee['data'][index]['gender']}",
+                  )),
+        );
+      },
+      child: Container(
+        margin: EdgeInsets.only(left: 10),
+        child: Column(
+          children: <Widget>[
+            CircleAvatar(
+              radius: 30,
+              child: employee_profile,
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Text(
+              "${_employee['data'][index]['first_name']}",
+              style: TextStyle(color: Colors.white),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -320,47 +369,125 @@ class _HomeAdminState extends State<HomeAdmin> {
   }
 
   Widget _buildProgress(index) {
-    return Center(
-      child: Container(
-        height: MediaQuery.of(context).size.height / 3.5,
-        width: MediaQuery.of(context).size.width / 2,
-        child: Card(
-          child: Container(
-            child: Center(
-              child: Column(
-                children: <Widget>[
-                  SizedBox(
-                    height: 5,
-                  ),
-                  Text(
-                    "${_projects['data'][index]['title']}",
-                    style: TextStyle(
-                      fontSize: 15,
-                      color: Colors.black38,
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      child: Card(
+        child: Container(
+          margin: EdgeInsets.only(left: 10, right: 10),
+          child: Row(
+            children: [
+              Container(
+                width: MediaQuery.of(context).size.width * 0.65,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    SizedBox(
+                      height: 5,
                     ),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: new CircularPercentIndicator(
-                      radius: 100.0,
-                      lineWidth: 13.0,
-                      animation: true,
-                      percent: _projects['data'][index]['progress'] / 100,
-                      center: new Text(
-                        "${_projects['data'][index]['progress']}%",
-                        style: new TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 20.0),
-                      ),
-                      circularStrokeCap: CircularStrokeCap.round,
-                      progressColor: baseColor,
+                    Text("${_projects['data'][index]['title']}",
+                        style: subtitleMainMenu),
+                    SizedBox(
+                      height: 10,
                     ),
-                  ),
-                ],
+                    Container(
+                      child: Text(
+                          "${_projects['data'][index]['city']['name']}, ${_projects['data'][index]['city']['province']['name']}",
+                          style: TextStyle(
+                              color: Colors.black38,
+                              fontFamily: "SFReguler",
+                              fontSize: 14)),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Expanded(
+                      child: _isLoading_employee
+                          ? Center(
+                              child: CircularProgressIndicator(),
+                            )
+                          : Center(
+                              child: Container(
+                                margin: EdgeInsets.only(top: 1),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: [
+                                    Expanded(
+                                      child: ListView.builder(
+                                          itemCount: _projects['data'][index]
+                                                  ['members']
+                                              .length,
+                                          scrollDirection: Axis.horizontal,
+                                          itemBuilder: (context, index_member) {
+                                            return _buildteam(
+                                                index_member, index);
+                                          }),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                      //   child: _buildNoproject(),
+                    ),
+                  ],
+                ),
               ),
-            ),
+              Expanded(
+                child: Container(
+                    width: MediaQuery.of(context).size.width * 0.35 - 25,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Container(
+                          child: Container(
+                              alignment: Alignment.center,
+                              margin: EdgeInsets.only(top: 3, bottom: 3),
+                              child: Text(
+                                "in progress",
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 10),
+                              )),
+                          decoration: BoxDecoration(
+                            color: Colors.green,
+                            borderRadius: new BorderRadius.only(
+                              topLeft: const Radius.circular(10.0),
+                              topRight: const Radius.circular(10.0),
+                              bottomLeft: const Radius.circular(10.0),
+                              bottomRight: const Radius.circular(10.0),
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          flex: 1,
+                          child: Container(
+                            margin: EdgeInsets.only(bottom: 10),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                new CircularPercentIndicator(
+                                  radius: 110.0,
+                                  lineWidth: 10.0,
+                                  animation: true,
+                                  percent: _projects['data'][index]
+                                          ['progress'] /
+                                      100,
+                                  center: new Text(
+                                    "${_projects['data'][index]['progress']}%",
+                                    style: new TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 17.0),
+                                  ),
+                                  circularStrokeCap: CircularStrokeCap.round,
+                                  progressColor: baseColor,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    )),
+              )
+            ],
           ),
         ),
       ),
@@ -409,7 +536,8 @@ class _HomeAdminState extends State<HomeAdmin> {
                                         Text(
                                           "employees",
                                           style: TextStyle(
-                                              color: Colors.white, fontSize: 16),
+                                              color: Colors.white,
+                                              fontSize: 16),
                                         ),
                                       ],
                                     ),
@@ -428,7 +556,8 @@ class _HomeAdminState extends State<HomeAdmin> {
                           Container(
                             margin: EdgeInsets.only(left: 10, top: 5),
                             child: Text("Main Menu",
-                                textAlign: TextAlign.left, style: titleMainMenu),
+                                textAlign: TextAlign.left,
+                                style: titleMainMenu),
                           ),
                           _buildCardMenu(),
                           SizedBox(
@@ -437,7 +566,8 @@ class _HomeAdminState extends State<HomeAdmin> {
                           Container(
                             margin: EdgeInsets.only(left: 10, top: 5),
                             child: Text("Project",
-                                textAlign: TextAlign.left, style: titleMainMenu),
+                                textAlign: TextAlign.left,
+                                style: titleMainMenu),
                           ),
                           _buildproject(),
                         ],
@@ -527,7 +657,7 @@ class _HomeAdminState extends State<HomeAdmin> {
     );
   }
 
- // @override
+  // @override
   // Future<void> sendNotification() async {
   //   String to = await FirebaseMessaging().getToken();
   //   print(to);
@@ -557,7 +687,6 @@ class _HomeAdminState extends State<HomeAdmin> {
         payload: "$data");
   }
 
-
   Future onSelectNotification(var payload) {
     debugPrint("payload : ${payload}");
 
@@ -565,11 +694,29 @@ class _HomeAdminState extends State<HomeAdmin> {
         context,
         MaterialPageRoute(
             builder: (context) => detail_absence_admin_notif(
-              id: payload,
-
-
-            )));
+                  id: payload,
+                )));
   }
+
+  Widget _buildteam(index_member, index) {
+    return Container(
+      margin: EdgeInsets.only(top: 10),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: <Widget>[
+          //container image
+          Container(
+            child: CircleAvatar(
+              radius: 30,
+              child: employee_profile,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   void initState() {
     // TODO: implement initState
@@ -592,7 +739,6 @@ class _HomeAdminState extends State<HomeAdmin> {
                 body: notif['body'],
                 id: data['id'],
                 screen: data['id']),
-
           );
         });
         setState(() {
@@ -606,10 +752,7 @@ class _HomeAdminState extends State<HomeAdmin> {
         setState(() {
           ListNotif.add(Notif(
             title: '${notification['title']}',
-
             body: '${notification['body']}',
-
-
           ));
         });
       },
@@ -623,10 +766,8 @@ class _HomeAdminState extends State<HomeAdmin> {
     flutterLocalNotificationsPlugin = new FlutterLocalNotificationsPlugin();
     var android = new AndroidInitializationSettings('@mipmap/ic_launcher');
     var iOS = new IOSInitializationSettings();
-    var initSetttings =
-    new InitializationSettings(android: android, iOS: iOS);
+    var initSetttings = new InitializationSettings(android: android, iOS: iOS);
     flutterLocalNotificationsPlugin.initialize(initSetttings,
         onSelectNotification: onSelectNotification);
   }
-  
 }

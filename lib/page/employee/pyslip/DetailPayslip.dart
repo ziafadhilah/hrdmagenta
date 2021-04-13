@@ -1,9 +1,20 @@
+import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
-import 'package:hrdmagenta/page/employee/pyslip/PPFView.dart';
+import 'package:get/get.dart';
+import 'package:hrdmagenta/model/customer.dart';
+import 'package:hrdmagenta/model/invoice.dart';
+import 'package:hrdmagenta/services/api_pdf.dart';
+import 'package:hrdmagenta/services/pdf_pyslip_api.dart';
+
+import 'package:pdf/widgets.dart' as pw;
+
 import 'package:hrdmagenta/utalities/font.dart';
-import 'package:path_provider/path_provider.dart';
+import 'package:intl/intl.dart';
+import 'package:json_table/json_table.dart';
+
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 
@@ -13,6 +24,18 @@ class DetailPyslip extends StatefulWidget {
 }
 
 class _DetailPyslipState extends State<DetailPyslip> {
+  final String jsonSample =
+      '[{"name":"Ram","email":"ram@gmail.com","age":23,"income":"10Rs","country":"India","area":"abc"},{"name":"Shyam","email":"shyam23@gmail.com",'
+      '"age":28,"income":"30Rs","country":"India","area":"abc","day":"Monday","month":"april"},{"name":"John","email":"john@gmail.com","age":33,"income":"15Rs","country":"India",'
+      '"area":"abc","day":"Monday","month":"april"},{"name":"Ram","email":"ram@gmail.com","age":23,"income":"10Rs","country":"India","area":"abc","day":"Monday","month":"april"},'
+      '{"name":"Shyam","email":"shyam23@gmail.com","age":28,"income":"30Rs","country":"India","area":"abc","day":"Monday","month":"april"},{"name":"John","email":"john@gmail.com",'
+      '"age":33,"income":"15Rs","country":"India","area":"abc","day":"Monday","month":"april"},{"name":"Ram","email":"ram@gmail.com","age":23,"income":"10Rs","country":"India",'
+      '"area":"abc","day":"Monday","month":"april"},{"name":"Shyam","email":"shyam23@gmail.com","age":28,"income":"30Rs","country":"India","area":"abc","day":"Monday","month":"april"},'
+      '{"name":"John","email":"john@gmail.com","age":33,"income":"15Rs","country":"India","area":"abc","day":"Monday","month":"april"},{"name":"Ram","email":"ram@gmail.com","age":23,'
+      '"income":"10Rs","country":"India","area":"abc","day":"Monday","month":"april"},{"name":"Shyam","email":"shyam23@gmail.com","age":28,"income":"30Rs","country":"India","area":"abc",'
+      '"day":"Monday","month":"april"},{"name":"John","email":"john@gmail.com","age":33,"income":"15Rs","country":"India","area":"abc","day":"Monday","month":"april"}]';
+  bool toggle = true;
+
   double iconSize = 40;
 
   @override
@@ -23,31 +46,17 @@ class _DetailPyslipState extends State<DetailPyslip> {
           IconButton(
             icon: InkWell(
               onTap: () async {
-                writeOnPdf();
-                await savePdf();
-
-                Directory documentDirectory = await getApplicationDocumentsDirectory();
-
-                String documentPath = documentDirectory.path;
-
-                String fullPath = "$documentPath/example.pdf";
-
-                Navigator.push(context, MaterialPageRoute(
-                    builder: (context) => PdfPreview(path: fullPath,)
-                ));
-
-
+                _PayslipPdf();
               },
               child: Icon(
                 Icons.picture_as_pdf,
                 color: Colors.black45,
               ),
             ),
-
             onPressed: () {
               // do something
-              Navigator.pushNamed(context, "pdf_employee-page");
-
+              //Navigator.pushNamed(context, "pdf_employee-page");
+              //savePdf();
             },
           )
         ],
@@ -133,7 +142,7 @@ class _DetailPyslipState extends State<DetailPyslip> {
                 ),
                 Container(
                   child: Text(
-                    "Bagian ",
+                    "Divisi ",
                     style: subtitleMainMenu,
                   ),
                 ),
@@ -142,7 +151,7 @@ class _DetailPyslipState extends State<DetailPyslip> {
                 ),
                 Container(
                   child: Text(
-                    "Job Title",
+                    "Departement",
                     style: subtitleMainMenu,
                   ),
                 ),
@@ -237,258 +246,335 @@ class _DetailPyslipState extends State<DetailPyslip> {
   }
 
   Widget _buildIcome() {
-    return Container(
-      margin: EdgeInsets.only(top: 10),
-      child: DataTable(
-        headingRowColor: MaterialStateColor.resolveWith(
-            (states) => Colors.green.withOpacity(0.25)),
-        columnSpacing: 150,
-        columns: const <DataColumn>[
-          DataColumn(
-            label: Text(
-              'Income',
-              style: TextStyle(fontStyle: FontStyle.italic),
+    var income = jsonDecode(jsonSample);
+
+    return SingleChildScrollView(
+      child: Container(
+        margin: EdgeInsets.only(left: 10, right: 10),
+        width: Get.mediaQuery.size.width,
+        child: Column(
+          children: [
+            JsonTable(
+              income,
+              allowRowHighlight: true,
+              rowHighlightColor: Colors.yellow[500].withOpacity(0.7),
+              tableHeaderBuilder: (String header) {
+                return Container(
+                  padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+                  decoration: BoxDecoration(
+                      border: Border.all(width: 0.5), color: Colors.grey[300]),
+                  child: Text(
+                    header,
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.display1.copyWith(
+                        fontWeight: FontWeight.w700,
+                        fontSize: 14.0,
+                        color: Colors.black),
+                  ),
+                );
+              },
+              tableCellBuilder: (value) {
+                print(value);
+                return Container(
+                  width: Get.mediaQuery.size.width / 2 - 20,
+                  alignment: value is int
+                      ? Alignment.centerRight
+                      : Alignment.centerLeft,
+                  padding: EdgeInsets.symmetric(horizontal: 4.0, vertical: 2.0),
+                  decoration: BoxDecoration(
+                      border: Border.all(
+                          width: 0.5, color: Colors.grey.withOpacity(0.5))),
+                  child: Text(
+                    value,
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context)
+                        .textTheme
+                        .display1
+                        .copyWith(fontSize: 14.0, color: Colors.grey[900]),
+                  ),
+                );
+              },
+              columns: [
+                JsonTableColumn(
+                  "name",
+                  label: "Income",
+                ),
+                JsonTableColumn("age",
+                    label: "Amount", valueBuilder: numberCurrency),
+              ],
+              onRowSelect: (index, map) {
+                print(index);
+                print(map);
+              },
             ),
-          ),
-          DataColumn(
-            label: Text(
-              'Amount',
-              style: TextStyle(fontStyle: FontStyle.italic),
+            Container(
+              color: Colors.grey[300],
+              margin: EdgeInsets.only(left: 10, right: 10),
+              child: Table(
+                border: TableBorder.all(),
+                children: [
+                  TableRow(children: [
+                    Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Total income',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          )
+                        ]),
+                    Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            '0',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          )
+                        ]),
+                  ]),
+                ],
+              ),
             ),
-          ),
-        ],
-        rows: const <DataRow>[
-          DataRow(
-            cells: <DataCell>[
-              DataCell(Text('Gaji Pokok',
-                  style: TextStyle(fontFamily: 'SFReguler', fontSize: 15))),
-              DataCell(Text(
-                'IDR ',
-                style: TextStyle(fontFamily: 'SFReguler', fontSize: 15),
-              )),
-            ],
-          ),
-          DataRow(
-            cells: <DataCell>[
-              DataCell(Text(
-                'Tunjangan Harian',
-                style: TextStyle(fontFamily: 'SFReguler', fontSize: 15),
-              )),
-              DataCell(Text(
-                'IDR',
-                style: TextStyle(fontFamily: 'SFReguler', fontSize: 15),
-              )),
-            ],
-          ),
-          DataRow(
-            cells: <DataCell>[
-              DataCell(Text(
-                'Tunjangan Jabatan',
-                style: TextStyle(fontFamily: 'SFReguler', fontSize: 15),
-              )),
-              DataCell(Text(
-                'IDR',
-                style: TextStyle(fontFamily: 'SFReguler', fontSize: 15),
-              )),
-            ],
-          ),
-          DataRow(
-            cells: <DataCell>[
-              DataCell(Text(
-                'Tunjangan Komunikasi',
-                style: TextStyle(fontFamily: 'SFReguler', fontSize: 15),
-              )),
-              DataCell(Text(
-                'IDR',
-                style: TextStyle(fontFamily: 'SFReguler', fontSize: 15),
-              )),
-            ],
-          ),
-          DataRow(
-            cells: <DataCell>[
-              DataCell(Text(
-                'Total Income',
-                style: TextStyle(
-                    fontFamily: 'SFReguler',
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold),
-              )),
-              DataCell(Text(
-                'IDR',
-                style: TextStyle(
-                    fontFamily: 'SFReguler',
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold),
-              )),
-            ],
-          ),
-        ],
+            SizedBox(
+              height: 40.0,
+            ),
+          ],
+        ),
       ),
     );
   }
 
   Widget _builddeduction() {
-    return Container(
-      width: MediaQuery.of(context).size.width,
-      child: DataTable(
-        headingRowColor: MaterialStateColor.resolveWith(
-            (states) => Colors.green.withOpacity(0.25)),
-        columnSpacing: 150,
-        columns: const <DataColumn>[
-          DataColumn(
-            label: Text(
-              'Deduction',
-              style: TextStyle(fontStyle: FontStyle.italic),
+    var deduction = jsonDecode(jsonSample);
+
+    return SingleChildScrollView(
+      child: Container(
+        margin: EdgeInsets.only(left: 10, right: 10),
+        width: Get.mediaQuery.size.width,
+        child: Column(
+          children: [
+            JsonTable(
+              deduction,
+              allowRowHighlight: true,
+              rowHighlightColor: Colors.yellow[500].withOpacity(0.7),
+              tableHeaderBuilder: (String header) {
+                return Container(
+                  padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+                  decoration: BoxDecoration(
+                      border: Border.all(width: 0.5), color: Colors.grey[300]),
+                  child: Text(
+                    header,
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.display1.copyWith(
+                        fontWeight: FontWeight.w700,
+                        fontSize: 14.0,
+                        color: Colors.black),
+                  ),
+                );
+              },
+              tableCellBuilder: (value) {
+                return Container(
+                  width: Get.mediaQuery.size.width / 2 - 20,
+                  alignment: Alignment.topLeft,
+                  padding: EdgeInsets.symmetric(horizontal: 4.0, vertical: 2.0),
+                  decoration: BoxDecoration(
+                      border: Border.all(
+                          width: 0.5, color: Colors.grey.withOpacity(0.5))),
+                  child: Text(
+                    value,
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context)
+                        .textTheme
+                        .display1
+                        .copyWith(fontSize: 14.0, color: Colors.grey[900]),
+                  ),
+                );
+              },
+              columns: [
+                JsonTableColumn("name", label: "Dedcution"),
+                JsonTableColumn("age",
+                    label: "Amount", valueBuilder: numberCurrency),
+              ],
+              onRowSelect: (index, map) {
+                print(index);
+                print(map);
+              },
             ),
-          ),
-          DataColumn(
-            label: Text(
-              'Amount',
-              style: TextStyle(fontStyle: FontStyle.italic),
+            Container(
+              color: Colors.grey[300],
+              margin: EdgeInsets.only(left: 10, right: 10),
+              child: Table(
+                border: TableBorder.all(),
+                children: [
+                  TableRow(children: [
+                    Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Total Deduction',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          )
+                        ]),
+                    Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            '0',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          )
+                        ]),
+                  ]),
+                  TableRow(children: [
+                    Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Take Home Pay',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          )
+                        ]),
+                    Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            '0',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          )
+                        ]),
+                  ]),
+                ],
+              ),
             ),
-          ),
-        ],
-        rows: const <DataRow>[
-          DataRow(
-            cells: <DataCell>[
-              DataCell(Text('PPh21',
-                  style: TextStyle(fontFamily: 'SFReguler', fontSize: 15))),
-              DataCell(Text(
-                'IDR 0',
-                style: TextStyle(fontFamily: 'SFReguler', fontSize: 15),
-              )),
-            ],
-          ),
-          DataRow(
-            cells: <DataCell>[
-              DataCell(Text(
-                '',
-                style: TextStyle(fontFamily: 'SFReguler', fontSize: 15),
-              )),
-              DataCell(Text(
-                '',
-                style: TextStyle(fontFamily: 'SFReguler', fontSize: 15),
-              )),
-            ],
-          ),
-          DataRow(
-            cells: <DataCell>[
-              DataCell(Text(
-                '',
-                style: TextStyle(fontFamily: 'SFReguler', fontSize: 15),
-              )),
-              DataCell(Text(
-                '',
-                style: TextStyle(fontFamily: 'SFReguler', fontSize: 15),
-              )),
-            ],
-          ),
-          DataRow(
-            cells: <DataCell>[
-              DataCell(Text(
-                '',
-                style: TextStyle(fontFamily: 'SFReguler', fontSize: 15),
-              )),
-              DataCell(Text(
-                '',
-                style: TextStyle(fontFamily: 'SFReguler', fontSize: 15),
-              )),
-            ],
-          ),
-          DataRow(
-            cells: <DataCell>[
-              DataCell(Text(
-                'Total Deduction',
-                style: TextStyle(
-                    fontFamily: 'SFReguler',
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold),
-              )),
-              DataCell(Text(
-                'IDR 0434343242',
-                style: TextStyle(
-                    fontFamily: 'SFReguler',
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold),
-              )),
-            ],
-          ),
-          DataRow(
-            cells: <DataCell>[
-              DataCell(Text(
-                'Take Home Pay',
-                style: TextStyle(
-                    fontFamily: 'SFReguler',
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold),
-              )),
-              DataCell(Text(
-                'IDR 0',
-                style: TextStyle(
-                    fontFamily: 'SFReguler',
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold),
-              )),
-            ],
-          ),
-        ],
+            SizedBox(
+              height: 40.0,
+            ),
+          ],
+        ),
       ),
     );
   }
 
   final pdf = pw.Document();
 
-  writeOnPdf(){
-    pdf.addPage(
-        pw.MultiPage(
-          pageFormat: PdfPageFormat.a5,
-          margin: pw.EdgeInsets.all(32),
-
-          build: (pw.Context context){
-            return <pw.Widget>  [
-              pw.Header(
-                  level: 0,
-                  child: pw.Text("Easy Approach Document")
-              ),
-
-              pw.Paragraph(
-                  text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Malesuada fames ac turpis egestas sed tempus urna. Quisque sagittis purus sit amet. A arcu cursus vitae congue mauris rhoncus aenean vel elit. Ipsum dolor sit amet consectetur adipiscing elit pellentesque. Viverra justo nec ultrices dui sapien eget mi proin sed."
-              ),
-
-              pw.Paragraph(
-                  text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Malesuada fames ac turpis egestas sed tempus urna. Quisque sagittis purus sit amet. A arcu cursus vitae congue mauris rhoncus aenean vel elit. Ipsum dolor sit amet consectetur adipiscing elit pellentesque. Viverra justo nec ultrices dui sapien eget mi proin sed."
-              ),
-
-              pw.Header(
-                  level: 1,
-                  child: pw.Text("Second Heading")
-              ),
-
-              pw.Paragraph(
-                  text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Malesuada fames ac turpis egestas sed tempus urna. Quisque sagittis purus sit amet. A arcu cursus vitae congue mauris rhoncus aenean vel elit. Ipsum dolor sit amet consectetur adipiscing elit pellentesque. Viverra justo nec ultrices dui sapien eget mi proin sed."
-              ),
-
-              pw.Paragraph(
-                  text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Malesuada fames ac turpis egestas sed tempus urna. Quisque sagittis purus sit amet. A arcu cursus vitae congue mauris rhoncus aenean vel elit. Ipsum dolor sit amet consectetur adipiscing elit pellentesque. Viverra justo nec ultrices dui sapien eget mi proin sed."
-              ),
-
-              pw.Paragraph(
-                  text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Malesuada fames ac turpis egestas sed tempus urna. Quisque sagittis purus sit amet. A arcu cursus vitae congue mauris rhoncus aenean vel elit. Ipsum dolor sit amet consectetur adipiscing elit pellentesque. Viverra justo nec ultrices dui sapien eget mi proin sed."
-              ),
-            ];
-          },
-
-
-        )
-    );
+  writeOnPdf() {
+    pdf.addPage(pw.MultiPage(
+      pageFormat: PdfPageFormat.a5,
+      margin: pw.EdgeInsets.all(32),
+      build: (pw.Context context) {
+        return <pw.Widget>[
+          pw.Header(level: 0, child: pw.Text("Easy Approach Document")),
+          pw.Paragraph(
+              text:
+                  "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Malesuada fames ac turpis egestas sed tempus urna. Quisque sagittis purus sit amet. A arcu cursus vitae congue mauris rhoncus aenean vel elit. Ipsum dolor sit amet consectetur adipiscing elit pellentesque. Viverra justo nec ultrices dui sapien eget mi proin sed."),
+          pw.Paragraph(
+              text:
+                  "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Malesuada fames ac turpis egestas sed tempus urna. Quisque sagittis purus sit amet. A arcu cursus vitae congue mauris rhoncus aenean vel elit. Ipsum dolor sit amet consectetur adipiscing elit pellentesque. Viverra justo nec ultrices dui sapien eget mi proin sed."),
+          pw.Header(level: 1, child: pw.Text("Second Heading")),
+          pw.Paragraph(
+              text:
+                  "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Malesuada fames ac turpis egestas sed tempus urna. Quisque sagittis purus sit amet. A arcu cursus vitae congue mauris rhoncus aenean vel elit. Ipsum dolor sit amet consectetur adipiscing elit pellentesque. Viverra justo nec ultrices dui sapien eget mi proin sed."),
+          pw.Paragraph(
+              text:
+                  "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Malesuada fames ac turpis egestas sed tempus urna. Quisque sagittis purus sit amet. A arcu cursus vitae congue mauris rhoncus aenean vel elit. Ipsum dolor sit amet consectetur adipiscing elit pellentesque. Viverra justo nec ultrices dui sapien eget mi proin sed."),
+          pw.Paragraph(
+              text:
+                  "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Malesuada fames ac turpis egestas sed tempus urna. Quisque sagittis purus sit amet. A arcu cursus vitae congue mauris rhoncus aenean vel elit. Ipsum dolor sit amet consectetur adipiscing elit pellentesque. Viverra justo nec ultrices dui sapien eget mi proin sed."),
+        ];
+      },
+    ));
   }
-  Future savePdf() async{
-    Directory documentDirectory = await getApplicationDocumentsDirectory();
 
-    String documentPath = documentDirectory.path;
+  void _PayslipPdf() async {
+    final date = DateTime.now();
+    var income = jsonDecode(jsonSample);
 
-    File file = File("$documentPath/example.pdf");
+    final invoice = Invoice(
+      customer: Customer(
+        name: "Rifan Hidayat",
+        status_ptkp: "2131",
+        lama_bekerja: "1 tahun",
+        work_placement: "Event organizer",
+        bagian: "Programer",
+        employee_id: "EP-2321",
+        tgl_bergabung: "22 november 2020",
+        job_title: "stasda",
+        status_karyawan: "Freelancer",
+        address: 'Apple Street, Cupertino, CA 95014',
+      ),
+      items: [
+        InvoiceItem(
+            name: "Rifan Hidayat",
+            age: "11",
+            country: "Bandung",
+            income: "11111",
+            email: "roafsd",
+            area: "bandung"),
+        InvoiceItem(
+            name: "Rifan Hidayat",
+            age: "11",
+            country: "Bandung",
+            income: "11111",
+            email: "roafsd",
+            area: "bandung"),
+        InvoiceItem(
+            name: "Rifan Hidayat",
+            age: "11",
+            country: "Bandung",
+            income: "11111",
+            email: "roafsd",
+            area: "bandung"),
+        InvoiceItem(
+            name: "Rifan Hidayat",
+            age: "11",
+            country: "Bandung",
+            income: "11111",
+            email: "roafsd",
+            area: "bandung"),
+      ],
+      itemss: [
+        DeductionItem(
+          description: 'PPh21',
+          unitPrice: "IDR 0",
+        ),
+        DeductionItem(
+          description: '',
+          unitPrice: "",
+        ),
+        DeductionItem(
+          description: '',
+          unitPrice: "",
+        ),
+        DeductionItem(
+          description: '',
+          unitPrice: "",
+        ),
+        DeductionItem(
+          description: 'Total Deduction',
+          unitPrice: "IDR 0",
+        ),
+        DeductionItem(
+          description: 'Take Home Pay',
+          unitPrice: "IDR 0",
+        ),
+      ],
+    );
 
-    //file.writeAsBytesSync(pdf.save());
+    final pdfFile = await PdfPyslipApi.generate(income, income, "total income",
+        'total deduction', 'total take home pay', '22 november 2020', invoice);
+    //print(income);
+
+    PdfApi.openFile(pdfFile);
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
+  String numberCurrency(jsonObject) {
+    String string = NumberFormat.currency(locale: 'id', decimalDigits: 0)
+        .format(jsonObject);
+
+    return string;
   }
 }

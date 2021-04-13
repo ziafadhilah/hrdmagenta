@@ -10,7 +10,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toast/toast.dart';
 
-String base_url = "https://arenzha.my.id";
+String base_url = "http://arenzha.my.id";
 
 class Services {
   SharedPreference sharedPreference = new SharedPreference();
@@ -32,22 +32,21 @@ class Services {
     //
     final data = jsonDecode(response.body);
     if (data['code'] == 200) {
-      final loginmodel = loginEmployeeFromJson(response.body);
       sharedPreference.saveDataEmployee(
           1,
-          loginmodel.data.id.toString(),
-          loginmodel.data.employeeId,
-          loginmodel.data.username,
-          loginmodel.data.firstName,
-          loginmodel.data.lastName,
-          loginmodel.data.email,
+          data['data']['id'].toString(),
+          data['data']['employee_id'],
+          data['data']['username'],
+          data['data']['first_name'],
+          data['data']['last_name'],
+          data['data']['email'],
           "",
-          loginmodel.data.contactNumber,
-          loginmodel.data.workPlacement,
-          loginmodel.data.workPlacement,
-          loginmodel.data.designation.department,
+          data['data']['contact_number'],
+          data['data']['work_placement'],
+          data['data']['work_placement'],
           "",
-          loginmodel.data.gender);
+          "",
+          data['data']['gender']);
       Navigator.pop(context);
       Navigator.pushNamedAndRemoveUntil(
           context, "navbar_employee-page", (route) => false);
@@ -100,6 +99,7 @@ class Services {
       office_longitude,
       category) async {
     loading(context);
+
     final response =
         await http.post("$base_url/api/attendances/action/check-in", body: {
       "employee_id": employee_id.toString(),
@@ -187,9 +187,9 @@ class Services {
     loading(context);
     final response =
         await http.patch("$base_url/api/employees/$id/edit-account", body: {
-      "username": username,
-      "email": email,
-      "password": password,
+      "username": username.toString(),
+      "email": email.toString(),
+      "password": password.toString(),
     });
 
     final responseJson = jsonDecode(response.body);
@@ -230,21 +230,18 @@ class Services {
     }
   }
 
-  Future<void> clearTokenemployee(var id) async{
-    final response = await http.patch("$base_url/api/logout/mobile/employee", body: {
+  Future<void> clearTokenemployee(var id) async {
+    final response =
+        await http.patch("$base_url/api/logout/mobile/employee", body: {
       "employee_id": id,
-
     });
     final data = jsonDecode(response.body);
 
-    if (data['200']){
+    if (data['200']) {
       print("berhasil");
-
-    }else{
+    } else {
       print("gagal");
-
     }
-
   }
 
   //-----------end fucnction employeee-------
@@ -265,22 +262,22 @@ class Services {
     //
     final data = jsonDecode(response.body);
     if (data['code'] == 200) {
-      final loginmodel = loginEmployeeFromJson(response.body);
+      // final loginmodel = loginEmployeeFromJson(response.body);
       sharedPreference.saveDataEmployee(
           2,
-          loginmodel.data.id.toString(),
-          loginmodel.data.employeeId,
-          loginmodel.data.username,
-          loginmodel.data.firstName,
-          loginmodel.data.lastName,
-          loginmodel.data.email,
+          data['data']['id'].toString(),
+          data['data']['employee_id'],
+          data['data']['username'],
+          data['data']['first_name'],
+          data['data']['last_name'],
+          data['data']['email'],
           "",
-          loginmodel.data.contactNumber,
+          data['data']['contact_number'],
+          data['data']['work_placement'],
+          data['data']['work_placement'],
           "",
           "",
-          "",
-          "",
-          loginmodel.data.gender);
+          data['data']['gender']);
       Navigator.pop(context);
       Navigator.pushNamedAndRemoveUntil(
           context, "navbar_admin-page", (route) => false);
@@ -311,21 +308,17 @@ class Services {
     }
   }
 
-  Future<void> clearTokenadmin(var id) async{
-    final response = await http.patch("$base_url/api/logout/mobile/admin", body: {
+  Future<void> clearTokenadmin(var id) async {
+    final response =
+        await http.patch("$base_url/api/logout/mobile/admin", body: {
       "employee_id": id,
-
     });
     final data = jsonDecode(response.body);
 
-    if (data['200']){
+    if (data['200']) {
       print("berhasil");
-
-    }else{
+    } else {
       print("gagal");
-
     }
-
   }
-
 }

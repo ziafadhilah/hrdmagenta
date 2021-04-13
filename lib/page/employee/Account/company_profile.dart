@@ -331,11 +331,11 @@ class _company_pfrofileState extends State<company_pfrofile> {
     final data = jsonDecode(response.body);
 
     if (data['code'] == 200) {
-      final compaymodel = companiesFromJson(response.body);
-      company_name = compaymodel.data.name;
-      company_adress = compaymodel.data.address;
-      company_email = compaymodel.data.email;
-      company_phonenumber = compaymodel.data.contactNumber;
+      //final compaymodel = companiesFromJson(response.body);
+      company_name = data['data']['name'];
+      company_adress = data['data']['address'];
+      company_email = data['data']['email'];
+      company_phonenumber = data['data']['contact_number'];
 
       setState(() {
         _isLoading = false;

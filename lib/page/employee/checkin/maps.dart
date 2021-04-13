@@ -375,7 +375,7 @@ class _MapsState extends State<Maps> {
       Circle(
           circleId: CircleId("0"),
           center: LatLng(double.parse(widget.latmainoffice), double.parse(widget.longMainoffice)),
-          radius: 10,
+          radius: 20,
           strokeColor: baseColor1,
           fillColor: baseColor.withOpacity(0.25),
           strokeWidth: 1),

@@ -1,8 +1,10 @@
-//
-//
+// //
+// //
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:hrdmagenta/page/SplassScreen/splasscreen.dart';
 import 'package:hrdmagenta/page/admin/l/absence/tabmenu_absence.dart';
+import 'package:hrdmagenta/page/admin/l/announcement/ListAnnouncement.dart';
 import 'package:hrdmagenta/page/admin/l/home/home.dart';
 import 'package:hrdmagenta/page/admin/l/home/navbar.dart';
 import 'package:hrdmagenta/page/admin/l/leave/tabmenu_offwork.dart';
@@ -34,7 +36,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
 
 
-    return MaterialApp(
+    return GetMaterialApp(
       title: 'Magenta HRD ',
       color: baseColor,
       debugShowCheckedModeBanner: false,
@@ -57,6 +59,7 @@ class MyApp extends StatelessWidget {
         'pyslip_list_employe':(context)=>PyslipListPage(),
         'leave_list_employee-page':(context)=>LeaveListEmployee(),
         'leave_add_employee-page':(context)=>LeaveAdd(),
+        'Announcement_list_employee-page':(context)=>AnnouncementListEmployee(),
 
 
         //page admin
@@ -72,3 +75,115 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+//
+//
+//
+// // import 'package:flutter/material.dart';
+// // import 'package:flutter/services.dart';
+// // import 'package:hrdmagenta/page/employee/pyslip/PDF.dart';
+// //
+// //
+// // Future main() async {
+// //   WidgetsFlutterBinding.ensureInitialized();
+// //   await SystemChrome.setPreferredOrientations([
+// //     DeviceOrientation.portraitUp,
+// //     DeviceOrientation.portraitDown,
+// //   ]);
+// //
+// //   runApp(MyApp());
+// // }
+// //
+// // class MyApp extends StatelessWidget {
+// //   static final String title = 'Invoice';
+// //
+// //   @override
+// //   Widget build(BuildContext context) => MaterialApp(
+// //     debugShowCheckedModeBanner: false,
+// //     title: title,
+// //     theme: ThemeData(primarySwatch: Colors.deepOrange),
+// //     home: PdfPage(),
+// //   );
+// // }
+//
+
+
+// import 'package:flutter/material.dart';
+// import 'package:flutter_offline/flutter_offline.dart';
+//
+// void main() => runApp(new MyApp());
+//
+// class MyApp extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       debugShowCheckedModeBanner: false,
+//       home: Scaffold(
+//           appBar: AppBar(
+//             title: Text("Connection"),
+//           ),
+//           body: Builder(
+//             builder: (BuildContext context) {
+//               return OfflineBuilder(
+//                 connectivityBuilder: (BuildContext context,
+//                     ConnectivityResult connectivity, Widget child) {
+//                   final bool connected =
+//                       connectivity != ConnectivityResult.none;
+//                   return Stack(
+//                     fit: StackFit.expand,
+//                     children: [
+//                       child,
+//                       Positioned(
+//                         left: 0.0,
+//                         right: 0.0,
+//                         height: 32.0,
+//                         child: AnimatedContainer(
+//                           duration: const Duration(milliseconds: 300),
+//                           color:
+//                           connected ? Color(0xFF00EE44) : Color(0xFFEE4400),
+//                           child: connected
+//                               ?  Row(
+//                             mainAxisAlignment: MainAxisAlignment.center,
+//                             children: <Widget>[
+//                               Text(
+//                                 "OFFLINE",
+//                                 style: TextStyle(color: Colors.white),
+//                               ),
+//
+//                             ],
+//                           )
+//                               : Row(
+//                             mainAxisAlignment: MainAxisAlignment.center,
+//                             children: <Widget>[
+//                               Text(
+//                                 "OFFLINE",
+//                                 style: TextStyle(color: Colors.white),
+//                               ),
+//                               SizedBox(
+//                                 width: 8.0,
+//                               ),
+//                               SizedBox(
+//                                 width: 12.0,
+//                                 height: 12.0,
+//                                 child: CircularProgressIndicator(
+//                                   strokeWidth: 2.0,
+//                                   valueColor:
+//                                   AlwaysStoppedAnimation<Color>(
+//                                       Colors.white),
+//                                 ),
+//                               ),
+//                             ],
+//                           ),
+//                         ),
+//                       ),
+//                     ],
+//                   );
+//                 },
+//                 child: Center(
+//                   child: Text("ONLINE Or OFFLINE"),
+//                 ),
+//               );
+//             },
+//           )),
+//     );
+//   }
+// }

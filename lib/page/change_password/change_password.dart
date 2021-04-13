@@ -140,23 +140,32 @@ class _change_passwordState extends State<change_password> {
 
         ),
       ),
-      body: Container(
-        color: Colors.white,
-        margin: EdgeInsets.all(10),
-        child: Column(
-          children: <Widget>[
-            SizedBox(height: 10,),
-            _buildpassword(),
-            SizedBox(height: 10,),
+      body: SingleChildScrollView(
+        child: Container(
+          color: Colors.white,
+          margin: EdgeInsets.all(10),
+          child: Column(
+            children: <Widget>[
+              SizedBox(height: 10,),
+              _buildpassword(),
+              SizedBox(height: 10,),
 
-            _buildconfirmpassword(),
-            SizedBox(height: 20,),
-            _buildbtnsave(),
+              _buildconfirmpassword(),
+              SizedBox(height: 20,),
+              _buildbtnsave(),
 
-          ],
+            ],
+          ),
         ),
       ),
 
     );
+  }
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    print(widget.email.toString());
+    print(widget.username.toString());
   }
 }

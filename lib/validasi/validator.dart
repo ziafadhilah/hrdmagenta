@@ -40,8 +40,20 @@ class Validasi {
   }
 
   ///validasi checkin
-  void validation_checkin(BuildContext context, var photos, remark, lat, long,
-      employee_id, date, time, departement_name, distance,office_latitude,office_longitude, category) {
+  void validation_checkin(
+      BuildContext context,
+      var photos,
+      remark,
+      lat,
+      long,
+      employee_id,
+      date,
+      time,
+      departement_name,
+      distance,
+      office_latitude,
+      office_longitude,
+      category) {
     if (departement_name == "office") {
       if (category == "present") {
         if (distance < 20) {
@@ -55,8 +67,19 @@ class Validasi {
                 duration: 5,
                 gravity: Toast.BOTTOM);
           } else {
-            services.checkin(context, photos, remark, employee_id, lat, long,
-                date, time, "approved",office_latitude,office_longitude, category);
+            services.checkin(
+                context,
+                photos,
+                remark,
+                employee_id,
+                lat,
+                long,
+                date,
+                time,
+                "approved",
+                office_latitude,
+                office_longitude,
+                category);
           }
         } else {
           Toast.show("Anda di luar radius perusahaan", context,
@@ -72,9 +95,27 @@ class Validasi {
               context,
               duration: 5,
               gravity: Toast.BOTTOM);
-        } else {
-          services.checkin(context, photos, remark, employee_id, lat, long,
-              date, time, "pending",office_latitude,office_longitude, category);
+        }else if (remark.toString().isEmpty){
+          Toast.show(
+              "Remarks tidak boleh kosong",
+              context,
+              duration: 5,
+              gravity: Toast.BOTTOM);
+
+        }  else {
+          services.checkin(
+              context,
+              photos,
+              remark,
+              employee_id,
+              lat,
+              long,
+              date,
+              time,
+              "pending",
+              office_latitude,
+              office_longitude,
+              category);
         }
       }
     } else {
@@ -89,8 +130,19 @@ class Validasi {
               duration: 5,
               gravity: Toast.BOTTOM);
         } else {
-          services.checkin(context, photos, remark, employee_id, lat, long,
-              date, time, "approved",office_latitude,office_longitude, category);
+          services.checkin(
+              context,
+              photos,
+              remark,
+              employee_id,
+              lat,
+              long,
+              date,
+              time,
+              "approved",
+              office_latitude,
+              office_longitude,
+              category);
         }
       } else {
         if (photos.isEmpty) {
@@ -102,17 +154,47 @@ class Validasi {
               context,
               duration: 5,
               gravity: Toast.BOTTOM);
-        } else {
-          services.checkin(context, photos, remark, employee_id, lat, long,
-              date, time, "pending", office_latitude,office_longitude ,category);
+        } else if (remark.toString().isEmpty){
+          Toast.show(
+              "Remarks tidak boleh kosong",
+              context,
+              duration: 5,
+              gravity: Toast.BOTTOM);
+
+        }else {
+          services.checkin(
+              context,
+              photos,
+              remark,
+              employee_id,
+              lat,
+              long,
+              date,
+              time,
+              "pending",
+              office_latitude,
+              office_longitude,
+              category);
         }
       }
     }
   }
 
   ///check out
-  void validation_checkout(BuildContext context, var photos, remark, lat, long,
-      employee_id, date, time, departement_name, distance, office_latitude,office_longitude, category) {
+  void validation_checkout(
+      BuildContext context,
+      var photos,
+      remark,
+      lat,
+      long,
+      employee_id,
+      date,
+      time,
+      departement_name,
+      distance,
+      office_latitude,
+      office_longitude,
+      category) {
     if (departement_name == "office") {
       if (category == "present") {
         if (distance < 20) {
@@ -126,8 +208,19 @@ class Validasi {
                 duration: 5,
                 gravity: Toast.BOTTOM);
           } else {
-            services.checkout(context, photos, remark, employee_id, lat, long,
-                date, time, "approved",office_latitude,office_longitude, category);
+            services.checkout(
+                context,
+                photos,
+                remark,
+                employee_id,
+                lat,
+                long,
+                date,
+                time,
+                "approved",
+                office_latitude,
+                office_longitude,
+                category);
           }
         } else {
           Toast.show("Anda di luar radius perusahaan", context,
@@ -143,9 +236,27 @@ class Validasi {
               context,
               duration: 5,
               gravity: Toast.BOTTOM);
+        }else if (remark.toString().isEmpty){
+          Toast.show(
+              "Remarks tidak boleh kosong",
+              context,
+              duration: 5,
+              gravity: Toast.BOTTOM);
+
         } else {
-          services.checkout(context, photos, remark, employee_id, lat, long,
-              date, time, "pending", office_latitude,office_longitude,category);
+          services.checkout(
+              context,
+              photos,
+              remark,
+              employee_id,
+              lat,
+              long,
+              date,
+              time,
+              "pending",
+              office_latitude,
+              office_longitude,
+              category);
         }
       }
     } else {
@@ -160,8 +271,19 @@ class Validasi {
               duration: 5,
               gravity: Toast.BOTTOM);
         } else {
-          services.checkout(context, photos, remark, employee_id, lat, long,
-              date, time, "approved",office_latitude,office_longitude, category);
+          services.checkout(
+              context,
+              photos,
+              remark,
+              employee_id,
+              lat,
+              long,
+              date,
+              time,
+              "approved",
+              office_latitude,
+              office_longitude,
+              category);
         }
       } else {
         if (photos.isEmpty) {
@@ -173,9 +295,27 @@ class Validasi {
               context,
               duration: 5,
               gravity: Toast.BOTTOM);
-        } else {
-          services.checkout(context, photos, remark, employee_id, lat, long,
-              date, time, "pending",office_latitude,office_longitude, category);
+        } else if (remark.toString().isEmpty){
+          Toast.show(
+              "Remarks tidak boleh kosong",
+              context,
+              duration: 5,
+              gravity: Toast.BOTTOM);
+
+        }else {
+          services.checkout(
+              context,
+              photos,
+              remark,
+              employee_id,
+              lat,
+              long,
+              date,
+              time,
+              "pending",
+              office_latitude,
+              office_longitude,
+              category);
         }
       }
     }
@@ -183,7 +323,10 @@ class Validasi {
 
   void validation_change_password(BuildContext context, var password, username,
       email, id, confirm_password) {
-    if (password != confirm_password) {
+    if (password.toString().length < 8) {
+      Toast.show("password harus lebih dari 8 karakter", context,
+          duration: 5, gravity: Toast.BOTTOM);
+    } else if (password != confirm_password) {
       Toast.show("Password tidak cocok", context,
           duration: 5, gravity: Toast.BOTTOM);
     } else {

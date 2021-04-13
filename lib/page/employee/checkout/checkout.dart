@@ -27,8 +27,7 @@ class _CheckoutState extends State<Checkout> {
   Map _employee;
   bool _isLoading = true;
   bool _disposed = false;
-  final Geolocator geolocator = Geolocator()
-    ..forceAndroidLocationManager;
+  final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
   Position _currentPosition;
   String _currentAddress;
   var Cremark = new TextEditingController();
@@ -65,72 +64,66 @@ class _CheckoutState extends State<Checkout> {
       ),
       body: _isLoading == true
           ? Center(
-        child: CircularProgressIndicator(),
-      )
+              child: CircularProgressIndicator(),
+            )
           : SingleChildScrollView(
-        child: Container(
-          color: Colors.white,
-          height: MediaQuery
-              .of(context)
-              .size
-              .height + 50,
-          child: Container(
-            child: Column(
-              children: <Widget>[
-                Container(
-                  child:
-                  _distance > 20 ? _builddistaceCompany() : Text(""),
-                ),
-                Container(
-                  margin: EdgeInsets.only(top: 15),
-                  child: _image == null
-                      ? _buildPhoto()
-                      : InkWell(
-                    onTap: () {
-                      aksesCamera();
-                    },
-                    child: new Image.file(_image,
-                        width: 200, height: 200, fit: BoxFit.fill),
+              child: Container(
+                color: Colors.white,
+                height: MediaQuery.of(context).size.height + 50,
+                child: Container(
+                  child: Column(
+                    children: <Widget>[
+                      Container(
+                        child:
+                            _distance > 20 ? _builddistaceCompany() : Text(""),
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(top: 15),
+                        child: _image == null
+                            ? _buildPhoto()
+                            : InkWell(
+                                onTap: () {
+                                  aksesCamera();
+                                },
+                                child: new Image.file(_image,
+                                    width: 200, height: 200, fit: BoxFit.fill),
+                              ),
+                      ),
+                      _buildText(),
+                      SizedBox(
+                        height: 15,
+                      ),
+                      _buildCategoryabsence(),
+                      SizedBox(
+                        height: 15,
+                      ),
+                      _buildLocation(),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      _buildremark(),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      _buildtime(),
+                      Expanded(
+                        child: Container(
+                          margin: EdgeInsets.only(bottom: 10),
+                          width: double.infinity,
+                          height: MediaQuery.of(context).size.height,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: <Widget>[
+                              _buildfingerprint(),
+                            ],
+                          ),
+                        ),
+                      )
+                    ],
                   ),
                 ),
-                _buildText(),
-                SizedBox(
-                  height: 15,
-                ),
-                _buildCategoryabsence(),
-                SizedBox(
-                  height: 15,
-                ),
-                _buildLocation(),
-                SizedBox(
-                  height: 10,
-                ),
-                _buildremark(),
-                SizedBox(
-                  height: 10,
-                ),
-                _buildtime(),
-                Expanded(
-                  child: Container(
-                    margin: EdgeInsets.only(bottom: 10),
-                    width: double.infinity,
-                    height: MediaQuery
-                        .of(context)
-                        .size
-                        .height,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: <Widget>[
-                        _buildfingerprint(),
-                      ],
-                    ),
-                  ),
-                )
-              ],
+              ),
             ),
-          ),
-        ),
-      ),
     );
   }
 
@@ -171,9 +164,7 @@ class _CheckoutState extends State<Checkout> {
       margin: EdgeInsets.only(left: 25, right: 20),
       child: TextFormField(
         controller: Cremark,
-        cursorColor: Theme
-            .of(context)
-            .cursorColor,
+        cursorColor: Theme.of(context).cursorColor,
         maxLength: 100,
         decoration: InputDecoration(
           icon: Icon(
@@ -186,8 +177,8 @@ class _CheckoutState extends State<Checkout> {
           ),
           enabledBorder: UnderlineInputBorder(
               borderSide: BorderSide(
-                color: Colors.black38,
-              )),
+            color: Colors.black38,
+          )),
         ),
       ),
     );
@@ -200,7 +191,7 @@ class _CheckoutState extends State<Checkout> {
       if (!_disposed) {
         setState(() {
           time = formatedjam;
-          _getCurrentLocation();
+          //  _getCurrentLocation();
           _getDistance(_lat_mainoffice, _long_mainoffice, _lat, _long);
         });
       }
@@ -217,9 +208,7 @@ class _CheckoutState extends State<Checkout> {
           margin: EdgeInsets.only(left: 25),
           child: TextFormField(
             enabled: false,
-            cursorColor: Theme
-                .of(context)
-                .cursorColor,
+            cursorColor: Theme.of(context).cursorColor,
             decoration: InputDecoration(
               border: InputBorder.none,
               focusedBorder: InputBorder.none,
@@ -321,8 +310,7 @@ class _CheckoutState extends State<Checkout> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) =>
-                                Maps(
+                            builder: (context) => Maps(
                                   address: _currentAddress,
                                   longitude: _long,
                                   latitude: _lat,
@@ -348,10 +336,7 @@ class _CheckoutState extends State<Checkout> {
                         ),
                         if (_currentPosition != null && _currentAddress != null)
                           Container(
-                            width: MediaQuery
-                                .of(context)
-                                .size
-                                .width - 100,
+                            width: MediaQuery.of(context).size.width - 100,
                             child: Text(
                               "$_currentAddress ",
                               style: TextStyle(color: Colors.black38),
@@ -399,24 +384,46 @@ class _CheckoutState extends State<Checkout> {
     if (_category_absent == null) {
       _category_absent = "Present";
     }
-
-
-
-    //Toast.show("$_category_absent", context);
-    validation_checkout(
-        context,
-        base64.toString(),
-        Cremark.text,
-        _lat.toString().trim(),
-        _long.toString().trim(),
-        _employee_id,
-        date,
-        time,
-        _departement_name,
-        _distance,
-        _lat_mainoffice,
-        _long_mainoffice,
-        _category_absent.toString().toLowerCase());
+    if (_category_absent.toString().toLowerCase() != 'present') {
+      if (base64.toString() == "null") {
+        Toast.show("Foto wajib digunakan", context,
+            duration: 5, gravity: Toast.BOTTOM);
+      } else if (Cremark.text.toString().isEmpty) {
+        Toast.show("Remarks tidak boleh kosong", context,
+            duration: 5, gravity: Toast.BOTTOM);
+      } else {
+        //Toast.show("$_category_absent", context);
+        validation_checkout(
+            context,
+            base64.toString(),
+            Cremark.text,
+            _lat.toString().trim(),
+            _long.toString().trim(),
+            _employee_id,
+            date,
+            time,
+            _departement_name,
+            _distance,
+            _lat_mainoffice,
+            _long_mainoffice,
+            _category_absent.toString().toLowerCase());
+      }
+    } else {
+      validation_checkout(
+          context,
+          base64.toString(),
+          Cremark.text,
+          _lat.toString().trim(),
+          _long.toString().trim(),
+          _employee_id,
+          date,
+          time,
+          _departement_name,
+          _distance,
+          _lat_mainoffice,
+          _long_mainoffice,
+          _category_absent.toString().toLowerCase());
+    }
   }
 
   ///fucntion
@@ -424,7 +431,7 @@ class _CheckoutState extends State<Checkout> {
   aksesCamera() async {
     print('Picker is Called');
     File img = (await ImagePicker.pickImage(
-        source: ImageSource.camera, imageQuality: 20));
+        source: ImageSource.camera, maxHeight: 600, maxWidth: 600));
     if (img != null) {
       setState(() {
         _image = File(img.path);
@@ -448,9 +455,9 @@ class _CheckoutState extends State<Checkout> {
           ),
           Container(
               child: Text(
-                "Anda berada di luar radius kantor",
-                style: subtitleMainMenu,
-              ))
+            "Anda berada di luar radius kantor",
+            style: subtitleMainMenu,
+          ))
         ],
       ),
     );
@@ -483,7 +490,7 @@ class _CheckoutState extends State<Checkout> {
 
       setState(() {
         _currentAddress =
-        "${place.locality}, ${place.postalCode}, ${place.country}";
+            "${place.locality}, ${place.postalCode}, ${place.country}";
       });
     } catch (e) {
       print(e);
@@ -501,16 +508,15 @@ class _CheckoutState extends State<Checkout> {
 
   _getDistance(latMainoffice, longMainoffice, currentlat, currentlong) async {
     try {
+      _distance = 0;
       final double d = await Geolocator().distanceBetween(
-          latMainoffice, longMainoffice, currentlat, currentlong);
+          double.parse(latMainoffice),
+          double.parse(longMainoffice),
+          currentlat,
+          currentlong);
       setState(() {
         _distance = d;
         print("$d");
-        if (_distance > 20) {
-          print("outside");
-        } else {
-          print("inside");
-        }
         // print(d);
       });
     } catch (e) {
@@ -556,5 +562,6 @@ class _CheckoutState extends State<Checkout> {
     _startJam();
     _getDataPref();
     _getCurrentLocation();
+    print(_distance);
   }
 }

@@ -1,27 +1,25 @@
-import 'dart:convert';
 import 'dart:io';
 
-import 'package:get/get.dart';
 import 'package:hrdmagenta/model/customer.dart';
 import 'package:hrdmagenta/model/employee.dart';
 import 'package:hrdmagenta/model/invoice.dart';
 import 'package:hrdmagenta/model/supplier.dart';
-
+ 
 import 'package:hrdmagenta/services/pdf_pyslip_api.dart';
-import 'package:intl/intl.dart';
-import 'package:json_table/json_table.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:pdf/widgets.dart';
 
-class PdfPyslipApi {
-  static Future<File> generate(
-      var income, var deduction,var totalIncome,totalDeduction,var totalTakeHomePay,var period, Invoice invoice) async {
+class PdfInvoiceApi {
+  static Future<File> generate(Invoice invoice) async {
     final pdf = Document();
 
     pdf.addPage(MultiPage(
       build: (context) => [
-        buildTitle(period),
+        //buildHeader(invoice),
+        ///data employee
+        ///
+        buildTitle(invoice),
         pw.Row(children: [
           pw.Container(
             child: ColumnLeft(invoice),
@@ -31,30 +29,18 @@ class PdfPyslipApi {
             child: ColumnRight(invoice),
           )
         ]),
-        buildIncome(income),
-        buildtotalincome(invoice),
-
+        buildInvoice(invoice),
         pw.SizedBox(height: 20),
-        buildDeduction(deduction),
-        buildtotaldeduction(totalDeduction, totalTakeHomePay),
+        buildDeduction(invoice),
+
+        Divider(),
+        // buildTotal(invoice),
       ],
       // footer: (context) => buildFooter(invoice),
     ));
 
     return PdfApi.saveDocument(name: 'pyslip.pdf', pdf: pdf);
   }
-
-  static Widget buildTitle(var datetime) => Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            '${datetime}',
-            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-          ),
-          SizedBox(height: 0.8 * PdfPageFormat.cm),
-          SizedBox(height: 0.8 * PdfPageFormat.cm),
-        ],
-      );
 
   static Widget buildCustomerAddress(Customer customer) => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -77,38 +63,38 @@ class PdfPyslipApi {
       ]);
 
   static Widget Bagina(Customer customer) => Row(children: [
-        Container(width: 80, child: Text("Divisi")),
+        Container(width: 80, child: Text("Bagian")),
         Container(margin: pw.EdgeInsets.only(left: 50), child: Text(":")),
         Container(child: Text(customer.bagian.toString()))
       ]);
 
   static Widget JobTitle(Customer customer) => Row(children: [
-        Container(width: 80, child: Text("Departement")),
+        Container(width: 80, child: Text("Job Title")),
         Container(margin: pw.EdgeInsets.only(left: 50), child: Text(":")),
         Container(child: Text(customer.bagian.toString()))
       ]);
 
   static Widget StatusKaryawan(Customer customer) => Row(children: [
         Container(width: 120, child: Text("Status Karyawan")),
-        Container(margin: pw.EdgeInsets.only(left: 40), child: Text(":")),
+        Container(margin: pw.EdgeInsets.only(left: 50), child: Text(":")),
         Container(child: Text(customer.job_title.toString()))
       ]);
 
   static Widget StatusPTKP(Customer customer) => Row(children: [
         Container(width: 120, child: Text("Status PTKP")),
-        Container(margin: pw.EdgeInsets.only(left: 40), child: Text(":")),
+        Container(margin: pw.EdgeInsets.only(left: 50), child: Text(":")),
         Container(child: Text(customer.status_ptkp.toString()))
       ]);
 
   static Widget TanggalBergabung(Customer customer) => Row(children: [
         Container(width: 120, child: Text("Tanggal Bergabung")),
-        Container(margin: pw.EdgeInsets.only(left: 40), child: Text(":")),
+        Container(margin: pw.EdgeInsets.only(left: 50), child: Text(":")),
         Container(child: Text(customer.tgl_bergabung.toString()))
       ]);
 
   static Widget LamaBekerja(Customer customer) => Row(children: [
         Container(width: 120, child: Text("Lama bekerja")),
-        Container(margin: pw.EdgeInsets.only(left: 40), child: Text(":")),
+        Container(margin: pw.EdgeInsets.only(left: 50), child: Text(":")),
         Container(child: Text(customer.lama_bekerja.toString()))
       ]);
 
@@ -136,17 +122,28 @@ class PdfPyslipApi {
         pw.SizedBox(height: 20),
       ]);
 
-  static Widget buildIncome(List invoice) {
+  static Widget buildTitle(Invoice invoice) => Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            '22 November 2020',
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold,),
+          ),
+          SizedBox(height: 0.8 * PdfPageFormat.cm),
+          SizedBox(height: 0.8 * PdfPageFormat.cm),
+        ],
+      );
+
+  static Widget buildInvoice(Invoice invoice) {
     final headers = [
       'Income',
       'Ammount',
     ];
-    final data = invoice.map((item) {
+    final data = invoice.items.map((item) {
       return [
-        item['name'],
+        item.name,
         //Utils.formatDate(item.date),
-        NumberFormat.currency(locale: 'id', decimalDigits: 0)
-            .format(item['age'])
+        item.income
       ];
     }).toList();
 
@@ -165,107 +162,21 @@ class PdfPyslipApi {
         4: Alignment.centerRight,
       },
     );
+
   }
 
-  static Widget buildtotalincome(var totalIncome) {
-
-
-    return Container(
-      alignment: Alignment.centerRight,
-      child: Row(
-        children: [
-
-          Expanded(
-            flex: 4,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-
-                Divider(),
-                buildText(
-                  title: 'Total Income',
-                  titleStyle: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  value: "${totalIncome}",
-                  unite: true,
-                ),
-                SizedBox(height: 2 * PdfPageFormat.mm),
-                Container(height: 1, color: PdfColors.grey400),
-                SizedBox(height: 0.5 * PdfPageFormat.mm),
-                Container(height: 1, color: PdfColors.grey400),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-  static Widget buildtotaldeduction(var totalDeduction,var takehomepay,) {
-
-
-    return Container(
-      alignment: Alignment.centerRight,
-      child: Row(
-        children: [
-
-          Expanded(
-            flex: 4,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-
-                Divider(),
-                buildText(
-                  title: 'Total deduction',
-                  titleStyle: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  value: "${totalDeduction}",
-                  unite: true,
-                ),
-
-                Divider(),
-                buildText(
-                  title: 'Take Home Pay',
-                  titleStyle: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  value: "${takehomepay}",
-                  unite: true,
-                ),
-                SizedBox(height: 2 * PdfPageFormat.mm),
-                Container(height: 1, color: PdfColors.grey400),
-                SizedBox(height: 0.5 * PdfPageFormat.mm),
-                Container(height: 1, color: PdfColors.grey400),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  static Widget buildDeduction(List invoice) {
+  static Widget buildDeduction(Invoice invoice) {
     final headers = [
-      'Deduction',
-      'Amount',
+      'Dedcution',
+      'Ammount',
     ];
-    final data = invoice.map((item) {
-      return [
-        item['name'],
-        //Utils.formatDate(item.date),
-        NumberFormat.currency(locale: 'id', decimalDigits: 0)
-            .format(item['age'])
-      ];
+    final data1 = invoice.itemss.map((item) {
+      return [item.description, item.unitPrice];
     }).toList();
 
     return Table.fromTextArray(
       headers: headers,
-      data: data,
+      data: data1,
       border: null,
       headerStyle: TextStyle(fontWeight: FontWeight.bold),
       headerDecoration: BoxDecoration(color: PdfColors.grey300),
@@ -280,11 +191,82 @@ class PdfPyslipApi {
     );
   }
 
-  String numberCurrency(jsonObject) {
-    String string = NumberFormat.currency(locale: 'id', decimalDigits: 0)
-        .format(jsonObject);
+  // static Widget buildTotal(Invoice invoice) {
+  //   final netTotal = invoice.items
+  //       .map((item) => item.unitPri * item.quantity)
+  //       .reduce((item1, item2) => item1 + item2);
+  //   final vatPercent = invoice.items.first.vat;
+  //   final vat = netTotal * vatPercent;
+  //   final total = netTotal + vat;
+  //
+  //   return Container(
+  //     alignment: Alignment.centerRight,
+  //     child: Row(
+  //       children: [
+  //         Spacer(flex: 1),
+  //         Expanded(
+  //           flex: 4,
+  //           child: Column(
+  //             crossAxisAlignment: CrossAxisAlignment.start,
+  //             children: [
+  //               buildText(
+  //                 title: 'Total Income',
+  //                 value: Utils.formatPrice(netTotal),
+  //                 unite: true,
+  //               ),
+  //               buildText(
+  //                 title: 'Vat ${vatPercent * 100} %',
+  //                 value: Utils.formatPrice(vat),
+  //                 unite: true,
+  //               ),
+  //               Divider(),
+  //               buildText(
+  //                 title: 'Total amount due',
+  //                 titleStyle: TextStyle(
+  //                   fontSize: 14,
+  //                   fontWeight: FontWeight.bold,
+  //                 ),
+  //                 value: Utils.formatPrice(total),
+  //                 unite: true,
+  //               ),
+  //               SizedBox(height: 2 * PdfPageFormat.mm),
+  //               Container(height: 1, color: PdfColors.grey400),
+  //               SizedBox(height: 0.5 * PdfPageFormat.mm),
+  //               Container(height: 1, color: PdfColors.grey400),
+  //             ],
+  //           ),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 
-    return string;
+  static Widget buildFooter(Invoice invoice) => Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Divider(),
+          SizedBox(height: 2 * PdfPageFormat.mm),
+          buildSimpleText(title: 'Address', value: invoice.supplier.address),
+          SizedBox(height: 1 * PdfPageFormat.mm),
+          buildSimpleText(title: 'Paypal', value: invoice.supplier.paymentInfo),
+        ],
+      );
+
+  static buildSimpleText({
+    String title,
+    String value,
+  }) {
+    final style = TextStyle(fontWeight: FontWeight.bold);
+
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: pw.CrossAxisAlignment.end,
+      children: [
+        Text(title, style: style),
+        SizedBox(width: 2 * PdfPageFormat.mm),
+        Text(value),
+      ],
+    );
   }
 
   static buildText({
