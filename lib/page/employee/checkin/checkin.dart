@@ -386,6 +386,7 @@ class _CheckinState extends State<Checkin> {
       _category_absent = "Present";
     }
 
+
     if (_category_absent.toString().toLowerCase() != 'present') {
       if (base64.toString() == "null") {
         Toast.show("Foto wajib digunakan", context,

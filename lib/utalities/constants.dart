@@ -53,6 +53,11 @@ final Widget pyslip = SvgPicture.asset(
   semanticsLabel: 'Acme Logo',
   color: baseColor1,
 );
+final Widget employees = SvgPicture.asset(
+  "assets/employees.svg",
+  semanticsLabel: 'Acme Logo',
+  color: baseColor1,
+);
 final Widget offwork = SvgPicture.asset(
   "assets/offwork.svg",
   semanticsLabel: 'Acme Logo',

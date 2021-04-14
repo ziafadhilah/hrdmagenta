@@ -132,6 +132,7 @@ flutter:
     - assets/office.png
     - assets/leave.svg
     - assets/announcement.svg
+    - assets/employees.svg
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 

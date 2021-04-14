@@ -256,7 +256,7 @@ class _detail_absenceState extends State<detail_absence> {
                 children: <Widget>[
                   Container(
                     child: Text(
-                      "Remark",
+                      "Remarks",
                       style: titleAbsence,
                     ),
                   ),

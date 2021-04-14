@@ -258,7 +258,7 @@ class _detail_absence_adminState extends State<detail_absence_admin> {
                 children: <Widget>[
                   Container(
                     child: Text(
-                      "Remark",
+                      "Remarks",
                       style: titleAbsence,
                     ),
                   ),

@@ -225,7 +225,7 @@ class _detail_absence_employee_notifState
                 children: <Widget>[
                   Container(
                     child: Text(
-                      "Remark",
+                      "Remarks",
                       style: titleAbsence,
                     ),
                   ),

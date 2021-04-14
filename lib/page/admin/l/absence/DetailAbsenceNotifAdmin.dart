@@ -237,7 +237,7 @@ class _detail_absence_admin_notifState
                 children: <Widget>[
                   Container(
                     child: Text(
-                      "Remark",
+                      "Remarks",
                       style: titleAbsence,
                     ),
                   ),

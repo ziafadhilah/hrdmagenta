@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:hrdmagenta/model/companies.dart';
-import 'package:hrdmagenta/model/login_employee.dart';
 import 'package:hrdmagenta/page/employee/budget/budget_project.dart';
 import 'package:hrdmagenta/shared_preferenced/sessionmanage.dart';
 import 'package:hrdmagenta/utalities/alert_dialog.dart';
@@ -10,7 +9,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toast/toast.dart';
 
-String base_url = "http://arenzha.my.id";
+String base_url = "http://192.168.100.83:8000";
 
 class Services {
   SharedPreference sharedPreference = new SharedPreference();
@@ -232,7 +231,7 @@ class Services {
 
   Future<void> clearTokenemployee(var id) async {
     final response =
-        await http.patch("$base_url/api/logout/mobile/employee", body: {
+        await http.post("$base_url/api/logout/mobile/employee", body: {
       "employee_id": id,
     });
     final data = jsonDecode(response.body);
@@ -310,7 +309,7 @@ class Services {
 
   Future<void> clearTokenadmin(var id) async {
     final response =
-        await http.patch("$base_url/api/logout/mobile/admin", body: {
+        await http.post("$base_url/api/logout/mobile/admin", body: {
       "employee_id": id,
     });
     final data = jsonDecode(response.body);

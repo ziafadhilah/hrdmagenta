@@ -162,6 +162,30 @@ class _HomeAdminState extends State<HomeAdmin> {
       Text("Payslip", style: subtitleMainMenu)
     ]);
   }
+  Widget _buildMenuemployees() {
+    return Column(children: <Widget>[
+      new Container(
+        width: 70,
+        height: 70,
+        child: InkWell(
+          onTap: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => ListEmployee()));
+          },
+          child: Card(
+            elevation: 1,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+            child: Container(margin: EdgeInsets.all(15.0), child: employees),
+          ),
+        ),
+      ),
+      Text("Employees", style: subtitleMainMenu)
+    ]);
+  }
 
   Widget _buildMenuproject() {
     return Column(children: <Widget>[
@@ -237,9 +261,10 @@ class _HomeAdminState extends State<HomeAdmin> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: <Widget>[
+                            _buildMenuemployees(),
                             _buildMenuaabsence(),
                             _buildMenuproject(),
-                            _buildMenuOffwork(),
+
 
                           ],
                         ),
@@ -247,9 +272,10 @@ class _HomeAdminState extends State<HomeAdmin> {
                             child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: <Widget>[
+                            _buildMenuOffwork(),
                             _buildMenupayslip(),
                             _buildMenuannouncement(),
-                            _buildMenupayslip(),
+
                           ],
                         )),
                       ],

@@ -60,7 +60,7 @@ class Validasi {
           if (photos.isEmpty) {
             Toast.show("Ambil terlebih dahulu photo anda", context,
                 duration: 5, gravity: Toast.BOTTOM);
-          } else if ((lat == null) || (long == null)) {
+          } else if ((lat.toString() == "null") || (long.toString() == "null")) {
             Toast.show(
                 "system tidak menemukan lokasi anda,aktifkan terlebih dahulu GPS device anda",
                 context,
@@ -89,20 +89,16 @@ class Validasi {
         if (photos.isEmpty) {
           Toast.show("Ambil terlebih dahulu photo anda", context,
               duration: 5, gravity: Toast.BOTTOM);
-        } else if ((lat == null) || (long == null)) {
+        } else if ((lat.toString() == "null") || (long.toString() == "null")) {
           Toast.show(
               "system tidak menemukan lokasi anda,aktifkan terlebih dahulu GPS device anda",
               context,
               duration: 5,
               gravity: Toast.BOTTOM);
-        }else if (remark.toString().isEmpty){
-          Toast.show(
-              "Remarks tidak boleh kosong",
-              context,
-              duration: 5,
-              gravity: Toast.BOTTOM);
-
-        }  else {
+        } else if (remark.toString().isEmpty) {
+          Toast.show("Remarks tidak boleh kosong", context,
+              duration: 5, gravity: Toast.BOTTOM);
+        } else {
           services.checkin(
               context,
               photos,
@@ -123,7 +119,7 @@ class Validasi {
         if (photos.isEmpty) {
           Toast.show("Ambil terlebih dahulu photo anda", context,
               duration: 5, gravity: Toast.BOTTOM);
-        } else if ((lat == null) || (long == null)) {
+        } else if ((lat.toString()=="null") || (long.toString() == "null")) {
           Toast.show(
               "system tidak menemukan lokasi anda,aktifkan terlebih dahulu GPS device anda",
               context,
@@ -148,20 +144,16 @@ class Validasi {
         if (photos.isEmpty) {
           Toast.show("Ambil terlebih dahulu photo anda", context,
               duration: 5, gravity: Toast.BOTTOM);
-        } else if ((lat == null) || (long == null)) {
+        } else if ((lat.toString()=="null") || (long.toString()=="null")) {
           Toast.show(
               "system tidak menemukan lokasi anda,aktifkan terlebih dahulu GPS device anda",
               context,
               duration: 5,
               gravity: Toast.BOTTOM);
-        } else if (remark.toString().isEmpty){
-          Toast.show(
-              "Remarks tidak boleh kosong",
-              context,
-              duration: 5,
-              gravity: Toast.BOTTOM);
-
-        }else {
+        } else if (remark.toString().isEmpty) {
+          Toast.show("Remarks tidak boleh kosong", context,
+              duration: 5, gravity: Toast.BOTTOM);
+        } else {
           services.checkin(
               context,
               photos,
@@ -201,7 +193,7 @@ class Validasi {
           if (photos.isEmpty) {
             Toast.show("Ambil terlebih dahulu photo anda", context,
                 duration: 5, gravity: Toast.BOTTOM);
-          } else if ((lat == null) || (long == null)) {
+          } else if ((lat.toString() == "null") || (long.toString() == "null")) {
             Toast.show(
                 "system tidak menemukan lokasi anda,aktifkan terlebih dahulu GPS device anda",
                 context,
@@ -230,19 +222,15 @@ class Validasi {
         if (photos.isEmpty) {
           Toast.show("Ambil terlebih dahulu photo anda", context,
               duration: 5, gravity: Toast.BOTTOM);
-        } else if ((lat == null) || (long == null)) {
+        } else if ((lat.toString() == "null") || (long.toString() == "null")) {
           Toast.show(
               "system tidak menemukan lokasi anda,aktifkan terlebih dahulu GPS device anda",
               context,
               duration: 5,
               gravity: Toast.BOTTOM);
-        }else if (remark.toString().isEmpty){
-          Toast.show(
-              "Remarks tidak boleh kosong",
-              context,
-              duration: 5,
-              gravity: Toast.BOTTOM);
-
+        } else if (remark.toString().isEmpty) {
+          Toast.show("Remarks tidak boleh kosong", context,
+              duration: 5, gravity: Toast.BOTTOM);
         } else {
           services.checkout(
               context,
@@ -264,7 +252,7 @@ class Validasi {
         if (photos.isEmpty) {
           Toast.show("Ambil terlebih dahulu photo anda", context,
               duration: 5, gravity: Toast.BOTTOM);
-        } else if ((lat == null) || (long == null)) {
+        } else if ((lat.toString()=="null") || (long.toString() == "null")) {
           Toast.show(
               "system tidak menemukan lokasi anda,aktifkan terlebih dahulu GPS device anda",
               context,
@@ -289,20 +277,16 @@ class Validasi {
         if (photos.isEmpty) {
           Toast.show("Ambil terlebih dahulu photo anda", context,
               duration: 5, gravity: Toast.BOTTOM);
-        } else if ((lat == null) || (long == null)) {
+        } else if ((lat == "null") || (long == "null")) {
           Toast.show(
               "system tidak menemukan lokasi anda,aktifkan terlebih dahulu GPS device anda",
               context,
               duration: 5,
               gravity: Toast.BOTTOM);
-        } else if (remark.toString().isEmpty){
-          Toast.show(
-              "Remarks tidak boleh kosong",
-              context,
-              duration: 5,
-              gravity: Toast.BOTTOM);
-
-        }else {
+        } else if (remark.toString().isEmpty) {
+          Toast.show("Remarks tidak boleh kosong", context,
+              duration: 5, gravity: Toast.BOTTOM);
+        } else {
           services.checkout(
               context,
               photos,
