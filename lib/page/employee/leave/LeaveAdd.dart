@@ -26,7 +26,7 @@ class _LeaveAddState extends State<LeaveAdd> {
           style: TextStyle(color: Colors.black87),
         ),
       ),
-      body: Center(
+      body: SingleChildScrollView(
         child: Container(
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height,

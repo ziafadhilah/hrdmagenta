@@ -32,7 +32,7 @@ class PdfPyslipApi {
           )
         ]),
         buildIncome(income),
-        buildtotalincome(invoice),
+        buildtotalincome(totalIncome),
 
         pw.SizedBox(height: 20),
         buildDeduction(deduction),

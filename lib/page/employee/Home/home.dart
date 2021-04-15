@@ -299,7 +299,7 @@ class _HomeEmployeeState extends State<HomeEmployee> {
                                             EdgeInsets.only(left: 20, right: 20),
                                         width: double.maxFinite,
                                         child: Text(
-                                          "Fungsi & Manfaat BPJS Ketenagakerjaan bagi karyawan",
+                                          "Cuti bersama dimulai dari tanggal 6 - 7 mei 2021",
                                           style: titlteannoucement1,
                                         ),
                                       ),
@@ -315,7 +315,7 @@ class _HomeEmployeeState extends State<HomeEmployee> {
                               margin: EdgeInsets.only(left: 10, right: 10),
                               width: double.maxFinite,
                               child: Text(
-                                "Fungsi & Manfaat BPJS Ketenagakerjaan bagi karyawan",
+                                "Cuti bersama dimulai dari tanggal 6 - 7 mei 2021",
                                 style: titlteannoucement,
                               ),
                             ),
@@ -520,7 +520,7 @@ class _HomeEmployeeState extends State<HomeEmployee> {
             height: 30,
           ),
           Text(
-            "No Available project in progress",
+            "There are no ongoing projects yet",
             style: subtitleMainMenu,
           )
         ],

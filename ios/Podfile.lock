@@ -1,4 +1,7 @@
 PODS:
+  - connectivity (0.0.1):
+    - Flutter
+    - Reachability
   - DKImagePickerController/Core (4.3.2):
     - DKImagePickerController/ImageDataManager
     - DKImagePickerController/Resource
@@ -133,6 +136,7 @@ PODS:
     - Flutter
   - PromisesObjC (1.2.12)
   - Protobuf (3.14.0)
+  - Reachability (3.2)
   - SDWebImage (5.11.0):
     - SDWebImage/Core (= 5.11.0)
   - SDWebImage/Core (5.11.0)
@@ -146,6 +150,7 @@ PODS:
     - Flutter
 
 DEPENDENCIES:
+  - connectivity (from `.symlinks/plugins/connectivity/ios`)
   - file_picker (from `.symlinks/plugins/file_picker/ios`)
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
   - firebase_messaging (from `.symlinks/plugins/firebase_messaging/ios`)
@@ -183,10 +188,13 @@ SPEC REPOS:
     - nanopb
     - PromisesObjC
     - Protobuf
+    - Reachability
     - SDWebImage
     - SwiftyGif
 
 EXTERNAL SOURCES:
+  connectivity:
+    :path: ".symlinks/plugins/connectivity/ios"
   file_picker:
     :path: ".symlinks/plugins/file_picker/ios"
   firebase_core:
@@ -227,6 +235,7 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/url_launcher/ios"
 
 SPEC CHECKSUMS:
+  connectivity: c4130b2985d4ef6fd26f9702e886bd5260681467
   DKImagePickerController: b5eb7f7a388e4643264105d648d01f727110fc3d
   DKPhotoGallery: fdfad5125a9fdda9cc57df834d49df790dbb4179
   file_picker: 3e6c3790de664ccf9b882732d9db5eaf6b8d4eb1
@@ -258,6 +267,7 @@ SPEC CHECKSUMS:
   permission_handler: 67637977b227d62d46bfbf524f335f8568de5a73
   PromisesObjC: 3113f7f76903778cf4a0586bd1ab89329a0b7b97
   Protobuf: 0cde852566359049847168e51bd1c690e0f70056
+  Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
   SDWebImage: 7acbb57630ac7db4a495547fb73916ff3e432f6b
   shared_preferences: af6bfa751691cdc24be3045c43ec037377ada40d
   sqflite: 6d358c025f5b867b29ed92fc697fd34924e11904

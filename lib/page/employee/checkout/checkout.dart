@@ -260,7 +260,7 @@ class _CheckoutState extends State<Checkout> {
                   'Present',
                   'Sick',
                   'Permission',
-                  'Business Trip'
+
                 ].map<DropdownMenuItem<String>>((String value) {
                   return DropdownMenuItem<String>(
                     value: value,

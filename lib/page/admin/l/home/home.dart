@@ -675,7 +675,7 @@ class _HomeAdminState extends State<HomeAdmin> {
             height: 30,
           ),
           Text(
-            "No Available project in progress",
+            "There are no ongoing projects yet",
             style: subtitleMainMenu,
           )
         ],

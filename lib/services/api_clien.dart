@@ -9,7 +9,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toast/toast.dart';
 
-String base_url = "http://192.168.100.83:8000";
+String base_url = "http://arenzha.my.id";
 
 class Services {
   SharedPreference sharedPreference = new SharedPreference();

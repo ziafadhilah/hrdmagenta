@@ -19,21 +19,46 @@ import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 
 class DetailPyslip extends StatefulWidget {
+  DetailPyslip({
+    this.totalDeduction,
+    this.dataDeduction,
+    this.dataincome,
+    this.takeHomepay,
+    this.totalIncome,
+    this.period,
+  });
+
+  var dataincome,
+      dataDeduction,
+      totalIncome,
+      totalDeduction,
+      takeHomepay,
+      name,
+      employee_id,
+      departement,
+      lenghtWork,
+      period;
+
   @override
   _DetailPyslipState createState() => _DetailPyslipState();
 }
 
 class _DetailPyslipState extends State<DetailPyslip> {
   final String jsonSample =
-      '[{"name":"Ram","email":"ram@gmail.com","age":23,"income":"10Rs","country":"India","area":"abc"},{"name":"Shyam","email":"shyam23@gmail.com",'
-      '"age":28,"income":"30Rs","country":"India","area":"abc","day":"Monday","month":"april"},{"name":"John","email":"john@gmail.com","age":33,"income":"15Rs","country":"India",'
-      '"area":"abc","day":"Monday","month":"april"},{"name":"Ram","email":"ram@gmail.com","age":23,"income":"10Rs","country":"India","area":"abc","day":"Monday","month":"april"},'
-      '{"name":"Shyam","email":"shyam23@gmail.com","age":28,"income":"30Rs","country":"India","area":"abc","day":"Monday","month":"april"},{"name":"John","email":"john@gmail.com",'
-      '"age":33,"income":"15Rs","country":"India","area":"abc","day":"Monday","month":"april"},{"name":"Ram","email":"ram@gmail.com","age":23,"income":"10Rs","country":"India",'
-      '"area":"abc","day":"Monday","month":"april"},{"name":"Shyam","email":"shyam23@gmail.com","age":28,"income":"30Rs","country":"India","area":"abc","day":"Monday","month":"april"},'
-      '{"name":"John","email":"john@gmail.com","age":33,"income":"15Rs","country":"India","area":"abc","day":"Monday","month":"april"},{"name":"Ram","email":"ram@gmail.com","age":23,'
-      '"income":"10Rs","country":"India","area":"abc","day":"Monday","month":"april"},{"name":"Shyam","email":"shyam23@gmail.com","age":28,"income":"30Rs","country":"India","area":"abc",'
-      '"day":"Monday","month":"april"},{"name":"John","email":"john@gmail.com","age":33,"income":"15Rs","country":"India","area":"abc","day":"Monday","month":"april"}]';
+      '[{"name":"Gaji Pokok","email":"ram@gmail.com","age":0,"income":"10Rs","country":"India","area":"abc"},{"name":"Jamsostek","email":"shyam23@gmail.com",'
+      '"age":0,"income":"30Rs","country":"India","area":"abc","day":"Monday","month":"april"},{"name":"Tunjangan harian","email":"john@gmail.com","age":0,"income":"15Rs","country":"India",'
+      '"area":"abc","day":"Monday","month":"april"},{"name":"Tunjangan Jabatan","email":"ram@gmail.com","age":0,"income":"10Rs","country":"India","area":"abc","day":"Monday","month":"april"},'
+      '{"name":"Tunjangan Komunikasi","email":"shyam23@gmail.com","age":0,"income":"30Rs","country":"India","area":"abc","day":"Monday","month":"april"}]';
+
+
+  final String jsonSamplededuction =
+      '[{"name":"PPh21","email":"ram@gmail.com","age":0,"income":"10Rs","country":"India","area":"abc"},{"name":"","email":"shyam23@gmail.com",'
+      '"age":0,"income":"30Rs","country":"India","area":"abc","day":"Monday","month":"april"},{"name":"","email":"john@gmail.com","age":0,"income":"15Rs","country":"India",'
+      '"area":"abc","day":"Monday","month":"april"},{"name":"","email":"ram@gmail.com","age":0,"income":"10Rs","country":"India","area":"abc","day":"Monday","month":"april"},'
+      '{"name":"","email":"shyam23@gmail.com","age":0,"income":"30Rs","country":"India","area":"abc","day":"Monday","month":"april"}]';
+
+
+
   bool toggle = true;
 
   double iconSize = 40;
@@ -93,9 +118,7 @@ class _DetailPyslipState extends State<DetailPyslip> {
                     height: 10,
                   ),
                   _buildIcome(),
-                  SizedBox(
-                    height: 10,
-                  ),
+
                   _builddeduction(),
                 ],
               ),
@@ -247,6 +270,7 @@ class _DetailPyslipState extends State<DetailPyslip> {
 
   Widget _buildIcome() {
     var income = jsonDecode(jsonSample);
+    var deduction = jsonDecode(jsonSamplededuction);
 
     return SingleChildScrollView(
       child: Container(
@@ -325,9 +349,14 @@ class _DetailPyslipState extends State<DetailPyslip> {
                     Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            '0',
-                            style: TextStyle(fontWeight: FontWeight.bold),
+                          Container(
+                            margin: EdgeInsets.only(left: 5),
+                            child: Text(
+                              NumberFormat.currency(
+                                      locale: 'id', decimalDigits: 0)
+                                  .format(0),
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
                           )
                         ]),
                   ]),
@@ -344,7 +373,8 @@ class _DetailPyslipState extends State<DetailPyslip> {
   }
 
   Widget _builddeduction() {
-    var deduction = jsonDecode(jsonSample);
+
+    var deduction = jsonDecode(jsonSamplededuction);
 
     return SingleChildScrollView(
       child: Container(
@@ -417,9 +447,14 @@ class _DetailPyslipState extends State<DetailPyslip> {
                     Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            '0',
-                            style: TextStyle(fontWeight: FontWeight.bold),
+                          Container(
+                            margin: EdgeInsets.only(left: 5),
+                            child: Text(
+                              NumberFormat.currency(
+                                      locale: 'id', decimalDigits: 0)
+                                  .format(0),
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
                           )
                         ]),
                   ]),
@@ -435,9 +470,14 @@ class _DetailPyslipState extends State<DetailPyslip> {
                     Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            '0',
-                            style: TextStyle(fontWeight: FontWeight.bold),
+                          Container(
+                            margin: EdgeInsets.only(left: 5),
+                            child: Text(
+                              NumberFormat.currency(
+                                      locale: 'id', decimalDigits: 0)
+                                  .format(0),
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
                           )
                         ]),
                   ]),
@@ -486,6 +526,7 @@ class _DetailPyslipState extends State<DetailPyslip> {
   void _PayslipPdf() async {
     final date = DateTime.now();
     var income = jsonDecode(jsonSample);
+    var deduction = jsonDecode(jsonSamplededuction);
 
     final invoice = Invoice(
       customer: Customer(
@@ -558,8 +599,8 @@ class _DetailPyslipState extends State<DetailPyslip> {
       ],
     );
 
-    final pdfFile = await PdfPyslipApi.generate(income, income, "total income",
-        'total deduction', 'total take home pay', '22 november 2020', invoice);
+    final pdfFile = await PdfPyslipApi.generate(income, deduction, "0",
+        '0', '0', '22 november 2020', invoice);
     //print(income);
 
     PdfApi.openFile(pdfFile);

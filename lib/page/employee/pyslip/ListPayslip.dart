@@ -1,10 +1,7 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:hrdmagenta/page/admin/l/absence/detail.dart';
 import 'package:hrdmagenta/page/employee/pyslip/DetailPayslip.dart';
 import 'package:hrdmagenta/services/api_clien.dart';
-import 'package:hrdmagenta/utalities/color.dart';
 import 'package:hrdmagenta/utalities/constants.dart';
 import 'package:hrdmagenta/utalities/font.dart';
 import 'package:http/http.dart' as http;
@@ -36,24 +33,28 @@ class _PyslipListPageState extends State<PyslipListPage> {
             style: TextStyle(color: Colors.black87),
           ),
         ),
-        body: _loading==true?Center(child: CircularProgressIndicator(),):Container(
-          color: Colors.white,
-          child: Column(
-            children: <Widget>[
-              Expanded(
-                child: ListView.builder(
-                    itemCount: 1,
-                    itemBuilder: (contex, index) {
-                      //return _buildNopyslip();
-                      return _buildpyslip(index);
-                    }),
+        body: _loading == true
+            ? Center(
+                child: CircularProgressIndicator(),
               )
-              // _buildpyslip(),
+            : Container(
+                color: Colors.white,
+                child: Column(
+                  children: <Widget>[
+                    Expanded(
+                      child: ListView.builder(
+                          itemCount: 1,
+                          itemBuilder: (contex, index) {
+                            //return _buildNopyslip();
+                            return _buildpyslip(index);
+                          }),
+                    )
+                    // _buildpyslip(),
 
-              // Text("tes")
-            ],
-          ),
-        ),
+                    // Text("tes")
+                  ],
+                ),
+              ),
       ),
     );
   }
@@ -193,14 +194,15 @@ class _PyslipListPageState extends State<PyslipListPage> {
     );
   }
 
+
+
   Future dataPayslip() async {
     try {
       setState(() {
         _loading = false;
       });
-      print("tes");
-      http.Response response =
-          await http.get("$base_url/api/");
+
+      http.Response response = await http.get("$base_url/api/");
       _payslips = jsonDecode(response.body);
 
       setState(() {

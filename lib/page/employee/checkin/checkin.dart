@@ -261,7 +261,7 @@ class _CheckinState extends State<Checkin> {
                   'Present',
                   'Sick',
                   'Permission',
-                  'Business Trip'
+
                 ].map<DropdownMenuItem<String>>((String value) {
                   return DropdownMenuItem<String>(
                     value: value,
