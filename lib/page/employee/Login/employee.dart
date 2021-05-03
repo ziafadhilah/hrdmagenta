@@ -43,7 +43,7 @@ class _LoginEmployeeState extends State<LoginEmployee> {
             style: TextStyle(
                 color: Colors.black,
                 fontWeight: FontWeight.bold,
-                fontFamily: 'OpenSans',
+                fontFamily: 'SFReguler',
                 fontSize: 25),
           ),
           SizedBox(
@@ -55,7 +55,7 @@ class _LoginEmployeeState extends State<LoginEmployee> {
             style: TextStyle(
                 color: baseColor1,
                 fontWeight: FontWeight.bold,
-                fontFamily: 'OpenSans',
+                fontFamily: 'SFReguler',
                 fontSize: 15),
           )
         ],
@@ -69,7 +69,7 @@ class _LoginEmployeeState extends State<LoginEmployee> {
       children: <Widget>[
         Text(
           'Username',
-          style: TextStyle(color: Colors.black38,fontFamily: "SFReguler"),
+          style: TextStyle(color: Colors.black38, fontFamily: "SFReguler"),
         ),
         SizedBox(height: 10.0),
         Container(
@@ -86,11 +86,12 @@ class _LoginEmployeeState extends State<LoginEmployee> {
               )
             ],
           ),
+
           height: 60.0,
           child: TextFormField(
             controller: Cusername,
             cursorColor: Colors.black38,
-            keyboardType: TextInputType.name,
+            keyboardType: TextInputType.text,
             style: TextStyle(
               color: Colors.black,
               fontFamily: 'OpenSans',
@@ -104,6 +105,7 @@ class _LoginEmployeeState extends State<LoginEmployee> {
               ),
             ),
           ),
+
         ),
       ],
     );
@@ -115,7 +117,7 @@ class _LoginEmployeeState extends State<LoginEmployee> {
       children: <Widget>[
         Text(
           'Password',
-          style: TextStyle(color: Colors.black38,fontFamily: "SFReguler"),
+          style: TextStyle(color: Colors.black38, fontFamily: "SFReguler"),
         ),
         SizedBox(height: 10.0),
         Container(
@@ -146,8 +148,6 @@ class _LoginEmployeeState extends State<LoginEmployee> {
               suffixIcon: IconButton(
                 color: Colors.black38,
                 icon: Icon(
-
-
                   // Based on passwordVisible state choose the icon
                   _obscureText ? Icons.visibility : Icons.visibility_off,
                   color: Colors.black38,
@@ -178,9 +178,9 @@ class _LoginEmployeeState extends State<LoginEmployee> {
       width: double.infinity,
       child: RaisedButton(
         onPressed: () {
-          validator.validation_login(context, Cusername.text, Cpassword.text);
-          //
-          //  Navigator.pop(context);
+              validator.validation_login(context, Cusername.text, Cpassword.text);
+
+          // Navigator.pop(context);
           //  Navigator.of(context).pushReplacement(new MaterialPageRoute(
           //      builder: (BuildContext context) => new NavBarEmployee()));
         },
@@ -196,7 +196,7 @@ class _LoginEmployeeState extends State<LoginEmployee> {
             color: Colors.white,
             fontSize: 14.0,
             fontWeight: FontWeight.bold,
-            fontFamily: 'OpenSans',
+            fontFamily: 'SFReguler',
           ),
         ),
       ),
@@ -211,8 +211,8 @@ class _LoginEmployeeState extends State<LoginEmployee> {
         children: [
           Container(
             child: Text(
-              "Forget Password?",
-              style: TextStyle(color: Colors.blue),
+              "Lupa Password?",
+              style: TextStyle(color: Colors.blue,      fontFamily: 'SFReguler',),
             ),
           ),
         ],

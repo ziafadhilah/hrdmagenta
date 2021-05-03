@@ -10,10 +10,8 @@ import 'package:hrdmagenta/page/employee/absence/absence.dart';
 class TabsAbsenceAdmin extends StatelessWidget {
 
   List<Widget> containers = [
-
    absence_status_admin(
      type: "pending",
-
    ),
     absence_status_admin(
       type: "rejected",
@@ -21,8 +19,8 @@ class TabsAbsenceAdmin extends StatelessWidget {
     absence_status_admin(
       type: "approved",
     ),
-
   ];
+
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +33,7 @@ class TabsAbsenceAdmin extends StatelessWidget {
           ),
 
           backgroundColor: Colors.white,
-          title: Text('Attendance',
+          title: Text('Kehadiran',
             style: TextStyle(color: Colors.black87),
 
           ),

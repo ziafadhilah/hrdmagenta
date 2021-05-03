@@ -40,7 +40,7 @@ class _LeaveListEmployeeState extends State<LeaveListEmployee> {
             ),
             Container(
                 child: Text(
-              "No leave yet",
+              "Belum ada cuti",
               style: TextStyle(color: Colors.black38, fontSize: 18),
             )),
           ],
@@ -72,7 +72,7 @@ class _LeaveListEmployeeState extends State<LeaveListEmployee> {
         ),
         backgroundColor: Colors.white,
         title: new Text(
-          "Leave",
+          "Cuti",
           style: TextStyle(color: Colors.black87),
         ),
       ),

@@ -3,6 +3,7 @@ import 'dart:collection';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hrdmagenta/model/map.dart';
 import 'package:hrdmagenta/utalities/color.dart';
@@ -147,6 +148,7 @@ class _MapsDetailState extends State<MapsDetail> {
         ImageConfiguration(devicePixelRatio: 2.5), 'assets/home.png');
   }
 
+
   ///style map json
   void _setStyle(GoogleMapController controller) async {
     String value = await DefaultAssetBundle.of(context)
@@ -217,8 +219,8 @@ class _MapsDetailState extends State<MapsDetail> {
                 decoration: new BoxDecoration(
                     color: Colors.white,
                     borderRadius: new BorderRadius.only(
-                      topLeft: const Radius.circular(380.0),
-                      topRight: const Radius.circular(180.0),
+                      topLeft: const Radius.circular(40.0),
+                      topRight: const Radius.circular(40.0),
                     )),
                 child: _info()))
       ],
@@ -227,113 +229,112 @@ class _MapsDetailState extends State<MapsDetail> {
 
   Widget _info() {
     return Container(
-      child: Card(
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.vertical(top: Radius.circular(50))),
-        child: Container(
-          child: Column(
-            children: <Widget>[
-              ///widget profile
-              Container(
-                child: Row(
-                  children: <Widget>[
-                    Container(
-                      margin: EdgeInsets.only(top: 20, left: 20, right: 20),
-                      child: widget.profile_background == ""
-                          ? CircleAvatar(
-                              backgroundColor: Colors.transparent,
-                              radius: 40,
-                              child: widget.gender == "male"
-                                  ? employee_profile
-                                  : employee_profile)
-                          : CircleAvatar(
-                              radius: 40,
-                              child: Icon(
-                                Icons.person_pin,
-                              ),
-                            ),
-                    ),
-                    Container(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Container(
-                            child: Text(
-                              "${widget.firts_name} ${widget.last_name}",
-                              style: TextStyle(
-                                  fontSize: 18,
-                                  color: Colors.black87,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Container(
-                            child: Text(
-                              "${widget.departement_name}",
-                              style: TextStyle(
-                                fontSize: 15,
-                                color: Colors.black38,
-                              ),
-                            ),
-                          ),
-
-                          //detail acount
-                        ],
-                      ),
-                    ) //Container
-                  ],
-                ),
-              ),
-              Container(
-                margin: EdgeInsets.only(left: 25, top: 20),
-                //Row for time n location
-                child: Row(
-                  children: <Widget>[
-                    //container  icon location
-                    Container(
-                      child: Row(
-                        children: <Widget>[
-                          Container(
+      child: Container(
+        child: Column(
+          children: <Widget>[
+            ///widget profile
+            Container(
+              child: Row(
+                children: <Widget>[
+                  Container(
+                    margin: EdgeInsets.only(top: 20, left: 20, right: 20),
+                    child: widget.profile_background == ""
+                        ? CircleAvatar(
+                            backgroundColor: Colors.transparent,
+                            radius: 40,
+                            child: widget.gender == "male"
+                                ? employee_profile
+                                : employee_profile)
+                        : CircleAvatar(
+                            radius: 40,
                             child: Icon(
-                              Icons.location_on,
-                              color: Colors.black12,
-                              size: 30,
+                              Icons.person_pin,
                             ),
                           ),
-                          //container for name location
-                          InkWell(
-                            child: Container(
-                              margin: EdgeInsets.only(left: 20),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Text("Location", style: subtitleMainMenu),
-                                  SizedBox(
-                                    height: 10,
-                                  ),
-                                  if (widget.address != null &&
-                                      widget.address != null)
-                                    Text(
+                  ),
+                  Container(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Container(
+                          child: Text(
+                            "${widget.firts_name} ${widget.last_name}",
+                            style: TextStyle(
+                                fontSize: 18,
+                                color: Colors.black87,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Container(
+                          child: Text(
+                            "${widget.departement_name}",
+                            style: TextStyle(
+                              fontSize: 15,
+                              color: Colors.black38,
+                            ),
+                          ),
+                        ),
+
+                        //detail acount
+                      ],
+                    ),
+                  ) //Container
+                ],
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.only(left: 25, top: 20),
+              //Row for time n location
+              child: Row(
+                children: <Widget>[
+                  //container  icon location
+                  Container(
+                    child: Row(
+                      children: <Widget>[
+                        Container(
+                          child: Icon(
+                            Icons.location_on,
+                            color: Colors.black12,
+                            size: 30,
+                          ),
+                        ),
+                        //container for name location
+                        InkWell(
+                          child: Container(
+                            margin: EdgeInsets.only(left: 20),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text("Alamat", style: subtitleMainMenu),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                if (widget.address != null &&
+                                    widget.address != null)
+                                  Container(
+                                    width: Get.mediaQuery.size.width/2 +40,
+                                    child: Text(
                                       widget.address,
                                       style: TextStyle(color: Colors.black38),
                                     ),
-                                ],
-                              ),
+                                  ),
+                              ],
                             ),
-                          )
-                        ],
-                      ),
-                    )
-                  ],
-                ),
+                          ),
+                        )
+                      ],
+                    ),
+                  )
+                ],
               ),
+            ),
 
-              ///widget location
-            ],
-          ),
+            ///widget location
+          ],
         ),
       ),
     );

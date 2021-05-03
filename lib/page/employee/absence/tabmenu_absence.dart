@@ -47,7 +47,7 @@ final navigatorKey = GlobalKey<NavigatorState>();
             ],
 
             backgroundColor: Colors.white,
-            title: Text('Attendance',
+            title: Text('Kehadiran',
               style: TextStyle(color: Colors.black87),
             ),
             bottom: TabBar(

@@ -1,7 +1,11 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:hrdmagenta/model/coin.dart';
 import 'package:hrdmagenta/page/employee/absence/detail.dart';
 import 'package:hrdmagenta/page/employee/absence/shimmer_effect.dart';
+import 'package:hrdmagenta/page/employee/helper/api_helper.dart';
+
+
 import 'package:hrdmagenta/services/api_clien.dart';
 import 'package:hrdmagenta/utalities/color.dart';
 import 'package:hrdmagenta/utalities/constants.dart';
@@ -23,25 +27,37 @@ class _absenceState extends State<absence> {
 
   Map _absence;
   bool _loading = true;
+  Coin coin;
+  var scrollController = ScrollController();
+  bool updating = false;
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
-      body: Container(
-        child: _loading
-            ? Center(
-                child: ShimmerAbsence(),
-              )
-            : ListView.builder(
-                // itemCount: _budgeting['data']['cash_flow'].length,
-                itemCount:
-                    _absence['data'].length == 0 ? 1 : _absence['data'].length,
-                itemBuilder: (context, index) {
-                  return _absence['data'].length == 0
-                      ? _buildnodata()
-                      : _buildlistabsence(index);
-                }),
-      ),
+
+    body: Column(
+
+      children: [
+        Expanded(
+          child: _loading
+              ? Center(
+                  child: ShimmerAbsence(),
+                )
+              : ListView.builder(
+                  controller: scrollController,
+                  physics: BouncingScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    return _absence['data'].length == 0
+                        ? _buildnodata()
+                        : _buildlistabsence(index);
+                  },
+                  itemCount: _absence['data'].length == 0 ? 1 : _absence['data'].length,
+                ),
+        ),
+        if (updating) CircularProgressIndicator()
+      ],
+    ),
     );
   }
 
@@ -99,11 +115,11 @@ class _absenceState extends State<absence> {
                                                               ['approved_at'] ==
                                                           null
                                                       ? Text(
-                                                          "You has been ${_absence['data'][index]['type']} ",
+                                                          "Kamu telah melakukan  ${_absence['data'][index]['type']} ",
                                                           style:
                                                               subtitleMainMenu)
                                                       : Text(
-                                                          "Your ${_absence['data'][index]['type']} has been approved")),
+                                                          "kehadiran kamu telah disetujui")),
                                             ],
                                           ),
                                           Container(
@@ -436,7 +452,7 @@ class _absenceState extends State<absence> {
             ),
             Container(
                 child: Text(
-              "No Attendance yet",
+              "Belum ada kehadiran",
               style: subtitleMainMenu,
             )),
           ],
@@ -468,10 +484,18 @@ class _absenceState extends State<absence> {
     });
   }
 
+  getCoin() async {
+    coin = await apiHelper.getCoins();
+    setState(() {});
+  }
+
+
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    getCoin();
     getDatapref();
   }
 }

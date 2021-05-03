@@ -129,7 +129,7 @@ class _leave_statusState extends State<leave_status> {
             ),
             Container(
                 child: Text(
-              "No leave yet",
+              "Belum ada cuti dengan status ${widget.type}",
               style: subtitleMainMenu,
             )),
           ],

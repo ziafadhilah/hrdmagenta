@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:hrdmagenta/page/admin/l/absence/detail.dart';
 import 'package:hrdmagenta/page/admin/l/home/navbar.dart';
 import 'package:hrdmagenta/page/employee/absence/detail.dart';
@@ -113,7 +114,7 @@ class _absence_status_adminState extends State<absence_status_admin> {
                                                               ['status'] ==
                                                           "pending"
                                                       ? Text(
-                                                          "${_absence['data'][index]['employee']['first_name']}'s ${_absence['data'][index]['type']} is  needed approval",
+                                                          "${_absence['data'][index]['employee']['first_name']}'s ${_absence['data'][index]['type']} butuh persetujuan",
                                                           style: TextStyle(
                                                               fontSize: 15,
                                                               color: Colors
@@ -122,7 +123,7 @@ class _absence_status_adminState extends State<absence_status_admin> {
                                                                   ['status'] ==
                                                               "rejected"
                                                           ? Text(
-                                                              "${_absence['data'][index]['employee']['first_name']}'s  ${_absence['data'][index]['type']} has been rejected",
+                                                              " ${_absence['data'][index]['type']} ${_absence['data'][index]['employee']['first_name']}  telah ditolak",
                                                               style: TextStyle(
                                                                   fontSize: 15,
                                                                   color: Colors
@@ -131,7 +132,7 @@ class _absence_status_adminState extends State<absence_status_admin> {
                                                                           [index]
                                                                       ['status'] ==
                                                                   "approved"
-                                                              ? Container(child: _absence['data'][index]['approved_at'] != null ? Text("${_absence['data'][index]['employee']['first_name']}'s ${_absence['data'][index]['type']} has been approved", style: TextStyle(fontSize: 15, color: Colors.black87)) : Text("${_absence['data'][index]['employee']['first_name']} has been ${_absence['data'][index]['type']}", style: TextStyle(fontSize: 15, color: Colors.black87)))
+                                                              ? Container(child: _absence['data'][index]['approved_at'] != null ? Text("${_absence['data'][index]['type']}  ${_absence['data'][index]['employee']['first_name']}  telah di approved", style: TextStyle(fontSize: 15, color: Colors.black87)) : Text("${_absence['data'][index]['employee']['first_name']} telah melakukan  ${_absence['data'][index]['type']}", style: TextStyle(fontSize: 15, color: Colors.black87)))
                                                               : Text(""))
                                             ],
                                           ),
@@ -446,11 +447,15 @@ class _absence_status_adminState extends State<absence_status_admin> {
             SizedBox(
               height: 20,
             ),
-            Container(
-                child: Text(
-              "No absence yet",
-              style: TextStyle(color: Colors.black38, fontSize: 18),
-            )),
+            Center(
+              child: Container(
+                alignment: Alignment.center,
+                 margin: EdgeInsets.only(left: 20,right: 20),
+                  child: Text(
+                "Belum ada absen dengan status ${widget.type}",
+                style: TextStyle(color: Colors.black38, fontSize: 18,fontFamily: "SFReguler"),
+              )),
+            ),
           ],
         ),
       ),

@@ -68,9 +68,10 @@ class _change_passwordState extends State<change_password> {
         Container(
 
           child: Text(
-            'Confirm Password',
+            'Konfirmasi Password',
             style: TextStyle(
-                color: Colors.black87
+                color: Colors.black87,
+              fontFamily: "SFReguler",
             ),
           ),
         ),
@@ -89,7 +90,8 @@ class _change_passwordState extends State<change_password> {
             keyboardType: TextInputType.text,
             style: TextStyle(
               color: Colors.black,
-              fontFamily: 'OpenSans',
+
+              fontFamily: "SFReguler",
             ),
             decoration: InputDecoration(
 
@@ -119,8 +121,8 @@ class _change_passwordState extends State<change_password> {
           validasi.validation_change_password(context, Cpassword.text, widget.username, widget.email, widget.id, Cconfirm_password.text);
 
         },
-        child: Text('Save Changes',
-          style: TextStyle(color: Colors.black87),
+        child: Text('Simpan Perubahan',
+          style: TextStyle(color: Colors.black87, fontFamily: "SFReguler",),
         ),
       ),
     );
@@ -135,7 +137,7 @@ class _change_passwordState extends State<change_password> {
           color: Colors.black87, //modify arrow color from here..
         ),
         backgroundColor: Colors.white,
-        title: Text("Change password",
+        title: Text("Ganti Password",
           style: TextStyle(color: Colors.black87),
 
         ),

@@ -9,7 +9,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toast/toast.dart';
 
-String base_url = "http://arenzha.my.id";
+String base_url = "http://127.0.0.1:8000";
 
 class Services {
   SharedPreference sharedPreference = new SharedPreference();
@@ -20,38 +20,43 @@ class Services {
   Future<void> loginEmployee(
       BuildContext context, var username, var password) async {
     loading(context);
-    String fcm_registration_token = await FirebaseMessaging().getToken();
-    final response =
-        await http.post("$base_url/api/login/mobile/employee", body: {
-      "username": username.toString().trim(),
-      "password": password,
-      "fcm_registration_token": fcm_registration_token
-    });
+    try {
+     // String fcm_registration_token = await FirebaseMessaging().getToken();
+      final response =
+          await http.post("$base_url/api/login/mobile/employee", body: {
+        "username": username.toString().trim(),
+        "password": password,
+        //"fcm_registration_token": fcm_registration_token
+      });
 
-    //
-    final data = jsonDecode(response.body);
-    if (data['code'] == 200) {
-      sharedPreference.saveDataEmployee(
-          1,
-          data['data']['id'].toString(),
-          data['data']['employee_id'],
-          data['data']['username'],
-          data['data']['first_name'],
-          data['data']['last_name'],
-          data['data']['email'],
-          "",
-          data['data']['contact_number'],
-          data['data']['work_placement'],
-          data['data']['work_placement'],
-          "",
-          "",
-          data['data']['gender']);
-      Navigator.pop(context);
-      Navigator.pushNamedAndRemoveUntil(
-          context, "navbar_employee-page", (route) => false);
-    } else {
-      Navigator.pop(context);
-      alert_error(context, "${data['message']}", "Close");
+      //
+      final data = jsonDecode(response.body);
+      if (data['code'] == 200) {
+        sharedPreference.saveDataEmployee(
+            1,
+            data['data']['id'].toString(),
+            data['data']['employee_id'],
+            data['data']['username'],
+            data['data']['first_name'],
+            data['data']['last_name'],
+            data['data']['email'],
+            "",
+            data['data']['contact_number'],
+            data['data']['work_placement'],
+            data['data']['work_placement'],
+            "",
+            "",
+            data['data']['gender']);
+        Navigator.pop(context);
+        Navigator.pushNamedAndRemoveUntil(
+            context, "navbar_employee-page", (route) => false);
+      } else {
+        Navigator.pop(context);
+
+        alert_error(context, "${data['message']}", "Close");
+      }
+    } on Exception catch (_) {
+      alert_error(context, "Terjadi kesalahan", "Close");
     }
   }
 
@@ -249,14 +254,14 @@ class Services {
 
   Future<void> loginAdmin(
       BuildContext context, var username, var password) async {
-    String fcm_registration_token = await FirebaseMessaging().getToken();
+  //  String fcm_registration_token = await FirebaseMessaging().getToken();
 
     loading(context);
 
     final response = await http.post("$base_url/api/login/mobile/admin", body: {
       "username": username.toString().trim(),
       "password": password,
-      "fcm_registration_token": fcm_registration_token
+     // "fcm_registration_token": fcm_registration_token
     });
     //
     final data = jsonDecode(response.body);

@@ -100,7 +100,7 @@ class _absence_statusState extends State<absence_status> {
                                                       "pending"
                                                   ? Container(
                                                       child: Text(
-                                                          "Waiting for approval",
+                                                          "kehadiran ini butuh persetujuan",
                                                           style:
                                                               subtitleMainMenu),
                                                     )
@@ -111,11 +111,11 @@ class _absence_statusState extends State<absence_status> {
                                                           child: _absence['data'][index]['rejected_at'] !=
                                                                   null
                                                               ? Text(
-                                                                  "Your ${_absence['data'][index]['type']} has been rejected",
+                                                                  "Kehadiran kamu ditolak",
                                                                   style:
                                                                       subtitleMainMenu)
                                                               : Text(
-                                                                  "You has been ${_absence['data'][index]['type']}"))
+                                                                  "kamu telah ${_absence['data'][index]['type']}"))
                                                       : _absence['data'][index]
                                                                   ['status'] ==
                                                               "approved"
@@ -127,12 +127,12 @@ class _absence_statusState extends State<absence_status> {
                                                                           'approved_at'] !=
                                                                       null
                                                                   ? Text(
-                                                                      "Your ${_absence['data'][index]['type']} has been approved",
+                                                                      "Kehadiran kamu disetujui",
                                                                       style:
                                                                           subtitleMainMenu)
                                                                   : Container(
                                                                       child: Text(
-                                                                          "You has been ${_absence['data'][index]['type']}"),
+                                                                          "kamu telah ${_absence['data'][index]['type']}"),
                                                                     ),
                                                             )
                                                           : Text("")),
@@ -439,7 +439,7 @@ class _absence_statusState extends State<absence_status> {
             ),
             Container(
                 child: Text(
-              "No Attendance yet",
+              "Belum ada kehaadiran yang berstatus ${widget.type}",
               style: subtitleMainMenu,
             )),
           ],

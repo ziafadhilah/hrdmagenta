@@ -130,7 +130,7 @@ class _ListEmployeeState extends State<ListEmployee> {
         ),
         backgroundColor: Colors.white,
         title: Text(
-          "Employess",
+          "Semua Karyawan",
           style: TextStyle(color: Colors.black87),
         ),
       ),

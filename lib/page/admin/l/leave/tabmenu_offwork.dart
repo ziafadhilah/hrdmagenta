@@ -30,7 +30,7 @@ class TabsMenuOffworkAdmin extends StatelessWidget {
           ),
 
           backgroundColor: Colors.white,
-          title: Text('Leave',
+          title: Text('Cuti',
             style: TextStyle(color: Colors.black87),
 
           ),

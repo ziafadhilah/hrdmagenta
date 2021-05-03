@@ -171,7 +171,7 @@ class _CheckoutState extends State<Checkout> {
             Icons.lock,
             color: Colors.black12,
           ),
-          labelText: 'Remarks(Optional)',
+          labelText: 'Catatan',
           labelStyle: TextStyle(
             color: Colors.black38,
           ),
@@ -260,7 +260,6 @@ class _CheckoutState extends State<Checkout> {
                   'Present',
                   'Sick',
                   'Permission',
-
                 ].map<DropdownMenuItem<String>>((String value) {
                   return DropdownMenuItem<String>(
                     value: value,
@@ -330,7 +329,7 @@ class _CheckoutState extends State<Checkout> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Text("Location", style: subtitleMainMenu),
+                        Text("Lokasi", style: subtitleMainMenu),
                         SizedBox(
                           height: 10,
                         ),

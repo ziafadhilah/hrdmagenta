@@ -90,7 +90,7 @@ class _DetailPyslipState extends State<DetailPyslip> {
         ),
         backgroundColor: Colors.white,
         title: Text(
-          "Payslip Detail",
+          "Detail Payslip",
           style: TextStyle(color: Colors.black87),
         ),
       ),
@@ -298,7 +298,7 @@ class _DetailPyslipState extends State<DetailPyslip> {
                 );
               },
               tableCellBuilder: (value) {
-                print(value);
+
                 return Container(
                   width: Get.mediaQuery.size.width / 2 - 20,
                   alignment: value is int
@@ -327,8 +327,7 @@ class _DetailPyslipState extends State<DetailPyslip> {
                     label: "Amount", valueBuilder: numberCurrency),
               ],
               onRowSelect: (index, map) {
-                print(index);
-                print(map);
+
               },
             ),
             Container(
@@ -425,8 +424,7 @@ class _DetailPyslipState extends State<DetailPyslip> {
                     label: "Amount", valueBuilder: numberCurrency),
               ],
               onRowSelect: (index, map) {
-                print(index);
-                print(map);
+
               },
             ),
             Container(
@@ -601,7 +599,7 @@ class _DetailPyslipState extends State<DetailPyslip> {
 
     final pdfFile = await PdfPyslipApi.generate(income, deduction, "0",
         '0', '0', '22 november 2020', invoice);
-    //print(income);
+
 
     PdfApi.openFile(pdfFile);
   }

@@ -30,7 +30,7 @@ class _company_pfrofileState extends State<company_pfrofile> {
         ),
         backgroundColor: Colors.white,
         title: Text(
-          "Company Profile",
+          "Profile Perusahaan",
           style: TextStyle(color: Colors.black87),
         ),
       ),
@@ -83,8 +83,9 @@ class _company_pfrofileState extends State<company_pfrofile> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Text(
-                          "Company",
+                          "Perusahaan",
                           style: TextStyle(
+                              fontFamily: "SFReguler",
                               fontSize: 14,
                               color: Colors.black87,
                               fontWeight: FontWeight.bold),
@@ -101,6 +102,7 @@ class _company_pfrofileState extends State<company_pfrofile> {
                               : Text(
                                   company_name,
                                   style: TextStyle(
+                                    fontFamily: "SFReguler",
                                     fontSize: 14,
                                     color: Colors.black38,
                                   ),
@@ -150,9 +152,10 @@ class _company_pfrofileState extends State<company_pfrofile> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Text(
-                          "Telephon Number",
+                          "Nomor telfon",
                           style: TextStyle(
                               fontSize: 14,
+                              fontFamily: "SFReguler",
                               color: Colors.black87,
                               fontWeight: FontWeight.bold),
                         ),
@@ -169,6 +172,7 @@ class _company_pfrofileState extends State<company_pfrofile> {
                                   company_phonenumber,
                                   style: TextStyle(
                                     fontSize: 14,
+                                    fontFamily: "SFReguler",
                                     color: Colors.black38,
                                   ),
                                 ),
@@ -220,6 +224,8 @@ class _company_pfrofileState extends State<company_pfrofile> {
                           style: TextStyle(
                               fontSize: 14,
                               color: Colors.black87,
+
+                              fontFamily: "SFReguler",
                               fontWeight: FontWeight.bold),
                         ),
                         SizedBox(
@@ -235,6 +241,7 @@ class _company_pfrofileState extends State<company_pfrofile> {
                                   company_email,
                                   style: TextStyle(
                                     fontSize: 14,
+                                    fontFamily: "SFReguler",
                                     color: Colors.black38,
                                   ),
                                 ),
@@ -283,7 +290,7 @@ class _company_pfrofileState extends State<company_pfrofile> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Text(
-                          "Adress",
+                          "Alamat",
                           style: TextStyle(
                               fontSize: 14,
                               color: Colors.black87,
@@ -301,6 +308,7 @@ class _company_pfrofileState extends State<company_pfrofile> {
                               : Text(
                                   company_adress,
                                   style: TextStyle(
+                                    fontFamily: "SFReguler",
                                     fontSize: 14,
                                     color: Colors.black38,
                                   ),

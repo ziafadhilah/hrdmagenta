@@ -174,7 +174,7 @@ class _offwork_status_adminState extends State<offwork_status_admin> {
             ),
             Container(
                 child: Text(
-              "No Leave yet",
+              "Tidak tersedia cuti dengan status ${widget.type}",
               style: TextStyle(color: Colors.black38, fontSize: 18),
             )),
           ],

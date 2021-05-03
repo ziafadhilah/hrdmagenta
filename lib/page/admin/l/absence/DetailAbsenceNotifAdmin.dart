@@ -51,7 +51,7 @@ class _detail_absence_admin_notifState
         ),
         backgroundColor: Colors.white,
         title: new Text(
-          "Attendance Detail",
+          "Detail Kehadiran",
           style: TextStyle(color: Colors.black87),
         ),
       ),
@@ -72,11 +72,17 @@ class _detail_absence_admin_notifState
                       children: <Widget>[
                         _buildProfile(),
                         _buildAbsenceType(),
+                        Divider(color: Colors.black12,),
                         _buildAbsencecategory(),
+                        Divider(color: Colors.black12,),
                         _buildDate(),
+                        Divider(color: Colors.black12,),
                         _buildTime(),
+                        Divider(color: Colors.black12,),
                         _buildRemark(),
+                        Divider(color: Colors.black12,),
                         _buildAdress(),
+                        Divider(color: Colors.black12,),
                         _buildgridtext(),
                         SizedBox(
                           height: 10,
@@ -170,47 +176,45 @@ class _detail_absence_admin_notifState
       margin: EdgeInsets.only(left: 5),
       width: double.infinity,
       height: 80,
-      child: Card(
-        child: Row(
-          children: <Widget>[
-            Container(
-                child: _absence['data']['type'] == "check in"
-                    ? Icon(
-                        Icons.login,
-                        color: Colors.black38,
-                        size: 40,
-                      )
-                    : Icon(
-                        Icons.logout,
-                        color: Colors.black38,
-                        size: 40,
-                      )),
-            Container(
-              margin: EdgeInsets.only(left: 10),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Container(
-                    child: Text(
-                      "Type",
-                      style: titleAbsence,
-                    ),
+      child: Row(
+        children: <Widget>[
+          Container(
+              child: _absence['data']['type'] == "check in"
+                  ? Icon(
+                      Icons.login,
+                      color: Colors.black38,
+                      size: 40,
+                    )
+                  : Icon(
+                      Icons.logout,
+                      color: Colors.black38,
+                      size: 40,
+                    )),
+          Container(
+            margin: EdgeInsets.only(left: 10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Container(
+                  child: Text(
+                    "Type",
+                    style: titleAbsence,
                   ),
-                  SizedBox(
-                    height: 10,
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Container(
+                  child: Text(
+                    "${_absence['data']['type']}",
+                    style: subtitleAbsence,
                   ),
-                  Container(
-                    child: Text(
-                      "${_absence['data']['type']}",
-                      style: subtitleAbsence,
-                    ),
-                  )
-                ],
-              ),
-            )
-          ],
-        ),
+                )
+              ],
+            ),
+          )
+        ],
       ),
     );
   }
@@ -220,46 +224,44 @@ class _detail_absence_admin_notifState
       margin: EdgeInsets.only(left: 5),
       width: double.infinity,
       height: 80,
-      child: Card(
-        child: Row(
-          children: <Widget>[
-            Container(
-                child: Icon(
-              Icons.description,
-              color: Colors.black38,
-              size: 40,
-            )),
-            Container(
-              margin: EdgeInsets.only(left: 10),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Container(
-                    child: Text(
-                      "Remarks",
-                      style: titleAbsence,
-                    ),
+      child: Row(
+        children: <Widget>[
+          Container(
+              child: Icon(
+            Icons.description,
+            color: Colors.black38,
+            size: 40,
+          )),
+          Container(
+            margin: EdgeInsets.only(left: 10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Container(
+                  child: Text(
+                    "Catatan",
+                    style: titleAbsence,
                   ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Container(
-                    child: (_absence['data']['note'] == null)
-                        ? Text(
-                            "-",
-                            style: titleAbsence,
-                          )
-                        : Text(
-                            "${_absence['data']['note']}",
-                            style: subtitleAbsence,
-                          ),
-                  )
-                ],
-              ),
-            )
-          ],
-        ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Container(
+                  child: (_absence['data']['note'] == null)
+                      ? Text(
+                          "-",
+                          style: titleAbsence,
+                        )
+                      : Text(
+                          "${_absence['data']['note']}",
+                          style: subtitleAbsence,
+                        ),
+                )
+              ],
+            ),
+          )
+        ],
       ),
     );
   }
@@ -269,42 +271,40 @@ class _detail_absence_admin_notifState
       margin: EdgeInsets.only(left: 5),
       width: double.infinity,
       height: 80,
-      child: Card(
-        child: Row(
-          children: <Widget>[
-            Container(
-              child: Icon(
-                Icons.category,
-                color: Colors.black38,
-                size: 40,
-              ),
+      child: Row(
+        children: <Widget>[
+          Container(
+            child: Icon(
+              Icons.category,
+              color: Colors.black38,
+              size: 40,
             ),
-            Container(
-              margin: EdgeInsets.only(left: 10),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Container(
-                    child: Text(
-                      "Category",
-                      style: titleAbsence,
-                    ),
+          ),
+          Container(
+            margin: EdgeInsets.only(left: 10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Container(
+                  child: Text(
+                    "Kategori",
+                    style: titleAbsence,
                   ),
-                  SizedBox(
-                    height: 10,
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Container(
+                  child: Text(
+                    "${_absence['data']['category']}",
+                    style: subtitleAbsence,
                   ),
-                  Container(
-                    child: Text(
-                      "${_absence['data']['category']}",
-                      style: subtitleAbsence,
-                    ),
-                  )
-                ],
-              ),
-            )
-          ],
-        ),
+                )
+              ],
+            ),
+          )
+        ],
       ),
     );
   }
@@ -315,42 +315,40 @@ class _detail_absence_admin_notifState
       margin: EdgeInsets.only(left: 5),
       width: double.infinity,
       height: 80,
-      child: Card(
-        child: Row(
-          children: <Widget>[
-            Container(
-              child: Icon(
-                Icons.date_range,
-                color: Colors.black38,
-                size: 40,
-              ),
+      child: Row(
+        children: <Widget>[
+          Container(
+            child: Icon(
+              Icons.date_range,
+              color: Colors.black38,
+              size: 40,
             ),
-            Container(
-              margin: EdgeInsets.only(left: 10),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Container(
-                    child: Text(
-                      "Date ",
-                      style: titleAbsence,
-                    ),
+          ),
+          Container(
+            margin: EdgeInsets.only(left: 10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Container(
+                  child: Text(
+                    "Tanggal ",
+                    style: titleAbsence,
                   ),
-                  SizedBox(
-                    height: 10,
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Container(
+                  child: Text(
+                    "${_date}",
+                    style: subtitleAbsence,
                   ),
-                  Container(
-                    child: Text(
-                      "${_date}",
-                      style: subtitleAbsence,
-                    ),
-                  )
-                ],
-              ),
-            )
-          ],
-        ),
+                )
+              ],
+            ),
+          )
+        ],
       ),
     );
   }
@@ -360,49 +358,47 @@ class _detail_absence_admin_notifState
     return Container(
       margin: EdgeInsets.only(left: 5),
       width: double.infinity,
-      child: Card(
-        child: Row(
-          children: <Widget>[
-            Container(
-              child: Icon(
-                Icons.location_on,
-                color: Colors.black38,
-                size: 40,
-              ),
+      child: Row(
+        children: <Widget>[
+          Container(
+            child: Icon(
+              Icons.location_on,
+              color: Colors.black38,
+              size: 40,
             ),
-            Container(
-              margin: EdgeInsets.only(left: 10, bottom: 10),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Container(
-                    child: Text(
-                      "Address",
-                      style: titleAbsence,
+          ),
+          Container(
+            margin: EdgeInsets.only(left: 10, bottom: 10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Container(
+                  child: Text(
+                    "Alamat",
+                    style: titleAbsence,
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Column(
+                  children: [
+                    Container(
+                      width: MediaQuery.of(context).size.width - 100,
+                      child: _currentAddress == null
+                          ? Text("")
+                          : Text(
+                              "$_currentAddress ",
+                              style: subtitleAbsence,
+                            ),
                     ),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Column(
-                    children: [
-                      Container(
-                        width: MediaQuery.of(context).size.width - 100,
-                        child: _currentAddress == null
-                            ? Text("")
-                            : Text(
-                                "$_currentAddress ",
-                                style: subtitleAbsence,
-                              ),
-                      ),
-                    ],
-                  )
-                ],
-              ),
-            )
-          ],
-        ),
+                  ],
+                )
+              ],
+            ),
+          )
+        ],
       ),
     );
   }
@@ -412,42 +408,40 @@ class _detail_absence_admin_notifState
       margin: EdgeInsets.only(left: 5),
       width: double.infinity,
       height: 80,
-      child: Card(
-        child: Row(
-          children: <Widget>[
-            Container(
-              child: Icon(
-                Icons.access_time_rounded,
-                color: Colors.black38,
-                size: 40,
-              ),
+      child: Row(
+        children: <Widget>[
+          Container(
+            child: Icon(
+              Icons.access_time_rounded,
+              color: Colors.black38,
+              size: 40,
             ),
-            Container(
-              margin: EdgeInsets.only(left: 10),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Container(
-                    child: Text(
-                      "Time",
-                      style: titleAbsence,
-                    ),
+          ),
+          Container(
+            margin: EdgeInsets.only(left: 10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Container(
+                  child: Text(
+                    "Waktu",
+                    style: titleAbsence,
                   ),
-                  SizedBox(
-                    height: 10,
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Container(
+                  child: Text(
+                    _time.toString(),
+                    style: subtitleAbsence,
                   ),
-                  Container(
-                    child: Text(
-                      _time.toString(),
-                      style: subtitleAbsence,
-                    ),
-                  )
-                ],
-              ),
-            )
-          ],
-        ),
+                )
+              ],
+            ),
+          )
+        ],
       ),
     );
   }
@@ -465,7 +459,7 @@ class _detail_absence_admin_notifState
           Container(
               margin: EdgeInsets.only(left: 10),
               child: Text(
-                "Photo",
+                "Foto",
                 style: titleAbsence,
               )),
           //map
@@ -501,7 +495,7 @@ class _detail_absence_admin_notifState
             child: Container(
               margin: EdgeInsets.only(right: 10, left: 10),
               child: Text(
-                "Location",
+                "Lokasi",
                 style: titleAbsence,
               ),
             ),
@@ -717,42 +711,40 @@ class _detail_absence_admin_notifState
       margin: EdgeInsets.only(left: 5),
       width: double.infinity,
       height: 80,
-      child: Card(
-        child: Row(
-          children: <Widget>[
-            Container(
-              child: Icon(
-                Icons.person,
-                color: Colors.black38,
-                size: 40,
-              ),
+      child: Row(
+        children: <Widget>[
+          Container(
+            child: Icon(
+              Icons.person,
+              color: Colors.black38,
+              size: 40,
             ),
-            Container(
-              margin: EdgeInsets.only(left: 10),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Container(
-                    child: Text(
-                      "Rejected By",
-                      style: titleAbsence,
-                    ),
+          ),
+          Container(
+            margin: EdgeInsets.only(left: 10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Container(
+                  child: Text(
+                    "Ditolak oleh ",
+                    style: titleAbsence,
                   ),
-                  SizedBox(
-                    height: 10,
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Container(
+                  child: Text(
+                    "${_absence['data']['rejected_by']['first_name']} ${_absence['data']['rejected_by']['last_name']}",
+                    style: subtitleAbsence,
                   ),
-                  Container(
-                    child: Text(
-                      "${_absence['data']['rejected_by']['first_name']} ${_absence['data']['rejected_by']['last_name']}",
-                      style: subtitleAbsence,
-                    ),
-                  )
-                ],
-              ),
-            )
-          ],
-        ),
+                )
+              ],
+            ),
+          )
+        ],
       ),
     );
   }
@@ -780,7 +772,7 @@ class _detail_absence_admin_notifState
                 children: <Widget>[
                   Container(
                     child: Text(
-                      "Rejected at",
+                      "Ditolak pada",
                       style: titleAbsence,
                     ),
                   ),
@@ -870,7 +862,7 @@ class _detail_absence_admin_notifState
                 children: <Widget>[
                   Container(
                     child: Text(
-                      "Remarks",
+                      "Catatan",
                       style: titleAbsence,
                     ),
                   ),
@@ -966,7 +958,7 @@ class _detail_absence_admin_notifState
                 children: <Widget>[
                   Container(
                     child: Text(
-                      "Approved By",
+                      "Disetujui Oleh",
                       style: titleAbsence,
                     ),
                   ),
@@ -1011,7 +1003,7 @@ class _detail_absence_admin_notifState
                 children: <Widget>[
                   Container(
                     child: Text(
-                      "Approved at",
+                      "Disetujui Pada",
                       style: titleAbsence,
                     ),
                   ),
@@ -1101,7 +1093,7 @@ class _detail_absence_admin_notifState
                 children: <Widget>[
                   Container(
                     child: Text(
-                      "Remarks",
+                      "Catatan",
                       style: titleAbsence,
                     ),
                   ),

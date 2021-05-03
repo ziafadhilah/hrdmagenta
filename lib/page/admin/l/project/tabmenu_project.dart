@@ -33,7 +33,7 @@ class TabsprojectAdmin extends StatelessWidget {
           ),
 
           backgroundColor: Colors.white,
-          title: Text('Project',
+          title: Text('Event',
             style: TextStyle(color: Colors.black87),
 
           ),

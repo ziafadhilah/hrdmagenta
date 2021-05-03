@@ -15,3 +15,7 @@ final Color iconColor=HexColor("#B6B6B6");
 
 //warna transaparant
 final hitamTransparant = HexColor('#26000000');
+final iconColors2=HexColor('##6C63FF');
+
+//color icon no data
+//#6C63FF

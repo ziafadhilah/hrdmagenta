@@ -25,7 +25,7 @@ class Tabsproject extends StatelessWidget {
           ),
           backgroundColor: Colors.white,
           title: Text(
-            'Project',
+            'Event',
             style: TextStyle(color: Colors.black87),
           ),
           bottom: TabBar(

@@ -28,7 +28,7 @@ class TabsMenuLeavestatus extends StatelessWidget {
           ),
           backgroundColor: Colors.white,
           title: Text(
-            'Leave Status',
+            'Status Cuti',
             style: TextStyle(color: Colors.black87),
           ),
           bottom: TabBar(
@@ -38,7 +38,7 @@ class TabsMenuLeavestatus extends StatelessWidget {
                 text: 'PENDING',
               ),
               Tab(
-                text: 'REJECT',
+                text: 'REJECTED',
               ),
               Tab(
                 text: 'APPROVED',

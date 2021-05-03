@@ -179,7 +179,7 @@ class _NotifPaggeState extends State<Notifpage> {
                   height: 20,
                 ),
                 Text(
-                  "No notification yet",
+                  "Belum terdapat notifikasi",
                   style: subtitleMainMenu,
                 )
               ],

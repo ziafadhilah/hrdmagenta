@@ -22,7 +22,7 @@ class _LeaveAddState extends State<LeaveAdd> {
         ),
         backgroundColor: Colors.white,
         title: new Text(
-          "Add Leave",
+          "Pengajuan Cuti",
           style: TextStyle(color: Colors.black87),
         ),
       ),
@@ -94,7 +94,7 @@ class _LeaveAddState extends State<LeaveAdd> {
           enabled: false,
           controller: Cstartdate,
           decoration: InputDecoration(
-            labelText: 'Start Date',
+            labelText: 'Tanggal mulai cuti',
             labelStyle: TextStyle(),
             helperText: 'Helper text',
             suffixIcon: Icon(
@@ -118,7 +118,7 @@ class _LeaveAddState extends State<LeaveAdd> {
           enabled: false,
           controller: Cenddate,
           decoration: InputDecoration(
-            labelText: 'End Date',
+            labelText: 'Tanggal berakhir cuti',
             labelStyle: TextStyle(),
 
             suffixIcon: Icon(
@@ -144,6 +144,7 @@ class _LeaveAddState extends State<LeaveAdd> {
     return Container(
       child: TextFormField(
         initialValue: '',
+
         decoration: InputDecoration(
           labelText: 'Keterangan',
         ),

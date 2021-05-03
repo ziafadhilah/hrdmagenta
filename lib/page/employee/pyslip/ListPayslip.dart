@@ -45,8 +45,8 @@ class _PyslipListPageState extends State<PyslipListPage> {
                       child: ListView.builder(
                           itemCount: 1,
                           itemBuilder: (contex, index) {
-                            //return _buildNopyslip();
-                            return _buildpyslip(index);
+                            return _buildNopyslip();
+                            //return _buildpyslip(index);
                           }),
                     )
                     // _buildpyslip(),
@@ -69,7 +69,7 @@ class _PyslipListPageState extends State<PyslipListPage> {
         children: <Widget>[
           Container(
             width: double.infinity,
-            height: 100,
+            height: 120,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
@@ -126,7 +126,7 @@ class _PyslipListPageState extends State<PyslipListPage> {
                                         children: <Widget>[
                                           Row(
                                             children: [
-                                              Text("Payslip Employee",
+                                              Text("Payslip karyawan",
                                                   style: subtitleMainMenu),
                                             ],
                                           ),
@@ -135,7 +135,7 @@ class _PyslipListPageState extends State<PyslipListPage> {
                                                   fontSize: 15,
                                                   color: Colors.black26)),
                                           Text(
-                                              "pay period from 01/03/2014 to 31/03/2014",
+                                              "Pembayaran dari periode 01/03/2014 ke 31/03/2014",
                                               style: TextStyle(
                                                   fontSize: 13,
                                                   color: Colors.black26)),

@@ -35,25 +35,25 @@ class _WellcomeState extends State<Wellcome> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           SizedBox(height: 10,),
-          Text("WELCOME",
+          Text("Selamat Datang",
             textAlign: TextAlign.left,
             style: TextStyle(
 
                 color: Colors.black,
                 fontWeight: FontWeight.bold,
-                fontFamily: 'OpenSans',
+                fontFamily: 'SFReguler',
                 fontSize: 25
             ),
 
           ),
           SizedBox(height: 5,),
-          Text("To Magenta HRD",
+          Text("di Magenta HRD Apps",
             textAlign: TextAlign.left,
             style: TextStyle(
 
                 color: baseColor,
                 fontWeight: FontWeight.bold,
-                fontFamily: 'OpenSans',
+                fontFamily: 'SFReguler',
                 fontSize: 15
             ),
 
@@ -89,7 +89,7 @@ class _WellcomeState extends State<Wellcome> {
         color: btnColor1,
 
         child: Text(
-          'Login as Admin',
+          'Login sebagai Admin',
           textAlign: TextAlign.left,
           style: TextStyle(
 
@@ -97,7 +97,8 @@ class _WellcomeState extends State<Wellcome> {
 
             fontSize: 14.0,
             fontWeight: FontWeight.bold,
-            fontFamily: 'OpenSans',
+
+            fontFamily: "SFReguler"
           ),
         ),
       ),
@@ -117,8 +118,10 @@ class _WellcomeState extends State<Wellcome> {
             Navigator.pushNamed(context, "login_employee-page");
           },
           child: Text(
-            "Login as Employee",
-            style: TextStyle(color: btnColor1),
+            "Login sebagai Employee",
+            style: TextStyle(color: btnColor1,
+              fontFamily: 'SFReguler',
+            ),
           ),
         )
 

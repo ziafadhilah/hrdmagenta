@@ -39,7 +39,7 @@ class TabsMenuAbsencestatus extends StatelessWidget {
 
 
           backgroundColor: Colors.white,
-          title: Text('Attendance Status',
+          title: Text('Status Kehadiran',
             style: TextStyle(color: Colors.black87),
           ),
           bottom: TabBar(
@@ -49,7 +49,7 @@ class TabsMenuAbsencestatus extends StatelessWidget {
                 text: 'PENDING',
               ),
               Tab(
-                text: 'REJECT',
+                text: 'REJECTED',
               ),
               Tab(
                 text: 'APPROVED',

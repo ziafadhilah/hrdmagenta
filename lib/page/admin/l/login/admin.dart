@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:hrdmagenta/page/admin/l/home/navbar.dart';
 import 'package:hrdmagenta/page/employee/Home/home.dart';
 import 'package:hrdmagenta/page/employee/Home/navbar.dart';
 import 'package:hrdmagenta/utalities/color.dart';
@@ -43,7 +44,7 @@ class _LoginAdminState extends State<LoginAdmin> {
             style: TextStyle(
                 color: Colors.black,
                 fontWeight: FontWeight.bold,
-                fontFamily: 'OpenSans',
+                fontFamily: 'SFReguler',
                 fontSize: 25),
           ),
           SizedBox(
@@ -55,7 +56,7 @@ class _LoginAdminState extends State<LoginAdmin> {
             style: TextStyle(
                 color: baseColor1,
                 fontWeight: FontWeight.bold,
-                fontFamily: 'OpenSans',
+                fontFamily: 'SFReguler',
                 fontSize: 15),
           )
         ],
@@ -178,9 +179,9 @@ class _LoginAdminState extends State<LoginAdmin> {
           validator.validation_login_admin(
               context, Cusername.text, Cpassword.text);
 
-          // Navigator.pop(context);
-          // Navigator.of(context).pushReplacement(new MaterialPageRoute(
-          //     builder: (BuildContext context) => new NavBarEmployee()));
+//          Navigator.pop(context);
+//           Navigator.of(context).pushReplacement(new MaterialPageRoute(
+//               builder: (BuildContext context) => new NavBarAdmin()));
         },
         padding: EdgeInsets.all(12.0),
         shape: RoundedRectangleBorder(
@@ -194,7 +195,7 @@ class _LoginAdminState extends State<LoginAdmin> {
             color: Colors.white,
             fontSize: 14.0,
             fontWeight: FontWeight.bold,
-            fontFamily: 'OpenSans',
+            fontFamily: 'SFReguler',
           ),
         ),
       ),
@@ -268,7 +269,7 @@ class _LoginAdminState extends State<LoginAdmin> {
         children: [
           Container(
             child: Text(
-              "Forget Password?",
+              "Lupa Password?",
               style: TextStyle(color: Colors.blue),
             ),
           ),

@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:flutter/services.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -12,6 +15,14 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
   DateTime enddate = DateTime.now();
   var Cstartdate = new TextEditingController();
   var Cenddate = new TextEditingController();
+  var cfile = new TextEditingController();
+  TextEditingController _controller = new TextEditingController();
+  String _fileName = '...';
+  String _path = '...';
+  String _extension;
+  bool _hasValidMime = false;
+  FileType _pickingType;
+  File file1;
 
   // ZefyrController _controller;
   // FocusNode _focusNode;
@@ -25,7 +36,7 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
         ),
         backgroundColor: Colors.white,
         title: new Text(
-          "Add Announcement",
+          "Buat pengumuman",
           style: TextStyle(color: Colors.black87),
         ),
       ),
@@ -56,7 +67,8 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
       child: TextFormField(
         initialValue: '',
         decoration: InputDecoration(
-          labelText: 'Tittle',
+          labelText: 'Judul',
+
         ),
       ),
     );
@@ -73,7 +85,7 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
           enabled: false,
           controller: Cstartdate,
           decoration: InputDecoration(
-            labelText: 'Active Date',
+            labelText: 'Tanggal active',
             labelStyle: TextStyle(),
             helperText: 'Helper text',
             suffixIcon: Icon(
@@ -96,7 +108,7 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
           enabled: false,
           controller: Cenddate,
           decoration: InputDecoration(
-            labelText: 'Expired Date',
+            labelText: 'Tanggal Expired ',
             labelStyle: TextStyle(),
             suffixIcon: Icon(
               Icons.date_range,
@@ -157,7 +169,7 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
         keyboardType: TextInputType.multiline,
         initialValue: '',
         decoration: InputDecoration(
-          labelText: 'Message',
+          labelText: 'Pesan pengumuman',
         ),
       ),
     );
@@ -166,14 +178,15 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
   Widget _buildattachment() {
     return InkWell(
       onTap: () {
-        _attechment();
+        _openFileExplorer();
       },
       child: Container(
         child: TextFormField(
+          controller: cfile,
           cursorColor: Theme.of(context).cursorColor,
           enabled: false,
           decoration: InputDecoration(
-            labelText: 'attachment',
+            labelText: 'Lampiran',
             labelStyle: TextStyle(),
             suffixIcon: Icon(
               Icons.file_copy,
@@ -197,21 +210,30 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
   //   return NotusDocument.fromDelta(delta);
   //
   // }
+@override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _controller.addListener(() => _extension = _controller.text);
+  }
 
-  Future _attechment() async {
-    //   FilePickerResul result = await FilePicker.platform.pickFiles();
-    //
-    //   if(result != null) {
-    //     PlatformFile file = result.files.first;
-    //
-    //     print(file.name);
-    //     print(file.bytes);
-    //     print(file.size);
-    //     print(file.extension);
-    //     print(file.path);
-    //   } else {
-    //     // User canceled the picker
-    //   }
-    // }
+
+  void _openFileExplorer() async {
+    if (_pickingType != FileType.custom || _hasValidMime) {
+
+      try {
+
+        _path = await FilePicker.getFilePath(type:FileType.any);
+      } on PlatformException catch (e) {
+        print("Unsupported operation" + e.toString());
+      }
+
+      if (!mounted) return;
+
+      setState(() {
+        _fileName = _path != null ? _path.split('/').last : '...';
+        cfile.text=_path;
+      });
+    }
   }
 }

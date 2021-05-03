@@ -4,6 +4,7 @@ import 'dart:io';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:get/get.dart';
 import 'package:hrdmagenta/page/employee/checkin/maps.dart';
 import 'package:hrdmagenta/services/api_clien.dart';
 import 'package:hrdmagenta/utalities/alert_dialog.dart';
@@ -172,7 +173,7 @@ class _CheckinState extends State<Checkin> {
             Icons.lock,
             color: Colors.black12,
           ),
-          labelText: 'Remarks(Optional)',
+          labelText: 'Catatan',
           labelStyle: TextStyle(
             color: Colors.black38,
           ),
@@ -331,15 +332,15 @@ class _CheckinState extends State<Checkin> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Text("Location", style: subtitleMainMenu),
+                        Text("Lokasi", style: subtitleMainMenu),
                         SizedBox(
                           height: 10,
                         ),
                         if (_currentPosition != null && _currentAddress != null)
                           Container(
-                            width: MediaQuery.of(context).size.width - 100,
+                            width: Get.mediaQuery.size.width/2 +50,
                             child: Text(
-                              "$_currentAddress ",
+                              "$_currentAddress",
                               style: TextStyle(color: Colors.black38),
                             ),
                           ),

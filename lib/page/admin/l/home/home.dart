@@ -5,11 +5,13 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:get/get.dart';
 import 'package:hrdmagenta/model/notifacations.dart';
 import 'package:hrdmagenta/page/admin/l/absence/DetailAbsenceNotifAdmin.dart';
 import 'package:hrdmagenta/page/admin/l/absence/tabmenu_absence.dart';
 import 'package:hrdmagenta/page/admin/l/employees/DetailEmployee.dart';
 import 'package:hrdmagenta/page/admin/l/employees/list.dart';
+import 'package:hrdmagenta/page/employee/project/detail.dart';
 import 'package:hrdmagenta/services/api_clien.dart';
 import 'package:hrdmagenta/utalities/color.dart';
 import 'package:hrdmagenta/utalities/constants.dart';
@@ -57,7 +59,7 @@ class _HomeAdminState extends State<HomeAdmin> {
           ),
         ),
       ),
-      Text("Leave", style: subtitleMainMenu)
+      Text("Cuti", style: subtitleMainMenu)
     ]);
   }
 
@@ -110,7 +112,7 @@ class _HomeAdminState extends State<HomeAdmin> {
         ),
       ),
       Text(
-        "Attendance",
+        "Kehadiran",
         style: subtitleMainMenu,
       )
     ]);
@@ -136,7 +138,7 @@ class _HomeAdminState extends State<HomeAdmin> {
           ),
         ),
       ),
-      Text("announcement", style: subtitleMainMenu)
+      Text("Pengumuman", style: subtitleMainMenu)
     ]);
   }
   Widget _buildMenupayslip() {
@@ -183,7 +185,7 @@ class _HomeAdminState extends State<HomeAdmin> {
           ),
         ),
       ),
-      Text("Employees", style: subtitleMainMenu)
+      Text("Karyawan", style: subtitleMainMenu)
     ]);
   }
 
@@ -206,7 +208,7 @@ class _HomeAdminState extends State<HomeAdmin> {
         ),
       ),
       Text(
-        "Project",
+        "Event",
         style: subtitleMainMenu,
       )
     ]);
@@ -215,7 +217,7 @@ class _HomeAdminState extends State<HomeAdmin> {
   Widget _buildproject() {
     return Container(
       width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.height / 3.5,
+      height: 200,
       child: Container(
         child: Flex(
           direction: Axis.horizontal,
@@ -381,8 +383,8 @@ class _HomeAdminState extends State<HomeAdmin> {
                               builder: (context) => ListEmployee()));
                     },
                     child: Text(
-                      "View All",
-                      style: TextStyle(color: Colors.white70),
+                      "Lihat Semua",
+                      style: TextStyle(color: Colors.white70, fontFamily: "SFReguler",),
                     ),
                   ),
                 ),
@@ -395,125 +397,130 @@ class _HomeAdminState extends State<HomeAdmin> {
   }
 
   Widget _buildProgress(index) {
-    return Container(
-      width: MediaQuery.of(context).size.width,
-      child: Card(
-        child: Container(
-          margin: EdgeInsets.only(left: 10, right: 10),
-          child: Row(
-            children: [
-              Container(
-                width: MediaQuery.of(context).size.width * 0.65,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    SizedBox(
-                      height: 5,
-                    ),
-                    Text("${_projects['data'][index]['title']}",
-                        style: subtitleMainMenu),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Container(
-                      child: Text(
-                          "${_projects['data'][index]['city']['name']}, ${_projects['data'][index]['city']['province']['name']}",
-                          style: TextStyle(
-                              color: Colors.black38,
-                              fontFamily: "SFReguler",
-                              fontSize: 14)),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Expanded(
-                      child: _isLoading_employee
-                          ? Center(
-                              child: CircularProgressIndicator(),
-                            )
-                          : Center(
-                              child: Container(
-                                margin: EdgeInsets.only(top: 1),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  children: [
-                                    Expanded(
-                                      child: ListView.builder(
-                                          itemCount: _projects['data'][index]
-                                                  ['members']
-                                              .length,
-                                          scrollDirection: Axis.horizontal,
-                                          itemBuilder: (context, index_member) {
-                                            return _buildteam(
-                                                index_member, index);
-                                          }),
-                                    ),
-                                  ],
+    return InkWell(
+      onTap: (){
+        Get.to(DetailProjects(id: '${_projects['data'][index]['id']}',));
+      },
+      child: Container(
+        width: MediaQuery.of(context).size.width,
+        child: Card(
+          child: Container(
+            margin: EdgeInsets.only(left: 10, right: 10),
+            child: Row(
+              children: [
+                Container(
+                  width: MediaQuery.of(context).size.width * 0.65,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Text("${_projects['data'][index]['title']}",
+                          style: subtitleMainMenu),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Container(
+                        child: Text(
+                            "${_projects['data'][index]['city']['name']}, ${_projects['data'][index]['city']['province']['name']}",
+                            style: TextStyle(
+                                color: Colors.black38,
+                                fontFamily: "SFReguler",
+                                fontSize: 14)),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Expanded(
+                        child: _isLoading_employee
+                            ? Center(
+                                child: CircularProgressIndicator(),
+                              )
+                            : Center(
+                                child: Container(
+                                  margin: EdgeInsets.only(top: 1),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: [
+                                      Expanded(
+                                        child: ListView.builder(
+                                            itemCount: _projects['data'][index]
+                                                    ['members']
+                                                .length,
+                                            scrollDirection: Axis.horizontal,
+                                            itemBuilder: (context, index_member) {
+                                              return _buildteam(
+                                                  index_member, index);
+                                            }),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
-                            ),
-                      //   child: _buildNoproject(),
-                    ),
-                  ],
+                        //   child: _buildNoproject(),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              Expanded(
-                child: Container(
-                    width: MediaQuery.of(context).size.width * 0.35 - 25,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Container(
-                          child: Container(
-                              alignment: Alignment.center,
-                              margin: EdgeInsets.only(top: 3, bottom: 3),
-                              child: Text(
-                                "in progress",
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 10),
-                              )),
-                          decoration: BoxDecoration(
-                            color: Colors.green,
-                            borderRadius: new BorderRadius.only(
-                              topLeft: const Radius.circular(10.0),
-                              topRight: const Radius.circular(10.0),
-                              bottomLeft: const Radius.circular(10.0),
-                              bottomRight: const Radius.circular(10.0),
+                Expanded(
+                  child: Container(
+                      width: MediaQuery.of(context).size.width * 0.35 - 25,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Container(
+                            child: Container(
+                                alignment: Alignment.center,
+                                margin: EdgeInsets.only(top: 3, bottom: 3),
+                                child: Text(
+                                  "in progress",
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 10),
+                                )),
+                            decoration: BoxDecoration(
+                              color: Colors.green,
+                              borderRadius: new BorderRadius.only(
+                                topLeft: const Radius.circular(10.0),
+                                topRight: const Radius.circular(10.0),
+                                bottomLeft: const Radius.circular(10.0),
+                                bottomRight: const Radius.circular(10.0),
+                              ),
                             ),
                           ),
-                        ),
-                        Expanded(
-                          flex: 1,
-                          child: Container(
-                            margin: EdgeInsets.only(bottom: 10),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                new CircularPercentIndicator(
-                                  radius: 110.0,
-                                  lineWidth: 10.0,
-                                  animation: true,
-                                  percent: _projects['data'][index]
-                                          ['progress'] /
-                                      100,
-                                  center: new Text(
-                                    "${_projects['data'][index]['progress']}%",
-                                    style: new TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 17.0),
+                          Expanded(
+                            flex: 1,
+                            child: Container(
+                              margin: EdgeInsets.only(bottom: 10),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  new CircularPercentIndicator(
+                                    radius: 110.0,
+                                    lineWidth: 10.0,
+                                    animation: true,
+                                    percent: _projects['data'][index]
+                                            ['progress'] /
+                                        100,
+                                    center: new Text(
+                                      "${_projects['data'][index]['progress']}%",
+                                      style: new TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 17.0),
+                                    ),
+                                    circularStrokeCap: CircularStrokeCap.round,
+                                    progressColor: baseColor,
                                   ),
-                                  circularStrokeCap: CircularStrokeCap.round,
-                                  progressColor: baseColor,
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                      ],
-                    )),
-              )
-            ],
+                        ],
+                      )),
+                )
+              ],
+            ),
           ),
         ),
       ),
@@ -560,7 +567,7 @@ class _HomeAdminState extends State<HomeAdmin> {
                                           CrossAxisAlignment.start,
                                       children: <Widget>[
                                         Text(
-                                          "employees",
+                                          "Karyawan",
                                           style: TextStyle(
                                               color: Colors.white,
                                               fontSize: 16),
@@ -591,7 +598,7 @@ class _HomeAdminState extends State<HomeAdmin> {
                           ),
                           Container(
                             margin: EdgeInsets.only(left: 10, top: 5),
-                            child: Text("Project",
+                            child: Text("Event",
                                 textAlign: TextAlign.left,
                                 style: titleMainMenu),
                           ),
@@ -610,7 +617,7 @@ class _HomeAdminState extends State<HomeAdmin> {
     );
   }
 
-  //ge data from api--------------------------------
+  //-----ge data from api----
   Future _dataEmployee() async {
     try {
       setState(() {
@@ -675,7 +682,7 @@ class _HomeAdminState extends State<HomeAdmin> {
             height: 30,
           ),
           Text(
-            "There are no ongoing projects yet",
+            "Belum ada event yang sedang berjalan",
             style: subtitleMainMenu,
           )
         ],

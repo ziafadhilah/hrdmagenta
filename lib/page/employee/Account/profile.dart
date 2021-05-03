@@ -1,17 +1,24 @@
-import 'package:flutter/material.dart';
-import 'package:hrdmagenta/utalities/constants.dart';
+import 'dart:convert';
 
-class DetailEmployee extends StatefulWidget {
-  DetailEmployee(
-      {this.first_name,
-      this.last_name,
-      this.photo,
-      this.address,
-      this.gender,
-      this.email,
-      this.contact_number,
-      this.date_of_birth,
-      this.work_palcement});
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:hrdmagenta/services/api_clien.dart';
+import 'package:hrdmagenta/utalities/constants.dart';
+import 'package:http/http.dart' as http;
+
+class DetailProfile extends StatefulWidget {
+  var id;
+  DetailProfile({
+    this.id
+});
+
+
+
+  @override
+  _DetailProfileState createState() => _DetailProfileState();
+}
+
+class _DetailProfileState extends State<DetailProfile> {
 
   var first_name,
       last_name,
@@ -22,12 +29,7 @@ class DetailEmployee extends StatefulWidget {
       email,
       date_of_birth,
       gender;
-
-  @override
-  _DetailEmployeeState createState() => _DetailEmployeeState();
-}
-
-class _DetailEmployeeState extends State<DetailEmployee> {
+  bool _isLoading=false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,12 +39,15 @@ class _DetailEmployeeState extends State<DetailEmployee> {
         ),
         backgroundColor: Colors.white,
         title: new Text(
-          "Detail Karyawan",
+          "Profile",
           style: TextStyle(color: Colors.black87),
         ),
       ),
       body: SingleChildScrollView(
-        child: Container(
+        child: _isLoading==true?Container(
+          width: Get.mediaQuery.size.width,
+            height: Get.size.height,
+            child: Center(child: CircularProgressIndicator(),)): Container(
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height,
           child: Column(
@@ -67,10 +72,10 @@ class _DetailEmployeeState extends State<DetailEmployee> {
         children: <Widget>[
           Container(
               child: CircleAvatar(
-            child: employee_profile,
-            backgroundColor: Colors.transparent,
-            radius: 40,
-          )),
+                child: employee_profile,
+                backgroundColor: Colors.transparent,
+                radius: 40,
+              )),
           Container(
             margin: EdgeInsets.only(left: 10, right: 10),
             child: Column(
@@ -78,8 +83,9 @@ class _DetailEmployeeState extends State<DetailEmployee> {
               children: <Widget>[
                 Container(
                   child: Text(
-                    "${widget.first_name} ${widget.last_name}",
+                    "${first_name} ${last_name}",
                     style: TextStyle(
+                        fontFamily: "SFReguler",
                         fontSize: 18,
                         color: Colors.black87,
                         fontWeight: FontWeight.bold),
@@ -90,9 +96,10 @@ class _DetailEmployeeState extends State<DetailEmployee> {
                 ),
                 Container(
                   child: Text(
-                    "${widget.work_palcement}",
+                    "${work_palcement}",
                     style: TextStyle(
                       fontSize: 15,
+                      fontFamily: "SFReguler",
                       color: Colors.black38,
                     ),
                   ),
@@ -138,6 +145,7 @@ class _DetailEmployeeState extends State<DetailEmployee> {
                           "Alamat",
                           style: TextStyle(
                               fontSize: 14,
+                              fontFamily: "SFReguler",
                               color: Colors.black87,
                               fontWeight: FontWeight.bold),
                         ),
@@ -148,18 +156,16 @@ class _DetailEmployeeState extends State<DetailEmployee> {
                           height: 5,
                         ),
                         Container(
-                          child: widget.address == null
+                          child: address == null
                               ? Text("-")
                               : Text(
-                                  widget.address,
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    fontFamily: "SFReguler",
-
-
-                                    color: Colors.black38,
-                                  ),
-                                ),
+                            address,
+                            style: TextStyle(
+                              fontFamily: "SFReguler",
+                              fontSize: 14,
+                              color: Colors.black38,
+                            ),
+                          ),
                         )
                       ],
                     )),
@@ -206,9 +212,9 @@ class _DetailEmployeeState extends State<DetailEmployee> {
                         Text(
                           "Email",
                           style: TextStyle(
+                              fontFamily: "SFReguler",
                               fontSize: 14,
                               color: Colors.black87,
-                              fontFamily: "SFReguler",
                               fontWeight: FontWeight.bold),
                         ),
                         SizedBox(
@@ -218,16 +224,16 @@ class _DetailEmployeeState extends State<DetailEmployee> {
                           height: 5,
                         ),
                         Container(
-                          child: widget.email == null
+                          child: email == null
                               ? Text("-")
                               : Text(
-                                  widget.email,
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    fontFamily: "SFReguler",
-                                    color: Colors.black38,
-                                  ),
-                                ),
+                            email,
+                            style: TextStyle(
+                              fontFamily: "SFReguler",
+                              fontSize: 14,
+                              color: Colors.black38,
+                            ),
+                          ),
                         )
                       ],
                     )),
@@ -272,8 +278,9 @@ class _DetailEmployeeState extends State<DetailEmployee> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Text(
-                          "Number telp",
+                          "Nomor telp",
                           style: TextStyle(
+                              fontFamily: "SFReguler",
                               fontSize: 14,
                               color: Colors.black87,
                               fontWeight: FontWeight.bold),
@@ -285,16 +292,15 @@ class _DetailEmployeeState extends State<DetailEmployee> {
                           height: 5,
                         ),
                         Container(
-                          child: widget.contact_number == null
+                          child: contact_number == null
                               ? Text("-")
                               : Text(
-                                  widget.contact_number,
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    fontFamily: "SFReguler",
-                                    color: Colors.black38,
-                                  ),
-                                ),
+                            contact_number,
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.black38,
+                            ),
+                          ),
                         )
                       ],
                     )),
@@ -339,7 +345,7 @@ class _DetailEmployeeState extends State<DetailEmployee> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Text(
-                          "jenis Kelamin",
+                          "Jenis Kelamin",
                           style: TextStyle(
                               fontSize: 14,
                               fontFamily: "SFReguler",
@@ -353,16 +359,16 @@ class _DetailEmployeeState extends State<DetailEmployee> {
                           height: 5,
                         ),
                         Container(
-                          child: widget.gender == null
+                          child: gender == null
                               ? Text("-")
                               : Text(
-                                  widget.gender,
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    fontFamily: "SFReguler",
-                                    color: Colors.black38,
-                                  ),
-                                ),
+                            gender,
+                            style: TextStyle(
+                              fontFamily: "SFReguler",
+                              fontSize: 14,
+                              color: Colors.black38,
+                            ),
+                          ),
                         )
                       ],
                     )),
@@ -407,10 +413,10 @@ class _DetailEmployeeState extends State<DetailEmployee> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Text(
-                          "tanggal lahir",
+                          "Tanggal lahir",
                           style: TextStyle(
-                              fontSize: 14,
                               fontFamily: "SFReguler",
+                              fontSize: 14,
                               color: Colors.black87,
                               fontWeight: FontWeight.bold),
                         ),
@@ -421,15 +427,16 @@ class _DetailEmployeeState extends State<DetailEmployee> {
                           height: 5,
                         ),
                         Container(
-                          child: widget.date_of_birth == null
+                          child: date_of_birth == null
                               ? Text("-")
                               : Text(
-                                  widget.date_of_birth,
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    color: Colors.black38,
-                                  ),
-                                ),
+                            date_of_birth,
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontFamily: "SFReguler",
+                              color: Colors.black38,
+                            ),
+                          ),
                         )
                       ],
                     )),
@@ -442,5 +449,41 @@ class _DetailEmployeeState extends State<DetailEmployee> {
         ],
       ),
     );
+  }
+  ///function companies
+  Future _employee(BuildContext context) async {
+    setState(() {
+      _isLoading = true;
+    });
+    final response =
+    await http.get("$base_url/api/employees/${widget.id}");
+    final data = jsonDecode(response.body);
+
+    if (data['code'] == 200) {
+      //final compaymodel = companiesFromJson(response.body);
+      first_name = data['data']['first_name'];
+      last_name = data['data']['last_name'];
+      photo = data['data']['photo'];
+      work_palcement = data['data']['work_placement'];
+      gender = data['data']['gender'];
+      date_of_birth = data['data']['date_of_birth'];
+      email =data['data']['email'];
+      address =data['data']['address'];
+      contact_number=data['data']['contact_number'];
+
+      setState(() {
+        _isLoading = false;
+      });
+    } else {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _employee(context);
   }
 }

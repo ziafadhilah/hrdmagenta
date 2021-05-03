@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:hrdmagenta/page/change_password/change_password.dart';
 import 'package:hrdmagenta/page/employee/Account/company_profile.dart';
+import 'package:hrdmagenta/page/employee/Account/profile.dart';
 import 'package:hrdmagenta/services/api_clien.dart';
 import 'package:hrdmagenta/shared_preferenced/sessionmanage.dart';
 import 'package:hrdmagenta/utalities/color.dart';
@@ -27,7 +29,7 @@ class _AccountEmployeeState extends State<AccountEmployee> {
       profile_background = "";
   var user_id, value;
   SharedPreference session = new SharedPreference();
-  Services services =new Services();
+  Services services = new Services();
 
   //text settings
   Widget _buildText() {
@@ -50,7 +52,6 @@ class _AccountEmployeeState extends State<AccountEmployee> {
     );
   }
 
-  
   Widget _buildTextacount() {
     return Container(
       width: double.infinity,
@@ -70,7 +71,6 @@ class _AccountEmployeeState extends State<AccountEmployee> {
       ),
     );
   }
-
 
   //wodget company
   Widget _buildCompany() {
@@ -109,21 +109,22 @@ class _AccountEmployeeState extends State<AccountEmployee> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Text(
-                            "Company Profile",
+                            "Profile perusahaan",
                             style: TextStyle(
                                 fontSize: 14,
                                 color: Colors.black87,
+                                fontFamily: "SFReguler",
                                 fontWeight: FontWeight.bold),
                           ),
                           SizedBox(
                             height: 5,
                           ),
                           Text(
-                            "View your company profile",
+                            "Lihat profile perusahaan kamu",
                             style: TextStyle(
-                              fontSize: 14,
-                              color: Colors.black38,
-                            ),
+                                fontSize: 14,
+                                color: Colors.black38,
+                                fontFamily: "SFReguler"),
                           )
                         ],
                       )),
@@ -156,8 +157,6 @@ class _AccountEmployeeState extends State<AccountEmployee> {
       ),
     );
   }
-
-
 
   //wodget company
   Widget _buildChangepassword() {
@@ -201,19 +200,21 @@ class _AccountEmployeeState extends State<AccountEmployee> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Text(
-                            "Change Password",
+                            "Ganti Password",
                             style: TextStyle(
                                 fontSize: 14,
                                 color: Colors.black87,
+                                fontFamily: "SFReguler",
                                 fontWeight: FontWeight.bold),
                           ),
                           SizedBox(
                             height: 5,
                           ),
                           Text(
-                            "Change Password",
+                            "Ganti password kamu",
                             style: TextStyle(
                               fontSize: 14,
+                              fontFamily: "SFReguler",
                               color: Colors.black38,
                             ),
                           )
@@ -249,88 +250,96 @@ class _AccountEmployeeState extends State<AccountEmployee> {
     );
   }
 
-  //wodget about
-  Widget _buildabout() {
-    return Container(
-      margin: EdgeInsets.all(5),
-      child: Column(
-        children: [
-          //row company profile
-          Container(
-            child: Row(
-              children: <Widget>[
-                //container icon
-                Container(
-                  child: CircleAvatar(
-                    backgroundColor: Colors.white,
-                    radius: 20,
-                    child: Icon(
-                      Icons.info,
-                      color: Colors.black38,
-                      size: 25,
+  //wodget profile
+  Widget _buildprofile() {
+    return InkWell(
+      onTap: () {
+        Get.to(DetailProfile(
+          id: user_id,
+        ));
+      },
+      child: Container(
+        margin: EdgeInsets.all(5),
+        child: Column(
+          children: [
+            //row company profile
+            Container(
+              child: Row(
+                children: <Widget>[
+                  //container icon
+                  Container(
+                    child: CircleAvatar(
+                      backgroundColor: Colors.white,
+                      radius: 20,
+                      child: Icon(
+                        Icons.person,
+                        color: Colors.black38,
+                        size: 25,
+                      ),
                     ),
                   ),
-                ),
 
-                //container text componey profile
-                Container(
-                    margin: EdgeInsets.only(left: 5),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(
-                          "About",
-                          style: TextStyle(
-                              fontSize: 14,
-                              color: Colors.black87,
-                              fontWeight: FontWeight.bold),
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Text(
-                          version,
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.black12,
+                  //container text componey profile
+                  Container(
+                      margin: EdgeInsets.only(left: 5),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(
+                            "Profile",
+                            style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.black87,
+                                fontFamily: "SFReguler",
+                                fontWeight: FontWeight.bold),
                           ),
-                        )
-                      ],
-                    )),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Text(
+                            "Lihat detail profile kamu",
+                            style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.black38,
+                                fontFamily: "SFReguler"),
+                          )
+                        ],
+                      )),
 
-                //container arrow right
-                Flexible(
-                  child: Container(
-                    width: MediaQuery.of(context).size.width,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Icon(
-                          Icons.arrow_forward_ios_rounded,
-                          color: Colors.black38,
-                          size: 20,
-                        ),
-                      ],
+                  //container arrow right
+                  Flexible(
+                    child: Container(
+                      width: MediaQuery.of(context).size.width,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Icon(
+                            Icons.arrow_forward_ios_rounded,
+                            color: Colors.black38,
+                            size: 20,
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                )
-              ],
+                  )
+                ],
+              ),
             ),
-          ),
-          new Divider(
-            color: Colors.black12,
-          ),
-        ],
+            new Divider(
+              color: Colors.black12,
+            ),
+          ],
+        ),
       ),
     );
   }
 
-//---end about----
+//---end profile----
 
   //wodget logout
   Widget _buildlogout() {
@@ -373,16 +382,17 @@ class _AccountEmployeeState extends State<AccountEmployee> {
                             style: TextStyle(
                                 fontSize: 14,
                                 color: Colors.black87,
+                                fontFamily: "SFReguler",
                                 fontWeight: FontWeight.bold),
                           ),
-
                           SizedBox(
                             height: 5,
                           ),
                           Text(
-                            "logout as $first_name $last_name",
+                            "logout sebagai $first_name $last_name",
                             style: TextStyle(
                               fontSize: 14,
+                              fontFamily: "SFReguler",
                               color: Colors.black38,
                             ),
                           )
@@ -409,13 +419,80 @@ class _AccountEmployeeState extends State<AccountEmployee> {
                 ],
               ),
             ),
+            new Divider(
+              color: Colors.black12,
+            ),
           ],
         ),
       ),
     );
   }
+//wodget about
+  Widget _buildabout() {
+    return Container(
+      margin: EdgeInsets.all(10),
+      child: Column(
+        children: [
+          //row company profile
+          Container(
+            child: Row(
+              children: <Widget>[
+                //container icon
+                Container(
+                  child: CircleAvatar(
+                    backgroundColor: Colors.white,
+                    radius: 20,
+                    child: Icon(
+                      Icons.info,
+                      color: Colors.black38,
+                      size: 25,
+                    ),
+                  ),
+                ),
 
-//-----end ogout----
+                //container text componey profile
+                Container(
+                    margin: EdgeInsets.only(left: 5),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          "About",
+                          style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.black87,
+                              fontFamily: "SFReguler",
+                              fontWeight: FontWeight.bold),
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Text(
+                          "Versi aplikasi 1.0.0",
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontFamily: "SFReguler",
+                            color: Colors.black38,
+                          ),
+                        )
+                      ],
+                    )),
+
+                //container arrow right
+
+              ],
+            ),
+          ),
+          new Divider(
+            color: Colors.black12,
+          ),
+        ],
+      ),
+    );
+  }
+
+//-----end abut----
 
   //wodget username
   Widget _buildusername() {
@@ -468,6 +545,9 @@ class _AccountEmployeeState extends State<AccountEmployee> {
                     )),
               ],
             ),
+          ),
+          new Divider(
+            color: Colors.black38,
           ),
         ],
       ),
@@ -716,20 +796,19 @@ class _AccountEmployeeState extends State<AccountEmployee> {
     return Container(
         margin: EdgeInsets.only(top: 10, left: 5, right: 5),
         width: double.infinity,
-        child: Card(
-          elevation: 1,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _buildText(),
-              _buildCompany(),
-              _buildChangepassword(),
-              //_buildabout(),
-              _buildlogout()
-            ],
-          ),
+
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+
+            _buildprofile(),
+            _buildCompany(),
+            _buildChangepassword(),
+            _buildlogout(),
+            _buildabout()
+          ],
         ));
   }
 
@@ -940,7 +1019,6 @@ class _AccountEmployeeState extends State<AccountEmployee> {
                 width: double.infinity,
               ),
               Container(
-                color: Colors.white,
                 height: double.infinity,
                 child: SingleChildScrollView(
                   physics: AlwaysScrollableScrollPhysics(),
@@ -950,7 +1028,6 @@ class _AccountEmployeeState extends State<AccountEmployee> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      _builddetailAccount(),
                       _buildSettings(),
                     ],
                   ),
@@ -962,10 +1039,6 @@ class _AccountEmployeeState extends State<AccountEmployee> {
       ),
     );
   }
-
-
-
-
 
   void getDatapref() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
@@ -984,8 +1057,6 @@ class _AccountEmployeeState extends State<AccountEmployee> {
     });
   }
 
-
-
   Future<void> _showConfirmlogout(BuildContext context) async {
     showDialog(
         context: context,
@@ -1000,17 +1071,19 @@ class _AccountEmployeeState extends State<AccountEmployee> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Text(" Logout",
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 16,fontFamily: "SFReguler")),
-                  SizedBox(height: 10,),
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                          fontFamily: "SFReguler")),
+                  SizedBox(
+                    height: 10,
+                  ),
                   Text(
-                    "Are you sure?",
+                    "Apak kamu yakin?",
                     style: TextStyle(
                       fontSize: 20,
                       fontFamily: "SFReguler",
-
-                    )
-                    ,
+                    ),
                   ),
                   Container(
                     margin: EdgeInsets.only(top: 32),
@@ -1024,7 +1097,7 @@ class _AccountEmployeeState extends State<AccountEmployee> {
                                 borderRadius: BorderRadius.circular(8)),
                             textColor: Colors.white,
                             color: btnColor1,
-                            child: Text("Yes"),
+                            child: Text("Iya"),
                             onPressed: () async {
                               session.logout(context);
                               services.clearTokenemployee(user_id);
@@ -1039,7 +1112,7 @@ class _AccountEmployeeState extends State<AccountEmployee> {
                             focusColor: btnColor1,
                             textColor: btnColor1,
                             borderSide: BorderSide(color: btnColor1),
-                            child: Text("No"),
+                            child: Text("Tidak"),
                             onPressed: () => Navigator.pop(context),
                           ),
                         ),

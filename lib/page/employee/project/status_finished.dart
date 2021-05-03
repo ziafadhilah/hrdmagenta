@@ -41,7 +41,7 @@ class _projecthistoryState extends State<projecthistory> {
                         children: <Widget>[
                           //project
                           Text(
-                            "Project",
+                            "Event",
                             style: TextStyle(
                               fontFamily: "OpenSans",
                               color: textColor1,

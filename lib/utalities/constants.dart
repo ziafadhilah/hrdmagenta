@@ -48,6 +48,14 @@ final Widget task = SvgPicture.asset(
   color: baseColor1,
 );
 
+final Widget taskIcon = SvgPicture.asset(
+  "assets/task.svg",
+  semanticsLabel: 'Acme Logo',
+  width: 25,
+    height: 25,
+
+);
+
 final Widget pyslip = SvgPicture.asset(
   "assets/pyslip.svg",
   semanticsLabel: 'Acme Logo',
@@ -85,7 +93,7 @@ final Widget splassscreen = SvgPicture.asset(
 final Widget pyslip_letter = SvgPicture.asset(
   "assets/receipt.svg",
   semanticsLabel: 'Acme Logo',
-  color: baseColor1,
+  color: Colors.black38,
   width: 60,
   height: 80,
 );
@@ -110,21 +118,24 @@ final Widget no_data_project = SvgPicture.asset(
   semanticsLabel: 'Acme Logo',
   width: 150,
   height: 150,
+
 );
 
 final Widget no_data_payslip = SvgPicture.asset(
-  "assets/nobudget.svg",
+  "assets/nopayslip.svg",
   semanticsLabel: 'Acme Logo',
   width: 150,
   height: 150,
-  color: Colors.black45,
+ 
+
+
 );
 final Widget no_data_notification = SvgPicture.asset(
   "assets/notification.svg",
   semanticsLabel: 'Acme Logo',
   width: 150,
   height: 150,
-  color: Colors.black45,
+  color: Colors.black38,
 );
 
 final Widget no_data_transacation = SvgPicture.asset(
@@ -132,7 +143,8 @@ final Widget no_data_transacation = SvgPicture.asset(
   semanticsLabel: 'Acme Logo',
   width: 150,
   height: 150,
-  color: Colors.black45,
+  color: Colors.black38,
+
 );
 
 final Widget gallery = SvgPicture.asset(
@@ -160,13 +172,14 @@ final Widget no_data_absence = SvgPicture.asset(
   semanticsLabel: 'Acme Logo',
   width: 150,
   height: 150,
+
 );
 final Widget no_data_leave = SvgPicture.asset(
   "assets/leave.svg",
   semanticsLabel: 'Acme Logo',
   width: 150,
   height: 150,
-  color: Colors.black45,
+  color: Colors.black38,
 );
 
 final Widget employee = Icon(
@@ -189,12 +202,12 @@ final Widget no_data_announcement = SvgPicture.asset(
 
 class Constants {
   static const String Buget = "Budget History";
-  static const String Absence = "Attendance Status";
-  static const String Leave = "Leave Status";
-
+  static const String Absence = "Staatus Kehadiran";
+  static const String Leave = "Status Cuti";
   static const List<String> choicesM = <String>[Buget];
   static const List<String> AbsenceStatus = <String>[Absence];
   static const List<String> LeaveStatus = <String>[Leave];
+
 }
 
 //--end constan icon

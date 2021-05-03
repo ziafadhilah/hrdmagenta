@@ -12,7 +12,9 @@ void loading(BuildContext context) {
   progressDialog.style(message: "Loading ...");
 
   progressDialog.show();
+
 }
+
 
 void alert_error(BuildContext context, var title, text_button) {
   Alert(
@@ -109,14 +111,14 @@ void alert_approve(BuildContext context, var id_attendance, user_id, status,
   Alert(
     context: context,
     type: AlertType.warning,
-    title: "Are you sure?",
-    desc: "Data will be approved",
+    title: "Apakah anda yakin?",
+    desc: "Data ini akan disetujui",
     content: Column(
       children: <Widget>[
         TextField(
           controller: Cremarks,
           decoration: InputDecoration(
-            labelText: 'Remarks(optional)',
+            labelText: 'Catatan',
           ),
         ),
       ],
@@ -124,7 +126,7 @@ void alert_approve(BuildContext context, var id_attendance, user_id, status,
     buttons: [
       DialogButton(
         child: Text(
-          "Cancel",
+          "batalkan",
           style: TextStyle(color: Colors.white, fontSize: 20),
         ),
         onPressed: () => Navigator.pop(context),
@@ -132,7 +134,7 @@ void alert_approve(BuildContext context, var id_attendance, user_id, status,
       ),
       DialogButton(
         child: Text(
-          "Approve",
+          "Disetujui",
           style: TextStyle(color: Colors.white, fontSize: 20),
         ),
         onPressed: () {
@@ -152,14 +154,14 @@ void alert_reject(BuildContext context, var id_attendance, user_id, status,
   Alert(
     context: context,
     type: AlertType.warning,
-    title: "Are you sure?",
-    desc: "Data will be rejected",
+    title: "Apakah kamu yakin?",
+    desc: "Data ini akan ditolak",
     content: Column(
       children: <Widget>[
         TextField(
           controller: Cremarks,
           decoration: InputDecoration(
-            labelText: 'Remarks(optional)',
+            labelText: 'Catatana',
           ),
         ),
       ],
@@ -167,7 +169,7 @@ void alert_reject(BuildContext context, var id_attendance, user_id, status,
     buttons: [
       DialogButton(
         child: Text(
-          "Cancel",
+          "Batalkan",
           style: TextStyle(color: Colors.white, fontSize: 20),
         ),
         onPressed: () => Navigator.pop(context),
@@ -175,7 +177,7 @@ void alert_reject(BuildContext context, var id_attendance, user_id, status,
       ),
       DialogButton(
         child: Text(
-          "Reject",
+          "Ditolak",
           style: TextStyle(color: Colors.white, fontSize: 20),
         ),
         onPressed: () {
@@ -207,11 +209,11 @@ void validation_checkin(
     context: context,
     type: AlertType.warning,
     title: "Check In",
-    desc: "Are you sure?",
+    desc: "Apaka kamu yakin melakukan check in pada pukul ${time}?",
     buttons: [
       DialogButton(
         child: Text(
-          "Yes",
+          "Iya",
           style: TextStyle(color: Colors.white, fontSize: 20),
         ),
         onPressed: () => {
@@ -235,7 +237,7 @@ void validation_checkin(
       ),
       DialogButton(
         child: Text(
-          "Cancel",
+          "Batalkan",
           style: TextStyle(color: Colors.white, fontSize: 20),
         ),
         onPressed: () => Navigator.pop(context),
@@ -264,11 +266,11 @@ void validation_checkout(
     context: context,
     type: AlertType.warning,
     title: "Check Out ",
-    desc: "Are you sure ",
+    desc: "Apaka kamu yakin melakukan check out pada pukul ${time} ",
     buttons: [
       DialogButton(
         child: Text(
-          "Yes",
+          "Iya",
           style: TextStyle(color: Colors.white, fontSize: 20),
         ),
         onPressed: () => {
@@ -292,7 +294,7 @@ void validation_checkout(
       ),
       DialogButton(
         child: Text(
-          "Cancel",
+          "Batalkan",
           style: TextStyle(color: Colors.white, fontSize: 20),
         ),
         onPressed: () => Navigator.pop(context),

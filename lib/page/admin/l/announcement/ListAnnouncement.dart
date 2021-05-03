@@ -42,7 +42,7 @@ class _AnnouncementListEmployeeState extends State<AnnouncementListEmployee> {
             ),
             Container(
                 child: Text(
-              "No announcement yet",
+              "Belum ada pengumuman ",
               style: TextStyle(color: Colors.black38, fontSize: 18),
             )),
           ],
@@ -61,7 +61,7 @@ class _AnnouncementListEmployeeState extends State<AnnouncementListEmployee> {
         ),
         backgroundColor: Colors.white,
         title: new Text(
-          "Annoucement",
+          "Pengumuman",
           style: TextStyle(color: Colors.black87),
         ),
       ),

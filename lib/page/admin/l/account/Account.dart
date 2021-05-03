@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:hrdmagenta/page/change_password/change_password.dart';
 import 'package:hrdmagenta/page/employee/Account/company_profile.dart';
+import 'package:hrdmagenta/page/employee/Account/profile.dart';
 import 'package:hrdmagenta/services/api_clien.dart';
 import 'package:hrdmagenta/shared_preferenced/sessionmanage.dart';
 import 'package:hrdmagenta/utalities/color.dart';
@@ -28,46 +30,8 @@ class _AccountAdminState extends State<AccountAdmin> {
   SharedPreference session = new SharedPreference();
   Services services=new Services();
 
-  //text settings
-  Widget _buildText() {
-    return Container(
-      width: double.infinity,
-      margin: EdgeInsets.all(10),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Text("Settings",
-              style: TextStyle(
-                  fontSize: 18,
-                  color: Colors.black87,
-                  fontWeight: FontWeight.bold)),
-          new Divider(
-            color: Colors.black12,
-          ),
-        ],
-      ),
-    );
-  }
 
-  Widget _buildTextacount() {
-    return Container(
-      width: double.infinity,
-      margin: EdgeInsets.all(10),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Text("Profile",
-              style: TextStyle(
-                  fontSize: 18,
-                  color: Colors.black87,
-                  fontWeight: FontWeight.bold)),
-          new Divider(
-            color: Colors.black12,
-          ),
-        ],
-      ),
-    );
-  }
+
 
   //wodget company
   Widget _buildCompany() {
@@ -106,9 +70,10 @@ class _AccountAdminState extends State<AccountAdmin> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Text(
-                            "Company Profile",
+                            "Profile Perusahaan",
                             style: TextStyle(
                                 fontSize: 14,
+                                fontFamily: "SFReguler",
                                 color: Colors.black87,
                                 fontWeight: FontWeight.bold),
                           ),
@@ -116,9 +81,10 @@ class _AccountAdminState extends State<AccountAdmin> {
                             height: 5,
                           ),
                           Text(
-                            "View your company profile",
+                            "Lihat profile perusahaan kamu",
                             style: TextStyle(
                               fontSize: 14,
+                              fontFamily: "SFReguler",
                               color: Colors.black38,
                             ),
                           )
@@ -196,9 +162,10 @@ class _AccountAdminState extends State<AccountAdmin> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Text(
-                            "Change Password",
+                            "Ganti password",
                             style: TextStyle(
                                 fontSize: 14,
+                                fontFamily: "SFReguler",
                                 color: Colors.black87,
                                 fontWeight: FontWeight.bold),
                           ),
@@ -206,9 +173,10 @@ class _AccountAdminState extends State<AccountAdmin> {
                             height: 5,
                           ),
                           Text(
-                            "Change Password",
+                            "Ganti Password Kamu",
                             style: TextStyle(
                               fontSize: 14,
+                              fontFamily: "SFReguler",
                               color: Colors.black38,
                             ),
                           )
@@ -244,88 +212,6 @@ class _AccountAdminState extends State<AccountAdmin> {
     );
   }
 
-  //wodget about
-  Widget _buildabout() {
-    return Container(
-      margin: EdgeInsets.all(5),
-      child: Column(
-        children: [
-          //row company profile
-          Container(
-            child: Row(
-              children: <Widget>[
-                //container icon
-                Container(
-                  child: CircleAvatar(
-                    backgroundColor: Colors.white,
-                    radius: 20,
-                    child: Icon(
-                      Icons.info,
-                      color: Colors.black38,
-                      size: 25,
-                    ),
-                  ),
-                ),
-
-                //container text componey profile
-                Container(
-                    margin: EdgeInsets.only(left: 5),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(
-                          "About",
-                          style: TextStyle(
-                              fontSize: 14,
-                              color: Colors.black87,
-                              fontWeight: FontWeight.bold),
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Text(
-                          version,
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.black12,
-                          ),
-                        )
-                      ],
-                    )),
-
-                //container arrow right
-                Flexible(
-                  child: Container(
-                    width: MediaQuery.of(context).size.width,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Icon(
-                          Icons.arrow_forward_ios_rounded,
-                          color: Colors.black38,
-                          size: 20,
-                        ),
-                      ],
-                    ),
-                  ),
-                )
-              ],
-            ),
-          ),
-          new Divider(
-            color: Colors.black12,
-          ),
-        ],
-      ),
-    );
-  }
-
-//---end about----
 
   //wodget logout
   Widget _buildlogout() {
@@ -374,7 +260,7 @@ class _AccountAdminState extends State<AccountAdmin> {
                             height: 5,
                           ),
                           Text(
-                            "logout as $first_name $last_name",
+                            "logout sebagai $first_name $last_name",
                             style: TextStyle(
                               fontSize: 14,
                               color: Colors.black38,
@@ -403,13 +289,16 @@ class _AccountAdminState extends State<AccountAdmin> {
                 ],
               ),
             ),
+            new Divider(
+              color: Colors.black12,
+            ),
           ],
         ),
       ),
     );
   }
 
-//-----end ogout----
+//-----end about----
 
   //wodget username
   Widget _buildusername() {
@@ -645,6 +534,97 @@ class _AccountAdminState extends State<AccountAdmin> {
     );
   }
 
+  //wodget profile
+  Widget _buildprofile() {
+    return InkWell(
+      onTap: () {
+        Get.to(DetailProfile(
+          id: user_id,
+        ));
+      },
+      child: Container(
+        margin: EdgeInsets.all(5),
+        child: Column(
+          children: [
+            //row company profile
+            Container(
+              child: Row(
+                children: <Widget>[
+                  //container icon
+                  Container(
+                    child: CircleAvatar(
+                      backgroundColor: Colors.white,
+                      radius: 20,
+                      child: Icon(
+                        Icons.person,
+                        color: Colors.black38,
+                        size: 25,
+                      ),
+                    ),
+                  ),
+
+                  //container text componey profile
+                  Container(
+                      margin: EdgeInsets.only(left: 5),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(
+                            "Profile",
+                            style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.black87,
+                                fontFamily: "SFReguler",
+                                fontWeight: FontWeight.bold),
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Text(
+                            "Lihat detail profile kamu",
+                            style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.black38,
+                                fontFamily: "SFReguler"),
+                          )
+                        ],
+                      )),
+
+                  //container arrow right
+                  Flexible(
+                    child: Container(
+                      width: MediaQuery.of(context).size.width,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Icon(
+                            Icons.arrow_forward_ios_rounded,
+                            color: Colors.black38,
+                            size: 20,
+                          ),
+                        ],
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
+            new Divider(
+              color: Colors.black12,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+//---end profile----
+
 //-----end phone number----
 
 //main menu settings
@@ -652,20 +632,17 @@ class _AccountAdminState extends State<AccountAdmin> {
     return Container(
         margin: EdgeInsets.only(top: 10, left: 5, right: 5),
         width: double.infinity,
-        child: Card(
-          elevation: 1,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _buildText(),
-              _buildCompany(),
-              _buildChangepassword(),
-              //_buildabout(),
-              _buildlogout()
-            ],
-          ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _buildprofile(),
+            _buildCompany(),
+            _buildChangepassword(),
+            _buildlogout(),
+            _buildabout()
+          ],
         ));
   }
 
@@ -725,131 +702,87 @@ class _AccountAdminState extends State<AccountAdmin> {
     );
   }
 
-  //main Account
-  Widget _builddetailAccount() {
+//wodget about
+  Widget _buildabout() {
     return Container(
-      margin: EdgeInsets.only(top: 10, left: 5, right: 5),
-      child: Card(
-        elevation: 1,
-        child: Container(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              //Header
-              _buildTextacount(),
-              _buildphoto(),
-              new Divider(
-                color: Colors.black38,
-              ),
+      margin: EdgeInsets.all(10),
+      child: Column(
+        children: [
+          //row company profile
+          Container(
+            child: Row(
+              children: <Widget>[
+                //container icon
+                Container(
+                  child: CircleAvatar(
+                    backgroundColor: Colors.white,
+                    radius: 20,
+                    child: Icon(
+                      Icons.info,
+                      color: Colors.black38,
+                      size: 25,
+                    ),
+                  ),
+                ),
 
-              //Container button
-              Visibility(
-                visible: _lessData,
-                child: InkWell(
-                  onTap: () {
-                    setState(() {
-                      _detailData = true;
-                      _lessData = false;
-                    });
-                  },
-                  child: Container(
-                    width: double.infinity,
-                    margin:
-                        EdgeInsets.only(right: 2, left: 20, top: 5, bottom: 5),
-                    child: Row(
+                //container text componey profile
+                Container(
+                    margin: EdgeInsets.only(left: 5),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Container(
-                          child: Column(
-                            children: <Widget>[
-                              Text(
-                                "Show Detail",
-                                style: TextStyle(
-                                    fontSize: 15, color: Colors.black38),
-                              )
-                            ],
-                          ),
+                        Text(
+                          "About",
+                          style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.black87,
+                              fontFamily: "SFReguler",
+                              fontWeight: FontWeight.bold),
                         ),
-                        Expanded(
-                          flex: 1,
-                          child: Container(
-                            margin: EdgeInsets.only(right: 10),
-                            width: double.infinity,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: <Widget>[
-                                Icon(Icons.keyboard_arrow_left_sharp,
-                                    color: Colors.black38)
-                              ],
-                            ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Text(
+                          "Versi aplikasi 1.0.0",
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontFamily: "SFReguler",
+                            color: Colors.black38,
                           ),
                         )
                       ],
-                    ),
-                  ),
-                ),
-              ),
-              Visibility(
-                visible: _detailData,
-                child: InkWell(
-                  onTap: () {
-                    setState(() {
-                      _detailData = false;
-                      _lessData = true;
-                    });
-                  },
+                    )),
+
+                //container arrow right
+                Flexible(
                   child: Container(
-                    width: double.infinity,
-                    margin:
-                        EdgeInsets.only(right: 2, left: 20, top: 5, bottom: 5),
-                    child: Row(
-                      children: <Widget>[
-                        Container(
-                          child: Column(
-                            children: <Widget>[
-                              Text(
-                                "Show Less",
-                                style: TextStyle(
-                                    fontSize: 15, color: Colors.black38),
-                              )
-                            ],
-                          ),
+                    width: MediaQuery.of(context).size.width,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Icon(
+                          Icons.arrow_forward_ios_rounded,
+                          color: Colors.black38,
+                          size: 20,
                         ),
-                        Expanded(
-                          flex: 1,
-                          child: Container(
-                            margin: EdgeInsets.only(right: 10),
-                            width: double.infinity,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: <Widget>[
-                                Icon(Icons.keyboard_arrow_down_rounded,
-                                    color: Colors.black38)
-                              ],
-                            ),
-                          ),
-                        )
                       ],
                     ),
                   ),
-                ),
-              ),
-              //visibility data
-              Visibility(
-                  visible: _detailData,
-                  child: Column(
-                    children: <Widget>[
-                      _buildusername(),
-                      _buildemail(),
-                      _buildphone(),
-                      _buildgender()
-                    ],
-                  ))
-            ],
+                )
+              ],
+            ),
           ),
-        ),
+          new Divider(
+            color: Colors.black12,
+          ),
+        ],
       ),
     );
   }
+
+//-----end ogout----
 
   @override
   Widget build(BuildContext context) {
@@ -885,7 +818,7 @@ class _AccountAdminState extends State<AccountAdmin> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      _builddetailAccount(),
+
                       _buildSettings(),
                     ],
                   ),
@@ -932,7 +865,7 @@ class _AccountAdminState extends State<AccountAdmin> {
                       TextStyle(fontWeight: FontWeight.bold, fontSize: 16,fontFamily: "SFReguler")),
                   SizedBox(height: 10,),
                   Text(
-                    "Are you sure?",
+                    "Apakah kamu yakin?",
                     style: TextStyle(
                       fontSize: 20,
                       fontFamily: "SFReguler",
@@ -952,7 +885,7 @@ class _AccountAdminState extends State<AccountAdmin> {
                                 borderRadius: BorderRadius.circular(8)),
                             textColor: Colors.white,
                             color: btnColor1,
-                            child: Text("Yes"),
+                            child: Text("Iya"),
                             onPressed: () async {
                               session.logout(context);
                               services.clearTokenemployee(user_id);
@@ -967,7 +900,7 @@ class _AccountAdminState extends State<AccountAdmin> {
                             focusColor: btnColor1,
                             textColor: btnColor1,
                             borderSide: BorderSide(color: btnColor1),
-                            child: Text("No"),
+                            child: Text("Tidak"),
                             onPressed: () => Navigator.pop(context),
                           ),
                         ),
