@@ -71,6 +71,16 @@ final Widget offwork = SvgPicture.asset(
   semanticsLabel: 'Acme Logo',
   color: baseColor1,
 );
+final Widget sick = SvgPicture.asset(
+  "assets/sick.svg",
+  semanticsLabel: 'Acme Logo',
+  color: baseColor1,
+);
+final Widget permission = SvgPicture.asset(
+  "assets/permission.svg",
+  semanticsLabel: 'Acme Logo',
+  color: baseColor1,
+);
 
 final Widget wellcome = SvgPicture.asset(
   "assets/wellcome.svg",
@@ -204,9 +214,13 @@ class Constants {
   static const String Buget = "Budget History";
   static const String Absence = "Staatus Kehadiran";
   static const String Leave = "Status Cuti";
+  static const String Sick = "Status Sakit";
+  static const String Permission = "Status Izin";
   static const List<String> choicesM = <String>[Buget];
   static const List<String> AbsenceStatus = <String>[Absence];
   static const List<String> LeaveStatus = <String>[Leave];
+  static const List<String> SickStatus = <String>[Sick];
+  static const List<String> PermissionStatus = <String>[Permission];
 
 }
 

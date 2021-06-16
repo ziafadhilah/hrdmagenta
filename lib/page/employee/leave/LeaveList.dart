@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hrdmagenta/page/employee/leave/LeaveEdit.dart';
 import 'package:hrdmagenta/page/employee/leave/TabMenuLeave.dart';
 import 'package:hrdmagenta/page/employee/project/shimmer_project.dart';
 import 'package:hrdmagenta/services/api_clien.dart';
@@ -139,7 +140,7 @@ class _LeaveListEmployeeState extends State<LeaveListEmployee> {
                 direction: Axis.horizontal,
                   children: [Expanded(child: Container(child:Text(_leaves['data'][index]['leave_dates'].toString(),style: TextStyle(color: Colors.black87,fontFamily: "SFReguler"),),))]),
               SizedBox(height: 15,),
-              _leaves['data'][index]['status']=="aproved"?Container():btnAction(id)
+              // _leaves['data'][index]['status']=="aproved"?Container():btnAction(id,_leaves['data'][index]['date_of_filing'],_leaves['data'][index]['leave_dates'],_leaves['data'][index]['description'])
             ],
           ),
         ),
@@ -147,7 +148,7 @@ class _LeaveListEmployeeState extends State<LeaveListEmployee> {
       ),
     );
   }
-  Widget btnAction(id){
+  Widget btnAction(id,date_of_filing,leave_dates,description){
     return  Container(
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
@@ -165,7 +166,12 @@ class _LeaveListEmployeeState extends State<LeaveListEmployee> {
                 iconSize: 20,
                 icon: Icon(Icons.edit_outlined,color: Colors.black45,),
                 onPressed: () {
-                  print('pressed');
+                 // Get.to(LeaveEdit(
+                 //   id: id,
+                 //   date_of_filing: date_of_filing,
+                 //   leave_dates: leave_dates,
+                 //   description: description,));
+                  editLeave(id, date_of_filing, leave_dates, description);
                 },
               ),
             ),
@@ -225,6 +231,16 @@ class _LeaveListEmployeeState extends State<LeaveListEmployee> {
 
     );
   }
+  void editLeave(var id,date_of_filing,leave_dates,description) async{
+    var result=await Get.to(LeaveEdit(
+      id: id,
+      date_of_filing: date_of_filing,
+      leave_dates: leave_dates,
+      description: description,));
+    if (result=="update"){
+      _dataLeave(user_id);
+    }
+  }
   //ge data from api--------------------------------
   Future _dataLeave(var user_id) async {
     try {
@@ -232,7 +248,7 @@ class _LeaveListEmployeeState extends State<LeaveListEmployee> {
         _loading = true;
       });
       http.Response response = await http.get(
-          "$base_url/api/employees/$user_id/leave-submissions?status=pending");
+          "$base_url/api/employees/$user_id/leave-submissions?status=${widget.status}");
       _leaves = jsonDecode(response.body);
       setState(() {
         _loading = false;

@@ -137,6 +137,8 @@ flutter:
     - assets/announcement.svg
     - assets/employees.svg
     - assets/nopayslip.svg
+    - assets/sick.svg
+    - assets/permission.svg
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 

@@ -16,8 +16,10 @@ import 'package:hrdmagenta/page/employee/absence/tabmenu_absence.dart';
 import 'package:hrdmagenta/page/employee/checkin/checkin.dart';
 import 'package:hrdmagenta/page/employee/checkout/checkout.dart';
 import 'package:hrdmagenta/page/employee/leave/LeaveList.dart';
+import 'package:hrdmagenta/page/employee/permission/list.dart';
 import 'package:hrdmagenta/page/employee/project/detail.dart';
 import 'package:hrdmagenta/page/employee/project/tabmenu_project.dart';
+import 'package:hrdmagenta/page/employee/sick/list.dart';
 import 'package:hrdmagenta/services/api_clien.dart';
 import 'package:hrdmagenta/utalities/color.dart';
 import 'package:hrdmagenta/utalities/constants.dart';
@@ -170,6 +172,51 @@ class _HomeEmployeeState extends State<HomeEmployee> {
       Text("Cuti", style: subtitleMainMenu)
     ]);
   }
+  Widget _buildMenusick() {
+    return Column(children: <Widget>[
+      new Container(
+        width: 70,
+        height: 70,
+        child: InkWell(
+          onTap: () {
+            // Navigator.pushNamed(context, "leave_list_employee-page");
+            Get.to(ListSickPageEmployee(status: "approved",));
+          },
+          child: Card(
+            elevation: 1,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+            child: Container(margin: EdgeInsets.all(15.0), child: sick),
+          ),
+        ),
+      ),
+      Text("Sakit", style: subtitleMainMenu)
+    ]);
+  }
+  Widget _buildMenupermission() {
+    return Column(children: <Widget>[
+      new Container(
+        width: 70,
+        height: 70,
+        child: InkWell(
+          onTap: () {
+            // Navigator.pushNamed(context, "leave_list_employee-page");
+           // Get.to(LeaveListEmployee(status: "approved",));
+            Get.to(ListPermissionPageEmployee());
+          },
+          child: Card(
+            elevation: 1,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+            child: Container(margin: EdgeInsets.all(15.0), child: permission),
+          ),
+        ),
+      ),
+      Text("izin", style: subtitleMainMenu)
+    ]);
+  }
 
   Widget _buildmenupyslip() {
     return Column(children: <Widget>[
@@ -215,16 +262,22 @@ class _HomeEmployeeState extends State<HomeEmployee> {
                           children: <Widget>[
                             _buildMenucheckin(),
                             _buildMenucheckout(),
+                            _buildMenuaabsence(),
+
                             _buildMenuproject(),
+
+
                           ],
                         ),
                         Container(
                             child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: <Widget>[
-                            _buildMenuaabsence(),
+                            _buildmenupyslip(),
                             _buildMenuoffwork(),
-                            _buildmenupyslip()
+                            _buildMenusick(),
+                            _buildMenupermission()
+
                           ],
                         )),
                       ],

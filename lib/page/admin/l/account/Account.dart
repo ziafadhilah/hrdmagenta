@@ -702,6 +702,7 @@ class _AccountAdminState extends State<AccountAdmin> {
     );
   }
 
+
 //wodget about
   Widget _buildabout() {
     return Container(
@@ -753,24 +754,7 @@ class _AccountAdminState extends State<AccountAdmin> {
                         )
                       ],
                     )),
-
                 //container arrow right
-                Flexible(
-                  child: Container(
-                    width: MediaQuery.of(context).size.width,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Icon(
-                          Icons.arrow_forward_ios_rounded,
-                          color: Colors.black38,
-                          size: 20,
-                        ),
-                      ],
-                    ),
-                  ),
-                )
               ],
             ),
           ),

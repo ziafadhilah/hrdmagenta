@@ -129,9 +129,11 @@ class Services {
       // alert_success(context, "${responseJson['message']}", "Back");
       toast_success("${responseJson['message']}");
       Navigator.pop(context);
+
     } else {
       Navigator.pop(context);
       alert_info(context, "${responseJson['message']}", "Back");
+      print(responseJson);
     }
   }
 
@@ -248,6 +250,8 @@ class Services {
     }
   }
 
+
+  //leave
   Future<void> leaveSubmission(BuildContext context,var employee_id,date_of_filing,leaves_dates,description) async{
     loading(context);
     final response =
@@ -269,13 +273,79 @@ class Services {
 
     }else{
       print(leaves_dates.toString());
-      Toast.show("${responseJson['message']}", context);
+      toast_success("${responseJson['message']}");
       Get.back();
       print(responseJson.toString());
       print(date_of_filing.toString());
 
     }
   }
+
+
+  Future<void> leaveEdit(BuildContext context,var id,employee_id,date_of_filing,leaves_dates,description) async{
+    loading(context);
+    final response =
+    await http.patch("$base_url/api/leave-submissions/$id", body: {
+      "employee_id":employee_id,
+      "date_of_filing":date_of_filing.toString(),
+      "full_day_leave_dates":leaves_dates.toString(),
+      "description":description,
+
+    });
+
+    final responseJson = jsonDecode(response.body);
+    if (responseJson['code']==200){
+      toast_success("${responseJson['message']}");
+      Navigator.pop(context,"update");
+      Navigator.pop(context,"update");
+    }else{
+      print(leaves_dates.toString());
+      Toast.show("${responseJson['message']}", context);
+      print(responseJson.toString());
+      print(date_of_filing.toString());
+
+    }
+  }
+
+
+  Future<void> deleteLeave(BuildContext context,var id) async {
+    loading(context);
+    final response=await http.delete("${base_url}/api/leave-submissions/$id");
+    final responseJson=jsonDecode(response.body);
+    if (responseJson['code']==200){
+      Get.back();
+      toast_success("${responseJson['message']}");
+      return responseJson;
+
+    }else{
+      Get.back();
+      alert_error(context, "${responseJson['message']}", "Close");
+      return responseJson;
+
+    }
+
+  }
+
+  Future<void> leaveAproval(BuildContext context,var id,approval) async{
+    loading(context);
+    final response =
+    await http.post("$base_url/api/leave-submissions/action/$approval/$id");
+
+    final responseJson = jsonDecode(response.body);
+    if (responseJson['code']==200){
+      Get.back();
+      toast_success("${responseJson['message']}");
+
+    }else{
+      Get.back();
+      toast_error("${responseJson['message']}");
+
+
+    }
+  }
+
+  //payslip
+
   Future<void> payslipPermission(BuildContext context,var id) async{
     loading(context);
     final response =
@@ -301,23 +371,7 @@ class Services {
 
     }
   }
-  Future<void> deleteLeave(BuildContext context,var id) async {
-    loading(context);
-    final response=await http.delete("${base_url}/api/leave-submissions/$id");
-    final responseJson=jsonDecode(response.body);
-    if (responseJson['code']==200){
-      Get.back();
-      toast_success("${responseJson['message']}");
-      return responseJson;
 
-    }else{
-      Get.back();
-      alert_error(context, "${responseJson['message']}", "Close");
-      return responseJson;
-
-    }
-    
-  }
 
   //-----------end fucnction employeee-------
 
@@ -326,9 +380,7 @@ class Services {
   Future<void> loginAdmin(
       BuildContext context, var username, var password) async {
   //  String fcm_registration_token = await FirebaseMessaging().getToken();
-
     loading(context);
-
     final response = await http.post("$base_url/api/login/mobile/admin", body: {
       "username": username.toString().trim(),
       "password": password,

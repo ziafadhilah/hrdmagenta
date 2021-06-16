@@ -56,11 +56,7 @@ class DetailPyslip extends StatefulWidget {
 }
 
 class _DetailPyslipState extends State<DetailPyslip> {
-  final String jsonSample =
-      '[{"name":"Gaji Pokokk","age":1},{"name":"Jamsostek","email":"shyam23@gmail.com",'
-      '"age":0,"income":"30Rs","country":"India","area":"abc","day":"Monday","month":"april"},{"name":"Tunjangan harian","email":"john@gmail.com","age":0,"income":"15Rs","country":"India",'
-      '"area":"abc","day":"Monday","month":"april"},{"name":"Tunjangan Jabatan","email":"ram@gmail.com","age":0,"income":"10Rs","country":"India","area":"abc","day":"Monday","month":"april"},'
-      '{"name":"Tunjangan Komunikasi","email":"shyam23@gmail.com","age":0,"income":"30Rs","country":"India","area":"abc","day":"Monday","month":"april"}]';
+  final String jsonSample ='[{"id":1,"name":"Gaji Pokok","type":"Jumlah Tetap","pph21":0,"type_a1":"type_a1_1","is_active":1,"company_id":null,"added_by":null,"deleted_at":null,"created_at":"2021-04-14T04:16:53.000000Z","updated_at":"2021-04-14T04:16:53.000000Z","pivot":{"pay_slip_id":1,"salary_income_id":1},"value":"5000000"},{"id":2,"name":"Tunjangan Harian","type":"Jumlah Tetap","pph21":0,"type_a1":"type_a1_1","is_active":1,"company_id":null,"added_by":null,"deleted_at":null,"created_at":"2021-04-14T04:17:10.000000Z","updated_at":"2021-04-14T04:17:10.000000Z","pivot":{"pay_slip_id":1,"salary_income_id":2},"value":"2000000"},{"id":3,"name":"Tunjangan Jabatan","type":"Jumlah Tetap","pph21":0,"type_a1":"type_a1_1","is_active":1,"company_id":null,"added_by":null,"deleted_at":null,"created_at":"2021-04-14T04:17:27.000000Z","updated_at":"2021-04-14T04:17:27.000000Z","pivot":{"pay_slip_id":1,"salary_income_id":3},"value":"1000000"}]';
 
 
   final String jsonSamplededuction =
@@ -331,8 +327,11 @@ class _DetailPyslipState extends State<DetailPyslip> {
                   "name",
                   label: "Income",
                 ),
-                JsonTableColumn("age",
-                    label: "Amount", valueBuilder: numberCurrency),
+                // JsonTableColumn("value",
+                //     label: "Amount", valueBuilder: numberCurrency),
+                JsonTableColumn("value",
+                    label: "Amount",),
+
               ],
               onRowSelect: (index, map) {
 
@@ -381,7 +380,7 @@ class _DetailPyslipState extends State<DetailPyslip> {
 
   Widget _builddeduction() {
 
-    var deduction = jsonDecode(jsonSamplededuction);
+    var deduction = jsonDecode(widget.dataDeduction);
 
     return SingleChildScrollView(
       child: Container(
@@ -428,8 +427,8 @@ class _DetailPyslipState extends State<DetailPyslip> {
               },
               columns: [
                 JsonTableColumn("name", label: "Dedcution"),
-                JsonTableColumn("age",
-                    label: "Amount", valueBuilder: numberCurrency),
+                JsonTableColumn("value",
+                    label: "Amount"),
               ],
               onRowSelect: (index, map) {
 
@@ -531,8 +530,8 @@ class _DetailPyslipState extends State<DetailPyslip> {
 
   void _PayslipPdf() async {
     final date = DateTime.now();
-    var income = jsonDecode(jsonSample);
-    var deduction = jsonDecode(jsonSamplededuction);
+    var income = jsonDecode(widget.dataincome);
+    var deduction = jsonDecode(widget.dataDeduction);
 
     final invoice = Invoice(
       customer: Customer(
@@ -616,7 +615,7 @@ class _DetailPyslipState extends State<DetailPyslip> {
   void initState() {
     // TODO: implement initState
     super.initState();
-
+print(widget.dataincome);
   }
 
   String numberCurrency(jsonObject) {

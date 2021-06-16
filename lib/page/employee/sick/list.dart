@@ -5,6 +5,8 @@ import 'package:get/get.dart';
 import 'package:hrdmagenta/page/employee/leave/LeaveEdit.dart';
 import 'package:hrdmagenta/page/employee/leave/TabMenuLeave.dart';
 import 'package:hrdmagenta/page/employee/project/shimmer_project.dart';
+import 'package:hrdmagenta/page/employee/sick/add.dart';
+import 'package:hrdmagenta/page/employee/sick/tabmenu.dart';
 import 'package:hrdmagenta/services/api_clien.dart';
 
 import 'package:hrdmagenta/utalities/color.dart';
@@ -15,18 +17,18 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 
-class LeaveListStatus extends StatefulWidget {
-  LeaveListStatus({this.status});
+class ListSickPageEmployee extends StatefulWidget {
+  ListSickPageEmployee({this.status});
   var status;
   @override
-  _LeaveListStatusState createState() => _LeaveListStatusState();
+  _ListSickPageEmployeeState createState() => _ListSickPageEmployeeState();
 }
 
-class _LeaveListStatusState extends State<LeaveListStatus> {
+class _ListSickPageEmployeeState extends State<ListSickPageEmployee> {
   //variable
   final _scaffoldKey = new GlobalKey<ScaffoldState>();
   var user_id;
-  var _leaves;
+  var _sick;
 
   Map _projects;
   bool _loading = true;
@@ -46,7 +48,7 @@ class _LeaveListStatusState extends State<LeaveListStatus> {
             ),
             Container(
                 child: Text(
-                  "Tidak ada cuti",
+                  "Belum ada pengajuan sakit",
                   style: TextStyle(color: Colors.black38, fontSize: 18),
                 )),
           ],
@@ -60,8 +62,37 @@ class _LeaveListStatusState extends State<LeaveListStatus> {
   Widget build(BuildContext context) {
 
     return Scaffold(
+      appBar: AppBar(
+        actions: <Widget>[
+          PopupMenuButton<String>(
+            onSelected: choiceAction,
+            itemBuilder: (BuildContext context) {
+              return Constants.SickStatus.map((String choice) {
+                return PopupMenuItem<String>(
+                  value: choice,
+                  child: Text(choice),
+                );
+              }).toList();
+            },
+          )
+        ],
+        iconTheme: IconThemeData(
+          color: Colors.black87, //modify arrow color from here..
+        ),
+        backgroundColor: Colors.white,
+        title: new Text(
+          "Pengajuan Sakit",
+          style: TextStyle(color: Colors.black87),
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Get.to(AddSickPageEmployee());
 
-
+        },
+        child: Icon(Icons.add),
+        backgroundColor: btnColor1,
+      ),
       body: RefreshIndicator(
         child: Container(
           child: Container(
@@ -72,9 +103,11 @@ class _LeaveListStatusState extends State<LeaveListStatus> {
                 child: ShimmerProject(),
               )
                   : ListView.builder(
-                  itemCount: _leaves['data'].length<=0?1:_leaves['data'].length,
+                  //itemCount: _sick['data'].length<=0?1:_sick['data'].length,
+                itemCount: 1,
                   itemBuilder: (context, index) {
-                    return _leaves['data'].length.toString()=='0'?_buildnodata(): _leave(index);
+                    //return _sick['data'].length.toString()=='0'?_buildnodata(): _leave(index);
+                    return _buildnodata();
                   }),
             ),
           ),
@@ -84,10 +117,10 @@ class _LeaveListStatusState extends State<LeaveListStatus> {
     );
   }
   Widget _leave(index){
-    var id=_leaves['data'][index]['id'];
-    var date_of_filing=_leaves['data'][index]['date_of_filing'];
-    var leave_dates=_leaves['data'][index]['leave_dates'];
-    var description=_leaves['data'][index]['description'];
+    var id=_sick['data'][index]['id'];
+    var date_of_filing=_sick['data'][index]['date_of_filing'];
+    var leave_dates=_sick['data'][index]['leave_dates'];
+    var description=_sick['data'][index]['description'];
 
     // var date_of_filing=DateFormat().format(DateFormat().parse(_leaves['data'][index]['date_of_filing'].toString()));
     return Card(
@@ -102,7 +135,7 @@ class _LeaveListStatusState extends State<LeaveListStatus> {
             children: <Widget>[
               Container(width: Get.mediaQuery.size.width,
                 margin: EdgeInsets.only(left: 10),
-                child:Text(_leaves['data'][index]['date_of_filing'].toString(),
+                child:Text(_sick['data'][index]['date_of_filing'].toString(),
                   style: TextStyle(color: Colors.black45,fontFamily: "SFReguler")
                   ,textAlign: TextAlign.end,),),
               SizedBox(height: 10,),
@@ -110,10 +143,9 @@ class _LeaveListStatusState extends State<LeaveListStatus> {
               SizedBox(height: 10,),
               Flex(
                   direction: Axis.horizontal,
-                  children: [Expanded(child: Container(child:Text(_leaves['data'][index]['leave_dates'].toString(),style: TextStyle(color: Colors.black87,fontFamily: "SFReguler"),),))]),
+                  children: [Expanded(child: Container(child:Text(_sick['data'][index]['sick_dates'].toString(),style: TextStyle(color: Colors.black87,fontFamily: "SFReguler"),),))]),
               SizedBox(height: 15,),
-              _leaves['data'][index]['status']=="pending"?btnAction(id,_leaves['data'][index]['date_of_filing'],_leaves['data'][index]['leave_dates'],_leaves['data'][index]['description']): _leaves['data'][index]['status']=="approved"?detailApproval(index):detailRejection(index)
-
+              // _leaves['data'][index]['status']=="aproved"?Container():btnAction(id,_leaves['data'][index]['date_of_filing'],_leaves['data'][index]['leave_dates'],_leaves['data'][index]['description'])
             ],
           ),
         ),
@@ -139,8 +171,12 @@ class _LeaveListStatusState extends State<LeaveListStatus> {
                 iconSize: 20,
                 icon: Icon(Icons.edit_outlined,color: Colors.black45,),
                 onPressed: () {
-                 // Get.to(LeaveEdit(id: id,date_of_filing: date_of_filing,leave_dates: leave_dates,description: description,));
-                editLeave(id, date_of_filing, leave_dates, description);
+                  // Get.to(LeaveEdit(
+                  //   id: id,
+                  //   date_of_filing: date_of_filing,
+                  //   leave_dates: leave_dates,
+                  //   description: description,));
+                  editLeave(id, date_of_filing, leave_dates, description);
                 },
               ),
             ),
@@ -200,98 +236,6 @@ class _LeaveListStatusState extends State<LeaveListStatus> {
 
     );
   }
-
-  Widget detailApproval(index){
-    return Container(
-      width: Get.mediaQuery.size.width,
-      child: Column(
-        children: [
-          Container(
-            width: Get.mediaQuery.size.width,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(2),
-                        bottomRight: Radius.circular(2),
-                        topRight: Radius.circular(2),
-                        bottomLeft: Radius.circular(2)),
-                    color: Colors.green,
-                  ),
-
-                  child: Column(
-
-                    children: <Widget>[
-                      Container(
-
-                        margin: EdgeInsets.all(7),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            Text("Approved",style: TextStyle(color: Colors.white,fontFamily: "SFReguler",fontSize: 12),),
-                          ],
-                        ),)
-
-                    ],
-                  ),
-
-                ),
-              ],
-            ),
-          ),
-        ],
-
-      ),
-    );
-  }
-  Widget detailRejection(index){
-    return Container(
-      width: Get.mediaQuery.size.width,
-      child: Column(
-        children: [
-          Container(
-            width: Get.mediaQuery.size.width,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(2),
-                        bottomRight: Radius.circular(2),
-                        topRight: Radius.circular(2),
-                        bottomLeft: Radius.circular(2)),
-                    color: Colors.red,
-                  ),
-
-                  child: Column(
-
-                    children: <Widget>[
-                      Container(
-
-                        margin: EdgeInsets.all(7),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            Text("Rejected",style: TextStyle(color: Colors.white,fontFamily: "SFReguler",fontSize: 12),),
-                          ],
-                        ),)
-
-                    ],
-                  ),
-
-                ),
-              ],
-            ),
-          ),
-        ],
-
-      ),
-    );
-  }
-
   void editLeave(var id,date_of_filing,leave_dates,description) async{
     var result=await Get.to(LeaveEdit(
       id: id,
@@ -306,11 +250,11 @@ class _LeaveListStatusState extends State<LeaveListStatus> {
   Future _dataLeave(var user_id) async {
     try {
       setState(() {
-        _loading = true;
+        _loading = false;
       });
       http.Response response = await http.get(
           "$base_url/api/employees/$user_id/leave-submissions?status=${widget.status}");
-      _leaves = jsonDecode(response.body);
+      _sick = jsonDecode(response.body);
       setState(() {
         _loading = false;
       });
@@ -332,16 +276,9 @@ class _LeaveListStatusState extends State<LeaveListStatus> {
   }
 
   void choiceAction(String choice) {
-    if (choice == Constants.Leave) {
+    if (choice == Constants.Sick) {
       Get.testMode = true;
-
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => TabsMenuLeavestatus()),
-      );
-
-      //print(choice);
-
+      Get.to(TabMenuSickPageEmployee());
     }
   }
 }
