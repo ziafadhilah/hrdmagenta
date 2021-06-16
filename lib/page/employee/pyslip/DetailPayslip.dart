@@ -26,6 +26,14 @@ class DetailPyslip extends StatefulWidget {
     this.takeHomepay,
     this.totalIncome,
     this.period,
+    this.name,
+    this.employee_id,
+    this.departement,
+    this.lenghtWork,
+    this.work_placement,
+    this.effective_date
+
+
   });
 
   var dataincome,
@@ -37,7 +45,11 @@ class DetailPyslip extends StatefulWidget {
       employee_id,
       departement,
       lenghtWork,
+  work_placement,
+      effective_date,
       period;
+
+
 
   @override
   _DetailPyslipState createState() => _DetailPyslipState();
@@ -45,7 +57,7 @@ class DetailPyslip extends StatefulWidget {
 
 class _DetailPyslipState extends State<DetailPyslip> {
   final String jsonSample =
-      '[{"name":"Gaji Pokok","email":"ram@gmail.com","age":0,"income":"10Rs","country":"India","area":"abc"},{"name":"Jamsostek","email":"shyam23@gmail.com",'
+      '[{"name":"Gaji Pokokk","age":1},{"name":"Jamsostek","email":"shyam23@gmail.com",'
       '"age":0,"income":"30Rs","country":"India","area":"abc","day":"Monday","month":"april"},{"name":"Tunjangan harian","email":"john@gmail.com","age":0,"income":"15Rs","country":"India",'
       '"area":"abc","day":"Monday","month":"april"},{"name":"Tunjangan Jabatan","email":"ram@gmail.com","age":0,"income":"10Rs","country":"India","area":"abc","day":"Monday","month":"april"},'
       '{"name":"Tunjangan Komunikasi","email":"shyam23@gmail.com","age":0,"income":"30Rs","country":"India","area":"abc","day":"Monday","month":"april"}]';
@@ -56,9 +68,6 @@ class _DetailPyslipState extends State<DetailPyslip> {
       '"age":0,"income":"30Rs","country":"India","area":"abc","day":"Monday","month":"april"},{"name":"","email":"john@gmail.com","age":0,"income":"15Rs","country":"India",'
       '"area":"abc","day":"Monday","month":"april"},{"name":"","email":"ram@gmail.com","age":0,"income":"10Rs","country":"India","area":"abc","day":"Monday","month":"april"},'
       '{"name":"","email":"shyam23@gmail.com","age":0,"income":"30Rs","country":"India","area":"abc","day":"Monday","month":"april"}]';
-
-
-
   bool toggle = true;
 
   double iconSize = 40;
@@ -74,7 +83,7 @@ class _DetailPyslipState extends State<DetailPyslip> {
                 _PayslipPdf();
               },
               child: Icon(
-                Icons.picture_as_pdf,
+                Icons.download_outlined,
                 color: Colors.black45,
               ),
             ),
@@ -106,8 +115,8 @@ class _DetailPyslipState extends State<DetailPyslip> {
                   Container(
                     margin: EdgeInsets.only(top: 10, left: 10),
                     child: Text(
-                      "2 maret 2021 - 2 April 2021",
-                      style: titleMainMenu,
+                      "${widget.period}",
+                      style: TextStyle(color: Colors.black87,fontWeight: FontWeight.bold,fontFamily: "SFReguler",fontSize: 15),
                     ),
                   ),
                   SizedBox(
@@ -165,7 +174,7 @@ class _DetailPyslipState extends State<DetailPyslip> {
                 ),
                 Container(
                   child: Text(
-                    "Divisi ",
+                    "Penempatan ",
                     style: subtitleMainMenu,
                   ),
                 ),
@@ -208,7 +217,7 @@ class _DetailPyslipState extends State<DetailPyslip> {
               children: <Widget>[
                 Container(
                   child: Text(
-                    ": Rifan hidayat",
+                    ": ${widget.name}",
                     style: subtitleMainMenu,
                   ),
                 ),
@@ -217,7 +226,7 @@ class _DetailPyslipState extends State<DetailPyslip> {
                 ),
                 Container(
                   child: Text(
-                    ": 11",
+                    ": ${widget.employee_id}",
                     style: subtitleMainMenu,
                   ),
                 ),
@@ -226,7 +235,7 @@ class _DetailPyslipState extends State<DetailPyslip> {
                 ),
                 Container(
                   child: Text(
-                    ": Office ",
+                    ": ${widget.work_placement} ",
                     style: subtitleMainMenu,
                   ),
                 ),
@@ -235,7 +244,7 @@ class _DetailPyslipState extends State<DetailPyslip> {
                 ),
                 Container(
                   child: Text(
-                    ": Programer",
+                    ": ${widget.departement}",
                     style: subtitleMainMenu,
                   ),
                 ),
@@ -244,7 +253,7 @@ class _DetailPyslipState extends State<DetailPyslip> {
                 ),
                 Container(
                   child: Text(
-                    ": 1 November 2020",
+                    ": ${widget.effective_date}",
                     style: subtitleMainMenu,
                   ),
                 ),
@@ -253,7 +262,7 @@ class _DetailPyslipState extends State<DetailPyslip> {
                 ),
                 Container(
                   child: Text(
-                    ": 1 tahun",
+                    ":${widget.lenghtWork}",
                     style: subtitleMainMenu,
                   ),
                 ),
@@ -271,7 +280,6 @@ class _DetailPyslipState extends State<DetailPyslip> {
   Widget _buildIcome() {
     var income = jsonDecode(jsonSample);
     var deduction = jsonDecode(jsonSamplededuction);
-
     return SingleChildScrollView(
       child: Container(
         margin: EdgeInsets.only(left: 10, right: 10),
@@ -528,16 +536,16 @@ class _DetailPyslipState extends State<DetailPyslip> {
 
     final invoice = Invoice(
       customer: Customer(
-        name: "Rifan Hidayat",
-        status_ptkp: "2131",
-        lama_bekerja: "1 tahun",
-        work_placement: "Event organizer",
-        bagian: "Programer",
-        employee_id: "EP-2321",
-        tgl_bergabung: "22 november 2020",
-        job_title: "stasda",
-        status_karyawan: "Freelancer",
-        address: 'Apple Street, Cupertino, CA 95014',
+        name: widget.name,
+        status_ptkp: "",
+        lama_bekerja: widget.lenghtWork,
+        work_placement: widget.work_placement,
+        bagian:widget.departement,
+        employee_id: widget.employee_id.toString(),
+        tgl_bergabung: widget.effective_date.toString(),
+        job_title: widget.departement,
+        status_karyawan: "",
+        address: '',
       ),
       items: [
         InvoiceItem(
@@ -598,7 +606,7 @@ class _DetailPyslipState extends State<DetailPyslip> {
     );
 
     final pdfFile = await PdfPyslipApi.generate(income, deduction, "0",
-        '0', '0', '22 november 2020', invoice);
+        '0', '0', '${widget.period}', invoice);
 
 
     PdfApi.openFile(pdfFile);
@@ -608,6 +616,7 @@ class _DetailPyslipState extends State<DetailPyslip> {
   void initState() {
     // TODO: implement initState
     super.initState();
+
   }
 
   String numberCurrency(jsonObject) {

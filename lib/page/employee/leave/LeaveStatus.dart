@@ -1,118 +1,29 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:hrdmagenta/page/employee/leave/TabMenuLeave.dart';
+import 'package:hrdmagenta/page/employee/project/shimmer_project.dart';
 
-import 'package:hrdmagenta/page/employee/absence/shimmer_effect.dart';
-import 'package:hrdmagenta/services/api_clien.dart';
-
+import 'package:hrdmagenta/utalities/color.dart';
 import 'package:hrdmagenta/utalities/constants.dart';
-import 'package:hrdmagenta/utalities/font.dart';
-import 'package:http/http.dart' as http;
+
 import 'package:shared_preferences/shared_preferences.dart';
 
-class leave_status extends StatefulWidget {
-  leave_status({this.type});
+class LeaveListStatus extends StatefulWidget {
+  LeaveListStatus({this.status});
 
-  var type;
+  var status;
 
   @override
-  _leave_statusState createState() => _leave_statusState();
+  _LeaveListStatusState createState() => _LeaveListStatusState();
 }
 
-class _leave_statusState extends State<leave_status> {
+class _LeaveListStatusState extends State<LeaveListStatus> {
+  //variable
+  final _scaffoldKey = new GlobalKey<ScaffoldState>();
   var user_id;
 
-  Map _absence;
-  bool _loading = true;
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        child: _loading
-            ? Center(
-                child: ShimmerAbsence(),
-              )
-            : ListView.builder(
-                // itemCount: _budgeting['data']['cash_flow'].length,
-                itemCount:
-                    _absence['data'].length == 0 ? 1 : _absence['data'].length,
-                itemBuilder: (context, index) {
-                  return _absence['data'].length == 0
-                      ? _buildnodata()
-                      : _buildlistabsence(index);
-                }),
-
-        //
-      ),
-    );
-  }
-
-  Widget _buildlistabsence(index) {
-    return Stack(
-      children: <Widget>[
-        Container(
-          width: double.infinity,
-          height: 100,
-          child: Card(
-            elevation: 1,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[
-                Flexible(
-                  child: Container(
-                    width: double.infinity,
-                    child: Padding(
-                      padding: const EdgeInsets.only(
-                        left: 5,
-                        top: 10,
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: <Widget>[
-                          Flexible(
-                            child: Container(
-                              width: double.infinity,
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  //container text
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Container(),
-                                  ),
-                                  Flexible(
-                                    child: Container(
-                                      margin:
-                                          EdgeInsets.only(top: 10, left: 10),
-                                      width: MediaQuery.of(context).size.width,
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: <Widget>[],
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ],
-    );
-  }
+  Map _projects;
+  bool _loading = false;
 
   Widget _buildnodata() {
     return Container(
@@ -129,42 +40,145 @@ class _leave_statusState extends State<leave_status> {
             ),
             Container(
                 child: Text(
-              "Belum ada cuti dengan status ${widget.type}",
-              style: subtitleMainMenu,
-            )),
+                  "Belum ada cuti",
+                  style: TextStyle(color: Colors.black38, fontSize: 18),
+                )),
           ],
         ),
       ),
     );
   }
 
-  //ge data from api--------------------------------
-  Future _dataAbsence(var user_id) async {
-    try {
-      setState(() {
-        _loading = true;
-      });
-      http.Response response = await http.get(
-          "$base_url/api/employees/$user_id/attendances?status=${widget.type}");
-      _absence = jsonDecode(response.body);
-      setState(() {
-        _loading = false;
-      });
-    } catch (e) {}
+//main contex---------------------------
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+
+
+      body: RefreshIndicator(
+        child: Container(
+          child: Container(
+            color: Colors.white38,
+            child: Container(
+              child: _loading
+                  ? Center(
+                child: ShimmerProject(),
+              )
+                  : ListView.builder(
+                  itemCount: 1,
+                  itemBuilder: (context, indext) {
+                    return _leave();
+                  }),
+            ),
+          ),
+        ),
+        onRefresh: getDatapref,
+      ),
+    );
+  }
+  Widget _leave(){
+    return Card(
+      child: Container(
+        margin: EdgeInsets.only(top: 10,bottom: 20),
+        width: Get.mediaQuery.size.width,
+        child: Container(
+          margin: EdgeInsets.only(top: 10,left: 5,right: 5),
+
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Container(width: Get.mediaQuery.size.width,
+                margin: EdgeInsets.only(left: 10),
+                child:Text("Tanggal pengajuan",
+                  style: TextStyle(color: Colors.black45,fontFamily: "SFReguler")
+                  ,textAlign: TextAlign.end,),),
+              SizedBox(height: 10,),
+              Container(child:Text("Tanggal cuti",style: TextStyle(color: Colors.black38),),),
+              SizedBox(height: 10,),
+              Flex(
+                  direction: Axis.horizontal,
+                  children: [Expanded(child: Container(child:Text("2021-11-20,2021-11-10",style: TextStyle(color: Colors.black87,fontFamily: "SFReguler"),),))]),
+              SizedBox(height: 15,),
+              btnAction()
+
+            ],
+          ),
+        ),
+
+      ),
+    );
+  }
+  Widget btnAction(){
+    return  Container(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+
+        children: <Widget>[
+          Container(
+            margin: EdgeInsets.only(right: 10),
+            width: 40,
+            height: 40,
+            child: Ink(
+              decoration: BoxDecoration(
+                color: Colors.black12,
+              ),
+              child: IconButton(
+                iconSize: 20,
+                icon: Icon(Icons.edit_outlined,color: Colors.black45,),
+                onPressed: () {
+                  print('pressed');
+                },
+              ),
+            ),
+          ),
+
+          Container(
+            width: 40,
+            height: 40,
+            child: Ink(
+              decoration: BoxDecoration(
+                color: Colors.black12,
+              ),
+              child: IconButton(
+                iconSize: 20,
+                icon: Icon(Icons.restore_from_trash_outlined,color: Colors.black45,),
+                onPressed: () {
+                  print('pressed');
+                },
+              ),
+            ),
+          ),
+        ],
+      ),
+
+    );
   }
 
-  void getDatapref() async {
+  Future getDatapref() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     setState(() {
       user_id = sharedPreferences.getString("user_id");
-      _dataAbsence(user_id);
     });
   }
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
+    //show modal detail project
     getDatapref();
+  }
+
+  void choiceAction(String choice) {
+    if (choice == Constants.Leave) {
+      Get.testMode = true;
+
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => TabsMenuLeavestatus()),
+      );
+
+      //print(choice);
+
+    }
   }
 }

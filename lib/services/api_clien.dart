@@ -1,20 +1,21 @@
 import 'dart:convert';
+
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:hrdmagenta/model/companies.dart';
 import 'package:hrdmagenta/page/employee/budget/budget_project.dart';
+import 'package:hrdmagenta/page/employee/pyslip/ListPayslip.dart';
+import 'package:hrdmagenta/page/employee/pyslip/tabmenu.dart';
 import 'package:hrdmagenta/shared_preferenced/sessionmanage.dart';
 import 'package:hrdmagenta/utalities/alert_dialog.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toast/toast.dart';
-
-String base_url = "http://127.0.0.1:8000";
-
+String base_url = "http://192.168.100.83:8000";
 class Services {
   SharedPreference sharedPreference = new SharedPreference();
   budgetproject budget = new budgetproject();
-
   //function employeeee
   ///login employee
   Future<void> loginEmployee(
@@ -52,7 +53,6 @@ class Services {
             context, "navbar_employee-page", (route) => false);
       } else {
         Navigator.pop(context);
-
         alert_error(context, "${data['message']}", "Close");
       }
     } on Exception catch (_) {
@@ -76,8 +76,9 @@ class Services {
       "status": "pending"
     });
 
-    final responseJson = jsonDecode(response.body);
 
+
+    final responseJson = jsonDecode(response.body);
     if (responseJson['code'] == 200) {
       toast_success("${responseJson['message']}");
       Navigator.pop(context);
@@ -125,7 +126,6 @@ class Services {
       SharedPreferences sharedPreferences =
           await SharedPreferences.getInstance();
       Navigator.pop(context);
-
       // alert_success(context, "${responseJson['message']}", "Back");
       toast_success("${responseJson['message']}");
       Navigator.pop(context);
@@ -166,8 +166,8 @@ class Services {
       "screen": "DetailAttendanceAdmin"
     });
 
-    final responseJson = jsonDecode(response.body);
 
+    final responseJson = jsonDecode(response.body);
     if (responseJson['code'] == 200) {
       SharedPreferences sharedPreferences =
           await SharedPreferences.getInstance();
@@ -246,6 +246,77 @@ class Services {
     } else {
       print("gagal");
     }
+  }
+
+  Future<void> leaveSubmission(BuildContext context,var employee_id,date_of_filing,leaves_dates,description) async{
+    loading(context);
+    final response =
+    await http.post("$base_url/api/leave-submissions", body: {
+      "employee_id":employee_id,
+      "date_of_filing":date_of_filing.toString(),
+      "full_day_leave_dates":leaves_dates.toString(),
+      "description":description,
+
+    });
+
+    final responseJson = jsonDecode(response.body);
+    if (responseJson['code']==200){
+
+      Toast.show("${responseJson['message']}", context);
+      Get.back();
+      Get.back();
+
+
+    }else{
+      print(leaves_dates.toString());
+      Toast.show("${responseJson['message']}", context);
+      Get.back();
+      print(responseJson.toString());
+      print(date_of_filing.toString());
+
+    }
+  }
+  Future<void> payslipPermission(BuildContext context,var id) async{
+    loading(context);
+    final response =
+    await http.get("$base_url/api/employees/$id");
+
+    final responseJson = jsonDecode(response.body);
+    if (responseJson['code']==200){
+      print(responseJson.toString());
+      if (responseJson['data']['payslip_permission'].toString()=="1"){
+         Get.back();
+          Get.to(TabsMenuPayslip());
+      }else{
+        Get.back();
+        alert_error(context, "Anda tidak mempunyai akses", "Close");
+      }
+    }else{
+      Get.back();
+      // print(leaves_dates.toString());
+      // Toast.show("${responseJson['message']}", context);
+      // Get.back();
+      // print(responseJson.toString());
+      // print(date_of_filing.toString());
+
+    }
+  }
+  Future<void> deleteLeave(BuildContext context,var id) async {
+    loading(context);
+    final response=await http.delete("${base_url}/api/leave-submissions/$id");
+    final responseJson=jsonDecode(response.body);
+    if (responseJson['code']==200){
+      Get.back();
+      toast_success("${responseJson['message']}");
+      return responseJson;
+
+    }else{
+      Get.back();
+      alert_error(context, "${responseJson['message']}", "Close");
+      return responseJson;
+
+    }
+    
   }
 
   //-----------end fucnction employeee-------

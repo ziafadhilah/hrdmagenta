@@ -49,7 +49,7 @@ class PdfPyslipApi {
         children: [
           Text(
             '${datetime}',
-            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
           SizedBox(height: 0.8 * PdfPageFormat.cm),
           SizedBox(height: 0.8 * PdfPageFormat.cm),
@@ -65,50 +65,50 @@ class PdfPyslipApi {
       );
 
   static Widget namaEmployee(Customer customer) => Row(children: [
-        Container(width: 80, child: Text("Nama")),
-        Container(margin: pw.EdgeInsets.only(left: 50), child: Text(":")),
+        Container(width: 70, child: Text("Nama")),
+        Container(margin: pw.EdgeInsets.only(left: 10), child: Text(": ")),
         Container(child: Text(customer.name.toString()))
       ]);
 
   static Widget EmployeeID(Customer customer) => Row(children: [
-        Container(width: 80, child: Text("Employee ID")),
-        Container(margin: pw.EdgeInsets.only(left: 50), child: Text(":")),
+        Container(width: 70, child: Text("Employee ID")),
+        Container(margin: pw.EdgeInsets.only(left: 10), child: Text(": ")),
         Container(child: Text(customer.employee_id.toString()))
       ]);
 
   static Widget Bagina(Customer customer) => Row(children: [
-        Container(width: 80, child: Text("Divisi")),
-        Container(margin: pw.EdgeInsets.only(left: 50), child: Text(":")),
-        Container(child: Text(customer.bagian.toString()))
+        Container(width: 70, child: Text("penempatan")),
+        Container(margin: pw.EdgeInsets.only(left: 10), child: Text(": ")),
+        Container(child: Text(customer.work_placement.toString()))
       ]);
 
   static Widget JobTitle(Customer customer) => Row(children: [
-        Container(width: 80, child: Text("Departement")),
-        Container(margin: pw.EdgeInsets.only(left: 50), child: Text(":")),
+        Container(width: 70, child: Text("Departement")),
+        Container(margin: pw.EdgeInsets.only(left: 10), child: Text(": ")),
         Container(child: Text(customer.bagian.toString()))
       ]);
 
   static Widget StatusKaryawan(Customer customer) => Row(children: [
         Container(width: 120, child: Text("Status Karyawan")),
-        Container(margin: pw.EdgeInsets.only(left: 40), child: Text(":")),
-        Container(child: Text(customer.job_title.toString()))
+        Container(margin: pw.EdgeInsets.only(left: 5), child: Text(": ")),
+        Container(child: Text(""))
       ]);
 
   static Widget StatusPTKP(Customer customer) => Row(children: [
         Container(width: 120, child: Text("Status PTKP")),
-        Container(margin: pw.EdgeInsets.only(left: 40), child: Text(":")),
+        Container(margin: pw.EdgeInsets.only(left: 5), child: Text(": ")),
         Container(child: Text(customer.status_ptkp.toString()))
       ]);
 
   static Widget TanggalBergabung(Customer customer) => Row(children: [
         Container(width: 120, child: Text("Tanggal Bergabung")),
-        Container(margin: pw.EdgeInsets.only(left: 40), child: Text(":")),
+        Container(margin: pw.EdgeInsets.only(left: 5), child: Text(":")),
         Container(child: Text(customer.tgl_bergabung.toString()))
       ]);
 
   static Widget LamaBekerja(Customer customer) => Row(children: [
         Container(width: 120, child: Text("Lama bekerja")),
-        Container(margin: pw.EdgeInsets.only(left: 40), child: Text(":")),
+        Container(margin: pw.EdgeInsets.only(left: 5), child: Text(":")),
         Container(child: Text(customer.lama_bekerja.toString()))
       ]);
 

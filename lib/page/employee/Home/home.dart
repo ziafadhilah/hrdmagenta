@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:carousel_pro/carousel_pro.dart';
 
@@ -14,6 +15,7 @@ import 'package:hrdmagenta/page/employee/absence/DetailAbsenceNotifEmplyee.dart'
 import 'package:hrdmagenta/page/employee/absence/tabmenu_absence.dart';
 import 'package:hrdmagenta/page/employee/checkin/checkin.dart';
 import 'package:hrdmagenta/page/employee/checkout/checkout.dart';
+import 'package:hrdmagenta/page/employee/leave/LeaveList.dart';
 import 'package:hrdmagenta/page/employee/project/detail.dart';
 import 'package:hrdmagenta/page/employee/project/tabmenu_project.dart';
 import 'package:hrdmagenta/services/api_clien.dart';
@@ -153,7 +155,8 @@ class _HomeEmployeeState extends State<HomeEmployee> {
         height: 70,
         child: InkWell(
           onTap: () {
-            Navigator.pushNamed(context, "leave_list_employee-page");
+            // Navigator.pushNamed(context, "leave_list_employee-page");
+            Get.to(LeaveListEmployee(status: "approved",));
           },
           child: Card(
             elevation: 1,
@@ -175,7 +178,9 @@ class _HomeEmployeeState extends State<HomeEmployee> {
         height: 70,
         child: InkWell(
           onTap: () {
-            Navigator.pushNamed(context, "pyslip_list_employee-page");
+            //Navigator.pushNamed(context, "pyslip_list_employee-page");
+            Services services=new Services();
+            services.payslipPermission(context, user_id);
           },
           child: Card(
             elevation: 1,
@@ -286,7 +291,7 @@ class _HomeEmployeeState extends State<HomeEmployee> {
             height: 30,
           ),
           Text(
-            "Belum ada project yang sedang berlangsung",
+            "Belum ada project yang sedang berjalan",
             style: subtitleMainMenu,
           )
         ],
@@ -539,6 +544,31 @@ class _HomeEmployeeState extends State<HomeEmployee> {
   }
   //----end announcement
 
+  Widget _buildNoAbbouncement() {
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      height: MediaQuery.of(context).size.height / 3.5,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          Expanded(
+            child: Container(
+              child: no_data_announcement,
+            ),
+          ),
+          SizedBox(
+            height: 30,
+          ),
+          Text(
+            "Belum ada pengumuman",
+            style: subtitleMainMenu,
+          )
+        ],
+      ),
+    );
+  }
+
 
 
   //data from api
@@ -558,7 +588,7 @@ class _HomeEmployeeState extends State<HomeEmployee> {
     } catch (e) {}
   }
 
-//main conteext
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -657,7 +687,8 @@ class _HomeEmployeeState extends State<HomeEmployee> {
                                 textAlign: TextAlign.left,
                                 style: titleMainMenu),
                           ),
-                          _buildInformation(),
+                         // _buildInformation(),
+                          _buildNoAbbouncement()
                         ],
                       ),
                     ),
@@ -678,14 +709,12 @@ class _HomeEmployeeState extends State<HomeEmployee> {
         'chanel id', 'chanel name', 'CHANEL DESCRIPTION');
     var ios = new IOSNotificationDetails();
     var platform = new NotificationDetails(android: android, iOS: ios);
-
     await flutterLocalNotificationsPlugin.show(0, '$title', '$body', platform,
         payload: "$data");
   }
 
   Future onSelectNotification(var payload) {
     debugPrint("payload : ${payload}");
-
     Navigator.push(
         context,
         MaterialPageRoute(

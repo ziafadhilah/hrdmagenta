@@ -318,6 +318,16 @@ class Validasi {
     }
   }
 
+  void validation_leaves_submision(BuildContext context,var employee_id, date_of_filling,leaves_dates,description,){
+    if (leaves_dates.length<=0){
+      Toast.show("tanggal Cuti belum dipilih", context);
+    }else{
+      services.leaveSubmission(context, employee_id, date_of_filling, leaves_dates, description);
+    }
+
+
+  }
+
   ///Validasi admin
 
   //lvalidasi ogin

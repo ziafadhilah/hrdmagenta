@@ -1,47 +1,59 @@
+
 import 'package:flutter/material.dart';
-import 'package:hrdmagenta/page/employee/absence/absence_status.dart';
-import 'package:hrdmagenta/page/employee/leave/LeaveList.dart';
-import 'package:hrdmagenta/page/employee/leave/LeaveStatus.dart';
+import 'package:hrdmagenta/page/employee/absence/absence.dart';
+import 'package:hrdmagenta/page/employee/pyslip/ListPayslip.dart';
 import 'package:hrdmagenta/utalities/constants.dart';
 
-class TabsMenuLeavestatus extends StatelessWidget {
+
+
+
+class TabsMenuPayslip extends StatelessWidget {
+  BuildContext _context;
   final navigatorKey = GlobalKey<NavigatorState>();
   List<Widget> containers = [
-    LeaveListStatus(
-      status: "pending",
+    PyslipListPage(
+      type:"custom_period"
+
     ),
-    LeaveListStatus(status: "rejected",
+    PyslipListPage(
+      type:"fix_period"
+
     ),
-    LeaveListStatus(
-      status: "approved",
+    PyslipListPage(
+      type:"non_fix_period"
+
     )
   ];
 
+
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
+    this._context = context;
+
+    return  DefaultTabController(
       length: 3,
       child: Scaffold(
         appBar: AppBar(
           iconTheme: IconThemeData(
             color: Colors.black87, //modify arrow color from here..
           ),
+
+
           backgroundColor: Colors.white,
-          title: Text(
-            'Status Cuti',
+          title: Text('Payslip',
             style: TextStyle(color: Colors.black87),
           ),
           bottom: TabBar(
             labelColor: Colors.black87,
             tabs: <Widget>[
               Tab(
-                text: 'PENDING',
+                text: 'Harian',
               ),
               Tab(
-                text: 'REJECTED',
+                text: 'Bulanan',
               ),
               Tab(
-                text: 'APPROVED',
+                text: 'Tahunan',
               ),
             ],
           ),
@@ -51,5 +63,17 @@ class TabsMenuLeavestatus extends StatelessWidget {
         ),
       ),
     );
+
   }
+
+
+  void choiceAction(String choice) {
+    if (choice==Constants.Absence){
+      Navigator.of(_context).pushNamed("tabmenu_absence_status_employee-page");
+
+    }
+
+  }
+
+
 }

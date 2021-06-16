@@ -304,6 +304,13 @@ void validation_checkout(
   ).show();
 }
 
+void alert_confirm_delete_leave(BuildContext context,id) {
+  Services services = new Services();
+  var Cremarks = new TextEditingController();
+
+}
+
+
 void toast_success(message) {
   Fluttertoast.showToast(
       msg: message,

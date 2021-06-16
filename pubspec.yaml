@@ -64,6 +64,8 @@ dependencies:
   json_table: ^2.0.1
   dio: ^3.0.3
   file_picker: ^1.3.6
+  syncfusion_flutter_datepicker: ^19.1.67-beta
+  calendarro:
 
 
   # open pdf document

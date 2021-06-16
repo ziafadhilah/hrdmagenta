@@ -2,37 +2,35 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:hrdmagenta/page/employee/pyslip/DetailPayslip.dart';
 import 'package:hrdmagenta/services/api_clien.dart';
+import 'package:hrdmagenta/shared_preferenced/sessionmanage.dart';
 import 'package:hrdmagenta/utalities/constants.dart';
 import 'package:hrdmagenta/utalities/font.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class PyslipListPage extends StatefulWidget {
+  PyslipListPage({
+    this.type
+});
+  var type;
+
   @override
   _PyslipListPageState createState() => _PyslipListPageState();
 }
 
 class _PyslipListPageState extends State<PyslipListPage> {
   Map _payslips;
-  bool _loading = false;
+  bool _loading=true;
+  var user_id,selisih;
 
   @override
   Widget build(BuildContext context) {
+
     return new MaterialApp(
+
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        appBar: AppBar(
-          leading: BackButton(
-            onPressed: () => Navigator.pop(context, false),
-          ),
-          iconTheme: IconThemeData(
-            color: Colors.black87, //modify arrow color from here..
-          ),
-          backgroundColor: Colors.white,
-          title: Text(
-            "Payslip",
-            style: TextStyle(color: Colors.black87),
-          ),
-        ),
+
         body: _loading == true
             ? Center(
                 child: CircularProgressIndicator(),
@@ -43,9 +41,9 @@ class _PyslipListPageState extends State<PyslipListPage> {
                   children: <Widget>[
                     Expanded(
                       child: ListView.builder(
-                          itemCount: 1,
+                          itemCount: _payslips['data'].length.toString()=="0"?1:_payslips['data'].length,
                           itemBuilder: (contex, index) {
-                            return _buildNopyslip();
+                            return _payslips['data'].length.toString()=="0"?_buildNopyslip():_buildpyslip(index);
                             //return _buildpyslip(index);
                           }),
                     )
@@ -60,10 +58,33 @@ class _PyslipListPageState extends State<PyslipListPage> {
   }
 
   Widget _buildpyslip(index) {
+    DateTime tanggalMulai = DateTime.parse("${_payslips['data'][index]['employee']['careers'][0]['effective_date']}");
+    DateTime tanggalAkhir = DateTime.now();
+    final datestart = DateTime(tanggalMulai.year, tanggalMulai.month, tanggalMulai.day);
+    final dateend = DateTime(tanggalAkhir.year, tanggalAkhir.month, tanggalAkhir.day);
+
+      selisih = dateend.difference(datestart).inDays;
+
     return InkWell(
+
       onTap: () {
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => DetailPyslip()));
+            context, MaterialPageRoute(builder: (context) =>
+            DetailPyslip(
+              dataincome: _payslips['data'][index]['income'],
+              name: "${_payslips['data'][index]['employee']['first_name']} ${_payslips['data'][index]['employee']['last_name']}",
+              effective_date: "${_payslips['data'][index]['employee']['careers'][0]['effective_date']}",
+              departement: "${_payslips['data'][index]['employee']['careers'][0]['department']['name']}",
+              work_placement: "${_payslips['data'][index]['employee']['work_placement']}",
+              employee_id: "${_payslips['data'][index]['employee']['employee_id']}",
+              lenghtWork: "${selisih.toString()} Hari",
+              period:  _payslips['data'][index]['name'],
+              dataDeduction: _payslips['data'][index]['deduction'],
+              totalDeduction: "0",
+              totalIncome: "0",
+
+
+              )));
       },
       child: Stack(
         children: <Widget>[
@@ -80,7 +101,7 @@ class _PyslipListPageState extends State<PyslipListPage> {
                     child: Padding(
                       padding: const EdgeInsets.only(
                         left: 5,
-                        top: 10,
+
                       ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -130,12 +151,12 @@ class _PyslipListPageState extends State<PyslipListPage> {
                                                   style: subtitleMainMenu),
                                             ],
                                           ),
-                                          Text("Rifan Hidayat",
-                                              style: TextStyle(
-                                                  fontSize: 15,
-                                                  color: Colors.black26)),
+                                          // Text("Rifan Hidayat",
+                                          //     style: TextStyle(
+                                          //         fontSize: 15,
+                                          //         color: Colors.black26)),
                                           Text(
-                                              "Pembayaran dari periode 01/03/2014 ke 31/03/2014",
+                                              "${_payslips['data'][index]['name']}",
                                               style: TextStyle(
                                                   fontSize: 13,
                                                   color: Colors.black26)),
@@ -183,7 +204,7 @@ class _PyslipListPageState extends State<PyslipListPage> {
                   height: 20,
                 ),
                 Text(
-                  "No payslip yet",
+                  "belum ada payslip",
                   style: subtitleMainMenu,
                 )
               ],
@@ -194,17 +215,27 @@ class _PyslipListPageState extends State<PyslipListPage> {
     );
   }
 
+  Future getDatapref() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    setState(() {
+     user_id = sharedPreferences.getString("user_id");
 
+    });
+    setState(() {
+      dataPayslip(user_id.toString());
+    });
 
-  Future dataPayslip() async {
+  }
+
+  Future dataPayslip(var user_id) async {
     try {
       setState(() {
-        _loading = false;
+        _loading = true;
       });
-
-      http.Response response = await http.get("$base_url/api/");
+      http.Response response = await http.get("$base_url/api/employees/$user_id/payslips?type=${widget.type}");
       _payslips = jsonDecode(response.body);
-
+      print(_payslips['data'].length);
+      print(widget.type);
       setState(() {
         _loading = false;
       });
@@ -213,8 +244,9 @@ class _PyslipListPageState extends State<PyslipListPage> {
 
   @override
   void initState() {
+
     // TODO: implement initState
     super.initState();
-    dataPayslip();
+  getDatapref();
   }
 }
