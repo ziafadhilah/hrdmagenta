@@ -318,6 +318,7 @@ class Validasi {
     }
   }
 
+  ///leave
   void validation_leaves_submision(BuildContext context,var id, employee_id, date_of_filling,leaves_dates,description,action){
     if (leaves_dates.length<=0){
       Toast.show("tanggal Cuti belum dipilih", context);
@@ -332,12 +333,42 @@ class Validasi {
 
     }
 
+  }
+
+  ///sick
+  void validation_sick_submision(BuildContext context,var id, employee_id, date_of_filling,sick_dates,old_sick_dates,description,action){
+    if (sick_dates.length<=0){
+      Toast.show("tanggal sakit belum dipilih", context);
+    }else{
+      if(action=="submit"){
+        services.sickSubmission(context, employee_id, date_of_filling, sick_dates, description);
+      }else{
+        services.sickEdit(context,id, employee_id, date_of_filling, sick_dates,old_sick_dates,description);
+      }
+    }
+  }
+
+  //permission
+  void validation_permission_submision(BuildContext context,var id,employee_id,date_of_filing,permission_dates,number_of_days,permission_category_id,description,old_permission_dates,action){
+    if (permission_dates.length<=0){
+      Toast.show("tanggal Permission belum dipilih", context);
+    }else{
+      if(action=="submit"){
+        //services.leaveSubmission(context, employee_id, date_of_filling, leaves_dates, description);
+        services.permissionSubmission(context, employee_id, date_of_filing, permission_dates, number_of_days, permission_category_id, description);
+
+      }else{
+        //services.leaveEdit(context,id, employee_id, date_of_filling, leaves_dates, description);
+        services.editpermissionSubmission(context, id,employee_id, date_of_filing, permission_dates, number_of_days, permission_category_id, old_permission_dates, description);
+
+      }
+
+    }
 
   }
 
-  ///Validasi admin
 
-  //lvalidasi ogin
+  //validasi login
   void validation_login_admin(
       BuildContext context, String username, String password) {
     if (username.isEmpty) {

@@ -104,7 +104,7 @@ class _AddSickPageEmployeeState extends State<AddSickPageEmployee> {
           controller: Cstartdate,
           maxLines: null,
           decoration: InputDecoration(
-            labelText: 'Tanggal Cuti',
+            labelText: 'Tanggal Sakit',
             labelStyle: TextStyle(),
             helperText: 'Helper text',
             suffixIcon: Icon(
@@ -174,6 +174,7 @@ class _AddSickPageEmployeeState extends State<AddSickPageEmployee> {
           var data2=data1.toString().replaceAll((' '),'');
           print("tes");
          // validasi.validation_leaves_submision(context,"0",user_id, now.toString(), data2.toString(), descriptionController.text,'submit');
+        validasi.validation_sick_submision(context, "0", user_id, now.toString(), data2.toString(), "",descriptionController.text, "submit");
         }:null,
         child: Text('Submit',
           style: TextStyle(color: Colors.black87, fontFamily: "SFReguler",),
@@ -186,7 +187,6 @@ class _AddSickPageEmployeeState extends State<AddSickPageEmployee> {
   _selectStartDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
       context: context,
-
 
       initialDate: startdate, // Refer step 1
       firstDate: DateTime(2000),
@@ -319,6 +319,7 @@ class _AddSickPageEmployeeState extends State<AddSickPageEmployee> {
   void initState() {
     _isLoading=false;
     // TODO: implement initState
+
     super.initState();
     final DateTime n = DateTime.now();
     final DateFormat formatter = DateFormat('yyyy-MM-dd');

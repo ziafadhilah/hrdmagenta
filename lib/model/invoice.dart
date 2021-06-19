@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:hrdmagenta/model/customer.dart';
+import 'package:hrdmagenta/model/pdf.dart';
 import 'package:hrdmagenta/model/employee.dart';
 import 'package:hrdmagenta/model/supplier.dart';
 
@@ -7,7 +7,7 @@ class Invoice {
   final InvoiceInfo info;
   final Employee employee;
   final Supplier supplier;
-  final Customer customer;
+  final Pdf pdf;
   final List<InvoiceItem> items;
 
   final List<DeductionItem> itemss;
@@ -15,7 +15,7 @@ class Invoice {
   const Invoice({
     @required this.info,
     @required this.supplier,
-    @required this.customer,
+    @required this.pdf,
     @required this.items,
     @required this.employee,
     @required this.itemss,

@@ -3,18 +3,19 @@ import 'package:hrdmagenta/page/employee/absence/absence_status.dart';
 import 'package:hrdmagenta/page/employee/leave/LeaveList.dart';
 import 'package:hrdmagenta/page/employee/leave/LeaveStatus.dart';
 import 'package:hrdmagenta/page/employee/permission/list.dart';
+import 'package:hrdmagenta/page/employee/permission/liststatus.dart';
 import 'package:hrdmagenta/page/employee/sick/list.dart';
 import 'package:hrdmagenta/utalities/constants.dart';
 
 class TabMenuPermissionPageEmployee extends StatelessWidget {
   final navigatorKey = GlobalKey<NavigatorState>();
   List<Widget> containers = [
-   ListPermissionPageEmployee(
+   ListstatusPermissionPageEmployee(
       status: "pending",
     ),
-    ListPermissionPageEmployee(status: "rejected",
+    ListstatusPermissionPageEmployee(status: "rejected",
     ),
-    ListPermissionPageEmployee(
+    ListstatusPermissionPageEmployee(
       status: "approved",
     )
   ];

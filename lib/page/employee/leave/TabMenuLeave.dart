@@ -28,7 +28,7 @@ class TabsMenuLeavestatus extends StatelessWidget {
           ),
           backgroundColor: Colors.white,
           title: Text(
-            'Status Cuti',
+            'Status Pengajuan  Cuti',
             style: TextStyle(color: Colors.black87),
           ),
           bottom: TabBar(

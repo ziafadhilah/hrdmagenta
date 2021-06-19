@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hrdmagenta/page/employee/absence/absence_status.dart';
+import 'package:hrdmagenta/page/employee/absence/apporved.dart';
+import 'package:hrdmagenta/page/employee/absence/pending.dart';
+import 'package:hrdmagenta/page/employee/absence/rejected.dart';
 import 'package:hrdmagenta/utalities/constants.dart';
 
 
@@ -8,17 +11,17 @@ class TabsMenuAbsencestatus extends StatelessWidget {
 
   final navigatorKey = GlobalKey<NavigatorState>();
   List<Widget> containers = [
-    absence_status(
+    PendingAbsenceEmployeePage(
       type: "pending",
     ),
 
 
-    absence_status(
+    RejectAbsenceEmployeePage(
       type: "rejected",
     ),
 
 
-    absence_status(
+    AprovedAbsenceEmployeePage(
       type: "approved",
     )
   ];
@@ -29,7 +32,6 @@ class TabsMenuAbsencestatus extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return DefaultTabController(
-
       length: 3,
       child: Scaffold(
         appBar: AppBar(

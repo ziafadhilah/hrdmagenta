@@ -3,17 +3,18 @@ import 'package:hrdmagenta/page/employee/absence/absence_status.dart';
 import 'package:hrdmagenta/page/employee/leave/LeaveList.dart';
 import 'package:hrdmagenta/page/employee/leave/LeaveStatus.dart';
 import 'package:hrdmagenta/page/employee/sick/list.dart';
+import 'package:hrdmagenta/page/employee/sick/liststatus.dart';
 import 'package:hrdmagenta/utalities/constants.dart';
 
 class TabMenuSickPageEmployee extends StatelessWidget {
   final navigatorKey = GlobalKey<NavigatorState>();
   List<Widget> containers = [
-    ListSickPageEmployee(
+    ListstatusSickPageEmployee(
       status: "pending",
     ),
-    ListSickPageEmployee(status: "rejected",
+    ListstatusSickPageEmployee(status: "rejected",
     ),
-    ListSickPageEmployee(
+    ListstatusSickPageEmployee(
       status: "approved",
     )
   ];

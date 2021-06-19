@@ -110,7 +110,7 @@ class _LeaveListStatusState extends State<LeaveListStatus> {
               SizedBox(height: 10,),
               Flex(
                   direction: Axis.horizontal,
-                  children: [Expanded(child: Container(child:Text(_leaves['data'][index]['leave_dates'].toString(),style: TextStyle(color: Colors.black87,fontFamily: "SFReguler"),),))]),
+                  children: [Expanded(child: Container(child:Text("[${_leaves['data'][index]['leave_dates'].toString()}]",style: TextStyle(color: Colors.black87,fontFamily: "SFReguler"),),))]),
               SizedBox(height: 15,),
               _leaves['data'][index]['status']=="pending"?btnAction(id,_leaves['data'][index]['date_of_filing'],_leaves['data'][index]['leave_dates'],_leaves['data'][index]['description']): _leaves['data'][index]['status']=="approved"?detailApproval(index):detailRejection(index)
 

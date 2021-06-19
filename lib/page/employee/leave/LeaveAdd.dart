@@ -34,6 +34,7 @@ class _LeaveAddState extends State<LeaveAdd> {
   var date_leaves_submit=[];
   var _initialSelectedDates;
   var _visible=false;
+  var disable=true;
   var user_id;
 
   String _selectedDate = '';
@@ -54,23 +55,28 @@ class _LeaveAddState extends State<LeaveAdd> {
           style: TextStyle(color: Colors.black87),
         ),
       ),
-      body: SingleChildScrollView(
-        child: Container(
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height,
-          margin: EdgeInsets.only(left: 10, right: 10, top: 10),
-          color: Colors.white,
-          child: _isLoading?Center(child: CircularProgressIndicator(),):Column(
-            children: <Widget>[
-              _buildtglPengajuan(),
-              _buildJatacuti(),
-              _builJumlahambil(),
-              _builddateLeave(),
-              _buildJmlPengambilan(),
-              _buildketerangan(),
-              _buildbtsubmit()
+      body: Container(
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height,
+        margin: EdgeInsets.only(left: 10, right: 10, top: 10),
+        child: SingleChildScrollView(
+          child: Container(
 
-            ],
+
+            color: Colors.white,
+            child: _isLoading?Container(width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height,child: Center(child: CircularProgressIndicator(),)):Column(
+              children: <Widget>[
+                _buildtglPengajuan(),
+                _buildJatacuti(),
+                _builJumlahambil(),
+                _builddateLeave(),
+                _buildJmlPengambilan(),
+                _buildketerangan(),
+                _buildbtsubmit()
+
+              ],
+            ),
           ),
         ),
       ),
@@ -141,21 +147,22 @@ class _LeaveAddState extends State<LeaveAdd> {
 
 
   Widget _buildJmlPengambilan() {
-    return Visibility(
-      visible: _visible,
-      child: Container(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            TextFormField(
-              controller: jumlahPengambilanController,
+    return Container(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          TextFormField(
+            enabled: false,
+            controller: jumlahPengambilanController,
 
-              decoration: InputDecoration(
-                labelText: 'Jumlah Pengambilan',
-              ),
+            decoration: InputDecoration(
+              labelText: 'Jumlah Pengambilan',
             ),
-            SizedBox(height: 5,),
-            Container(child: Row(
+          ),
+          SizedBox(height: 5,),
+          Visibility(
+            visible: _visible,
+            child: Container(child: Row(
               children: [
                 Container(child: Icon(Icons.warning_amber_outlined,color: Colors.amber,size: 20,)),
                 Container(
@@ -165,9 +172,9 @@ class _LeaveAddState extends State<LeaveAdd> {
                   ),
                 ),
               ],
-            ),)
-          ],
-        ),
+            ),),
+          )
+        ],
       ),
     );
   }
@@ -190,12 +197,14 @@ class _LeaveAddState extends State<LeaveAdd> {
       margin: EdgeInsets.symmetric(vertical: 30),
       child: new  OutlineButton(
         onPressed: () {
-           Validasi validasi=new Validasi();
-           var data=date_leaves_submit.toString().replaceAll((']'),'');
-           var data1=data.toString().replaceAll(('['),'');
-           var data2=data1.toString().replaceAll((' '),'');
-           validasi.validation_leaves_submision(context,"0",user_id, now.toString(), data2.toString(), descriptionController.text,'submit');
-        print(date_leaves_submit);
+          if (disable==true){
+            Validasi validasi=new Validasi();
+            var data=date_leaves_submit.toString().replaceAll((']'),'');
+            var data1=data.toString().replaceAll(('['),'');
+            var data2=data1.toString().replaceAll((' '),'');
+            validasi.validation_leaves_submision(context,"0",user_id, now.toString(), data2.toString(), descriptionController.text,'submit');
+          }
+
         },
         child: Text('Submit',
           style: TextStyle(color: Colors.black87, fontFamily: "SFReguler",),
@@ -205,38 +214,23 @@ class _LeaveAddState extends State<LeaveAdd> {
   }
 
 
-  _selectStartDate(BuildContext context) async {
-    final DateTime picked = await showDatePicker(
-      context: context,
+  // _selectStartDate(BuildContext context) async {
+  //   final DateTime picked = await showDatePicker(
+  //     context: context,
+  //
+  //     initialDate: startdate, // Refer step 1
+  //     firstDate: DateTime(2000),
+  //     lastDate: DateTime(2030),
+  //   );
+  //   if (picked != null && picked != startdate)
+  //     setState(() {
+  //       startdate= picked;
+  //       final DateFormat formatter = DateFormat('yyyy-MM-dd');
+  //       var startdate1 = formatter.format(startdate);
+  //       Cstartdate.text="$startdate1";
+  //     });
+  // }
 
-
-      initialDate: startdate, // Refer step 1
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2030),
-    );
-    if (picked != null && picked != startdate)
-      setState(() {
-        startdate= picked;
-        final DateFormat formatter = DateFormat('yyyy-MM-dd');
-        var startdate1 = formatter.format(startdate);
-        Cstartdate.text="$startdate1";
-      });
-  }
-  _selectEndtDate(BuildContext context) async {
-    final DateTime picked = await showDatePicker(
-      context: context,
-      initialDate: enddate, // Refer step 1
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2030),
-    );
-    if (picked != null && picked != enddate)
-      setState(() {
-        enddate = picked;
-        final DateFormat formatter = DateFormat('yyyy-MM-dd');
-        var enddate1 = formatter.format(enddate);
-        Cenddate.text="$enddate1";
-      });
-  }
 
   Future dataLeave(var id) async {
     try {
@@ -311,8 +305,10 @@ class _LeaveAddState extends State<LeaveAdd> {
         ///check total total leave
         if (int.parse(totalLeaveController.text.toString())<int.parse(jumlahPengambilanController.text.toString())){
           _visible=true;
+          disable=false;
         }else{
           _visible=false;
+          disable=true;
         }
 
       } else {

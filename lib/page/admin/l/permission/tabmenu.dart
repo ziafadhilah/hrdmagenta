@@ -1,19 +1,21 @@
 
 import 'package:flutter/material.dart';
 import 'package:hrdmagenta/page/admin/l/leave/offwork_status.dart';
+import 'package:hrdmagenta/page/admin/l/permission/list.dart';
+import 'package:hrdmagenta/page/admin/l/sick/list.dart';
 
-class TabsMenuOffworkAdmin extends StatelessWidget {
+class TabmenuPermissionPageAdmin extends StatelessWidget {
 
   List<Widget> containers = [
 
-    LeaveListStatusAdmin(
-     status: "pending",
+    ListPermissionPageAdmin(
+      status: "pending",
 
-   ),
-    LeaveListStatusAdmin(
+    ),
+    ListPermissionPageAdmin(
       status: "rejected",
     ),
-    LeaveListStatusAdmin(
+    ListPermissionPageAdmin(
       status: "approved",
     ),
 
@@ -34,9 +36,8 @@ class TabsMenuOffworkAdmin extends StatelessWidget {
               icon: Icon(Icons.arrow_back, color: Colors.black),
               onPressed: () => Navigator.of(context).pop("update"),
             ),
-
             backgroundColor: Colors.white,
-            title: Text('Cuti',
+            title: Text('Pengajuan Izin',
               style: TextStyle(color: Colors.black87),
 
             ),

@@ -125,6 +125,7 @@ class _LeaveListStatusAdminState extends State<LeaveListStatusAdmin> {
                 SizedBox(height: 15,),
                 // _leaves['data'][index]['status']=="approved"?Container():btnAction(id,_leaves['data'][index]['date_of_filing'],_leaves['data'][index]['leave_dates'],_leaves['data'][index]['description'])
                 _leaves['data'][index]['status']=="pending"?btnAction(id,_leaves['data'][index]['date_of_filing'],_leaves['data'][index]['leave_dates'],_leaves['data'][index]['description']): _leaves['data'][index]['status']=="approved"?detailApproval(index):detailRejection(index)
+
               ],
             ),
           ),

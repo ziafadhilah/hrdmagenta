@@ -4,7 +4,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hrdmagenta/model/customer.dart';
+import 'package:hrdmagenta/model/pdf.dart';
 import 'package:hrdmagenta/model/invoice.dart';
 import 'package:hrdmagenta/services/api_pdf.dart';
 import 'package:hrdmagenta/services/pdf_pyslip_api.dart';
@@ -31,7 +31,12 @@ class DetailPyslip extends StatefulWidget {
     this.departement,
     this.lenghtWork,
     this.work_placement,
-    this.effective_date
+    this.effective_date,
+    this.divisi,
+    this.job_title,
+    this.status_karyawan,
+    this.pay_take_home
+
 
 
   });
@@ -45,8 +50,12 @@ class DetailPyslip extends StatefulWidget {
       employee_id,
       departement,
       lenghtWork,
-  work_placement,
+      work_placement,
       effective_date,
+      divisi,
+      job_title,
+      status_karyawan,
+      pay_take_home,
       period;
 
 
@@ -67,6 +76,8 @@ class _DetailPyslipState extends State<DetailPyslip> {
   bool toggle = true;
 
   double iconSize = 40;
+  var totalIncome=0;
+  var totalDeduction;
 
   @override
   Widget build(BuildContext context) {
@@ -139,144 +150,234 @@ class _DetailPyslipState extends State<DetailPyslip> {
       width: double.infinity,
       height: 150,
       margin: EdgeInsets.only(left: 10, right: 10, top: 10),
-      child: GridView.count(
-        // todo comment this out and check the result
-        physics: ClampingScrollPhysics(),
-        shrinkWrap: true,
-        primary: true,
-        crossAxisCount: 2,
-        children: <Widget>[
-          Container(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Container(
-                  child: Text(
-                    "Nama",
-                    style: subtitleMainMenu,
-                  ),
-                ),
-                SizedBox(
-                  height: 5,
-                ),
-                Container(
-                  child: Text(
-                    "ID Karyawan",
-                    style: subtitleMainMenu,
-                  ),
-                ),
-                SizedBox(
-                  height: 5,
-                ),
-                Container(
-                  child: Text(
-                    "Penempatan ",
-                    style: subtitleMainMenu,
-                  ),
-                ),
-                SizedBox(
-                  height: 5,
-                ),
-                Container(
-                  child: Text(
-                    "Departement",
-                    style: subtitleMainMenu,
-                  ),
-                ),
-                SizedBox(
-                  height: 5,
-                ),
-                Container(
-                  child: Text(
-                    "Tanggal Bergabung",
-                    style: subtitleMainMenu,
-                  ),
-                ),
-                SizedBox(
-                  height: 5,
-                ),
-                Container(
-                  child: Text(
-                    "Lama Bekerja",
-                    style: subtitleMainMenu,
-                  ),
-                ),
-                SizedBox(
-                  height: 5,
-                ),
-              ],
+      child: Column(children: <Widget>[
+
+        Container(child: Row(
+          children: <Widget>[
+            Container(
+              width:Get.mediaQuery.size.width/3,
+              child: Text("Nama",style: subtitleMainMenu,),
             ),
-          ),
-          Container(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Container(
-                  child: Text(
-                    ": ${widget.name}",
-                    style: subtitleMainMenu,
-                  ),
-                ),
-                SizedBox(
-                  height: 5,
-                ),
-                Container(
-                  child: Text(
-                    ": ${widget.employee_id}",
-                    style: subtitleMainMenu,
-                  ),
-                ),
-                SizedBox(
-                  height: 5,
-                ),
-                Container(
-                  child: Text(
-                    ": ${widget.work_placement} ",
-                    style: subtitleMainMenu,
-                  ),
-                ),
-                SizedBox(
-                  height: 5,
-                ),
-                Container(
-                  child: Text(
-                    ": ${widget.departement}",
-                    style: subtitleMainMenu,
-                  ),
-                ),
-                SizedBox(
-                  height: 5,
-                ),
-                Container(
-                  child: Text(
-                    ": ${widget.effective_date}",
-                    style: subtitleMainMenu,
-                  ),
-                ),
-                SizedBox(
-                  height: 5,
-                ),
-                Container(
-                  child: Text(
-                    ":${widget.lenghtWork}",
-                    style: subtitleMainMenu,
-                  ),
-                ),
-                SizedBox(
-                  height: 5,
-                ),
-              ],
+
+            Expanded(
+              child: Text(":${widget.name}" ,style: subtitleMainMenu,),
+            )
+          ],
+        ),),
+        SizedBox(height: 5,),
+        Container(child: Row(
+          children: <Widget>[
+            Container(
+              width:Get.mediaQuery.size.width/3,
+
+              child: Text("Employee ID",style: subtitleMainMenu,),
             ),
-          ),
-        ],
-      ),
+
+            Expanded(
+              child: Text(":${widget.employee_id}" ,style: subtitleMainMenu,),
+            )
+          ],
+        ),),
+        SizedBox(height: 5,),
+        Container(child: Row(
+          children: <Widget>[
+            Container(
+              width:Get.mediaQuery.size.width/3,
+
+              child: Text("Divisi ",style: subtitleMainMenu,),
+            ),
+
+            Expanded(
+              child: Text(":${widget.divisi}" ,style: subtitleMainMenu,),
+            )
+          ],
+        ),),
+        SizedBox(height: 5,),
+        Container(child: Row(
+          children: <Widget>[
+            Container(
+              width:Get.mediaQuery.size.width/3,
+
+              child: Text("Departemen ",style: subtitleMainMenu,),
+            ),
+
+            Expanded(
+              child: Text(":${widget.departement}" ,style: subtitleMainMenu,),
+            )
+          ],
+        ),),
+
+        SizedBox(height: 5,),
+        Container(child: Row(
+          children: <Widget>[
+            Container(
+              width:Get.mediaQuery.size.width/3,
+
+              child: Text("Bagian ",style: subtitleMainMenu,),
+            ),
+
+            Expanded(
+              child: Text(":${widget.job_title}" ,style: subtitleMainMenu,),
+            )
+          ],
+        ),),
+        SizedBox(height: 5,),
+        Container(child: Row(
+          children: <Widget>[
+            Container(
+              width:Get.mediaQuery.size.width/3,
+
+              child: Text("Status Karyawan ",style: subtitleMainMenu,),
+            ),
+
+            Expanded(
+              child: Text(":${widget.status_karyawan}" ,style: subtitleMainMenu,),
+            )
+          ],
+        ),),
+      ],),
+      // child: GridView.count(
+      //   // todo comment this out and check the result
+      //   physics: ClampingScrollPhysics(),
+      //   shrinkWrap: true,
+      //   primary: true,
+      //   crossAxisCount: 2,
+      //    children: <Widget>[
+      //
+      //   //   Container(
+      //   //     child: Column(
+      //   //       crossAxisAlignment: CrossAxisAlignment.start,
+      //   //       children: <Widget>[
+      //   //         Container(
+      //   //           child: Text(
+      //   //             "Nama",
+      //   //             style: subtitleMainMenu,
+      //   //           ),
+      //   //         ),
+      //   //         SizedBox(
+      //   //           height: 5,
+      //   //         ),
+      //   //         Container(
+      //   //           child: Text(
+      //   //             "ID Karyawan",
+      //   //             style: subtitleMainMenu,
+      //   //           ),
+      //   //         ),
+      //   //         SizedBox(
+      //   //           height: 5,
+      //   //         ),
+      //   //         Container(
+      //   //           child: Text(
+      //   //             "Divisi ",
+      //   //             style: subtitleMainMenu,
+      //   //           ),
+      //   //         ),
+      //   //         SizedBox(
+      //   //           height: 5,
+      //   //         ),
+      //   //         Container(
+      //   //           child: Text(
+      //   //             "Departemen",
+      //   //             style: subtitleMainMenu,
+      //   //           ),
+      //   //         ),
+      //   //         SizedBox(
+      //   //           height: 5,
+      //   //         ),
+      //   //         Container(
+      //   //           child: Text(
+      //   //             "Tanggal Bergabung",
+      //   //             style: subtitleMainMenu,
+      //   //           ),
+      //   //         ),
+      //   //         SizedBox(
+      //   //           height: 5,
+      //   //         ),
+      //   //         Container(
+      //   //           child: Text(
+      //   //             "Lama Bekerja",
+      //   //             style: subtitleMainMenu,
+      //   //           ),
+      //   //         ),
+      //   //         SizedBox(
+      //   //           height: 5,
+      //   //         ),
+      //   //       ],
+      //   //     ),
+      //   //   ),
+      //   //   Container(
+      //   //     child: Column(
+      //   //       crossAxisAlignment: CrossAxisAlignment.start,
+      //   //       children: <Widget>[
+      //   //         Container(
+      //   //           child: Text(
+      //   //             ": ${widget.name}",
+      //   //             style: subtitleMainMenu,
+      //   //           ),
+      //   //         ),
+      //   //         SizedBox(
+      //   //           height: 5,
+      //   //         ),
+      //   //         Container(
+      //   //           child: Text(
+      //   //             ": ${widget.employee_id}",
+      //   //             style: subtitleMainMenu,
+      //   //           ),
+      //   //         ),
+      //   //         SizedBox(
+      //   //           height: 5,
+      //   //         ),
+      //   //         Container(
+      //   //           child: Text(
+      //   //             ": ${widget.work_placement} ",
+      //   //             style: subtitleMainMenu,
+      //   //           ),
+      //   //         ),
+      //   //         SizedBox(
+      //   //           height: 5,
+      //   //         ),
+      //   //         Container(
+      //   //           child: Text(
+      //   //             ": ${widget.departement}",
+      //   //             style: subtitleMainMenu,
+      //   //           ),
+      //   //         ),
+      //   //         SizedBox(
+      //   //           height: 5,
+      //   //         ),
+      //   //         Container(
+      //   //           child: Text(
+      //   //             ": ${widget.effective_date}",
+      //   //             style: subtitleMainMenu,
+      //   //           ),
+      //   //         ),
+      //   //         SizedBox(
+      //   //           height: 5,
+      //   //         ),
+      //   //         Container(
+      //   //           child: Text(
+      //   //             ":${widget.lenghtWork}",
+      //   //             style: subtitleMainMenu,
+      //   //           ),
+      //   //         ),
+      //   //         SizedBox(
+      //   //           height: 5,
+      //   //         ),
+      //   //       ],
+      //   //     ),
+      //   //   ),
+      //   ],
+      // ),
     );
   }
 
   Widget _buildIcome() {
     var income = jsonDecode(jsonSample);
     var deduction = jsonDecode(jsonSamplededuction);
+    totalIncome=0;
+
     return SingleChildScrollView(
+
       child: Container(
         margin: EdgeInsets.only(left: 10, right: 10),
         width: Get.mediaQuery.size.width,
@@ -305,6 +406,7 @@ class _DetailPyslipState extends State<DetailPyslip> {
 
                 return Container(
                   width: Get.mediaQuery.size.width / 2 - 20,
+                  height: 50,
                   alignment: value is int
                       ? Alignment.centerRight
                       : Alignment.centerLeft,
@@ -314,7 +416,7 @@ class _DetailPyslipState extends State<DetailPyslip> {
                           width: 0.5, color: Colors.grey.withOpacity(0.5))),
                   child: Text(
                     value,
-                    textAlign: TextAlign.center,
+                    textAlign: TextAlign.left,
                     style: Theme.of(context)
                         .textTheme
                         .display1
@@ -323,14 +425,16 @@ class _DetailPyslipState extends State<DetailPyslip> {
                 );
               },
               columns: [
+
                 JsonTableColumn(
+
                   "name",
                   label: "Income",
                 ),
+                JsonTableColumn('value',
+                    label: "Amount", valueBuilder: numberCurrency),
                 // JsonTableColumn("value",
-                //     label: "Amount", valueBuilder: numberCurrency),
-                JsonTableColumn("value",
-                    label: "Amount",),
+                //     label: "Amount",),
 
               ],
               onRowSelect: (index, map) {
@@ -360,7 +464,7 @@ class _DetailPyslipState extends State<DetailPyslip> {
                             child: Text(
                               NumberFormat.currency(
                                       locale: 'id', decimalDigits: 0)
-                                  .format(0),
+                                  .format(int.parse(widget.totalIncome)),
                               style: TextStyle(fontWeight: FontWeight.bold),
                             ),
                           )
@@ -379,8 +483,8 @@ class _DetailPyslipState extends State<DetailPyslip> {
   }
 
   Widget _builddeduction() {
+    var income = jsonDecode(widget.dataDeduction);
 
-    var deduction = jsonDecode(widget.dataDeduction);
 
     return SingleChildScrollView(
       child: Container(
@@ -389,7 +493,7 @@ class _DetailPyslipState extends State<DetailPyslip> {
         child: Column(
           children: [
             JsonTable(
-              deduction,
+              income,
               allowRowHighlight: true,
               rowHighlightColor: Colors.yellow[500].withOpacity(0.7),
               tableHeaderBuilder: (String header) {
@@ -408,16 +512,20 @@ class _DetailPyslipState extends State<DetailPyslip> {
                 );
               },
               tableCellBuilder: (value) {
+
                 return Container(
                   width: Get.mediaQuery.size.width / 2 - 20,
-                  alignment: Alignment.topLeft,
+                  height: 50,
+                  alignment: value is int
+                      ? Alignment.centerRight
+                      : Alignment.centerLeft,
                   padding: EdgeInsets.symmetric(horizontal: 4.0, vertical: 2.0),
                   decoration: BoxDecoration(
                       border: Border.all(
                           width: 0.5, color: Colors.grey.withOpacity(0.5))),
                   child: Text(
-                    value,
-                    textAlign: TextAlign.center,
+                    value.toString(),
+                    textAlign: TextAlign.left,
                     style: Theme.of(context)
                         .textTheme
                         .display1
@@ -426,9 +534,16 @@ class _DetailPyslipState extends State<DetailPyslip> {
                 );
               },
               columns: [
-                JsonTableColumn("name", label: "Dedcution"),
-                JsonTableColumn("value",
-                    label: "Amount"),
+
+                JsonTableColumn(
+                  "name",
+                  label: "Deduction",
+                ),
+                JsonTableColumn('value',
+                    label: "Amount",valueBuilder: currencyDeduction),
+                // JsonTableColumn("value",
+                //     label: "Amount",),
+
               ],
               onRowSelect: (index, map) {
 
@@ -456,19 +571,28 @@ class _DetailPyslipState extends State<DetailPyslip> {
                             margin: EdgeInsets.only(left: 5),
                             child: Text(
                               NumberFormat.currency(
-                                      locale: 'id', decimalDigits: 0)
-                                  .format(0),
+                                  locale: 'id', decimalDigits: 0)
+                                  .format(int.parse(widget.totalDeduction)),
                               style: TextStyle(fontWeight: FontWeight.bold),
                             ),
                           )
                         ]),
                   ]),
+                ],
+              ),
+            ),
+            Container(
+              color: Colors.grey[300],
+              margin: EdgeInsets.only(left: 10, right: 10),
+              child: Table(
+                border: TableBorder.all(),
+                children: [
                   TableRow(children: [
                     Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Take Home Pay',
+                            'Pay Take Home',
                             style: TextStyle(fontWeight: FontWeight.bold),
                           )
                         ]),
@@ -479,8 +603,8 @@ class _DetailPyslipState extends State<DetailPyslip> {
                             margin: EdgeInsets.only(left: 5),
                             child: Text(
                               NumberFormat.currency(
-                                      locale: 'id', decimalDigits: 0)
-                                  .format(0),
+                                  locale: 'id', decimalDigits: 0)
+                                  .format(int.parse(widget.totalIncome)-int.parse(widget.totalDeduction)),
                               style: TextStyle(fontWeight: FontWeight.bold),
                             ),
                           )
@@ -497,6 +621,7 @@ class _DetailPyslipState extends State<DetailPyslip> {
       ),
     );
   }
+
 
   final pdf = pw.Document();
 
@@ -534,78 +659,25 @@ class _DetailPyslipState extends State<DetailPyslip> {
     var deduction = jsonDecode(widget.dataDeduction);
 
     final invoice = Invoice(
-      customer: Customer(
+      pdf: Pdf(
+        employee_id: widget.employee_id,
+        status_karyawan: widget.status_karyawan,
         name: widget.name,
-        status_ptkp: "",
-        lama_bekerja: widget.lenghtWork,
-        work_placement: widget.work_placement,
-        bagian:widget.departement,
-        employee_id: widget.employee_id.toString(),
-        tgl_bergabung: widget.effective_date.toString(),
-        job_title: widget.departement,
-        status_karyawan: "",
-        address: '',
+        departement: widget.departement,
+        division: widget.divisi,
+        job_title: widget.job_title
+      
       ),
-      items: [
-        InvoiceItem(
-            name: "Rifan Hidayat",
-            age: "11",
-            country: "Bandung",
-            income: "11111",
-            email: "roafsd",
-            area: "bandung"),
-        InvoiceItem(
-            name: "Rifan Hidayat",
-            age: "11",
-            country: "Bandung",
-            income: "11111",
-            email: "roafsd",
-            area: "bandung"),
-        InvoiceItem(
-            name: "Rifan Hidayat",
-            age: "11",
-            country: "Bandung",
-            income: "11111",
-            email: "roafsd",
-            area: "bandung"),
-        InvoiceItem(
-            name: "Rifan Hidayat",
-            age: "11",
-            country: "Bandung",
-            income: "11111",
-            email: "roafsd",
-            area: "bandung"),
-      ],
-      itemss: [
-        DeductionItem(
-          description: 'PPh21',
-          unitPrice: "IDR 0",
-        ),
-        DeductionItem(
-          description: '',
-          unitPrice: "",
-        ),
-        DeductionItem(
-          description: '',
-          unitPrice: "",
-        ),
-        DeductionItem(
-          description: '',
-          unitPrice: "",
-        ),
-        DeductionItem(
-          description: 'Total Deduction',
-          unitPrice: "IDR 0",
-        ),
-        DeductionItem(
-          description: 'Take Home Pay',
-          unitPrice: "IDR 0",
-        ),
-      ],
+  
     );
 
-    final pdfFile = await PdfPyslipApi.generate(income, deduction, "0",
-        '0', '0', '${widget.period}', invoice);
+    final pdfFile = await PdfPyslipApi.generate(income,
+        deduction,
+        NumberFormat.currency(decimalDigits: 0,  locale: "id").format((int.parse(widget.totalIncome))),
+        NumberFormat.currency(decimalDigits: 0,  locale: "id").format((int.parse(widget.totalDeduction))),
+        NumberFormat.currency(decimalDigits: 0,  locale: "id").format((int.parse(widget.pay_take_home))),
+        '${widget.period}',
+        invoice);
 
 
     PdfApi.openFile(pdfFile);
@@ -615,13 +687,23 @@ class _DetailPyslipState extends State<DetailPyslip> {
   void initState() {
     // TODO: implement initState
     super.initState();
-print(widget.dataincome);
-  }
 
-  String numberCurrency(jsonObject) {
-    String string = NumberFormat.currency(locale: 'id', decimalDigits: 0)
-        .format(jsonObject);
+
+  }
+   String numberCurrency(jsonObject) {
+
+    var string =NumberFormat.currency(decimalDigits: 0,  locale: "id").format(int.parse(jsonObject.toString()));
 
     return string;
+
   }
+  String currencyDeduction(jsonObject) {
+    var string =NumberFormat.currency(decimalDigits: 0,  locale: "id").format(int.parse(jsonObject.toString()));
+
+
+    return string;
+
+  }
+
+
 }

@@ -203,7 +203,7 @@ class _HomeEmployeeState extends State<HomeEmployee> {
           onTap: () {
             // Navigator.pushNamed(context, "leave_list_employee-page");
            // Get.to(LeaveListEmployee(status: "approved",));
-            Get.to(ListPermissionPageEmployee());
+            Get.to(ListPermissionPageEmployee(status: "approved",));
           },
           child: Card(
             elevation: 1,
@@ -263,7 +263,6 @@ class _HomeEmployeeState extends State<HomeEmployee> {
                             _buildMenucheckin(),
                             _buildMenucheckout(),
                             _buildMenuaabsence(),
-
                             _buildMenuproject(),
 
 
@@ -274,10 +273,9 @@ class _HomeEmployeeState extends State<HomeEmployee> {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: <Widget>[
                             _buildmenupyslip(),
-                            _buildMenuoffwork(),
+                            _buildMenupermission(),
                             _buildMenusick(),
-                            _buildMenupermission()
-
+                            _buildMenuoffwork(),
                           ],
                         )),
                       ],

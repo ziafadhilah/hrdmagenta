@@ -1,16 +1,20 @@
 import 'dart:convert';
-
 import 'package:double_back_to_close_app/double_back_to_close_app.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
+
 import 'package:hrdmagenta/model/notifacations.dart';
 import 'package:hrdmagenta/page/admin/l/absence/DetailAbsenceNotifAdmin.dart';
 import 'package:hrdmagenta/page/admin/l/absence/tabmenu_absence.dart';
 import 'package:hrdmagenta/page/admin/l/employees/DetailEmployee.dart';
 import 'package:hrdmagenta/page/admin/l/employees/list.dart';
+import 'package:hrdmagenta/page/admin/l/leave/tabmenu_offwork.dart';
+import 'package:hrdmagenta/page/admin/l/permission/tabmenu.dart';
+import 'package:hrdmagenta/page/admin/l/sick/tabmenu.dart';
 import 'package:hrdmagenta/page/employee/project/detail.dart';
 import 'package:hrdmagenta/services/api_clien.dart';
 import 'package:hrdmagenta/utalities/color.dart';
@@ -18,6 +22,7 @@ import 'package:hrdmagenta/utalities/constants.dart';
 import 'package:hrdmagenta/utalities/font.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeAdmin extends StatefulWidget {
   @override
@@ -26,15 +31,21 @@ class HomeAdmin extends StatefulWidget {
 
 class _HomeAdminState extends State<HomeAdmin> {
   Map _employee, _projects;
-  Map _absence;
+  List _absence;
+  Map _permission;
+  Map _leave;
+  Map _sick;
   bool _isLoading_employee = true;
   bool _isLoading_project = true;
   bool _isLoading_absence = true;
+  bool _isLoading_sick = true;
+  bool _isLoading_permission = true;
+  bool _isLoading_leave = true;
 
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
   final List<Notif> ListNotif = [];
-  var _absenPending;
+  var _absenPending,user_id;
 
   final GlobalKey<ScaffoldState> scaffoldState = new GlobalKey<ScaffoldState>();
 
@@ -48,18 +59,152 @@ class _HomeAdminState extends State<HomeAdmin> {
             // Navigator.push(context, MaterialPageRoute(
             //     builder: (context) => Tabstask()
             // ));
-            Navigator.pushNamed(context, "tabmenu_offwork_admin-page");
+            //Navigator.pushNamed(context, "tabmenu_offwork_admin-page");
+            navigatorLeave();
           },
-          child: Card(
-            elevation: 1,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10.0),
-            ),
-            child: Container(margin: EdgeInsets.all(15.0), child: offwork),
+          child: Stack(
+            children: [
+              Card(
+                elevation: 1,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                child: Container(margin: EdgeInsets.all(15.0), child: offwork),
+              ),
+              Container(
+                child: _isLoading_leave == true
+                    ? Text("")
+                    : Container(
+                  margin: EdgeInsets.only(top: 15, right: 10),
+                  width: double.maxFinite,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Container(
+                        child: _leave['data'].length == 0
+                            ? Text("")
+                            : CircleAvatar(
+                          radius: 10,
+                          backgroundColor: Colors.redAccent,
+                          child: Text(
+                            "${_leave['data'].length}",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              )
+            ],
           ),
         ),
       ),
       Text("Cuti", style: subtitleMainMenu)
+    ]);
+  }
+  Widget _buildMenuSick() {
+    return Column(children: <Widget>[
+      new Container(
+        width: 70,
+        height: 70,
+        child: InkWell(
+          onTap: () {
+            Get.to(TabmenuSickPageAdmin());
+
+          },
+          child: Stack(
+            children: [
+              Card(
+                elevation: 1,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                child: Container(margin: EdgeInsets.all(15.0), child: sick),
+              ),
+              Container(
+                child: _isLoading_sick == true
+                    ? Text("")
+                    : Container(
+                  margin: EdgeInsets.only(top: 15, right: 10),
+                  width: double.maxFinite,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Container(
+                        child: _sick['data'].length == 0
+                            ? Text("")
+                            : CircleAvatar(
+                          radius: 10,
+                          backgroundColor: Colors.redAccent,
+                          child: Text(
+                            "${_sick['data'].length}",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              )
+            ],
+          ),
+        ),
+      ),
+      Text("Sakit", style: subtitleMainMenu)
+    ]);
+  }
+  Widget _buildMenuPermission() {
+    return Column(children: <Widget>[
+      new Container(
+        width: 70,
+        height: 70,
+        child: InkWell(
+          onTap: () {
+            navigatorPermission();
+
+
+          },
+
+          child: Stack(
+            children: [
+              Card(
+                elevation: 1,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                child: Container(margin: EdgeInsets.all(15.0), child: permission),
+              ),
+              Container(
+                child: _isLoading_permission == true
+                    ? Text("")
+                    : Container(
+                  margin: EdgeInsets.only(top: 15, right: 10),
+                  width: double.maxFinite,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Container(
+                        child: _permission['data'].length == 0
+                            ? Text("")
+                            : CircleAvatar(
+                          radius: 10,
+                          backgroundColor: Colors.redAccent,
+                          child: Text(
+                            "${_permission['data'].length}",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              )
+            ],
+          ),
+        ),
+      ),
+      Text("Izin", style: subtitleMainMenu)
     ]);
   }
 
@@ -70,8 +215,7 @@ class _HomeAdminState extends State<HomeAdmin> {
         height: 70,
         child: InkWell(
           onTap: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => TabsAbsenceAdmin()));
+            navigatorAttendances();
           },
           child: Stack(
             children: [
@@ -92,13 +236,13 @@ class _HomeAdminState extends State<HomeAdmin> {
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
                             Container(
-                              child: _absence['data'].length == 0
+                              child: _absence.length == 0
                                   ? Text("")
                                   : CircleAvatar(
                                       radius: 10,
                                       backgroundColor: Colors.redAccent,
                                       child: Text(
-                                        "${_absence['data'].length}",
+                                        "${_absence.length}",
                                         style: TextStyle(color: Colors.white),
                                       ),
                                     ),
@@ -148,9 +292,12 @@ class _HomeAdminState extends State<HomeAdmin> {
         height: 70,
         child: InkWell(
           onTap: () {
-            // Navigator.push(context,
-            //     MaterialPageRoute(builder: (context) => Tabsappbudget()));
-            Navigator.pushNamed(context, "pyslip_list_employee-page");
+            // // Navigator.push(context,
+            // //     MaterialPageRoute(builder: (context) => Tabsappbudget()));
+            // Navigator.pushNamed(context, "pyslip_list_employee-page");
+
+            Services services=new Services();
+            services.payslipPermission(context, user_id);
           },
           child: Card(
             elevation: 1,
@@ -266,6 +413,7 @@ class _HomeAdminState extends State<HomeAdmin> {
                             _buildMenuemployees(),
                             _buildMenuaabsence(),
                             _buildMenuproject(),
+                            _buildMenupayslip(),
 
 
                           ],
@@ -274,9 +422,13 @@ class _HomeAdminState extends State<HomeAdmin> {
                             child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: <Widget>[
-                            _buildMenuOffwork(),
-                            _buildMenupayslip(),
                             _buildMenuannouncement(),
+                            _buildMenuPermission(),
+                            _buildMenuSick(),
+                            _buildMenuOffwork(),
+
+
+
 
                           ],
                         )),
@@ -353,7 +505,7 @@ class _HomeAdminState extends State<HomeAdmin> {
                             child: CircularProgressIndicator(),
                           )
                         : ListView.builder(
-                            itemCount: _employee['data'].length,
+                            itemCount: _employee['data'].length>10?10:_employee['data'].length,
                             scrollDirection: Axis.horizontal,
                             itemBuilder: (context, index) {
                               return _employee['data'][index]
@@ -368,7 +520,7 @@ class _HomeAdminState extends State<HomeAdmin> {
             ),
           ),
           Container(
-            margin: EdgeInsets.only(right: 5),
+            margin: EdgeInsets.only(right: 5,top: 10),
             width: double.infinity,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.end,
@@ -637,6 +789,10 @@ class _HomeAdminState extends State<HomeAdmin> {
     try {
       setState(() {
         _dataEmployee();
+        _datasick();
+        _datapermission();
+        _dataLeave();
+        _dataAbsence();
         _isLoading_project = true;
       });
       http.Response response =
@@ -658,9 +814,53 @@ class _HomeAdminState extends State<HomeAdmin> {
 
       http.Response response =
           await http.get("$base_url/api/attendances?status=pending");
-      _absence = jsonDecode(response.body);
+      var _absence_data = jsonDecode(response.body);
+      _absence =_absence_data['data'].where((prod) => prod["category"] =="present").toList();
+      print("data absen ${_absence.length}");
       setState(() {
         _isLoading_absence = false;
+      });
+    } catch (e) {}
+  }
+  Future _datapermission() async {
+    try {
+      setState(() {
+        _isLoading_permission = true;
+      });
+
+      http.Response response =
+      await http.get("$base_url/api/permission-submissions?status=pending");
+      _permission = jsonDecode(response.body);
+      setState(() {
+        _isLoading_permission = false;
+      });
+    } catch (e) {}
+  }
+  Future _datasick() async {
+    try {
+      setState(() {
+        _isLoading_sick = true;
+      });
+
+      http.Response response =
+      await http.get("$base_url/api/sick-submissions?status=pending");
+      _sick = jsonDecode(response.body);
+      setState(() {
+        _isLoading_sick = false;
+      });
+    } catch (e) {}
+  }
+  Future _dataLeave() async {
+    try {
+      setState(() {
+        _isLoading_leave = true;
+      });
+
+      http.Response response =
+      await http.get("$base_url/api/leave-submissions?status=pending");
+      _leave = jsonDecode(response.body);
+      setState(() {
+        _isLoading_leave = false;
       });
     } catch (e) {}
   }
@@ -750,14 +950,63 @@ class _HomeAdminState extends State<HomeAdmin> {
     );
   }
 
+  Future getDatapref() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    setState(() {
+      user_id = sharedPreferences.getString("user_id");
+    });
+
+  }
+
+
+  void navigatorAttendances() async{
+   var result =await Navigator.push(context,
+        MaterialPageRoute(builder: (context) => TabsAbsenceAdmin()));
+
+   if (result=="update"){
+     _dataAbsence();
+   }
+
+  }
+  void navigatorSick() async{
+    var result =await  Get.to(TabmenuSickPageAdmin());
+
+    if (result=="update"){
+      _datasick();
+    }
+
+  }
+  void navigatorLeave() async{
+    var result =await Navigator.push(context,
+        MaterialPageRoute(builder: (context) => TabsMenuOffworkAdmin()));
+
+    if (result=="update"){
+      _dataLeave();
+    }
+
+  }
+  void navigatorPermission() async{
+    var result =await Get.to(TabmenuPermissionPageAdmin());
+
+    if (result=="update"){
+      _datapermission();
+    }
+
+  }
+
+
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-
+    getDatapref();
     _dataAbsence();
     _dataEmployee();
     dataProject();
+    _dataLeave();
+    _datapermission();
+    _datasick();
 
     _firebaseMessaging.configure(
       onMessage: (Map<String, dynamic> message) async {

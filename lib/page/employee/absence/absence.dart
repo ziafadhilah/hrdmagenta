@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:hrdmagenta/model/coin.dart';
 import 'package:hrdmagenta/page/employee/absence/detail.dart';
 import 'package:hrdmagenta/page/employee/absence/shimmer_effect.dart';
@@ -62,7 +63,7 @@ class _absenceState extends State<absence> {
   }
 
   Widget _buildlistabsence(index) {
-    return Stack(
+    return _absence['data'][index]['category']=='present'?Stack(
       children: <Widget>[
         Container(
           width: double.infinity,
@@ -434,6 +435,180 @@ class _absenceState extends State<absence> {
           ),
         ),
       ],
+    ):_absence['data'][index]['category']=='leave'?_leave(index):_absence['data'][index]['category']=='sick'?_sick(index):_permission(index);
+
+  }
+
+  Widget _leave(index){
+    return Card(
+      child: Container(
+        margin: EdgeInsets.only(top: 10,bottom: 20),
+        width: Get.mediaQuery.size.width,
+        child: Container(
+          margin: EdgeInsets.only(top: 10,left: 5,right: 5),
+
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+
+              Container(child:Text("Cuti",style: TextStyle(color: Colors.black38),),),
+              SizedBox(height: 10,),
+              Flex(
+                  direction: Axis.horizontal,
+                  children: [Expanded(child: Container(child:Text("[${_absence['data'][index]['date'].toString()}]",style: TextStyle(color: Colors.black87,fontFamily: "SFReguler"),),))]),
+              SizedBox(height: 15,),
+              _absence['data'][index]['status']=="approved"?detailApproval(index):detailRejection(index)
+
+            ],
+          ),
+        ),
+
+      ),
+    );
+  }
+  Widget _sick(index){
+    return Card(
+      child: Container(
+        margin: EdgeInsets.only(top: 10,bottom: 20),
+        width: Get.mediaQuery.size.width,
+        child: Container(
+          margin: EdgeInsets.only(top: 10,left: 5,right: 5),
+
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+
+              Container(child:Text("Sakit",style: TextStyle(color: Colors.black38),),),
+              SizedBox(height: 10,),
+              Flex(
+                  direction: Axis.horizontal,
+                  children: [Expanded(child: Container(child:Text("[${_absence['data'][index]['date'].toString()}]",style: TextStyle(color: Colors.black87,fontFamily: "SFReguler"),),))]),
+              SizedBox(height: 15,),
+              _absence['data'][index]['status']=="approved"?detailApproval(index):detailRejection(index)
+
+            ],
+          ),
+        ),
+
+      ),
+    );
+  }
+  Widget _permission(index){
+    return Card(
+      child: Container(
+        margin: EdgeInsets.only(top: 10,bottom: 20),
+        width: Get.mediaQuery.size.width,
+        child: Container(
+          margin: EdgeInsets.only(top: 10,left: 5,right: 5),
+
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+
+              Container(child:Text("Izin",style: TextStyle(color: Colors.black38),),),
+              SizedBox(height: 10,),
+              Flex(
+                  direction: Axis.horizontal,
+                  children: [Expanded(child: Container(child:Text("[${_absence['data'][index]['date'].toString()}]",style: TextStyle(color: Colors.black87,fontFamily: "SFReguler"),),))]),
+              SizedBox(height: 15,),
+              _absence['data'][index]['status']=="approved"?detailApproval(index):detailRejection(index)
+
+            ],
+          ),
+        ),
+
+      ),
+    );
+  }
+
+  Widget detailApproval(index){
+    return Container(
+      width: Get.mediaQuery.size.width,
+      child: Column(
+        children: [
+          Container(
+            width: Get.mediaQuery.size.width,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(2),
+                        bottomRight: Radius.circular(2),
+                        topRight: Radius.circular(2),
+                        bottomLeft: Radius.circular(2)),
+                    color: Colors.green,
+                  ),
+
+                  child: Column(
+
+                    children: <Widget>[
+                      Container(
+
+                        margin: EdgeInsets.all(7),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Text("Approved",style: TextStyle(color: Colors.white,fontFamily: "SFReguler",fontSize: 12),),
+                          ],
+                        ),)
+
+                    ],
+                  ),
+
+                ),
+              ],
+            ),
+          ),
+        ],
+
+      ),
+    );
+  }
+  Widget detailRejection(index){
+    return Container(
+      width: Get.mediaQuery.size.width,
+      child: Column(
+        children: [
+          Container(
+            width: Get.mediaQuery.size.width,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(2),
+                        bottomRight: Radius.circular(2),
+                        topRight: Radius.circular(2),
+                        bottomLeft: Radius.circular(2)),
+                    color: Colors.red,
+                  ),
+
+                  child: Column(
+
+                    children: <Widget>[
+                      Container(
+
+                        margin: EdgeInsets.all(7),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Text("Rejected",style: TextStyle(color: Colors.white,fontFamily: "SFReguler",fontSize: 12),),
+                          ],
+                        ),)
+
+                    ],
+                  ),
+
+                ),
+              ],
+            ),
+          ),
+        ],
+
+      ),
     );
   }
 

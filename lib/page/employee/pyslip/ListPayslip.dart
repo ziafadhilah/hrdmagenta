@@ -25,9 +25,7 @@ class _PyslipListPageState extends State<PyslipListPage> {
 
   @override
   Widget build(BuildContext context) {
-
     return new MaterialApp(
-
       debugShowCheckedModeBanner: false,
       home: Scaffold(
 
@@ -80,9 +78,12 @@ class _PyslipListPageState extends State<PyslipListPage> {
               lenghtWork: "${selisih.toString()} Hari",
               period:  _payslips['data'][index]['name'],
               dataDeduction: _payslips['data'][index]['deduction'],
-              totalDeduction: "0",
-              totalIncome: "0",
-
+              totalDeduction: _payslips['data'][index]['total_deductions'].toString(),
+              totalIncome: _payslips['data'][index]['total_incomes'].toString(),
+              divisi: _payslips['data'][index]['employee']['careers'][0]['designation']['name'],
+              job_title: _payslips['data'][index]['employee']['careers'][0]['job_title']['name'],
+              status_karyawan: _payslips['data'][index]['employee']['careers'][0]['employee_status'],
+              pay_take_home: (_payslips['data'][index]['total_incomes']-_payslips['data'][index]['total_deductions']).toString(),
 
               )));
       },
@@ -234,7 +235,7 @@ class _PyslipListPageState extends State<PyslipListPage> {
       });
       http.Response response = await http.get("$base_url/api/employees/$user_id/payslips?type=${widget.type}");
       _payslips = jsonDecode(response.body);
-      print(_payslips['data'].length);
+
       print(widget.type);
       setState(() {
         _loading = false;

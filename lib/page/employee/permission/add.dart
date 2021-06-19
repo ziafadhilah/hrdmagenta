@@ -1,10 +1,14 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hrdmagenta/services/api_clien.dart';
 import 'package:hrdmagenta/utalities/color.dart';
 import 'package:hrdmagenta/validasi/validator.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
+import 'package:http/http.dart' as http;
 
 class AddPermissionPageEmployee extends StatefulWidget {
   @override
@@ -25,6 +29,11 @@ class _AddPermissionPageEmployeeState extends State<AddPermissionPageEmployee> {
   var _visible=false;
   var disable=true;
   var user_id;
+  var isLoading=true;
+  List typeList;
+  String _type;
+  int position;
+
 
   String _selectedDate = '';
   String _dateCount = '';
@@ -44,7 +53,7 @@ class _AddPermissionPageEmployeeState extends State<AddPermissionPageEmployee> {
           style: TextStyle(color: Colors.black87),
         ),
       ),
-      body: SingleChildScrollView(
+      body: isLoading?Container(child: Center(child: CircularProgressIndicator(),)): SingleChildScrollView(
         child: Container(
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height,
@@ -53,6 +62,7 @@ class _AddPermissionPageEmployeeState extends State<AddPermissionPageEmployee> {
           child: Column(
             children: <Widget>[
               _buildtglPengajuan(),
+              _buildCategorypermission(),
               _builddateLeave(),
               _buildJmlPengambilan(),
               _buildketerangan(),
@@ -76,8 +86,6 @@ class _AddPermissionPageEmployeeState extends State<AddPermissionPageEmployee> {
       ),
     );
   }
-
-
 
 
 
@@ -129,7 +137,7 @@ class _AddPermissionPageEmployeeState extends State<AddPermissionPageEmployee> {
                 Container(child: Icon(Icons.warning_amber_outlined,color: Colors.amber,size: 20,)),
                 Container(
                   margin: EdgeInsets.only(left: 10),
-                  child: Text("Berikan surat keterangan sakit ke hrd",style: TextStyle(color: iconColor,fontFamily: "SFReguler"),
+                  child: Text("Jumlah hari telah melewati batas maksimal",style: TextStyle(color: iconColor,fontFamily: "SFReguler"),
 
                   ),
                 ),
@@ -163,12 +171,89 @@ class _AddPermissionPageEmployeeState extends State<AddPermissionPageEmployee> {
           var data=sick_date_submit.toString().replaceAll((']'),'');
           var data1=data.toString().replaceAll(('['),'');
           var data2=data1.toString().replaceAll((' '),'');
-          print("tes");
+          validasi.validation_permission_submision(context,"", user_id, now.toString(), data2.toString(), jumlahPengambilanController.text.toString(), "${typeList[position]['id']}", descriptionController.text, "","submit");
+
           // validasi.validation_leaves_submision(context,"0",user_id, now.toString(), data2.toString(), descriptionController.text,'submit');
         }:null,
         child: Text('Submit',
           style: TextStyle(color: Colors.black87, fontFamily: "SFReguler",),
         ),
+      ),
+    );
+  }
+
+
+  Widget _buildCategorypermission() {
+    return Container(
+
+      width: double.infinity,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+
+        children: <Widget>[
+
+          Container(
+            width: double.infinity,
+            child: DropdownButtonHideUnderline(
+              child: ButtonTheme(
+                alignedDropdown: true,
+                child: DropdownButton<String>(
+                  value: _type,
+                  iconSize: 30,
+                  icon: Icon(Icons.keyboard_arrow_down,color: Colors.black38,),
+                  style: TextStyle(
+                    color: Colors.black54,
+                    fontSize: 16,
+                  ),
+                  hint: Text('Select Kategori'),
+                  onChanged: (String categories) {
+                    setState(() {
+                      _type=categories;
+                      position= typeList.indexWhere((prod) => prod["id"] == int.parse(categories));
+
+                      if (jumlahPengambilanController.text.toString().isEmpty){
+                        disable=true;
+                        _visible=true;
+                      }else{
+                        ///check total total leave
+                        if (int.parse(jumlahPengambilanController.text.toString())>int.parse("${typeList[position]['max_day']}")){
+                          _visible=true;
+                          disable=false;
+                        }else{
+                          _visible=false;
+                          disable=true;
+                        }
+                      }
+                    });
+                  },
+
+                  items: typeList?.map((item) {
+
+                    return new DropdownMenuItem(
+
+                      child: new Text(item['name']),
+                      value: item['id'].toString(),
+
+                    );
+                  })?.toList() ??
+                      [],
+                ),
+              ),
+            ),
+          ),
+          SizedBox(height: 10,),
+          Divider(
+            color: Colors.black38,
+            height: 1,
+          ),
+          SizedBox(height: 5,),
+          Visibility(
+            child: Container(
+                child:position!=null? Text("Maksimal:${typeList[position]['max_day']} Hari",
+                  style: TextStyle(color: Colors.black87,fontFamily: "SFReguler",fontStyle: FontStyle.italic)):Text("")
+            ),
+          )
+        ],
       ),
     );
   }
@@ -243,6 +328,7 @@ class _AddPermissionPageEmployeeState extends State<AddPermissionPageEmployee> {
       } else if (args.value is DateTime) {
         _selectedDate = args.value.toString();
       } else if (args.value is List<DateTime>) {
+        var max_day;
         ///initialselectdates date leaves
         _initialSelectedDates=args.value;
         sick_dates.clear();
@@ -263,14 +349,22 @@ class _AddPermissionPageEmployeeState extends State<AddPermissionPageEmployee> {
           Cstartdate.text=sick_dates.toString();
         }
 
-        ///check total total leave
-        if (3<int.parse(jumlahPengambilanController.text.toString())){
-          _visible=true;
-          disable=true;
-        }else{
+        if (position==null){
+          max_day=-1;
+          disable=false;
           _visible=false;
-          disable=true;
+        }else{
+          ///check total total leave
+          if (args.value.length>int.parse("${typeList[position]['max_day']}")){
+            _visible=true;
+            disable=false;
+          }else{
+            _visible=false;
+            disable=true;
+          }
         }
+
+
 
       } else {
         _rangeCount = args.value.length.toString();
@@ -305,16 +399,43 @@ class _AddPermissionPageEmployeeState extends State<AddPermissionPageEmployee> {
         });
   }
 
+  Future categoryPermission() async{
+    try{
+      setState(() {
+        isLoading=true;
+
+      });
+
+      http.Response response=await http.get("$base_url/api/permission-categories");
+      var data=jsonDecode(response.body);
+      setState(() {
+        typeList = data['data'];
+      });
+      setState(() {
+        isLoading=false;
+
+      });
+
+
+    }catch(e){
+
+    }
+
+  }
+
 
   @override
   void initState() {
    // _isLoading=false;
     // TODO: implement initState
+
     super.initState();
     final DateTime n = DateTime.now();
     final DateFormat formatter = DateFormat('yyyy-MM-dd');
     now = formatter.format(n);
     _getDataPref();
+    categoryPermission();
+    print("tes ${typeList}");
 
   }
 

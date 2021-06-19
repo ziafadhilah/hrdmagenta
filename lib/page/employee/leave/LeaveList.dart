@@ -79,7 +79,7 @@ class _LeaveListEmployeeState extends State<LeaveListEmployee> {
         ),
         backgroundColor: Colors.white,
         title: new Text(
-          "Cuti",
+          "pengajuan Cuti",
           style: TextStyle(color: Colors.black87),
         ),
       ),
@@ -138,7 +138,7 @@ class _LeaveListEmployeeState extends State<LeaveListEmployee> {
               SizedBox(height: 10,),
               Flex(
                 direction: Axis.horizontal,
-                  children: [Expanded(child: Container(child:Text(_leaves['data'][index]['leave_dates'].toString(),style: TextStyle(color: Colors.black87,fontFamily: "SFReguler"),),))]),
+                  children: [Expanded(child: Container(child:Text("[${_leaves['data'][index]['leave_dates'].toString()}]",style: TextStyle(color: Colors.black87,fontFamily: "SFReguler"),),))]),
               SizedBox(height: 15,),
               // _leaves['data'][index]['status']=="aproved"?Container():btnAction(id,_leaves['data'][index]['date_of_filing'],_leaves['data'][index]['leave_dates'],_leaves['data'][index]['description'])
             ],
@@ -260,6 +260,7 @@ class _LeaveListEmployeeState extends State<LeaveListEmployee> {
     setState(() {
       user_id = sharedPreferences.getString("user_id");
       _dataLeave(user_id);
+      print(user_id);
     });
   }
 
@@ -268,6 +269,7 @@ class _LeaveListEmployeeState extends State<LeaveListEmployee> {
     super.initState();
     //show modal detail project
     getDatapref();
+
   }
 
   void choiceAction(String choice) {

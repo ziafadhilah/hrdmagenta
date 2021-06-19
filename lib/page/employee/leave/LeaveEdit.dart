@@ -38,7 +38,9 @@ class _LeaveEditState extends State<LeaveEdit> {
   var date_leaves_submit=[];
   var _initialSelectedDates;
   var _visible=false;
+  var disabled=true;
   var user_id;
+  List<DateTime> initial=[];
 
   String _selectedDate = '';
   String _dateCount = '';
@@ -59,23 +61,29 @@ class _LeaveEditState extends State<LeaveEdit> {
           style: TextStyle(color: Colors.black87),
         ),
       ),
-      body: SingleChildScrollView(
-        child: Container(
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height,
-          margin: EdgeInsets.only(left: 10, right: 10, top: 10),
-          color: Colors.white,
-          child: _isLoading?Center(child: CircularProgressIndicator(),):Column(
-            children: <Widget>[
-              _buildtglPengajuan(),
-              _buildJatacuti(),
-              _builJumlahambil(),
-              _builddateLeave(),
-              _buildJmlPengambilan(),
-              _buildketerangan(),
-              _buildbtsubmit(),
+      body: Container(
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height,
+        margin: EdgeInsets.only(left: 10, right: 10, top: 10),
+        child: SingleChildScrollView(
+          child: Container(
 
-            ],
+            color: Colors.white,
+            child: _isLoading?Container(
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height,
+                child: Center(child: CircularProgressIndicator(),)):Column(
+              children: <Widget>[
+                _buildtglPengajuan(),
+                _buildJatacuti(),
+                _builJumlahambil(),
+                _builddateLeave(),
+                _buildJmlPengambilan(),
+                _buildketerangan(),
+                _buildbtsubmit(),
+
+              ],
+            ),
           ),
         ),
       ),
@@ -151,6 +159,7 @@ class _LeaveEditState extends State<LeaveEdit> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           TextFormField(
+            enabled: false,
             controller: jumlahPengambilanController,
 
             decoration: InputDecoration(
@@ -193,14 +202,14 @@ class _LeaveEditState extends State<LeaveEdit> {
       height: 45,
       margin: EdgeInsets.symmetric(vertical: 30),
       child: new  OutlineButton(
-        onPressed: () {
+        onPressed: disabled==true? () {
           Validasi validasi=new Validasi();
           var data=date_leaves_submit.toString().replaceAll((']'),'');
           var data1=data.toString().replaceAll(('['),'');
           var data2=data1.toString().replaceAll((' '),'');
           validasi.validation_leaves_submision(context, widget.id,user_id, now.toString(), data2.toString(), descriptionController.text,'edit');
           print(date_leaves_submit);
-        },
+        }:null,
         child: Text('Simpan Perubahan',
           style: TextStyle(color: Colors.black87, fontFamily: "SFReguler",),
         ),
@@ -262,6 +271,7 @@ class _LeaveEditState extends State<LeaveEdit> {
       } else if (args.value is DateTime) {
         _selectedDate = args.value.toString();
       } else if (args.value is List<DateTime>) {
+        print(args.value);
         ///initialselectdates date leaves
         _initialSelectedDates=args.value;
         date_leaves.clear();
@@ -286,8 +296,10 @@ class _LeaveEditState extends State<LeaveEdit> {
         ///check total total leave
         if (int.parse(totalLeaveController.text.toString())<int.parse(jumlahPengambilanController.text.toString())){
           _visible=true;
+          disabled=false;
         }else{
           _visible=false;
+          disabled=true;
         }
 
       } else {
@@ -336,9 +348,28 @@ class _LeaveEditState extends State<LeaveEdit> {
     final DateTime n = DateTime.now();
     final DateFormat formatter = DateFormat('yyyy-MM-dd');
     now = widget.date_of_filing;
+    print(widget.leave_dates);
+    var leave_dates = widget.leave_dates.split(',');
+
+    leave_dates.forEach((String date){
+      DateTime dt=DateTime.parse(date);
+      print(dt);
+      initial.add(dt);
+      // print(dt);
+      date_leaves.add(DateFormat('dd/MM/yyyy').format(DateTime.parse(date.toString())));
+      date_leaves_submit.add(DateFormat('yyyy-MM-dd').format(DateTime.parse(date.toString())));
+
+    },);
+    _initialSelectedDates=initial;
+    Cstartdate.text=date_leaves.toString();
+    jumlahPengambilanController.text=leave_dates.length.toString();
+
+
     _getDataPref();
 
   }
+
+
 
 
 }

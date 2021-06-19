@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:get/get.dart';
-import 'package:hrdmagenta/model/customer.dart';
+import 'package:hrdmagenta/model/pdf.dart';
 import 'package:hrdmagenta/model/employee.dart';
 import 'package:hrdmagenta/model/invoice.dart';
 import 'package:hrdmagenta/model/supplier.dart';
@@ -40,8 +40,8 @@ class PdfPyslipApi {
       ],
       // footer: (context) => buildFooter(invoice),
     ));
-
-    return PdfApi.saveDocument(name: 'pyslip.pdf', pdf: pdf);
+var tes=totalDeduction.toString();
+    return PdfApi.saveDocument(name: 'Slip Gajii bulanan .pdf', pdf: pdf);
   }
 
   static Widget buildTitle(var datetime) => Column(
@@ -56,83 +56,76 @@ class PdfPyslipApi {
         ],
       );
 
-  static Widget buildCustomerAddress(Customer customer) => Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(customer.name, style: TextStyle(fontWeight: FontWeight.bold)),
-          Text(customer.address),
-        ],
-      );
+  // static Widget buildCustomerAddress(Pdf pdf) => Column(
+  //       crossAxisAlignment: CrossAxisAlignment.start,
+  //       children: [
+  //         Text(customer.name, style: TextStyle(fontWeight: FontWeight.bold)),
+  //         Text(customer.address),
+  //       ],
+  //     );
 
-  static Widget namaEmployee(Customer customer) => Row(children: [
+  static Widget namaEmployee(Pdf customer) => Row(children: [
         Container(width: 70, child: Text("Nama")),
         Container(margin: pw.EdgeInsets.only(left: 10), child: Text(": ")),
         Container(child: Text(customer.name.toString()))
       ]);
 
-  static Widget EmployeeID(Customer customer) => Row(children: [
+  static Widget EmployeeID(Pdf customer) => Row(children: [
         Container(width: 70, child: Text("Employee ID")),
         Container(margin: pw.EdgeInsets.only(left: 10), child: Text(": ")),
         Container(child: Text(customer.employee_id.toString()))
       ]);
 
-  static Widget Bagina(Customer customer) => Row(children: [
-        Container(width: 70, child: Text("penempatan")),
+  static Widget Division(Pdf customer) => Row(children: [
+        Container(width: 70, child: Text("Divisi")),
         Container(margin: pw.EdgeInsets.only(left: 10), child: Text(": ")),
-        Container(child: Text(customer.work_placement.toString()))
+        Container(child: Text(customer.division.toString()))
       ]);
 
-  static Widget JobTitle(Customer customer) => Row(children: [
-        Container(width: 70, child: Text("Departement")),
-        Container(margin: pw.EdgeInsets.only(left: 10), child: Text(": ")),
-        Container(child: Text(customer.bagian.toString()))
+  static Widget Departement(Pdf customer) => Row(children: [
+        Container(width: 120, child: Text("Departement")),
+        Container(margin: pw.EdgeInsets.only(left: 5), child: Text(": ")),
+        Container(child: Text(customer.departement.toString()))
       ]);
 
-  static Widget StatusKaryawan(Customer customer) => Row(children: [
+  static Widget StatusKaryawan(Pdf customer) => Row(children: [
         Container(width: 120, child: Text("Status Karyawan")),
         Container(margin: pw.EdgeInsets.only(left: 5), child: Text(": ")),
         Container(child: Text(""))
       ]);
 
-  static Widget StatusPTKP(Customer customer) => Row(children: [
-        Container(width: 120, child: Text("Status PTKP")),
+  static Widget JobTitle(Pdf customer) => Row(children: [
+        Container(width: 120, child: Text("Baigian")),
         Container(margin: pw.EdgeInsets.only(left: 5), child: Text(": ")),
-        Container(child: Text(customer.status_ptkp.toString()))
+        Container(child: Text(customer.job_title.toString()))
       ]);
 
-  static Widget TanggalBergabung(Customer customer) => Row(children: [
-        Container(width: 120, child: Text("Tanggal Bergabung")),
-        Container(margin: pw.EdgeInsets.only(left: 5), child: Text(":")),
-        Container(child: Text(customer.tgl_bergabung.toString()))
-      ]);
 
-  static Widget LamaBekerja(Customer customer) => Row(children: [
-        Container(width: 120, child: Text("Lama bekerja")),
-        Container(margin: pw.EdgeInsets.only(left: 5), child: Text(":")),
-        Container(child: Text(customer.lama_bekerja.toString()))
-      ]);
+
+  // static Widget LamaBekerja(Pdf customer) => Row(children: [
+  //       Container(width: 120, child: Text("Lama bekerja")),
+  //       Container(margin: pw.EdgeInsets.only(left: 5), child: Text(":")),
+  //       Container(child: Text(customer.lama_bekerja.toString()))
+  //     ]);
 
   static Widget ColumnLeft(Invoice invoice) =>
       Column(crossAxisAlignment: pw.CrossAxisAlignment.start, children: [
-        namaEmployee(invoice.customer),
+        namaEmployee(invoice.pdf),
         pw.SizedBox(height: 5),
-        EmployeeID(invoice.customer),
+        EmployeeID(invoice.pdf),
         pw.SizedBox(height: 5),
-        Bagina(invoice.customer),
-        pw.SizedBox(height: 5),
-        JobTitle(invoice.customer),
+        Division(invoice.pdf),
         pw.SizedBox(height: 20),
       ]);
 
   static Widget ColumnRight(Invoice invoice) =>
       Column(crossAxisAlignment: pw.CrossAxisAlignment.start, children: [
-        StatusKaryawan(invoice.customer),
+        Departement(invoice.pdf),
         pw.SizedBox(height: 5),
-        StatusPTKP(invoice.customer),
+        JobTitle(invoice.pdf),
         pw.SizedBox(height: 5),
-        TanggalBergabung(invoice.customer),
-        pw.SizedBox(height: 5),
-        LamaBekerja(invoice.customer),
+        StatusKaryawan(invoice.pdf),
+
         pw.SizedBox(height: 20),
       ]);
 
@@ -146,10 +139,11 @@ class PdfPyslipApi {
         item['name'],
         //Utils.formatDate(item.date),
         NumberFormat.currency(locale: 'id', decimalDigits: 0)
-            .format(item['age'])
+            .format(int.parse(item['value'].toString()))
       ];
     }).toList();
-
+    // NumberFormat.currency(locale: 'id', decimalDigits: 0)
+    //     .format(item['value'])
     return Table.fromTextArray(
       headers: headers,
       data: data,
@@ -259,7 +253,7 @@ class PdfPyslipApi {
         item['name'],
         //Utils.formatDate(item.date),
         NumberFormat.currency(locale: 'id', decimalDigits: 0)
-            .format(item['age'])
+            .format(int.parse(item['value'].toString()))
       ];
     }).toList();
 

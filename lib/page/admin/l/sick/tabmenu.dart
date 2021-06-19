@@ -1,19 +1,20 @@
 
 import 'package:flutter/material.dart';
 import 'package:hrdmagenta/page/admin/l/leave/offwork_status.dart';
+import 'package:hrdmagenta/page/admin/l/sick/list.dart';
 
-class TabsMenuOffworkAdmin extends StatelessWidget {
+class TabmenuSickPageAdmin extends StatelessWidget {
 
   List<Widget> containers = [
 
-    LeaveListStatusAdmin(
-     status: "pending",
+    ListSickPageAdmin(
+      status: "pending",
 
-   ),
-    LeaveListStatusAdmin(
+    ),
+    ListSickPageAdmin(
       status: "rejected",
     ),
-    LeaveListStatusAdmin(
+    ListSickPageAdmin(
       status: "approved",
     ),
 
@@ -36,7 +37,7 @@ class TabsMenuOffworkAdmin extends StatelessWidget {
             ),
 
             backgroundColor: Colors.white,
-            title: Text('Cuti',
+            title: Text('Pengajuan Sakit',
               style: TextStyle(color: Colors.black87),
 
             ),

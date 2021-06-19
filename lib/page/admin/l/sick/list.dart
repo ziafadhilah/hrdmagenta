@@ -3,28 +3,23 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hrdmagenta/page/employee/leave/LeaveEdit.dart';
-import 'package:hrdmagenta/page/employee/leave/TabMenuLeave.dart';
 import 'package:hrdmagenta/page/employee/project/shimmer_project.dart';
-import 'package:hrdmagenta/page/employee/sick/add.dart';
 import 'package:hrdmagenta/page/employee/sick/tabmenu.dart';
 import 'package:hrdmagenta/services/api_clien.dart';
-
-import 'package:hrdmagenta/utalities/color.dart';
 import 'package:hrdmagenta/utalities/constants.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
-
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 
-class ListSickPageEmployee extends StatefulWidget {
-  ListSickPageEmployee({this.status});
+class ListSickPageAdmin extends StatefulWidget {
+  ListSickPageAdmin({this.status});
   var status;
   @override
-  _ListSickPageEmployeeState createState() => _ListSickPageEmployeeState();
+  _ListSickPageAdminState createState() => _ListSickPageAdminState();
 }
 
-class _ListSickPageEmployeeState extends State<ListSickPageEmployee> {
+class _ListSickPageAdminState extends State<ListSickPageAdmin> {
   //variable
   final _scaffoldKey = new GlobalKey<ScaffoldState>();
   var user_id;
@@ -62,37 +57,7 @@ class _ListSickPageEmployeeState extends State<ListSickPageEmployee> {
   Widget build(BuildContext context) {
 
     return Scaffold(
-      appBar: AppBar(
-        actions: <Widget>[
-          PopupMenuButton<String>(
-            onSelected: choiceAction,
-            itemBuilder: (BuildContext context) {
-              return Constants.SickStatus.map((String choice) {
-                return PopupMenuItem<String>(
-                  value: choice,
-                  child: Text(choice),
-                );
-              }).toList();
-            },
-          )
-        ],
-        iconTheme: IconThemeData(
-          color: Colors.black87, //modify arrow color from here..
-        ),
-        backgroundColor: Colors.white,
-        title: new Text(
-          "Pengajuan Sakit",
-          style: TextStyle(color: Colors.black87),
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Get.to(AddSickPageEmployee());
 
-        },
-        child: Icon(Icons.add),
-        backgroundColor: btnColor1,
-      ),
       body: RefreshIndicator(
         child: Container(
           child: Container(
@@ -103,8 +68,8 @@ class _ListSickPageEmployeeState extends State<ListSickPageEmployee> {
                 child: ShimmerProject(),
               )
                   : ListView.builder(
-                  itemCount: _sick['data'].length<=0?1:_sick['data'].length,
-                //itemCount: 1,
+                itemCount: _sick['data'].length<=0?1:_sick['data'].length,
+                  //itemCount: 1,
                   itemBuilder: (context, index) {
                     return _sick['data'].length.toString()=='0'?_buildnodata(): _leave(index);
                     //return _buildnodata();
@@ -139,13 +104,16 @@ class _ListSickPageEmployeeState extends State<ListSickPageEmployee> {
                   style: TextStyle(color: Colors.black45,fontFamily: "SFReguler")
                   ,textAlign: TextAlign.end,),),
               SizedBox(height: 10,),
-              Container(child:Text("Tanggal sakit",style: TextStyle(color: Colors.black38),),),
+              Container(child:Text("Tanggal cuti",style: TextStyle(color: Colors.black38),),),
               SizedBox(height: 10,),
               Flex(
                   direction: Axis.horizontal,
                   children: [Expanded(child: Container(child:Text(_sick['data'][index]['sick_dates'].toString(),style: TextStyle(color: Colors.black87,fontFamily: "SFReguler"),),))]),
               SizedBox(height: 15,),
               // _leaves['data'][index]['status']=="aproved"?Container():btnAction(id,_leaves['data'][index]['date_of_filing'],_leaves['data'][index]['leave_dates'],_leaves['data'][index]['description'])
+              _sick['data'][index]['status']=="pending"?btnAction(id,_sick['data'][index]['date_of_filing'],_sick['data'][index]['leave_dates'],_sick['data'][index]['description']): _sick['data'][index]['status']=="approved"?detailApproval(index):detailRejection(index)
+
+
             ],
           ),
         ),
@@ -157,10 +125,8 @@ class _ListSickPageEmployeeState extends State<ListSickPageEmployee> {
     return  Container(
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
-
         children: <Widget>[
           Container(
-            margin: EdgeInsets.only(right: 10),
             width: 40,
             height: 40,
             child: Ink(
@@ -169,61 +135,53 @@ class _ListSickPageEmployeeState extends State<ListSickPageEmployee> {
               ),
               child: IconButton(
                 iconSize: 20,
-                icon: Icon(Icons.edit_outlined,color: Colors.black45,),
-                onPressed: () {
-                  // Get.to(LeaveEdit(
-                  //   id: id,
-                  //   date_of_filing: date_of_filing,
-                  //   leave_dates: leave_dates,
-                  //   description: description,));
-                  editSick(id, date_of_filing, leave_dates, description);
-                },
-              ),
-            ),
-          ),
-
-          Container(
-            width: 40,
-            height: 40,
-            child: Ink(
-              decoration: BoxDecoration(
-                color: Colors.black12,
-              ),
-              child: IconButton(
-                iconSize: 20,
-                icon: Icon(Icons.restore_from_trash_outlined,color: Colors.black45,),
+                icon: Icon(Icons.approval,color: Colors.black45,),
                 onPressed: () {
                   //print('pressed');
                   Services services=new Services();
                   // services.deleteLeave(context, id);
+                  var remarkController=new TextEditingController();
                   Alert(
                     context: context,
                     type: AlertType.warning,
-                    title: "Apakah anda yakin?",
-                    desc: "Data akan dihapus",
-
+                    title: "Apakah kamu yakin?",
+                    desc: "Data akan di Approve/Reject",
+                    content: Column(
+                      children: <Widget>[
+                        // TextField(
+                        //   controller: remarkController,
+                        //   decoration: InputDecoration(
+                        //     labelText: 'Catatan',
+                        //   ),
+                        // ),
+                      ],
+                    ),
                     buttons: [
                       DialogButton(
                         child: Text(
-                          "batalkan",
-                          style: TextStyle(color: Colors.white, fontSize: 20),
-                        ),
-                        onPressed: () => Navigator.pop(context),
-                        color: Colors.grey,
-                      ),
-                      DialogButton(
-                        child: Text(
-                          "Iya",
+                          "Approve",
                           style: TextStyle(color: Colors.white, fontSize: 20),
                         ),
                         onPressed: () {
                           Get.back();
-                          services.deleteLeave(context, id).then((value) {
+                          services.sickAproval(context, id, "approve").then((value){
                             _dataSick(user_id);
                           });
-
                         },
-                        gradient: LinearGradient(colors: [Colors.green, Colors.green]),
+                        color: Colors.green,
+                      ),
+                      DialogButton(
+                        child: Text(
+                          "Reject",
+                          style: TextStyle(color: Colors.white, fontSize: 20),
+                        ),
+                        onPressed: () {
+                          Get.back();
+                          services.sickAproval(context, id, "reject").then((value){
+                            _dataSick(user_id);
+                          });
+                        },
+                        gradient: LinearGradient(colors: [Colors.red, Colors.red]),
                       )
                     ],
                   ).show();
@@ -234,6 +192,97 @@ class _ListSickPageEmployeeState extends State<ListSickPageEmployee> {
         ],
       ),
 
+    );
+  }
+
+  Widget detailApproval(index){
+    return Container(
+      width: Get.mediaQuery.size.width,
+      child: Column(
+        children: [
+          Container(
+            width: Get.mediaQuery.size.width,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(2),
+                        bottomRight: Radius.circular(2),
+                        topRight: Radius.circular(2),
+                        bottomLeft: Radius.circular(2)),
+                    color: Colors.green,
+                  ),
+
+                  child: Column(
+
+                    children: <Widget>[
+                      Container(
+
+                        margin: EdgeInsets.all(7),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Text("Approved",style: TextStyle(color: Colors.white,fontFamily: "SFReguler",fontSize: 12),),
+                          ],
+                        ),)
+
+                    ],
+                  ),
+
+                ),
+              ],
+            ),
+          ),
+        ],
+
+      ),
+    );
+  }
+  Widget detailRejection(index){
+    return Container(
+      width: Get.mediaQuery.size.width,
+      child: Column(
+        children: [
+          Container(
+            width: Get.mediaQuery.size.width,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(2),
+                        bottomRight: Radius.circular(2),
+                        topRight: Radius.circular(2),
+                        bottomLeft: Radius.circular(2)),
+                    color: Colors.red,
+                  ),
+
+                  child: Column(
+
+                    children: <Widget>[
+                      Container(
+
+                        margin: EdgeInsets.all(7),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Text("Rejected",style: TextStyle(color: Colors.white,fontFamily: "SFReguler",fontSize: 12),),
+                          ],
+                        ),)
+
+                    ],
+                  ),
+
+                ),
+              ],
+            ),
+          ),
+        ],
+
+      ),
     );
   }
   void editSick(var id,date_of_filing,leave_dates,description) async{
@@ -253,9 +302,8 @@ class _ListSickPageEmployeeState extends State<ListSickPageEmployee> {
         _loading = true;
       });
       http.Response response = await http.get(
-          "$base_url/api/employees/$user_id/sick-submissions?status=${widget.status}");
+          "$base_url/api/sick-submissions?status=${widget.status}");
       _sick = jsonDecode(response.body);
-      print(_sick);
       setState(() {
         _loading = false;
       });
@@ -280,6 +328,7 @@ class _ListSickPageEmployeeState extends State<ListSickPageEmployee> {
     if (choice == Constants.Sick) {
       Get.testMode = true;
       Get.to(TabMenuSickPageEmployee());
+      print("user id ${user_id}");
     }
   }
 }

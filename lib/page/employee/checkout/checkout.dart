@@ -93,10 +93,10 @@ class _CheckoutState extends State<Checkout> {
                       SizedBox(
                         height: 15,
                       ),
-                      _buildCategoryabsence(),
-                      SizedBox(
-                        height: 15,
-                      ),
+                      // _buildCategoryabsence(),
+                      // SizedBox(
+                      //   height: 15,
+                      // ),
                       _buildLocation(),
                       SizedBox(
                         height: 10,

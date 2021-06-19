@@ -12,7 +12,7 @@ import 'package:hrdmagenta/utalities/alert_dialog.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toast/toast.dart';
-String base_url = "http://192.168.100.83:8000";
+String base_url = "http://192.168.1.118:8000";
 class Services {
   SharedPreference sharedPreference = new SharedPreference();
   budgetproject budget = new budgetproject();
@@ -265,11 +265,9 @@ class Services {
 
     final responseJson = jsonDecode(response.body);
     if (responseJson['code']==200){
-
       Toast.show("${responseJson['message']}", context);
       Get.back();
       Get.back();
-
 
     }else{
       print(leaves_dates.toString());
@@ -290,7 +288,6 @@ class Services {
       "date_of_filing":date_of_filing.toString(),
       "full_day_leave_dates":leaves_dates.toString(),
       "description":description,
-
     });
 
     final responseJson = jsonDecode(response.body);
@@ -340,12 +337,177 @@ class Services {
       Get.back();
       toast_error("${responseJson['message']}");
 
+    }
+  }
+  //sick
+  Future<void> sickSubmission(BuildContext context,var employee_id,date_of_filing,sick_dates,description) async{
+    loading(context);
+    final response =
+    await http.post("$base_url/api/sick-submissions", body: {
+      "employee_id":employee_id,
+      "date_of_filing":date_of_filing.toString(),
+      "sick_dates":sick_dates.toString(),
+      "description":description,
+      "status":"pending"
+    });
+
+    final responseJson = jsonDecode(response.body);
+    if (responseJson['code']==200){
+      toast_success("${responseJson['message']}");
+      Get.back();
+      Get.back();
+    }else{
+      toast_error("${responseJson['message']}");
+      Get.back();
+      print(responseJson.toString());
+    }
+  }
+
+  Future<void> sickEdit(BuildContext context,var id,employee_id,date_of_filing,sick_dates,old_sick_dates,description) async{
+    loading(context);
+    final response =
+    await http.patch("$base_url/api/sick-submissions/$id", body: {
+      "employee_id":employee_id,
+      "date_of_filing":date_of_filing.toString(),
+      "sick_dates":sick_dates.toString(),
+      "description":description,
+      "old_sick_dates":old_sick_dates,
+    });
+
+    final responseJson = jsonDecode(response.body);
+    if (responseJson['code']==200){
+      toast_success("${responseJson['message']}");
+      Get.back();
+     Navigator.pop(context,"update");
+    }else{
+      toast_error("${responseJson['message']}");
+      Get.back();
+      print(responseJson.toString());
+    }
+  }
+
+  Future<void> deleteSick(BuildContext context,var id) async {
+    loading(context);
+    final response=await http.delete("${base_url}/api/sick-submissions/$id");
+    final responseJson=jsonDecode(response.body);
+    if (responseJson['code']==200){
+      Get.back();
+      toast_success("${responseJson['message']}");
+      return responseJson;
+    }else{
+      Get.back();
+      alert_error(context, "${responseJson['message']}", "Close");
+      return responseJson;
+    }
+  }
+
+  Future<void> sickAproval(BuildContext context,var id,approval) async{
+    loading(context);
+    final response =
+    await http.post("$base_url/api/sick-submissions/action/$approval/$id");
+
+    final responseJson = jsonDecode(response.body);
+    if (responseJson['code']==200){
+      Get.back();
+      toast_success("${responseJson['message']}");
+
+    }else{
+      Get.back();
+      toast_error("${responseJson['message']}");
 
     }
   }
 
-  //payslip
+  //permission
 
+  Future<void> permissionSubmission(BuildContext context,var employee_id,date_of_filing,permission_dates,number_of_days,permission_category_id,description) async{
+    loading(context);
+    final response =
+    await http.post("$base_url/api/permission-submissions", body: {
+      "employee_id":employee_id,
+      "date_of_filing":date_of_filing.toString(),
+      "permission_dates":permission_dates.toString(),
+      "number_of_days":number_of_days,
+      "description":description,
+      "permission_category_id":permission_category_id
+
+    });
+
+    final responseJson = jsonDecode(response.body);
+    if (responseJson['code']==200){
+      toast_success("${responseJson['message']}");
+      Get.back();
+      Get.back();
+    }else{
+      toast_error("${responseJson['message']}");
+      Get.back();
+      print(responseJson.toString());
+    }
+  }
+  Future<void> deletePermission(BuildContext context,var id) async {
+    loading(context);
+    final response=await http.delete("${base_url}/api/permission-submissions/$id");
+    final responseJson=jsonDecode(response.body);
+    if (responseJson['code']==200){
+      Get.back();
+      toast_success("${responseJson['message']}");
+      return responseJson;
+
+    }else{
+      Get.back();
+      alert_error(context, "${responseJson['message']}", "Close");
+      return responseJson;
+
+    }
+
+  }
+  Future<void> permissionAproval(BuildContext context,var id,approval) async{
+    loading(context);
+    final response =
+    await http.post("$base_url/api/permission-submissions/action/$approval/$id");
+
+    final responseJson = jsonDecode(response.body);
+    if (responseJson['code']==200){
+      Get.back();
+      toast_success("${responseJson['message']}");
+
+    }else{
+      Get.back();
+      toast_error("${responseJson['message']}");
+
+    }
+  }
+
+  Future<void> editpermissionSubmission(BuildContext context,var id,employee_id,date_of_filing,
+      permission_dates,number_of_days,
+      permission_category_id,old_permission_dates,description) async{
+    loading(context);
+    final response =
+    await http.patch("$base_url/api/permission-submissions/$id", body: {
+      "employee_id":employee_id,
+      "date_of_filing":date_of_filing.toString(),
+      "permission_dates":permission_dates.toString(),
+      "number_of_days":number_of_days,
+      "description":description,
+      "permission_category_id":permission_category_id,
+      "old_permission_dates":old_permission_dates
+
+    });
+
+    final responseJson = jsonDecode(response.body);
+    if (responseJson['code']==200){
+      toast_success("${responseJson['message']}");
+      Get.back();
+     Navigator.pop(context,"update");
+    }else{
+      toast_error("${responseJson['message']}");
+      Get.back();
+      print(responseJson.toString());
+    }
+  }
+
+
+  //payslip
   Future<void> payslipPermission(BuildContext context,var id) async{
     loading(context);
     final response =
