@@ -7,6 +7,11 @@ import 'package:intl/intl.dart';
 
 const version = "1.0";
 
+const photo_profile='https://arenzha.s3.ap-southeast-1.amazonaws.com/photos/default-photo.png';
+
+
+
+
 //constan textstyle
 final paragraphStyle = TextStyle(
     color: Colors.black38,
@@ -71,6 +76,11 @@ final Widget offwork = SvgPicture.asset(
   semanticsLabel: 'Acme Logo',
   color: baseColor1,
 );
+final Widget loan = SvgPicture.asset(
+  "assets/loan.svg",
+  semanticsLabel: 'Acme Logo',
+  color: baseColor1,
+);
 final Widget sick = SvgPicture.asset(
   "assets/sick.svg",
   semanticsLabel: 'Acme Logo',
@@ -118,10 +128,11 @@ final Widget female_avatar = SvgPicture.asset(
   semanticsLabel: 'Acme Logo',
 );
 
-final Widget employee_profile = SvgPicture.asset(
-  "assets/employee_profile.svg",
-  semanticsLabel: 'Acme Logo',
-);
+// final Widget employee_profile = SvgPicture.asset(
+//   "assets/employee_profile.svg",
+//   semanticsLabel: 'Acme Logo',
+// );
+final Widget employee_profile =Image.network(photo_profile);
 
 final Widget no_data_project = SvgPicture.asset(
   "assets/no_data_project.svg",
@@ -212,7 +223,7 @@ final Widget no_data_announcement = SvgPicture.asset(
 
 class Constants {
   static const String Buget = "Budget History";
-  static const String Absence = "Staatus Kehadiran";
+  static const String Absence = "Status Kehadiran";
   static const String Leave = "Status Cuti";
   static const String Sick = "Status Sakit";
   static const String Permission = "Status Izin";

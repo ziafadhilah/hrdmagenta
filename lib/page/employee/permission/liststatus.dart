@@ -121,6 +121,14 @@ class _ListstatusPermissionPageEmployeeState extends State<ListstatusPermissionP
                   direction: Axis.horizontal,
                   children: [Expanded(child: Container(child:Text("[${_permission['data'][index]['permission_dates'].toString()}]",style: TextStyle(color: Colors.black87,fontFamily: "SFReguler"),),))]),
               SizedBox(height: 15,),
+
+              description!=null?Container(child:Text("Keterangan",style: TextStyle(color: Colors.black38),),):Container(),
+              SizedBox(height: 5,),
+              description!=null?Flex(
+                  direction: Axis.horizontal,
+                  children: [Expanded(child: Container(child:Text("${_permission['data'][index]['description'].toString()}",style: TextStyle(color: Colors.black87,fontFamily: "SFReguler"),),))]):Container(),
+              SizedBox(height: 15,),
+
               _permission['data'][index]['status']=="pending"?btnAction(id,_permission['data'][index]['date_of_filing'],_permission['data'][index]['permission_dates'],_permission['data'][index]['description'],_permission['data'][index]['permission_category_id']): _permission['data'][index]['status']=="approved"?detailApproval(index):detailRejection(index)
 
             ],

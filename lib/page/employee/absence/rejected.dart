@@ -7,6 +7,7 @@ import 'package:hrdmagenta/utalities/color.dart';
 import 'package:hrdmagenta/utalities/constants.dart';
 import 'package:hrdmagenta/utalities/font.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class RejectAbsenceEmployeePage extends StatefulWidget {
@@ -146,7 +147,7 @@ class _RejectAbsenceEmployeePageState extends State<RejectAbsenceEmployeePage> {
                                                 ['status'] ==
                                                     "pending"
                                                     ? Text(
-                                                    "${_absence['data'][index]['clock_in']}",
+                                                    DateFormat("dd/MM/yyyy hh:mm:ss").format(DateTime.parse(_absence['data'][index]['clock_in'])),
                                                     style: TextStyle(
                                                         fontSize: 15,
                                                         color: Colors
@@ -163,7 +164,7 @@ class _RejectAbsenceEmployeePageState extends State<RejectAbsenceEmployeePage> {
                                                     : Text(""))
                                                 : Container(
                                                 child: _absence['data'][index]['status'] == "pending"
-                                                    ? Text("${_absence['data'][index]['clock_out']}", style: TextStyle(fontSize: 15, color: Colors.black26))
+                                                    ? Text( DateFormat("dd/MM/yyyy hh:mm:ss").format(DateTime.parse(_absence['data'][index]['clock_in'])), style: TextStyle(fontSize: 15, color: Colors.black26))
                                                     : _absence['data'][index]['status'] == "rejected"
                                                     ? Text("${_absence['data'][index]['rejected_at']}", style: TextStyle(fontSize: 15, color: Colors.black26))
                                                     : _absence['data'][index]['status'] == "approved"
@@ -274,6 +275,15 @@ class _RejectAbsenceEmployeePageState extends State<RejectAbsenceEmployeePage> {
                                                               'employee']
                                                               [
                                                               'last_name'],
+                                                              employee_id: _absence['data']
+                                                              [
+                                                              index]
+                                                              ['employee'][
+                                                              'employee_id'],
+                                                              photo: _absence['data']
+                                                              [
+                                                              index]['employee']
+                                                              ['photo'],
                                                               office_latitude: _absence['data'][index]['office_latitude'],
                                                               office_longitude: _absence['data'][index]['office_longitude'],
                                                             )));
@@ -377,6 +387,15 @@ class _RejectAbsenceEmployeePageState extends State<RejectAbsenceEmployeePage> {
                                                               'employee']
                                                               [
                                                               'last_name'],
+                                                              employee_id: _absence['data']
+                                                              [
+                                                              index]
+                                                              ['employee'][
+                                                              'employee_id'],
+                                                              photo: _absence['data']
+                                                              [
+                                                              index]['employee']
+                                                              ['photo'],
                                                               office_latitude: _absence['data'][index]['office_latitude'],
                                                               office_longitude: _absence['data'][index]['office_longitude'],
                                                             )));
@@ -394,7 +413,7 @@ class _RejectAbsenceEmployeePageState extends State<RejectAbsenceEmployeePage> {
                                                 children: <Widget>[
                                                   Container(
                                                     child: Text(
-                                                      "See Details",
+                                                      "LIHAT DETAIL",
                                                       style: TextStyle(
                                                           color: textColor1),
                                                     ),

@@ -8,6 +8,7 @@ import 'package:hrdmagenta/utalities/color.dart';
 import 'package:hrdmagenta/utalities/constants.dart';
 import 'package:hrdmagenta/utalities/font.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AprovedAbsenceEmployeePage  extends StatefulWidget {
@@ -157,7 +158,7 @@ class _AprovedAbsenceEmployeePageState extends State<AprovedAbsenceEmployeePage>
                                                         fontSize: 15,
                                                         color: Colors.black26))
                                                     : _absence['data'][index]['status'] == "approved"
-                                                    ? Container(child: _absence['data'][index]['approved_at'] != null ? Text("${_absence['data'][index]['approved_at']}", style: TextStyle(fontSize: 15, color: Colors.black26)) : Text("${_absence['data'][index]['clock_in']}", style: TextStyle(fontSize: 15, color: Colors.black26)))
+                                                    ? Container(child: _absence['data'][index]['approved_at'] != null ? Text("${ DateFormat("dd/MM/yyyy hh:mm:ss").format(DateTime.parse(_absence['data'][index]['approved_at']))}", style: TextStyle(fontSize: 15, color: Colors.black26)) : Text("${ DateFormat("dd/MM/yyyy hh:mm:ss").format(DateTime.parse(_absence['data'][index]['clock_in']))}", style: TextStyle(fontSize: 15, color: Colors.black26)))
                                                     : Text(""))
                                                 : Container(
                                                 child: _absence['data'][index]['status'] == "pending"
@@ -165,7 +166,7 @@ class _AprovedAbsenceEmployeePageState extends State<AprovedAbsenceEmployeePage>
                                                     : _absence['data'][index]['status'] == "rejected"
                                                     ? Text("${_absence['data'][index]['rejected_at']}", style: TextStyle(fontSize: 15, color: Colors.black26))
                                                     : _absence['data'][index]['status'] == "approved"
-                                                    ? Container(child: _absence['data'][index]['approved_at'] != null ? Text("${_absence['data'][index]['approved_at']}", style: TextStyle(fontSize: 15, color: Colors.black26)) : Text("${_absence['data'][index]['clock_out']}", style: TextStyle(fontSize: 15, color: Colors.black26)))
+                                                    ? Container(child: _absence['data'][index]['approved_at'] != null ? Text("${ DateFormat("dd/MM/yyyy hh:mm:ss").format(DateTime.parse(_absence['data'][index]['approved_at']))}", style: TextStyle(fontSize: 15, color: Colors.black26)) : Text("${ DateFormat("dd/MM/yyyy hh:mm:ss").format(DateTime.parse(_absence['data'][index]['clock_out']))}", style: TextStyle(fontSize: 15, color: Colors.black26)))
                                                     : Text("")),
                                           ),
                                           InkWell(
@@ -272,6 +273,15 @@ class _AprovedAbsenceEmployeePageState extends State<AprovedAbsenceEmployeePage>
                                                               'employee']
                                                               [
                                                               'last_name'],
+                                                              employee_id: _absence['data']
+                                                              [
+                                                              index]
+                                                              ['employee'][
+                                                              'employee_id'],
+                                                              photo: _absence['data']
+                                                              [
+                                                              index]['employee']
+                                                              ['photo'],
                                                               office_latitude: _absence['data'][index]['office_latitude'],
                                                               office_longitude: _absence['data'][index]['office_longitude'],
                                                             )));
@@ -375,6 +385,15 @@ class _AprovedAbsenceEmployeePageState extends State<AprovedAbsenceEmployeePage>
                                                               'employee']
                                                               [
                                                               'last_name'],
+                                                              employee_id: _absence['data']
+                                                              [
+                                                              index]
+                                                              ['employee'][
+                                                              'employee_id'],
+                                                              photo: _absence['data']
+                                                              [
+                                                              index]['employee']
+                                                              ['photo'],
                                                               office_latitude: _absence['data'][index]['office_latitude'],
                                                               office_longitude: _absence['data'][index]['office_longitude'],
                                                             )));
@@ -392,7 +411,7 @@ class _AprovedAbsenceEmployeePageState extends State<AprovedAbsenceEmployeePage>
                                                 children: <Widget>[
                                                   Container(
                                                     child: Text(
-                                                      "See Details",
+                                                      "LIHAT DETAIL",
                                                       style: TextStyle(
                                                           color: textColor1),
                                                     ),

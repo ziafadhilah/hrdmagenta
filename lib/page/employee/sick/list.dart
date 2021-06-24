@@ -140,11 +140,19 @@ class _ListSickPageEmployeeState extends State<ListSickPageEmployee> {
                   ,textAlign: TextAlign.end,),),
               SizedBox(height: 10,),
               Container(child:Text("Tanggal sakit",style: TextStyle(color: Colors.black38),),),
-              SizedBox(height: 10,),
+              SizedBox(height: 5,),
               Flex(
                   direction: Axis.horizontal,
-                  children: [Expanded(child: Container(child:Text(_sick['data'][index]['sick_dates'].toString(),style: TextStyle(color: Colors.black87,fontFamily: "SFReguler"),),))]),
+                  children: [Expanded(child: Container(child:Text("[${_sick['data'][index]['sick_dates'].toString()}]",style: TextStyle(color: Colors.black87,fontFamily: "SFReguler"),),))]),
               SizedBox(height: 15,),
+              description!=null?Container(child:Text("Keterangan",style: TextStyle(color: Colors.black38),),):Container(),
+              SizedBox(height: 5,),
+              description!=null?Flex(
+                  direction: Axis.horizontal,
+                  children: [Expanded(child: Container(child:Text("${_sick['data'][index]['description'].toString()}",style: TextStyle(color: Colors.black87,fontFamily: "SFReguler"),),))]):Container(),
+
+              SizedBox(height: 15,),
+
               // _leaves['data'][index]['status']=="aproved"?Container():btnAction(id,_leaves['data'][index]['date_of_filing'],_leaves['data'][index]['leave_dates'],_leaves['data'][index]['description'])
             ],
           ),

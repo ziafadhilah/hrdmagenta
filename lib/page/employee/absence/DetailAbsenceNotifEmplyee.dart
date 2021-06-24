@@ -121,7 +121,7 @@ class _detail_absence_employee_notifState
         children: <Widget>[
           Container(
               child: CircleAvatar(
-            child: male_avatar,
+            backgroundImage: NetworkImage(_absence['data']['employee']['photo']),
             backgroundColor: Colors.transparent,
             radius: 40,
           )),
@@ -164,21 +164,10 @@ class _detail_absence_employee_notifState
     return Container(
       margin: EdgeInsets.only(left: 5),
       width: double.infinity,
-      height: 80,
+
       child: Row(
         children: <Widget>[
-          Container(
-              child: _absence['data']['type'] == "check in"
-                  ? Icon(
-                      Icons.login,
-                      color: Colors.black38,
-                      size: 40,
-                    )
-                  : Icon(
-                      Icons.logout,
-                      color: Colors.black38,
-                      size: 40,
-                    )),
+
           Container(
             margin: EdgeInsets.only(left: 10),
             child: Column(
@@ -212,15 +201,10 @@ class _detail_absence_employee_notifState
     return Container(
       margin: EdgeInsets.only(left: 5),
       width: double.infinity,
-      height: 80,
+
       child: Row(
         children: <Widget>[
-          Container(
-              child: Icon(
-            Icons.description,
-            color: Colors.black38,
-            size: 40,
-          )),
+
           Container(
             margin: EdgeInsets.only(left: 10),
             child: Column(
@@ -259,16 +243,10 @@ class _detail_absence_employee_notifState
     return Container(
       margin: EdgeInsets.only(left: 5),
       width: double.infinity,
-      height: 80,
+
       child: Row(
         children: <Widget>[
-          Container(
-            child: Icon(
-              Icons.category,
-              color: Colors.black38,
-              size: 40,
-            ),
-          ),
+
           Container(
             margin: EdgeInsets.only(left: 10),
             child: Column(
@@ -303,16 +281,10 @@ class _detail_absence_employee_notifState
     return Container(
       margin: EdgeInsets.only(left: 5),
       width: double.infinity,
-      height: 80,
+
       child: Row(
         children: <Widget>[
-          Container(
-            child: Icon(
-              Icons.date_range,
-              color: Colors.black38,
-              size: 40,
-            ),
-          ),
+
           Container(
             margin: EdgeInsets.only(left: 10),
             child: Column(
@@ -349,13 +321,7 @@ class _detail_absence_employee_notifState
       width: double.infinity,
       child: Row(
         children: <Widget>[
-          Container(
-            child: Icon(
-              Icons.location_on,
-              color: Colors.black38,
-              size: 40,
-            ),
-          ),
+
           Container(
             margin: EdgeInsets.only(left: 10, bottom: 10),
             child: Column(
@@ -396,16 +362,10 @@ class _detail_absence_employee_notifState
     return Container(
       margin: EdgeInsets.only(left: 5),
       width: double.infinity,
-      height: 80,
+
       child: Row(
         children: <Widget>[
-          Container(
-            child: Icon(
-              Icons.access_time_rounded,
-              color: Colors.black38,
-              size: 40,
-            ),
-          ),
+
           Container(
             margin: EdgeInsets.only(left: 10),
             child: Column(
@@ -640,7 +600,7 @@ class _detail_absence_employee_notifState
                       fit: BoxFit.fill,
                     )
                   : CachedNetworkImage(
-                      imageUrl: "$base_url/images/${_absence['data']['image']}",
+                      imageUrl: "$image_ur/${_absence['data']['image']}",
                       fit: BoxFit.fill,
                       placeholder: (context, url) =>
                           Center(child: new CircularProgressIndicator()),
@@ -702,16 +662,10 @@ class _detail_absence_employee_notifState
     return Container(
       margin: EdgeInsets.only(left: 5),
       width: double.infinity,
-      height: 80,
+
       child: Row(
         children: <Widget>[
-          Container(
-            child: Icon(
-              Icons.person,
-              color: Colors.black38,
-              size: 40,
-            ),
-          ),
+
           Container(
             margin: EdgeInsets.only(left: 10),
             child: Column(
@@ -728,6 +682,7 @@ class _detail_absence_employee_notifState
                   height: 10,
                 ),
                 Container(
+                  width: MediaQuery.of(context).size.width - 100,
                   child: Text(
                     "${_absence['data']['rejected_by']['first_name']} ${_absence['data']['rejected_by']['last_name']}",
                     style: subtitleAbsence,
@@ -745,16 +700,10 @@ class _detail_absence_employee_notifState
     return Container(
       margin: EdgeInsets.only(left: 5),
       width: double.infinity,
-      height: 80,
+
       child: Row(
         children: <Widget>[
-          Container(
-            child: Icon(
-              Icons.date_range,
-              color: Colors.black38,
-              size: 40,
-            ),
-          ),
+
           Container(
             margin: EdgeInsets.only(left: 10),
             child: Column(
@@ -771,6 +720,7 @@ class _detail_absence_employee_notifState
                   height: 10,
                 ),
                 Container(
+                  width: MediaQuery.of(context).size.width - 100,
                   child: Text(
                     "${_absence['data']['rejected_at']}",
                     style: subtitleAbsence,
@@ -788,17 +738,11 @@ class _detail_absence_employee_notifState
     return Container(
       margin: EdgeInsets.only(left: 5),
       width: double.infinity,
-      height: 80,
+
       child: Card(
         child: Row(
           children: <Widget>[
-            Container(
-              child: Icon(
-                Icons.timer_rounded,
-                color: Colors.black38,
-                size: 40,
-              ),
-            ),
+
             Container(
               margin: EdgeInsets.only(left: 10),
               child: Column(
@@ -833,16 +777,10 @@ class _detail_absence_employee_notifState
     return Container(
       margin: EdgeInsets.only(left: 5),
       width: double.infinity,
-      height: 80,
+
       child: Row(
         children: <Widget>[
-          Container(
-            child: Icon(
-              Icons.description,
-              color: Colors.black38,
-              size: 40,
-            ),
-          ),
+
           Container(
             margin: EdgeInsets.only(left: 10),
             child: Column(
@@ -930,16 +868,10 @@ class _detail_absence_employee_notifState
     return Container(
       margin: EdgeInsets.only(left: 5),
       width: double.infinity,
-      height: 80,
+
       child: Row(
         children: <Widget>[
-          Container(
-            child: Icon(
-              Icons.person,
-              color: Colors.black38,
-              size: 40,
-            ),
-          ),
+
           Container(
             margin: EdgeInsets.only(left: 10),
             child: Column(
@@ -956,6 +888,7 @@ class _detail_absence_employee_notifState
                   height: 10,
                 ),
                 Container(
+                  width: MediaQuery.of(context).size.width - 100,
                   child: Text(
                     "${_absence['data']['approved_by']['first_name']} ${_absence['data']['approved_by']['last_name']}",
                     style: subtitleAbsence,
@@ -973,17 +906,11 @@ class _detail_absence_employee_notifState
     return Container(
       margin: EdgeInsets.only(left: 5),
       width: double.infinity,
-      height: 80,
+
       child: Card(
         child: Row(
           children: <Widget>[
-            Container(
-              child: Icon(
-                Icons.date_range,
-                color: Colors.black38,
-                size: 40,
-              ),
-            ),
+
             Container(
               margin: EdgeInsets.only(left: 10),
               child: Column(
@@ -1000,6 +927,7 @@ class _detail_absence_employee_notifState
                     height: 10,
                   ),
                   Container(
+                    width: MediaQuery.of(context).size.width - 100,
                     child: Text(
                       "${_absence['data']['approved_at'] == null ? Text("") : _absence['data']['approved_at']}",
                       style: subtitleAbsence,
@@ -1018,16 +946,10 @@ class _detail_absence_employee_notifState
     return Container(
       margin: EdgeInsets.only(left: 5),
       width: double.infinity,
-      height: 80,
+
       child: Row(
         children: <Widget>[
-          Container(
-            child: Icon(
-              Icons.timer_rounded,
-              color: Colors.black38,
-              size: 40,
-            ),
-          ),
+
           Container(
             margin: EdgeInsets.only(left: 10),
             child: Column(
@@ -1061,16 +983,10 @@ class _detail_absence_employee_notifState
     return Container(
       margin: EdgeInsets.only(left: 5),
       width: double.infinity,
-      height: 80,
+
       child: Row(
         children: <Widget>[
-          Container(
-            child: Icon(
-              Icons.description,
-              color: Colors.black38,
-              size: 40,
-            ),
-          ),
+
           Container(
             margin: EdgeInsets.only(left: 10),
             child: Column(
@@ -1087,6 +1003,7 @@ class _detail_absence_employee_notifState
                   height: 10,
                 ),
                 Container(
+                  width: MediaQuery.of(context).size.width - 100,
                   child: _absence['data']['approval_note'] == null
                       ? Text(
                           "-",

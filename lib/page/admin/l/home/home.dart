@@ -12,9 +12,15 @@ import 'package:hrdmagenta/page/admin/l/absence/DetailAbsenceNotifAdmin.dart';
 import 'package:hrdmagenta/page/admin/l/absence/tabmenu_absence.dart';
 import 'package:hrdmagenta/page/admin/l/employees/DetailEmployee.dart';
 import 'package:hrdmagenta/page/admin/l/employees/list.dart';
+import 'package:hrdmagenta/page/admin/l/features/all.dart';
 import 'package:hrdmagenta/page/admin/l/leave/tabmenu_offwork.dart';
 import 'package:hrdmagenta/page/admin/l/permission/tabmenu.dart';
+import 'package:hrdmagenta/page/admin/l/project/tabmenu_project.dart';
 import 'package:hrdmagenta/page/admin/l/sick/tabmenu.dart';
+import 'package:hrdmagenta/page/employee/Account/profile.dart';
+import 'package:hrdmagenta/page/employee/absence/tabmenu_absence.dart';
+import 'package:hrdmagenta/page/employee/checkin/checkin.dart';
+import 'package:hrdmagenta/page/employee/checkout/checkout.dart';
 import 'package:hrdmagenta/page/employee/project/detail.dart';
 import 'package:hrdmagenta/services/api_clien.dart';
 import 'package:hrdmagenta/utalities/color.dart';
@@ -48,6 +54,122 @@ class _HomeAdminState extends State<HomeAdmin> {
   var _absenPending,user_id;
 
   final GlobalKey<ScaffoldState> scaffoldState = new GlobalKey<ScaffoldState>();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      key: scaffoldState,
+      body: DoubleBackToCloseApp(
+        snackBar: const SnackBar(
+          content: Text('Tap back again to leave'),
+        ),
+        child: RefreshIndicator(
+          child: AnnotatedRegion<SystemUiOverlayStyle>(
+            value: SystemUiOverlayStyle.light,
+            child: SizedBox.expand(
+              child: GestureDetector(
+                onTap: () => FocusScope.of(context).unfocus(),
+                child: Stack(
+                  children: <Widget>[
+                    SizedBox.expand(
+                      child: DraggableScrollableSheet(
+                        initialChildSize: 0.3,
+                        maxChildSize: 0.8,
+                        minChildSize: 0.1,
+                        builder: (BuildContext context, myscrollController) {
+                          return Container(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+
+                              children: <Widget>[
+                                Container(
+                                  color: Colors.grey,
+                                  width: 100,
+                                  height: 20,
+                                ),
+                              ],
+                            ),
+
+                          );
+                        },
+                      ),
+                    ),
+
+                    Container(
+                        height: double.infinity,
+                        width: double.infinity,
+                        color: Colors.white),
+                    Container(
+                      child: SingleChildScrollView(
+                        physics: AlwaysScrollableScrollPhysics(),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Container(
+                              child: Stack(
+                                children: <Widget>[
+                                  Container(
+                                    width: double.infinity,
+                                    color: baseColor,
+                                    height: 230,
+                                    child: Container(
+                                      margin: EdgeInsets.only(left: 10, top: 75),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                        children: <Widget>[
+                                          Text(
+                                            "Karyawan",
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 16),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+
+                                  ///wodget employee
+                                  //_buildemployee(),
+                                  _listEmployee(),
+                                ],
+                              ),
+                            ),
+                            SizedBox(
+                              height: 15,
+                            ),
+                            Container(
+                              margin: EdgeInsets.only(left: 10, top: 5),
+                              child: Text("Main Menu",
+                                  textAlign: TextAlign.left,
+                                  style: titleMainMenu),
+                            ),
+                            _buildCardMenu(),
+                            SizedBox(
+                              height: 15,
+                            ),
+                            Container(
+                              margin: EdgeInsets.only(left: 10, top: 5),
+                              child: Text("Event",
+                                  textAlign: TextAlign.left,
+                                  style: titleMainMenu),
+                            ),
+                            _buildproject(),
+                          ],
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ),
+          ),
+          onRefresh: dataProject,
+        ),
+      ),
+    );
+  }
 
   Widget _buildMenuOffwork() {
     return Column(children: <Widget>[
@@ -162,10 +284,7 @@ class _HomeAdminState extends State<HomeAdmin> {
         child: InkWell(
           onTap: () {
             navigatorPermission();
-
-
           },
-
           child: Stack(
             children: [
               Card(
@@ -207,6 +326,55 @@ class _HomeAdminState extends State<HomeAdmin> {
       Text("Izin", style: subtitleMainMenu)
     ]);
   }
+
+  Widget _buildMenucheckin() {
+    return Column(children: <Widget>[
+      new Container(
+        width: 70,
+        height: 70,
+        child: InkWell(
+          onTap: () {
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => Checkin()));
+          },
+          child: Card(
+            elevation: 1,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+            child: Container(margin: EdgeInsets.all(15.0), child: checkin),
+          ),
+        ),
+      ),
+      Text("Check In", style: subtitleMainMenu)
+    ]);
+  }
+
+
+
+  Widget _buildMenucheckout() {
+    return Column(children: <Widget>[
+      new Container(
+        width: 70,
+        height: 70,
+        child: InkWell(
+          onTap: () {
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => Checkout()));
+          },
+          child: Card(
+            elevation: 1,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+            child: Container(margin: EdgeInsets.all(15.0), child: checkout),
+          ),
+        ),
+      ),
+      Text("Check Out", style: subtitleMainMenu)
+    ]);
+  }
+
 
   Widget _buildMenuaabsence() {
     return Column(children: <Widget>[
@@ -311,7 +479,7 @@ class _HomeAdminState extends State<HomeAdmin> {
       Text("Payslip", style: subtitleMainMenu)
     ]);
   }
-  Widget _buildMenuemployees() {
+  Widget _buildMenuloan() {
     return Column(children: <Widget>[
       new Container(
         width: 70,
@@ -328,14 +496,46 @@ class _HomeAdminState extends State<HomeAdmin> {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10.0),
             ),
-            child: Container(margin: EdgeInsets.all(15.0), child: employees),
+            child: Container(margin: EdgeInsets.all(15.0), child: loan),
           ),
         ),
       ),
-      Text("Karyawan", style: subtitleMainMenu)
+      Text("Kasbon", style: subtitleMainMenu)
     ]);
   }
 
+  Widget _buildmenudraggablescroll() {
+    return Column(children: <Widget>[
+      new Container(
+        width: 70,
+        height: 70,
+        child: InkWell(
+          onTap: () =>  showModalBottomSheet(
+            backgroundColor: Colors.transparent,
+            context: context,
+            isScrollControlled: true,
+            builder: (context) {
+              return FractionallySizedBox(
+                heightFactor: 0.8,
+                child: _draggableScroll(),
+
+              );
+            }),
+          child: Card(
+            elevation: 1,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+            child: Container(margin: EdgeInsets.all(15.0), child: project),
+          ),
+        ),
+      ),
+      Text(
+        "  Semua Fitur  ",
+        style: subtitleMainMenu,
+      )
+    ]);
+  }
   Widget _buildMenuproject() {
     return Column(children: <Widget>[
       new Container(
@@ -343,7 +543,7 @@ class _HomeAdminState extends State<HomeAdmin> {
         height: 70,
         child: InkWell(
           onTap: () {
-            Navigator.pushNamed(context, "tabs_project_admin-page");
+            Get.to(TabsprojectAdmin());
           },
           child: Card(
             elevation: 1,
@@ -410,11 +610,10 @@ class _HomeAdminState extends State<HomeAdmin> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: <Widget>[
-                            _buildMenuemployees(),
+                            _buildMenucheckin(),
+                            _buildMenucheckout(),
                             _buildMenuaabsence(),
-                            _buildMenuproject(),
-                            _buildMenupayslip(),
-
+                            _buildMenuannouncement(),
 
                           ],
                         ),
@@ -422,13 +621,11 @@ class _HomeAdminState extends State<HomeAdmin> {
                             child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: <Widget>[
-                            _buildMenuannouncement(),
+
                             _buildMenuPermission(),
                             _buildMenuSick(),
                             _buildMenuOffwork(),
-
-
-
+                            _buildmenudraggablescroll(),
 
                           ],
                         )),
@@ -444,34 +641,202 @@ class _HomeAdminState extends State<HomeAdmin> {
     );
   }
 
+  Widget subbmission_menu() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Center(
+          child: Container(
+            width: double.infinity,
+            child: Container(
+              margin: EdgeInsets.only(top: 15, bottom: 15),
+              child: Column(
+                children: <Widget>[
+                  Container(
+                    child: Column(
+
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Container(
+                          margin: EdgeInsets.only(left: 10),
+
+                          child: Text("Pengajuan",style: TextStyle(color: Colors.black,fontFamily: "SFBlack"),),
+
+                        ),
+                        SizedBox(height: 5,),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: <Widget>[
+                            _buildMenuSick(),
+                            _buildMenuPermission(),
+                           _buildMenuOffwork()
+
+
+                          ],
+                        ),
+
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        )
+      ],
+    );
+  }
+  Widget approval_menu() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Center(
+          child: Container(
+            width: double.infinity,
+            child: Container(
+              margin: EdgeInsets.only(top: 15, bottom: 15),
+              child: Column(
+                children: <Widget>[
+                  Container(
+                    child: Column(
+
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Container(
+                          margin: EdgeInsets.only(left: 10),
+                          child: Text("Persetujuan",style: TextStyle(color: Colors.black,fontFamily: "SFBlack"),),
+                        ),
+                        SizedBox(height: 5,),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: <Widget>[
+                            _buildMenuSick(),
+                            _buildMenuPermission(),
+                            _buildMenuOffwork(),
+                            _buildMenuaabsence(),
+
+
+                          ],
+                        ),
+
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        )
+      ],
+    );
+  }
+
+  Widget attendances_menu() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Center(
+          child: Container(
+            width: double.infinity,
+            child: Container(
+              margin: EdgeInsets.only(top: 15, bottom: 15),
+              child: Column(
+                children: <Widget>[
+                  Container(
+                    child: Column(
+
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Container(
+                          margin: EdgeInsets.only(left: 10),
+
+                          child: Text("Kehadiran",style: TextStyle(color: Colors.black,fontFamily: "SFBlack"),),
+
+                        ),
+                        SizedBox(height: 5,),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: <Widget>[
+                            _buildMenucheckin(),
+                            _buildMenucheckout(),
+                            _buildMenuattendances(),
+                          ],
+                        ),
+
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        )
+      ],
+    );
+  }
+  Widget other_menu() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Center(
+          child: Container(
+            width: double.infinity,
+            child: Container(
+              margin: EdgeInsets.only(top: 15, bottom: 15),
+              child: Column(
+                children: <Widget>[
+                  Container(
+                    child: Column(
+
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Container(
+                          margin: EdgeInsets.only(left: 10),
+
+                          child: Text("Lainnya",style: TextStyle(color: Colors.black,fontFamily: "SFBlack"),),
+
+                        ),
+                        SizedBox(height: 5,),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: <Widget>[
+                            _buildMenuloan(),
+                            _buildMenuproject(),
+                            _buildMenupayslip(),
+
+
+                          ],
+                        ),
+
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        )
+      ],
+    );
+  }
   Widget _buildemployee(index) {
     return InkWell(
       onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => DetailEmployee(
-                    first_name: "${_employee['data'][index]['first_name']}",
-                    last_name: "${_employee['data'][index]['last_name']}",
-                    address: "${_employee['data'][index]['address']}",
-                    email: "${_employee['data'][index]['email']}",
-                    work_palcement:
-                        "${_employee['data'][index]['work_placement']}",
-                    contact_number:
-                        "${_employee['data'][index]['contact_number']}",
-                    date_of_birth:
-                        "${_employee['data'][index]['date_of_birth']}",
-                    gender: "${_employee['data'][index]['gender']}",
-                  )),
-        );
+        Get.to(DetailProfile(id: _employee['data'][index]['id'],));
       },
       child: Container(
         margin: EdgeInsets.only(left: 10),
         child: Column(
           children: <Widget>[
-            CircleAvatar(
-              radius: 30,
-              child: employee_profile,
+            Container(
+              child: _employee['data'][index]['photo']==null?CircleAvatar(
+                radius: 30,
+                  backgroundImage: NetworkImage(photo_profile),
+
+              ):CircleAvatar(
+                radius: 30,
+                backgroundImage: NetworkImage("${image_ur}/${_employee['data'][index]['photo']}"),
+              ),
             ),
             SizedBox(
               height: 10,
@@ -679,94 +1044,32 @@ class _HomeAdminState extends State<HomeAdmin> {
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      key: scaffoldState,
-      body: DoubleBackToCloseApp(
-        snackBar: const SnackBar(
-          content: Text('Tap back again to leave'),
-        ),
-        child: RefreshIndicator(
-          child: AnnotatedRegion<SystemUiOverlayStyle>(
-            value: SystemUiOverlayStyle.light,
-            child: GestureDetector(
-              onTap: () => FocusScope.of(context).unfocus(),
-              child: Stack(
-                children: <Widget>[
-                  Container(
-                      height: double.infinity,
-                      width: double.infinity,
-                      color: Colors.white),
-                  Container(
-                    child: SingleChildScrollView(
-                      physics: AlwaysScrollableScrollPhysics(),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Container(
-                            child: Stack(
-                              children: <Widget>[
-                                Container(
-                                  width: double.infinity,
-                                  color: baseColor,
-                                  height: 230,
-                                  child: Container(
-                                    margin: EdgeInsets.only(left: 10, top: 75),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: <Widget>[
-                                        Text(
-                                          "Karyawan",
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 16),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
 
-                                ///wodget employee
-                                //_buildemployee(),
-                                _listEmployee(),
-                              ],
-                            ),
-                          ),
-                          SizedBox(
-                            height: 15,
-                          ),
-                          Container(
-                            margin: EdgeInsets.only(left: 10, top: 5),
-                            child: Text("Main Menu",
-                                textAlign: TextAlign.left,
-                                style: titleMainMenu),
-                          ),
-                          _buildCardMenu(),
-                          SizedBox(
-                            height: 15,
-                          ),
-                          Container(
-                            margin: EdgeInsets.only(left: 10, top: 5),
-                            child: Text("Event",
-                                textAlign: TextAlign.left,
-                                style: titleMainMenu),
-                          ),
-                          _buildproject(),
-                        ],
-                      ),
-                    ),
-                  )
-                ],
-              ),
+
+  Widget _buildMenuattendances() {
+    return Column(children: <Widget>[
+      new Container(
+        width: 70,
+        height: 70,
+        child: InkWell(
+          onTap: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => TabsMenuAbsence()));
+          },
+          child: Card(
+            elevation: 1,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10.0),
             ),
+            child: Container(margin: EdgeInsets.all(15.0), child: absent),
           ),
-          onRefresh: dataProject,
         ),
       ),
-    );
+      Text(
+        "Kehadiran",
+        style: subtitleMainMenu,
+      )
+    ]);
   }
 
   //-----ge data from api----
@@ -910,26 +1213,6 @@ class _HomeAdminState extends State<HomeAdmin> {
   // }
   //notification
   //notification
-  showNotifcation(String title, String body, String data) async {
-    var android = new AndroidNotificationDetails(
-        'chanel id', 'chanel name', 'CHANEL DESCRIPTION');
-    var ios = new IOSNotificationDetails();
-    var platform = new NotificationDetails(android: android, iOS: ios);
-
-    await flutterLocalNotificationsPlugin.show(0, '$title', '$body', platform,
-        payload: "$data");
-  }
-
-  Future onSelectNotification(var payload) {
-    debugPrint("payload : ${payload}");
-
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => detail_absence_admin_notif(
-                  id: payload,
-                )));
-  }
 
   Widget _buildteam(index_member, index) {
     return Container(
@@ -949,6 +1232,55 @@ class _HomeAdminState extends State<HomeAdmin> {
       ),
     );
   }
+
+  Widget _allFeatures(){
+    return Container(
+      child: Column(
+        children: <Widget>[
+          Container(
+            margin: EdgeInsets.only(top: 10),
+            decoration: BoxDecoration(
+              color: Colors.grey,
+              borderRadius: BorderRadius.circular(20),
+            ),
+            width: 50,
+            height: 10,
+          ),
+          approval_menu(),
+          subbmission_menu(),
+         attendances_menu(),
+          other_menu()
+        ],
+      ),
+    );
+  }
+
+  Widget _draggableScroll(){
+    return DraggableScrollableSheet(
+      initialChildSize: 0.6,
+      maxChildSize: 1,
+      minChildSize: 0.3,
+      builder:
+          (BuildContext context, ScrollController scrollController) {
+        return Container(
+          decoration: new BoxDecoration(
+              color: Colors.white, //new Color.fromRGBO(255, 0, 0, 0.0),
+              borderRadius: new BorderRadius.only(
+                  topLeft:  const  Radius.circular(20.0),
+                  topRight: const  Radius.circular(20.0))
+          ),
+          child: ListView.builder(
+            controller: scrollController,
+            itemCount: 1,
+            itemBuilder: (BuildContext context, int index) {
+              return _allFeatures();
+            },
+          ),
+        );
+      },
+    );
+  }
+
 
   Future getDatapref() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
@@ -992,6 +1324,28 @@ class _HomeAdminState extends State<HomeAdmin> {
       _datapermission();
     }
 
+  }
+
+
+  showNotifcation(String title, String body, String data) async {
+    var android = new AndroidNotificationDetails(
+        'chanel id', 'chanel name', 'CHANEL DESCRIPTION');
+    var ios = new IOSNotificationDetails();
+    var platform = new NotificationDetails(android: android, iOS: ios);
+
+    await flutterLocalNotificationsPlugin.show(0, '$title', '$body', platform,
+        payload: "$data");
+  }
+
+  Future onSelectNotification(var payload) {
+    debugPrint("payload : ${payload}");
+
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => detail_absence_admin_notif(
+              id: payload,
+            )));
   }
 
 
@@ -1042,6 +1396,7 @@ class _HomeAdminState extends State<HomeAdmin> {
         print("onResume: $message");
       },
     );
+
     _firebaseMessaging.requestNotificationPermissions(
         const IosNotificationSettings(sound: true, badge: true, alert: true));
     super.initState();
@@ -1052,4 +1407,7 @@ class _HomeAdminState extends State<HomeAdmin> {
     flutterLocalNotificationsPlugin.initialize(initSetttings,
         onSelectNotification: onSelectNotification);
   }
+
+
+
 }

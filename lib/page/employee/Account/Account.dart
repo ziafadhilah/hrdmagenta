@@ -596,11 +596,25 @@ class _AccountEmployeeState extends State<AccountEmployee> {
                         SizedBox(
                           height: 5,
                         ),
-                        Text(
-                          "$gender",
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.black38,
+                        Container(
+                          child: gender=='male'?Text(
+                            "Pria",
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.black38,
+                            ),
+                          ):gender=="female"?Text(
+                            "Wanita",
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.black38,
+                            ),
+                          ):Text(
+                            "-",
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.black38,
+                            ),
                           ),
                         )
                       ],

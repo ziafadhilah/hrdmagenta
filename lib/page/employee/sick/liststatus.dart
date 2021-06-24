@@ -83,6 +83,8 @@ class _ListstatusSickPageEmployeeState extends State<ListstatusSickPageEmployee>
     );
   }
   Widget _leave(index){
+
+    var description=_sick['data'][index]['description'];
     var id=_sick['data'][index]['id'];
     var dates=_sick['data'][index]['sick_dates'];
     var sick_dates=dates.split(',');
@@ -119,10 +121,17 @@ class _ListstatusSickPageEmployeeState extends State<ListstatusSickPageEmployee>
                   ,textAlign: TextAlign.end,),),
               SizedBox(height: 10,),
               Container(child:Text("Tanggal Sakit",style: TextStyle(color: Colors.black38),),),
-              SizedBox(height: 10,),
+              SizedBox(height: 5,),
               Flex(
                   direction: Axis.horizontal,
                   children: [Expanded(child: Container(child:Text(_sick['data'][index]['sick_dates'].toString(),style: TextStyle(color: Colors.black87,fontFamily: "SFReguler"),),))]),
+              SizedBox(height: 15,),
+              description!=null?Container(child:Text("Keterangan",style: TextStyle(color: Colors.black38),),):Container(),
+              SizedBox(height: 5,),
+              description!=null?Flex(
+                  direction: Axis.horizontal,
+                  children: [Expanded(child: Container(child:Text("${_sick['data'][index]['description'].toString()}",style: TextStyle(color: Colors.black87,fontFamily: "SFReguler"),),))]):Container(),
+
               SizedBox(height: 20,),
               Visibility(
                 visible: _visible,

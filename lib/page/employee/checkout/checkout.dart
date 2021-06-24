@@ -75,7 +75,7 @@ class _CheckoutState extends State<Checkout> {
                     children: <Widget>[
                       Container(
                         child:
-                            _distance > 20 ? _builddistaceCompany() : Text(""),
+                            _distance > 10 ? _builddistaceCompany() : Text(""),
                       ),
                       Container(
                         margin: EdgeInsets.only(top: 15),

@@ -1,15 +1,13 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:get/get.dart';
+
 import 'package:hrdmagenta/model/pdf.dart';
-import 'package:hrdmagenta/model/employee.dart';
 import 'package:hrdmagenta/model/invoice.dart';
-import 'package:hrdmagenta/model/supplier.dart';
+
 
 import 'package:hrdmagenta/services/pdf_pyslip_api.dart';
 import 'package:intl/intl.dart';
-import 'package:json_table/json_table.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:pdf/widgets.dart';
@@ -83,7 +81,7 @@ var tes=totalDeduction.toString();
       ]);
 
   static Widget Departement(Pdf customer) => Row(children: [
-        Container(width: 120, child: Text("Departement")),
+        Container(width: 120, child: Text("Departemen")),
         Container(margin: pw.EdgeInsets.only(left: 5), child: Text(": ")),
         Container(child: Text(customer.departement.toString()))
       ]);
@@ -91,7 +89,7 @@ var tes=totalDeduction.toString();
   static Widget StatusKaryawan(Pdf customer) => Row(children: [
         Container(width: 120, child: Text("Status Karyawan")),
         Container(margin: pw.EdgeInsets.only(left: 5), child: Text(": ")),
-        Container(child: Text(""))
+        Container(child: Text(customer.status_karyawan.toString()))
       ]);
 
   static Widget JobTitle(Pdf customer) => Row(children: [

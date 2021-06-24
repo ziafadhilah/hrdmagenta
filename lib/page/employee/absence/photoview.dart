@@ -34,7 +34,7 @@ class _PhotoViewPageState extends State<PhotoViewPage> {
                         ))
                       : PhotoView(
                           imageProvider: NetworkImage(
-                            "$base_url/images/${widget.image}",
+                            "${image_ur}/${widget.image}",
                         )
                   )),
             ),

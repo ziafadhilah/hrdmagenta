@@ -9,6 +9,7 @@ import 'package:hrdmagenta/services/api_clien.dart';
 import 'package:hrdmagenta/utalities/color.dart';
 import 'package:hrdmagenta/utalities/constants.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 
 class ApprovedAbsenceAdminPage extends StatefulWidget {
   ApprovedAbsenceAdminPage ({this.type});
@@ -132,7 +133,9 @@ class _ApprovedAbsenceAdminPageState extends State<ApprovedAbsenceAdminPage> {
                                                   [index]
                                                   ['status'] ==
                                                       "approved"
-                                                      ? Container(child: _absence['data'][index]['approved_at'] != null ? Text("${_absence['data'][index]['type']}  ${_absence['data'][index]['employee']['first_name']}  telah di approved", style: TextStyle(fontSize: 15, color: Colors.black87)) : Text("${_absence['data'][index]['employee']['first_name']} telah melakukan  ${_absence['data'][index]['type']}", style: TextStyle(fontSize: 15, color: Colors.black87)))
+                                                      ? Container(
+                                                    width:Get.mediaQuery.size.width-50,
+                                                      child: _absence['data'][index]['approved_at'] != null ? Text("${_absence['data'][index]['type']}  ${_absence['data'][index]['employee']['first_name']}  telah di approved", style: TextStyle(fontSize: 15, color: Colors.black87)) : Text("${_absence['data'][index]['employee']['first_name']} telah melakukan ${_absence['data'][index]['type']}", style: TextStyle(fontSize: 15, color: Colors.black87)))
                                                       : Text(""))
                                             ],
                                           ),
@@ -159,7 +162,8 @@ class _ApprovedAbsenceAdminPageState extends State<ApprovedAbsenceAdminPage> {
                                                         fontSize: 15,
                                                         color: Colors.black26))
                                                     : _absence['data'][index]['status'] == "approved"
-                                                    ? Container(child: _absence['data'][index]['approved_at'] != null ? Text("${_absence['data'][index]['approved_at']}", style: TextStyle(fontSize: 15, color: Colors.black26)) : Text("${_absence['data'][index]['clock_in']}", style: TextStyle(fontSize: 15, color: Colors.black26)))
+                                                    ? Container(child: _absence['data'][index]['approved_at'] != null ? Text("${ DateFormat("dd/MM/yyyy hh:mm:ss").format(DateTime.parse(_absence['data'][index]['approved_at']))}", style: TextStyle(fontSize: 15, color: Colors.black26)) : Text("${ DateFormat("dd/MM/yyyy hh:mm:ss").format(DateTime.parse(_absence['data'][index]['clock_in']))}", style: TextStyle(fontSize: 15, color: Colors.black26)))
+
                                                     : Text(""))
                                                 : Container(
                                                 child: _absence['data'][index]['status'] == "pending"
@@ -167,7 +171,7 @@ class _ApprovedAbsenceAdminPageState extends State<ApprovedAbsenceAdminPage> {
                                                     : _absence['data'][index]['status'] == "rejected"
                                                     ? Text("${_absence['data'][index]['rejected_at']}", style: TextStyle(fontSize: 15, color: Colors.black26))
                                                     : _absence['data'][index]['status'] == "approved"
-                                                    ? Container(child: _absence['data'][index]['approved_at'] != null ? Text("${_absence['data'][index]['approved_at']}", style: TextStyle(fontSize: 15, color: Colors.black26)) : Text("${_absence['data'][index]['clock_out']}", style: TextStyle(fontSize: 15, color: Colors.black26)))
+                                                    ? Container(child: _absence['data'][index]['approved_at'] != null ? Text("${DateFormat("dd/MM/yyyy hh:mm:ss").format(DateTime.parse(_absence['data'][index]['approved_at']))}", style: TextStyle(fontSize: 15, color: Colors.black26)) : Text("${DateFormat("dd/MM/yyyy hh:mm:ss").format(DateTime.parse(_absence['data'][index]['clock_out']))}", style: TextStyle(fontSize: 15, color: Colors.black26)))
                                                     : Text("")),
                                           ),
                                           InkWell(
@@ -281,6 +285,8 @@ class _ApprovedAbsenceAdminPageState extends State<ApprovedAbsenceAdminPage> {
                                                               'last_name'],
                                                               office_latitude: _absence['data'][index]['office_latitude'],
                                                               office_longitude: _absence['data'][index]['office_longitude'],
+                                                              photo: _absence['data'][index]['employee']['photo'],
+                                                              employee_id: _absence['data'][index]['employee']['employee_id'],
                                                             )));
                                               } else {
                                                 Navigator.push(
@@ -389,6 +395,9 @@ class _ApprovedAbsenceAdminPageState extends State<ApprovedAbsenceAdminPage> {
                                                               'last_name'],
                                                               office_latitude: _absence['data'][index]['office_latitude'],
                                                               office_longitude: _absence['data'][index]['office_longitude'],
+                                                              employee_id: _absence['data'][index]['employee']['employee_id'],
+                                                              photo: _absence['data'][index]['employee']['photo'],
+
                                                             )));
                                               }
                                             },
@@ -403,11 +412,11 @@ class _ApprovedAbsenceAdminPageState extends State<ApprovedAbsenceAdminPage> {
                                                 CrossAxisAlignment.end,
                                                 children: <Widget>[
                                                   Container(
-                                                    child: Text(
-                                                      "See Details ",
+                                                    child: _absence['data'][index]['office_latitude']!=null?Text(
+                                                      "LIHAT DETAIL ",
                                                       style: TextStyle(
                                                           color: textColor1),
-                                                    ),
+                                                    ):Text(""),
                                                   )
                                                 ],
                                               ),

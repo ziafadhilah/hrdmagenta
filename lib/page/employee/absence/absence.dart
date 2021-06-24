@@ -12,6 +12,7 @@ import 'package:hrdmagenta/utalities/color.dart';
 import 'package:hrdmagenta/utalities/constants.dart';
 import 'package:hrdmagenta/utalities/font.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class absence extends StatefulWidget {
@@ -63,6 +64,7 @@ class _absenceState extends State<absence> {
   }
 
   Widget _buildlistabsence(index) {
+
     return _absence['data'][index]['category']=='present'?Stack(
       children: <Widget>[
         Container(
@@ -133,13 +135,13 @@ class _absenceState extends State<absence> {
                                                                 'approved_at'] ==
                                                             null
                                                         ? Text(
-                                                            "${_absence['data'][index]['clock_in']}",
+                                                        DateFormat("dd/MM/yyyy hh:mm:ss").format(DateTime.parse(_absence['data'][index]['clock_in'])),
                                                             style: TextStyle(
                                                                 fontSize: 15,
                                                                 color: Colors
                                                                     .black26))
                                                         : Text(
-                                                            "${_absence['data'][index]['approved_at']}",
+                                                        DateFormat("dd/MM/yyyy hh:mm:ss").format(DateTime.parse(_absence['data'][index]['approved_at'])),
                                                             style: TextStyle(
                                                                 fontSize: 15,
                                                                 color: Colors
@@ -151,13 +153,14 @@ class _absenceState extends State<absence> {
                                                                 'approved_at'] ==
                                                             null
                                                         ? Text(
-                                                            "${_absence['data'][index]['clock_out']}",
+                                                        DateFormat("dd/MM/yyyy hh:mm:ss").format(DateTime.parse(_absence['data'][index]['clock_out'])),
                                                             style: TextStyle(
                                                                 fontSize: 15,
                                                                 color: Colors
                                                                     .black26))
                                                         : Text(
-                                                            "${_absence['data'][index]['approved_at']}",
+                                                        DateFormat("dd/MM/yyyy hh:mm:ss").format(DateTime.parse(_absence['data'][index]['approved_at'])),
+
                                                             style: TextStyle(
                                                                 fontSize: 15,
                                                                 color: Colors
@@ -280,6 +283,15 @@ class _absenceState extends State<absence> {
                                                                           index]
                                                                       [
                                                                       'office_longitude'],
+                                                              employee_id: _absence['data']
+                                                              [
+                                                              index]
+                                                              ['employee'][
+                                                              'employee_id'],
+                                                              photo: _absence['data']
+                                                              [
+                                                              index]['employee']
+                                                              ['photo'],
                                                             )));
                                               } else {
                                                 Navigator.push(
@@ -393,6 +405,15 @@ class _absenceState extends State<absence> {
                                                                           index]
                                                                       [
                                                                       'office_longitude'],
+                                                                employee_id: _absence['data']
+                                                                [
+                                                                index]
+                                                                ['employee'][
+                                                                'employee_id'],
+                                                              photo: _absence['data']
+                                                              [
+                                                              index]['employee']
+                                                              ['photo'],
                                                             )));
                                               }
                                             },
@@ -408,7 +429,7 @@ class _absenceState extends State<absence> {
                                                 children: <Widget>[
                                                   Container(
                                                     child: Text(
-                                                      "See Details",
+                                                      "LIHAT DETAIL",
                                                       style: TextStyle(
                                                           color: textColor1),
                                                     ),

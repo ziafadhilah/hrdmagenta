@@ -37,6 +37,8 @@ class detail_absence_admin extends StatefulWidget {
       this.id_attandance,
       this.office_latitude,
       this.office_longitude,
+        this.employee_id,
+        this.photo,
       this.category});
 
   var status,
@@ -60,6 +62,8 @@ class detail_absence_admin extends StatefulWidget {
       id_attandance,
       office_latitude,
       office_longitude,
+  employee_id,
+  photo,
       category;
 
   _detail_absence_adminState createState() => _detail_absence_adminState();
@@ -95,8 +99,8 @@ class _detail_absence_adminState extends State<detail_absence_admin> {
                 _buildProfile(),
                 _buildAbsenceType(),
                 Divider(color: Colors.black12,),
-                _buildAbsencecategory(),
-                Divider(color: Colors.black12,),
+                // _buildAbsencecategory(),
+                // Divider(color: Colors.black12,),
                 _buildDate(),
                 Divider(color: Colors.black12,),
                 _buildTime(),
@@ -153,7 +157,7 @@ class _detail_absence_adminState extends State<detail_absence_admin> {
         children: <Widget>[
           Container(
               child: CircleAvatar(
-            child: male_avatar,
+            backgroundImage: NetworkImage("$image_ur/${widget.photo}"),
             backgroundColor: Colors.transparent,
             radius: 40,
           )),
@@ -164,7 +168,7 @@ class _detail_absence_adminState extends State<detail_absence_admin> {
               children: <Widget>[
                 Container(
                   child: Text(
-                    "${widget.firts_name_employee} ${widget.last_name_employee}",
+                    "${widget.firts_name_employee}",
                     style: TextStyle(
                         fontSize: 18,
                         color: Colors.black87,
@@ -176,7 +180,7 @@ class _detail_absence_adminState extends State<detail_absence_admin> {
                 ),
                 Container(
                   child: Text(
-                    "${widget.work_placement}",
+                    "${widget.employee_id}",
                     style: TextStyle(
                       fontSize: 15,
                       color: Colors.black38,
@@ -196,21 +200,10 @@ class _detail_absence_adminState extends State<detail_absence_admin> {
     return Container(
       margin: EdgeInsets.only(left: 5),
       width: double.infinity,
-      height: 80,
+
       child: Row(
         children: <Widget>[
-          Container(
-              child: widget.type == "check in"
-                  ? Icon(
-                      Icons.login,
-                      color: Colors.black38,
-                      size: 40,
-                    )
-                  : Icon(
-                      Icons.logout,
-                      color: Colors.black38,
-                      size: 40,
-                    )),
+
           Container(
             margin: EdgeInsets.only(left: 10),
             child: Column(
@@ -244,15 +237,10 @@ class _detail_absence_adminState extends State<detail_absence_admin> {
     return Container(
       margin: EdgeInsets.only(left: 5),
       width: double.infinity,
-      height: 80,
+
       child: Row(
         children: <Widget>[
-          Container(
-              child: Icon(
-            Icons.description,
-            color: Colors.black38,
-            size: 40,
-          )),
+
           Container(
             margin: EdgeInsets.only(left: 10),
             child: Column(
@@ -269,6 +257,7 @@ class _detail_absence_adminState extends State<detail_absence_admin> {
                   height: 10,
                 ),
                 Container(
+                  width: MediaQuery.of(context).size.width - 100,
                   child: (widget.note == null)
                       ? Text(
                           "-",
@@ -291,16 +280,10 @@ class _detail_absence_adminState extends State<detail_absence_admin> {
     return Container(
       margin: EdgeInsets.only(left: 5),
       width: double.infinity,
-      height: 80,
+
       child: Row(
         children: <Widget>[
-          Container(
-            child: Icon(
-              Icons.category,
-              color: Colors.black38,
-              size: 40,
-            ),
-          ),
+
           Container(
             margin: EdgeInsets.only(left: 10),
             child: Column(
@@ -317,6 +300,7 @@ class _detail_absence_adminState extends State<detail_absence_admin> {
                   height: 10,
                 ),
                 Container(
+                  width: MediaQuery.of(context).size.width - 100,
                   child: Text(
                     "${widget.category}",
                     style: subtitleAbsence,
@@ -335,16 +319,10 @@ class _detail_absence_adminState extends State<detail_absence_admin> {
     return Container(
       margin: EdgeInsets.only(left: 5),
       width: double.infinity,
-      height: 80,
+
       child: Row(
         children: <Widget>[
-          Container(
-            child: Icon(
-              Icons.date_range,
-              color: Colors.black38,
-              size: 40,
-            ),
-          ),
+
           Container(
             margin: EdgeInsets.only(left: 10),
             child: Column(
@@ -361,6 +339,7 @@ class _detail_absence_adminState extends State<detail_absence_admin> {
                   height: 10,
                 ),
                 Container(
+                  width: MediaQuery.of(context).size.width - 100,
                   child: Text(
                     "${widget.date}",
                     style: subtitleAbsence,
@@ -381,13 +360,7 @@ class _detail_absence_adminState extends State<detail_absence_admin> {
       width: double.infinity,
       child: Row(
         children: <Widget>[
-          Container(
-            child: Icon(
-              Icons.location_on,
-              color: Colors.black38,
-              size: 40,
-            ),
-          ),
+
           Container(
             margin: EdgeInsets.only(left: 10, bottom: 10),
             child: Column(
@@ -406,6 +379,7 @@ class _detail_absence_adminState extends State<detail_absence_admin> {
                 Column(
                   children: [
                     Container(
+
                       width: MediaQuery.of(context).size.width - 100,
                       child: _currentAddress == null
                           ? Text("")
@@ -428,16 +402,10 @@ class _detail_absence_adminState extends State<detail_absence_admin> {
     return Container(
       margin: EdgeInsets.only(left: 5),
       width: double.infinity,
-      height: 80,
+
       child: Row(
         children: <Widget>[
-          Container(
-            child: Icon(
-              Icons.access_time_rounded,
-              color: Colors.black38,
-              size: 40,
-            ),
-          ),
+
           Container(
             margin: EdgeInsets.only(left: 10),
             child: Column(
@@ -454,6 +422,7 @@ class _detail_absence_adminState extends State<detail_absence_admin> {
                   height: 10,
                 ),
                 Container(
+                  width: MediaQuery.of(context).size.width - 100,
                   child: Text(
                     _time.toString(),
                     style: subtitleAbsence,
@@ -628,7 +597,7 @@ class _detail_absence_adminState extends State<detail_absence_admin> {
                       fit: BoxFit.fill,
                     )
                   : CachedNetworkImage(
-                      imageUrl:  "$base_url/images/${widget.image}",
+                      imageUrl:  "$image_ur/${widget.image}",
                       fit: BoxFit.fill,
                       placeholder: (context, url) =>
                           Center(child: new CircularProgressIndicator()),
@@ -690,16 +659,10 @@ class _detail_absence_adminState extends State<detail_absence_admin> {
     return Container(
       margin: EdgeInsets.only(left: 5),
       width: double.infinity,
-      height: 80,
+
       child: Row(
         children: <Widget>[
-          Container(
-            child: Icon(
-              Icons.person,
-              color: Colors.black38,
-              size: 40,
-            ),
-          ),
+
           Container(
             margin: EdgeInsets.only(left: 10),
             child: Column(
@@ -733,16 +696,10 @@ class _detail_absence_adminState extends State<detail_absence_admin> {
     return Container(
       margin: EdgeInsets.only(left: 5),
       width: double.infinity,
-      height: 80,
+
       child: Row(
         children: <Widget>[
-          Container(
-            child: Icon(
-              Icons.date_range,
-              color: Colors.black38,
-              size: 40,
-            ),
-          ),
+
           Container(
             margin: EdgeInsets.only(left: 10),
             child: Column(
@@ -776,16 +733,10 @@ class _detail_absence_adminState extends State<detail_absence_admin> {
     return Container(
       margin: EdgeInsets.only(left: 5),
       width: double.infinity,
-      height: 80,
+
       child: Row(
         children: <Widget>[
-          Container(
-            child: Icon(
-              Icons.timer_rounded,
-              color: Colors.black38,
-              size: 40,
-            ),
-          ),
+
           Container(
             margin: EdgeInsets.only(left: 10),
             child: Column(
@@ -819,16 +770,10 @@ class _detail_absence_adminState extends State<detail_absence_admin> {
     return Container(
       margin: EdgeInsets.only(left: 5),
       width: double.infinity,
-      height: 80,
+
       child: Row(
         children: <Widget>[
-          Container(
-            child: Icon(
-              Icons.description,
-              color: Colors.black38,
-              size: 40,
-            ),
-          ),
+
           Container(
             margin: EdgeInsets.only(left: 10),
             child: Column(
@@ -845,6 +790,7 @@ class _detail_absence_adminState extends State<detail_absence_admin> {
                   height: 10,
                 ),
                 Container(
+                  width: MediaQuery.of(context).size.width - 100,
                   child: widget.rejection_note == null
                       ? Text(
                           "-",
@@ -915,16 +861,10 @@ class _detail_absence_adminState extends State<detail_absence_admin> {
     return Container(
       margin: EdgeInsets.only(left: 5),
       width: double.infinity,
-      height: 80,
+
       child: Row(
         children: <Widget>[
-          Container(
-            child: Icon(
-              Icons.person,
-              color: Colors.black38,
-              size: 40,
-            ),
-          ),
+
           Container(
             margin: EdgeInsets.only(left: 10),
             child: Column(
@@ -941,6 +881,7 @@ class _detail_absence_adminState extends State<detail_absence_admin> {
                   height: 10,
                 ),
                 Container(
+                  width: MediaQuery.of(context).size.width - 100,
                   child: Text(
                     "${widget.approved_by}",
                     style: subtitleAbsence,
@@ -958,16 +899,10 @@ class _detail_absence_adminState extends State<detail_absence_admin> {
     return Container(
       margin: EdgeInsets.only(left: 5),
       width: double.infinity,
-      height: 80,
+
       child: Row(
         children: <Widget>[
-          Container(
-            child: Icon(
-              Icons.date_range,
-              color: Colors.black38,
-              size: 40,
-            ),
-          ),
+
           Container(
             margin: EdgeInsets.only(left: 10),
             child: Column(
@@ -984,6 +919,7 @@ class _detail_absence_adminState extends State<detail_absence_admin> {
                   height: 10,
                 ),
                 Container(
+                  width: MediaQuery.of(context).size.width - 100,
                   child: Text(
                     "${widget.approved_on}",
                     style: subtitleAbsence,
@@ -1001,17 +937,11 @@ class _detail_absence_adminState extends State<detail_absence_admin> {
     return Container(
       margin: EdgeInsets.only(left: 5),
       width: double.infinity,
-      height: 80,
+
       child: Card(
         child: Row(
           children: <Widget>[
-            Container(
-              child: Icon(
-                Icons.timer_rounded,
-                color: Colors.black38,
-                size: 40,
-              ),
-            ),
+
             Container(
               margin: EdgeInsets.only(left: 10),
               child: Column(
@@ -1046,16 +976,10 @@ class _detail_absence_adminState extends State<detail_absence_admin> {
     return Container(
       margin: EdgeInsets.only(left: 5),
       width: double.infinity,
-      height: 80,
+
       child: Row(
         children: <Widget>[
-          Container(
-            child: Icon(
-              Icons.description,
-              color: Colors.black38,
-              size: 40,
-            ),
-          ),
+
           Container(
             margin: EdgeInsets.only(left: 10),
             child: Column(
@@ -1072,6 +996,7 @@ class _detail_absence_adminState extends State<detail_absence_admin> {
                   height: 10,
                 ),
                 Container(
+                  width: MediaQuery.of(context).size.width - 100,
                   child: widget.approval_note == null
                       ? Text(
                           "-",

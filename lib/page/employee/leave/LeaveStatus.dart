@@ -105,12 +105,19 @@ class _LeaveListStatusState extends State<LeaveListStatus> {
                 child:Text(_leaves['data'][index]['date_of_filing'].toString(),
                   style: TextStyle(color: Colors.black45,fontFamily: "SFReguler")
                   ,textAlign: TextAlign.end,),),
-              SizedBox(height: 10,),
+              SizedBox(height: 5,),
               Container(child:Text("Tanggal cuti",style: TextStyle(color: Colors.black38),),),
               SizedBox(height: 10,),
               Flex(
                   direction: Axis.horizontal,
                   children: [Expanded(child: Container(child:Text("[${_leaves['data'][index]['leave_dates'].toString()}]",style: TextStyle(color: Colors.black87,fontFamily: "SFReguler"),),))]),
+              SizedBox(height: 15,),
+              description!=null?Container(child:Text("Keterangan",style: TextStyle(color: Colors.black38),),):Container(),
+              SizedBox(height: 10,),
+              description!=null?Flex(
+                  direction: Axis.horizontal,
+                  children: [Expanded(child: Container(child:Text("${_leaves['data'][index]['description'].toString()}",style: TextStyle(color: Colors.black87,fontFamily: "SFReguler"),),))]):Container(),
+
               SizedBox(height: 15,),
               _leaves['data'][index]['status']=="pending"?btnAction(id,_leaves['data'][index]['date_of_filing'],_leaves['data'][index]['leave_dates'],_leaves['data'][index]['description']): _leaves['data'][index]['status']=="approved"?detailApproval(index):detailRejection(index)
 

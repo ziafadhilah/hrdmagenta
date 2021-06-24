@@ -258,7 +258,7 @@ class _MapsDetailState extends State<MapsDetail> {
                       children: <Widget>[
                         Container(
                           child: Text(
-                            "${widget.firts_name} ${widget.last_name}",
+                            "${widget.firts_name}",
                             style: TextStyle(
                                 fontSize: 18,
                                 color: Colors.black87,

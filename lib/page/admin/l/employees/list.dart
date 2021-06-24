@@ -1,7 +1,9 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:hrdmagenta/page/admin/l/employees/DetailEmployee.dart';
+import 'package:hrdmagenta/page/employee/Account/profile.dart';
 import 'package:hrdmagenta/services/api_clien.dart';
 import 'package:hrdmagenta/utalities/constants.dart';
 import 'package:http/http.dart' as http;
@@ -15,27 +17,12 @@ class _ListEmployeeState extends State<ListEmployee> {
   ///widget
   Map _employee;
   bool _isLoading;
+  List _employees=[];
 
   Widget _buildemployees(index) {
     return InkWell(
       onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => DetailEmployee(
-                    first_name: "${_employee['data'][index]['first_name']}",
-                    last_name: "${_employee['data'][index]['last_name']}",
-                    address: "${_employee['data'][index]['address']}",
-                    email: "${_employee['data'][index]['email']}",
-                    work_palcement:
-                        "${_employee['data'][index]['work_placement']}",
-                    contact_number:
-                        "${_employee['data'][index]['contact_number']}",
-                    date_of_birth:
-                        "${_employee['data'][index]['date_of_birth']}",
-                    gender: "${_employee['data'][index]['gender']}",
-                  )),
-        );
+      Get.to(DetailProfile(id: _employees[index]['id'],));
       },
       child: Container(
         margin: EdgeInsets.only(left: 5, top: 15),
@@ -44,7 +31,7 @@ class _ListEmployeeState extends State<ListEmployee> {
             Container(
               child: CircleAvatar(
                 radius: 30,
-                child: employee_profile,
+                backgroundImage: NetworkImage("${image_ur}/${_employees[index]['photo']}"),
               ),
             ),
             Container(
@@ -53,14 +40,14 @@ class _ListEmployeeState extends State<ListEmployee> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
-                    "${_employee['data'][index]["first_name"]} ${_employee['data'][index]["last_name"]}",
+                    "${_employees[index]["first_name"]} ",
                     style: TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   Text(
-                    _employee['data'][index]["work_placement"],
+                    _employees[index]["employee_id"],
                     style: TextStyle(color: Colors.black38),
                   ),
                   Container(
@@ -90,9 +77,9 @@ class _ListEmployeeState extends State<ListEmployee> {
                   child: CircularProgressIndicator(),
                 )
               : ListView.builder(
-                  itemCount: _employee['data'].length,
+                  itemCount: _employees.length,
                   itemBuilder: (context, index) {
-                    return _employee['data'][index]['mobile_access_type'] !=
+                    return _employees[index]['mobile_access_type'] !=
                             "admin"
                         ? _buildemployees(index)
                         : Text("");
@@ -108,15 +95,14 @@ class _ListEmployeeState extends State<ListEmployee> {
       padding: const EdgeInsets.all(8.0),
       child: TextField(
         decoration: InputDecoration(hintText: 'Search...'),
-        onChanged: (text) {
-          // text = text.toLowerCase();
-          // setState(() {
-          //   _ModelListTampil = _ModelList.where((note) {
-          //     var noteTitle = note.kata.toLowerCase();
-          //     return noteTitle.contains(text);
-          //   }).toList();
-          // });
-        },
+          onChanged: (text) {
+          _employees=_employee['data'];
+            setState(() {
+              _employees = _employees.where((data) {
+                var noteTitle = data['first_name'].toLowerCase();
+                return noteTitle.contains(text);
+              }).toList();
+            });}
       ),
     );
   }
@@ -158,6 +144,10 @@ class _ListEmployeeState extends State<ListEmployee> {
       });
       http.Response response = await http.get("$base_url/api/employees");
       _employee = jsonDecode(response.body);
+      _employees=_employee['data'];
+      // var data= _employee['data'].wher((data) => data["first_name"].toString().contains("Panut")
+      // ).toList();
+      // print(data);
 
       setState(() {
         _isLoading = false;

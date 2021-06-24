@@ -263,7 +263,7 @@ class _MapsState extends State<Maps> {
                       children: <Widget>[
                         Container(
                           child: Text(
-                            "${widget.firts_name} ${widget.last_name}",
+                            "${widget.firts_name}",
                             style: TextStyle(
                                 fontSize: 18,
                                 color: Colors.black87,
@@ -351,7 +351,7 @@ class _MapsState extends State<Maps> {
                     ),
                   ),
                   Container(
-                      child: widget.distance > 20
+                      child: widget.distance > 10
                           ? Text(
                         "Anda berada di luar area kantor",
                         style: subtitleMainMenu,
@@ -375,7 +375,7 @@ class _MapsState extends State<Maps> {
       Circle(
           circleId: CircleId("0"),
           center: LatLng(double.parse(widget.latmainoffice), double.parse(widget.longMainoffice)),
-          radius: 20,
+          radius: 10,
           strokeColor: baseColor1,
           fillColor: baseColor.withOpacity(0.25),
           strokeWidth: 1),

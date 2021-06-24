@@ -97,11 +97,11 @@ class _ListPermissionPageEmployeeState extends State<ListPermissionPageEmployee>
                 child: ShimmerProject(),
               )
                   : ListView.builder(
-               // itemCount: _permission['data'].length<=0?1:_permission['data'].length,
-                itemCount:1,
+               itemCount: _permission['data'].length<=0?1:_permission['data'].length,
+               // itemCount:1,
 
                   itemBuilder: (context, index) {
-                    //return _permission['data'].length.toString()=='0'?_buildnodata(): _leave(index);
+                    return _permission['data'].length.toString()=='0'?_buildnodata(): _leave(index);
                     return _leave(1);
 
                   }),
@@ -151,7 +151,17 @@ class _ListPermissionPageEmployeeState extends State<ListPermissionPageEmployee>
                   direction: Axis.horizontal,
                   children: [Expanded(child: Container(child:Text("[${permission_dates}]",style: TextStyle(color: Colors.black87,fontFamily: "SFReguler"),),))]),
               SizedBox(height: 15,),
+
+              description!=null?Container(child:Text("Keterangan",style: TextStyle(color: Colors.black38),),):Container(),
+              SizedBox(height: 5,),
+              description!=null?Flex(
+                  direction: Axis.horizontal,
+                  children: [Expanded(child: Container(child:Text("${_permission['data'][index]['description'].toString()}",style: TextStyle(color: Colors.black87,fontFamily: "SFReguler"),),))]):Container(),
+              SizedBox(height: 15,),
+
+
               // _leaves['data'][index]['status']=="aproved"?Container():btnAction(id,_leaves['data'][index]['date_of_filing'],_leaves['data'][index]['leave_dates'],_leaves['data'][index]['description'])
+
             ],
           ),
         ),

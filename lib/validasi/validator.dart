@@ -56,7 +56,7 @@ class Validasi {
       category) {
     if (departement_name == "office") {
       if (category == "present") {
-        if (distance < 20) {
+        if (distance <= 10) {
           if (photos.isEmpty) {
             Toast.show("Ambil terlebih dahulu photo anda", context,
                 duration: 5, gravity: Toast.BOTTOM);
@@ -189,7 +189,7 @@ class Validasi {
       category) {
     if (departement_name == "office") {
       if (category == "present") {
-        if (distance < 20) {
+        if (distance <=10) {
           if (photos.isEmpty) {
             Toast.show("Ambil terlebih dahulu photo anda", context,
                 duration: 5, gravity: Toast.BOTTOM);

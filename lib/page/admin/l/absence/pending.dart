@@ -9,6 +9,7 @@ import 'package:hrdmagenta/services/api_clien.dart';
 import 'package:hrdmagenta/utalities/color.dart';
 import 'package:hrdmagenta/utalities/constants.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 
 class PendingAbsenceAdminPage extends StatefulWidget {
   PendingAbsenceAdminPage ({this.type});
@@ -146,7 +147,7 @@ class _PendingAbsenceAdminPageState extends State<PendingAbsenceAdminPage > {
                                                 ['status'] ==
                                                     "pending"
                                                     ? Text(
-                                                    "${_absence['data'][index]['clock_in']}",
+                                                    "${ DateFormat("dd/MM/yyyy hh:mm:ss").format(DateTime.parse(_absence['data'][index]['clock_in']))}",
                                                     style: TextStyle(
                                                         fontSize: 15,
                                                         color: Colors
@@ -163,7 +164,7 @@ class _PendingAbsenceAdminPageState extends State<PendingAbsenceAdminPage > {
                                                     : Text(""))
                                                 : Container(
                                                 child: _absence['data'][index]['status'] == "pending"
-                                                    ? Text("${_absence['data'][index]['clock_out']}", style: TextStyle(fontSize: 15, color: Colors.black26))
+                                                    ? Text("${ DateFormat("dd/MM/yyyy hh:mm:ss").format(DateTime.parse(_absence['data'][index]['clock_out']))}", style: TextStyle(fontSize: 15, color: Colors.black26))
                                                     : _absence['data'][index]['status'] == "rejected"
                                                     ? Text("${_absence['data'][index]['rejected_at']}", style: TextStyle(fontSize: 15, color: Colors.black26))
                                                     : _absence['data'][index]['status'] == "approved"
@@ -281,6 +282,8 @@ class _PendingAbsenceAdminPageState extends State<PendingAbsenceAdminPage > {
                                                               'last_name'],
                                                               office_latitude: _absence['data'][index]['office_latitude'],
                                                               office_longitude: _absence['data'][index]['office_longitude'],
+                                                              photo: _absence['data'][index]['employee']['photo'],
+                                                              employee_id: _absence['data'][index]['employee']['employee_id'],
                                                             )));
                                               } else {
                                                 Navigator.push(
@@ -389,6 +392,8 @@ class _PendingAbsenceAdminPageState extends State<PendingAbsenceAdminPage > {
                                                               'last_name'],
                                                               office_latitude: _absence['data'][index]['office_latitude'],
                                                               office_longitude: _absence['data'][index]['office_longitude'],
+                                                              photo: _absence['data'][index]['employee']['photo'],
+                                                              employee_id: _absence['data'][index]['employee']['employee_id'],
                                                             )));
                                               }
                                             },
@@ -403,11 +408,11 @@ class _PendingAbsenceAdminPageState extends State<PendingAbsenceAdminPage > {
                                                 CrossAxisAlignment.end,
                                                 children: <Widget>[
                                                   Container(
-                                                    child: Text(
-                                                      "See Details ",
+                                                    child: _absence['data'][index]['office_latitude']!=null?Text(
+                                                      "LIHAT DETAIL ",
                                                       style: TextStyle(
                                                           color: textColor1),
-                                                    ),
+                                                    ):Text(""),
                                                   )
                                                 ],
                                               ),

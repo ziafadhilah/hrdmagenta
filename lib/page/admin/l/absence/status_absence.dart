@@ -404,7 +404,7 @@ class _absence_status_adminState extends State<absence_status_admin> {
                                                 children: <Widget>[
                                                   Container(
                                                     child: Text(
-                                                      "See Details ",
+                                                      "Lihat Detail",
                                                       style: TextStyle(
                                                           color: textColor1),
                                                     ),

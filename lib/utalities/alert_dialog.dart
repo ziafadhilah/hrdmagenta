@@ -3,6 +3,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hrdmagenta/services/api_clien.dart';
 import 'package:hrdmagenta/utalities/color.dart';
 import 'package:hrdmagenta/validasi/validator.dart';
+import 'package:intl/intl.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
@@ -209,15 +210,18 @@ void validation_checkin(
     context: context,
     type: AlertType.warning,
     title: "Check In",
-    desc: "Apaka kamu yakin melakukan check in pada pukul ${time}?",
+    // desc: "Apaka kamu yakin melakukan check in pada pukul ${time}?",
+     desc: "Apakah kamu yakin melakukan check in",
     buttons: [
       DialogButton(
         child: Text(
           "Iya",
           style: TextStyle(color: Colors.white, fontSize: 20),
         ),
-        onPressed: () => {
-          Navigator.pop(context),
+        onPressed: ()  {
+           var date=DateFormat('yyyy-MM-dd').format(DateTime.now());
+           var time=DateFormat('hh:mm:ss').format(DateTime.now());
+          Navigator.pop(context);
           validator.validation_checkin(
               context,
               photos,
@@ -231,7 +235,7 @@ void validation_checkin(
               distance,
               office_latitude,
               office_longitude,
-              category)
+              category);
         },
         color: btnColor1,
       ),
@@ -266,15 +270,18 @@ void validation_checkout(
     context: context,
     type: AlertType.warning,
     title: "Check Out ",
-    desc: "Apaka kamu yakin melakukan check out pada pukul ${time} ",
+    // desc: "Apaka kamu yakin melakukan check out pada pukul ${time} ",
+    desc: "Apakah kamu yakin melakukan check out",
     buttons: [
       DialogButton(
         child: Text(
           "Iya",
           style: TextStyle(color: Colors.white, fontSize: 20),
         ),
-        onPressed: () => {
-          Navigator.pop(context),
+        onPressed: () {
+          Navigator.pop(context);
+          var date=DateFormat('yyyy-MM-dd').format(DateTime.now());
+          var time=DateFormat('hh:mm:ss').format(DateTime.now());
           validator.validation_checkout(
               context,
               photos,
@@ -288,7 +295,7 @@ void validation_checkout(
               distance,
               office_latitude,
               office_longitude,
-              category)
+              category);
         },
         color: btnColor1,
       ),

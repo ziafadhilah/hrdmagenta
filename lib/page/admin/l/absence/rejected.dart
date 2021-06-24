@@ -9,6 +9,7 @@ import 'package:hrdmagenta/services/api_clien.dart';
 import 'package:hrdmagenta/utalities/color.dart';
 import 'package:hrdmagenta/utalities/constants.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 
 class RejectedAbsenceAdminPage extends StatefulWidget {
   RejectedAbsenceAdminPage ({this.type});
@@ -154,7 +155,7 @@ class _RejectedAbsenceAdminPageState extends State<RejectedAbsenceAdminPage > {
                                                     : _absence['data'][index]['status'] ==
                                                     "rejected"
                                                     ? Text(
-                                                    "${_absence['data'][index]['rejected_at']}",
+                                                    "${ DateFormat("dd/MM/yyyy hh:mm:ss").format(DateTime.parse(_absence['data'][index]['rejected_at']))}",
                                                     style: TextStyle(
                                                         fontSize: 15,
                                                         color: Colors.black26))
@@ -165,7 +166,7 @@ class _RejectedAbsenceAdminPageState extends State<RejectedAbsenceAdminPage > {
                                                 child: _absence['data'][index]['status'] == "pending"
                                                     ? Text("${_absence['data'][index]['clock_out']}", style: TextStyle(fontSize: 15, color: Colors.black26))
                                                     : _absence['data'][index]['status'] == "rejected"
-                                                    ? Text("${_absence['data'][index]['rejected_at']}", style: TextStyle(fontSize: 15, color: Colors.black26))
+                                                    ? Text("${ DateFormat("dd/MM/yyyy hh:mm:ss").format(DateTime.parse(_absence['data'][index]['rejected_at']))}", style: TextStyle(fontSize: 15, color: Colors.black26))
                                                     : _absence['data'][index]['status'] == "approved"
                                                     ? Container(child: _absence['data'][index]['approved_at'] != null ? Text("${_absence['data'][index]['approved_at']}", style: TextStyle(fontSize: 15, color: Colors.black26)) : Text("${_absence['data'][index]['clock_out']}", style: TextStyle(fontSize: 15, color: Colors.black26)))
                                                     : Text("")),
@@ -403,11 +404,11 @@ class _RejectedAbsenceAdminPageState extends State<RejectedAbsenceAdminPage > {
                                                 CrossAxisAlignment.end,
                                                 children: <Widget>[
                                                   Container(
-                                                    child: Text(
-                                                      "See Details ",
+                                                    child: _absence['data'][index]['office_latitude']!=null? Text(
+                                                      "LIHAT DETAIL",
                                                       style: TextStyle(
                                                           color: textColor1),
-                                                    ),
+                                                    ):Text(""),
                                                   )
                                                 ],
                                               ),
