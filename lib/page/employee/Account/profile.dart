@@ -2431,36 +2431,48 @@ class _DetailProfileState extends State<DetailProfile> {
       gender = data['data']['gender'];
       date_of_birth = data['data']['date_of_birth'];
       employee_id = data['data']['employee_id'];
-      // citizenship=data['data']['citizenship'];
-      // citizenship_country=data['data']['citizenship_country'];
-      // employee_status=data['data']['employee_status'];
-      // start_work_date=data['data']['start_work_date'];
-      // designation=data['data']['carres'][0]['designation_name'];
-      // departement=data['data']['careers'][0]['department']['name'];
-      // identity_type=data['data']['identity_type'];
-      // identity_number=data['data']['identity_number'];
-      // identity_expired_date=data['data']['identity_expired-date'];
-      // place_of_birth==data['data']['place_of_birth'];
-      // marita_status=data['data']['marital_status'];
-      // last_education=data['data']['last_education'];
-      // religion=data['data']['religion'];
-      // blood_type=data['data']['blood_type'];
-      // study_program=data['data']['study_program'];
-      // last_education_name=data['data']['last_education_name'];
-      // last_education=data['data']['last_education'];
+      citizenship=data['data']['citizenship'];
+      citizenship_country=data['data']['citizenship_country'];
+      employee_status=data['data']['employee_status'];
+      start_work_date=data['data']['start_work_date'];
+      designation=data['data']['active_career']['designation_name'];
+      departement=data['data']['active_career']['department']['name'];
+      identity_type=data['data']['identity_type'];
+      identity_number=data['data']['identity_number'];
+      identity_expired_date=data['data']['identity_expired-date'];
+      place_of_birth==data['data']['place_of_birth'];
+      marita_status=data['data']['marital_status'];
+      last_education=data['data']['last_education'];
+      religion=data['data']['religion'];
+      blood_type=data['data']['blood_type'];
+      study_program=data['data']['study_program'];
+      last_education_name=data['data']['last_education_name'];
+      last_education=data['data']['last_education'];
 
       // contaoc  information
        email =data['data']['email'];
-      // contact_number =data['data']['contact_number'];
+       contact_number =data['data']['contact_number'];
        address =data['data']['address'];
-      // emergency_contact_number =data['data']['emergency_contact_number'];
-      // emergency_contact_name =data['data']['emergency_contact_name'];
+      emergency_contact_number =data['data']['emergency_contact_number'];
+      emergency_contact_name =data['data']['emergency_contact_name'];
 
       //back account
-      // bank_account_name =data['data']['bank_account_name'];
-      // bank_account_owner =data['data']['bank_account_owner'];
-      // bank_account_number =data['data']['bank_account_number'];
-      // bank_account_branch =data['data']['bank_account_branch'];
+      bank_account_name =data['data']['bank_account_name'];
+      bank_account_owner =data['data']['bank_account_owner'];
+      bank_account_number =data['data']['bank_account_number'];
+      bank_account_branch =data['data']['bank_account_branch'];
+      //npwp
+      npwp_number=data['data']['npwp_number'];
+      npwp_start=data['data']['npwp_start_date'];
+      npwp_pemotong=data['data']['npwp_tax_collector'];
+      efective_date_bpjs=data['data']['bpjs_kesehatan_effective_date'];
+      wajib_pajak=data['data']['taxpayer_status'];
+      //bpjs
+      no_kpj=data['data']['bpjs_ketenagakerjaan_number'];
+      date_bpjs=data['data']['bpjs_ketenagakerjaan_effective_date'];
+      number_card_bpjs=data['data']['bpjs_kesehatan_number'];
+      efective_date_bpjs=data['data']['bpjs_kesehatan_effective_date'];
+
 
       setState(() {
         _isLoading = false;

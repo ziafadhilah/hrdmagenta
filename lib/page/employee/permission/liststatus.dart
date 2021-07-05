@@ -10,6 +10,7 @@ import 'package:hrdmagenta/page/employee/project/shimmer_project.dart';
 import 'package:hrdmagenta/services/api_clien.dart';
 import 'package:hrdmagenta/utalities/color.dart';
 import 'package:hrdmagenta/utalities/constants.dart';
+import 'package:intl/intl.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
@@ -104,7 +105,7 @@ class _ListstatusPermissionPageEmployeeState extends State<ListstatusPermissionP
             children: <Widget>[
               Container(width: Get.mediaQuery.size.width,
                 margin: EdgeInsets.only(left: 10),
-                child:Text(_permission['data'][index]['date_of_filing'].toString(),
+                child:Text(DateFormat('dd/MM/yyyy').format(DateTime.parse(_permission['data'][index]['date_of_filing'].toString())),
                   style: TextStyle(color: Colors.black45,fontFamily: "SFReguler")
                   ,textAlign: TextAlign.end,),),
               SizedBox(height: 10,),

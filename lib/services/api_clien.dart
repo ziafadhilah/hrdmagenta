@@ -12,7 +12,7 @@ import 'package:hrdmagenta/utalities/alert_dialog.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toast/toast.dart';
-String base_url = "https://magentamediatama.net";
+String base_url = "http://192.168.1.118:8000";
 String image_ur = "https://arenzha.s3.ap-southeast-1.amazonaws.com";
 class Services {
   SharedPreference sharedPreference = new SharedPreference();

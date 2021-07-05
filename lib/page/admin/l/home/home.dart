@@ -21,7 +21,11 @@ import 'package:hrdmagenta/page/employee/Account/profile.dart';
 import 'package:hrdmagenta/page/employee/absence/tabmenu_absence.dart';
 import 'package:hrdmagenta/page/employee/checkin/checkin.dart';
 import 'package:hrdmagenta/page/employee/checkout/checkout.dart';
+import 'package:hrdmagenta/page/employee/leave/LeaveList.dart';
+import 'package:hrdmagenta/page/employee/loan/list.dart';
+import 'package:hrdmagenta/page/employee/permission/list.dart';
 import 'package:hrdmagenta/page/employee/project/detail.dart';
+import 'package:hrdmagenta/page/employee/sick/list.dart';
 import 'package:hrdmagenta/services/api_clien.dart';
 import 'package:hrdmagenta/utalities/color.dart';
 import 'package:hrdmagenta/utalities/constants.dart';
@@ -489,7 +493,7 @@ class _HomeAdminState extends State<HomeAdmin> {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => ListEmployee()));
+                    builder: (context) => ListLoanEmployeePage()));
           },
           child: Card(
             elevation: 1,
@@ -503,6 +507,98 @@ class _HomeAdminState extends State<HomeAdmin> {
       Text("Kasbon", style: subtitleMainMenu)
     ]);
   }
+  Widget _submission_leave() {
+    return Column(children: <Widget>[
+      new Container(
+        width: 70,
+        height: 70,
+        child: InkWell(
+          onTap: () {
+            // Navigator.pushNamed(context, "leave_list_employee-page");
+            Get.to(LeaveListEmployee(status: "approved",));
+          },
+          child: Card(
+            elevation: 1,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+            child: Container(margin: EdgeInsets.all(15.0), child: offwork),
+          ),
+        ),
+      ),
+      Text("Cuti", style: subtitleMainMenu)
+    ]);
+  }
+  Widget _submission_sick() {
+    return Column(children: <Widget>[
+      new Container(
+        width: 70,
+        height: 70,
+        child: InkWell(
+          onTap: () {
+            // Navigator.pushNamed(context, "leave_list_employee-page");
+            Get.to(ListSickPageEmployee(status: "approved",));
+          },
+          child: Card(
+            elevation: 1,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+            child: Container(margin: EdgeInsets.all(15.0), child: sick),
+          ),
+        ),
+      ),
+      Text("Sakit", style: subtitleMainMenu)
+    ]);
+  }
+  Widget _submission_permission() {
+    return Column(children: <Widget>[
+      new Container(
+        width: 70,
+        height: 70,
+        child: InkWell(
+          onTap: () {
+            // Navigator.pushNamed(context, "leave_list_employee-page");
+            // Get.to(LeaveListEmployee(status: "approved",));
+            Get.to(ListPermissionPageEmployee(status: "approved",));
+          },
+          child: Card(
+            elevation: 1,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+            child: Container(margin: EdgeInsets.all(15.0), child: permission),
+          ),
+        ),
+      ),
+      Text("izin", style: subtitleMainMenu)
+    ]);
+  }
+
+  Widget _buildMenuemployees() {
+    return Column(children: <Widget>[
+      new Container(
+        width: 70,
+        height: 70,
+        child: InkWell(
+          onTap: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => ListEmployee()));
+          },
+          child: Card(
+            elevation: 1,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+            child: Container(margin: EdgeInsets.all(15.0), child: employees),
+          ),
+        ),
+      ),
+      Text("Karyawan", style: subtitleMainMenu)
+    ]);
+  }
+
+
 
   Widget _buildmenudraggablescroll() {
     return Column(children: <Widget>[
@@ -667,11 +763,9 @@ class _HomeAdminState extends State<HomeAdmin> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: <Widget>[
-                            _buildMenuSick(),
-                            _buildMenuPermission(),
-                           _buildMenuOffwork()
-
-
+                           _submission_sick(),
+                            _submission_permission(),
+                            _submission_leave()
                           ],
                         ),
 
@@ -800,10 +894,20 @@ class _HomeAdminState extends State<HomeAdmin> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: <Widget>[
+                            _buildMenuemployees(),
                             _buildMenuloan(),
                             _buildMenuproject(),
                             _buildMenupayslip(),
 
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: <Widget>[
+                            _buildMenucheckin(),
+                            _buildMenucheckout(),
+                            _buildMenuattendances(),
+                            _buildMenuannouncement(),
 
                           ],
                         ),
@@ -1246,9 +1350,10 @@ class _HomeAdminState extends State<HomeAdmin> {
             width: 50,
             height: 10,
           ),
-          approval_menu(),
           subbmission_menu(),
-         attendances_menu(),
+          approval_menu(),
+
+         // attendances_menu(),
           other_menu()
         ],
       ),

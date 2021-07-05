@@ -16,6 +16,7 @@ import 'package:hrdmagenta/page/employee/absence/tabmenu_absence.dart';
 import 'package:hrdmagenta/page/employee/checkin/checkin.dart';
 import 'package:hrdmagenta/page/employee/checkout/checkout.dart';
 import 'package:hrdmagenta/page/employee/leave/LeaveList.dart';
+import 'package:hrdmagenta/page/employee/loan/list.dart';
 import 'package:hrdmagenta/page/employee/permission/list.dart';
 import 'package:hrdmagenta/page/employee/project/detail.dart';
 import 'package:hrdmagenta/page/employee/project/tabmenu_project.dart';
@@ -148,7 +149,30 @@ class _HomeEmployeeState extends State<HomeEmployee> {
     ]);
   }
 
-
+  Widget _buildMenuloan() {
+    return Column(children: <Widget>[
+      new Container(
+        width: 70,
+        height: 70,
+        child: InkWell(
+          onTap: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => ListLoanEmployeePage()));
+          },
+          child: Card(
+            elevation: 1,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+            child: Container(margin: EdgeInsets.all(15.0), child: loan),
+          ),
+        ),
+      ),
+      Text("Kasbon", style: subtitleMainMenu)
+    ]);
+  }
 
   Widget _buildMenuoffwork() {
     return Column(children: <Widget>[
@@ -263,7 +287,7 @@ class _HomeEmployeeState extends State<HomeEmployee> {
                             _buildMenucheckin(),
                             _buildMenucheckout(),
                             _buildMenuaabsence(),
-                            _buildMenuproject(),
+                            _buildMenuloan()
 
 
                           ],

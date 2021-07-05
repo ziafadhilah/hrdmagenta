@@ -9,6 +9,7 @@ import 'package:hrdmagenta/page/employee/sick/tabmenu.dart';
 import 'package:hrdmagenta/services/api_clien.dart';
 import 'package:hrdmagenta/utalities/color.dart';
 import 'package:hrdmagenta/utalities/constants.dart';
+import 'package:intl/intl.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
@@ -114,11 +115,11 @@ class _ListstatusSickPageEmployeeState extends State<ListstatusSickPageEmployee>
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Container(width: Get.mediaQuery.size.width,
-                margin: EdgeInsets.only(left: 10),
-                child:Text(_sick['data'][index]['date_of_filing'].toString(),
-                  style: TextStyle(color: Colors.black45,fontFamily: "SFReguler")
-                  ,textAlign: TextAlign.end,),),
+          Container(width: Get.mediaQuery.size.width,
+            margin: EdgeInsets.only(left: 10),
+            child:Text(DateFormat('dd/MM/yyyy').format(DateTime.parse(_sick['data'][index]['date_of_filing'].toString())),
+              style: TextStyle(color: Colors.black45,fontFamily: "SFReguler")
+              ,textAlign: TextAlign.end,),),
               SizedBox(height: 10,),
               Container(child:Text("Tanggal Sakit",style: TextStyle(color: Colors.black38),),),
               SizedBox(height: 5,),

@@ -102,7 +102,7 @@ class _LeaveListStatusState extends State<LeaveListStatus> {
             children: <Widget>[
               Container(width: Get.mediaQuery.size.width,
                 margin: EdgeInsets.only(left: 10),
-                child:Text(_leaves['data'][index]['date_of_filing'].toString(),
+                child:Text(DateFormat('dd/MM/yyyy').format(DateTime.parse(_leaves['data'][index]['date_of_filing'].toString())),
                   style: TextStyle(color: Colors.black45,fontFamily: "SFReguler")
                   ,textAlign: TextAlign.end,),),
               SizedBox(height: 5,),

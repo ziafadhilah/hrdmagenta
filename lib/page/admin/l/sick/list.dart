@@ -100,12 +100,14 @@ class _ListSickPageAdminState extends State<ListSickPageAdmin> {
             children: <Widget>[
               Container(width: Get.mediaQuery.size.width,
                 margin: EdgeInsets.only(left: 10),
-                child:Text(_sick['data'][index]['date_of_filing'].toString(),
+                child:Text(DateFormat('dd/MM/yyyy').format(DateTime.parse(_sick['data'][index]['date_of_filing'].toString())),
                   style: TextStyle(color: Colors.black45,fontFamily: "SFReguler")
                   ,textAlign: TextAlign.end,),),
               SizedBox(height: 10,),
-              Container(child:Text("Tanggal cuti",style: TextStyle(color: Colors.black38),),),
+              Container(child:Text("${_sick['data'][index]['employee']['first_name']} (${_sick['data'][index]['employee']['employee_id']})",style: TextStyle(color: Colors.black87,fontWeight: FontWeight.bold),),),
               SizedBox(height: 10,),
+              Container(child:Text("Tanggal cuti",style: TextStyle(color: Colors.black38),),),
+              SizedBox(height: 5,),
               Flex(
                   direction: Axis.horizontal,
                   children: [Expanded(child: Container(child:Text(_sick['data'][index]['sick_dates'].toString(),style: TextStyle(color: Colors.black87,fontFamily: "SFReguler"),),))]),

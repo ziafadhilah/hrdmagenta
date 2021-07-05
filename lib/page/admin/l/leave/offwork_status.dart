@@ -106,10 +106,13 @@ class _LeaveListStatusAdminState extends State<LeaveListStatusAdmin> {
               children: <Widget>[
                 Container(width: Get.mediaQuery.size.width,
                   margin: EdgeInsets.only(left: 10),
-                  child:Text(_leaves['data'][index]['date_of_filing'].toString(),
+                  child:Text(DateFormat('dd/MM/yyyy').format(DateTime.parse(_leaves['data'][index]['date_of_filing'].toString())),
                     style: TextStyle(color: Colors.black45,fontFamily: "SFReguler")
                     ,textAlign: TextAlign.end,),),
                 SizedBox(height: 10,),
+                Container(child:Text("${_leaves['data'][index]['employee']['first_name']} (${_leaves['data'][index]['employee']['employee_id']})",style: TextStyle(color: Colors.black87,fontWeight: FontWeight.bold),),),
+                SizedBox(height: 10,),
+
                 Container(child:Text("Tanggal cuti",style: TextStyle(color: Colors.black38),),),
                 SizedBox(height: 10,),
                 Flex(

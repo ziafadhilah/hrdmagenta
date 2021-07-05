@@ -66,9 +66,9 @@ class _ApprovedAbsenceAdminPageState extends State<ApprovedAbsenceAdminPage> {
       children: <Widget>[
         Container(
           width: double.infinity,
-          height: 100,
+          height: 130,
           child: Card(
-            elevation: 1,
+
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
@@ -78,7 +78,7 @@ class _ApprovedAbsenceAdminPageState extends State<ApprovedAbsenceAdminPage> {
                     width: double.infinity,
                     child: Padding(
                       padding: const EdgeInsets.only(
-                        left: 5,
+
                         top: 10,
                       ),
                       child: Column(
@@ -93,10 +93,7 @@ class _ApprovedAbsenceAdminPageState extends State<ApprovedAbsenceAdminPage> {
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
                                   //container text
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Container(),
-                                  ),
+
                                   Flexible(
                                     child: Container(
                                       margin:
@@ -135,7 +132,7 @@ class _ApprovedAbsenceAdminPageState extends State<ApprovedAbsenceAdminPage> {
                                                       "approved"
                                                       ? Container(
                                                     width:Get.mediaQuery.size.width-50,
-                                                      child: _absence['data'][index]['approved_at'] != null ? Text("${_absence['data'][index]['type']}  ${_absence['data'][index]['employee']['first_name']}  telah di approved", style: TextStyle(fontSize: 15, color: Colors.black87)) : Text("${_absence['data'][index]['employee']['first_name']} telah melakukan ${_absence['data'][index]['type']}", style: TextStyle(fontSize: 15, color: Colors.black87)))
+                                                      child: _absence['data'][index]['approved_at'] != null ? Text("${_absence['data'][index]['type']}  ${_absence['data'][index]['employee']['first_name']}  telah di approved", style: TextStyle(fontSize: 15, color: Colors.black87)) : Text("${_absence['data'][index]['employee']['first_name']} (${_absence['data'][index]['employee']['employee_id']}) telah melakukan ${_absence['data'][index]['type']}", style: TextStyle(fontSize: 15, color: Colors.black87)))
                                                       : Text(""))
                                             ],
                                           ),
@@ -456,9 +453,11 @@ class _ApprovedAbsenceAdminPageState extends State<ApprovedAbsenceAdminPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
+              Container(child:Text("${_absence['data'][index]['employee']['first_name']} (${_absence['data'][index]['employee']['employee_id']})",style: TextStyle(color: Colors.black87,fontWeight: FontWeight.bold),),),
+              SizedBox(height: 10,),
 
               Container(child:Text("Cuti",style: TextStyle(color: Colors.black38),),),
-              SizedBox(height: 10,),
+              SizedBox(height: 5,),
               Flex(
                   direction: Axis.horizontal,
                   children: [Expanded(child: Container(child:Text("[${_absence['data'][index]['date'].toString()}]",style: TextStyle(color: Colors.black87,fontFamily: "SFReguler"),),))]),
@@ -483,9 +482,11 @@ class _ApprovedAbsenceAdminPageState extends State<ApprovedAbsenceAdminPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
+              Container(child:Text("${_absence['data'][index]['employee']['first_name']} (${_absence['data'][index]['employee']['employee_id']})",style: TextStyle(color: Colors.black87,fontWeight: FontWeight.bold),),),
+              SizedBox(height: 10,),
 
               Container(child:Text("Sakit",style: TextStyle(color: Colors.black38),),),
-              SizedBox(height: 10,),
+              SizedBox(height: 5,),
               Flex(
                   direction: Axis.horizontal,
                   children: [Expanded(child: Container(child:Text("[${_absence['data'][index]['date'].toString()}]",style: TextStyle(color: Colors.black87,fontFamily: "SFReguler"),),))]),
@@ -510,9 +511,11 @@ class _ApprovedAbsenceAdminPageState extends State<ApprovedAbsenceAdminPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
+              Container(child:Text("${_absence['data'][index]['employee']['first_name']} (${_absence['data'][index]['employee']['employee_id']})",style: TextStyle(color: Colors.black87,fontWeight: FontWeight.bold),),),
+              SizedBox(height: 10,),
 
               Container(child:Text("Izin",style: TextStyle(color: Colors.black38),),),
-              SizedBox(height: 10,),
+              SizedBox(height: 5,),
               Flex(
                   direction: Axis.horizontal,
                   children: [Expanded(child: Container(child:Text("[${_absence['data'][index]['date'].toString()}]",style: TextStyle(color: Colors.black87,fontFamily: "SFReguler"),),))]),
