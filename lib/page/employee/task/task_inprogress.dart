@@ -22,7 +22,7 @@ class _task_inprogresState extends State<task_inprogres> {
   var Cdesciription = TextEditingController();
   var Cfile = TextEditingController();
   Map _task;
-  bool _loading = false;
+  bool _loading = true;
   Services services = new Services();
 
 //functions
@@ -59,7 +59,7 @@ class _task_inprogresState extends State<task_inprogres> {
   @override
   Widget build(BuildContext context) {
     final items =
-        _loading ? "" : _task['data'][int.parse(widget.id)]['tasks'][0];
+        _loading ? "" : _task['data'][0];
     return new Scaffold(
       body: new Container(
         color: Colors.white,
@@ -70,7 +70,7 @@ class _task_inprogresState extends State<task_inprogres> {
               ? Center(child: CircularProgressIndicator())
               : ListView.builder(
                   itemCount:
-                      _task['data'][int.parse(widget.id)]['tasks'].length,
+                      _task['data'].length,
                   itemBuilder: (context, index) {
                     final item = items[index];
                     return new Dismissible(
@@ -79,11 +79,11 @@ class _task_inprogresState extends State<task_inprogres> {
                           services
                               .finished_task(
                                   context,
-                                  _task['data'][int.parse(widget.id)]['tasks']
+                                  _task['data']
                                           [index]['id']
                                       .toString())
                               .then((code) {
-                            _task['data'][int.parse(widget.id)]['tasks']
+                            _task['data']
                                 .removeAt(index);
                             Scaffold.of(context).showSnackBar(new SnackBar(
                               content: new Text("Task have been finished"),
@@ -95,7 +95,7 @@ class _task_inprogresState extends State<task_inprogres> {
                           color: Colors.red,
                         ),
                         child: widget.status ==
-                                _task['data'][int.parse(widget.id)]['tasks']
+                                _task['data']
                                     [index]['status']
                             ? _listtask_inprogress(index)
                             : Text(""));
@@ -107,60 +107,20 @@ class _task_inprogresState extends State<task_inprogres> {
     );
   }
 
-  Widget _listtask_completed(index) {
-    return Container(
-      child: Card(
-        child: Container(
-          margin: EdgeInsets.only(left: 10, right: 10),
-          child: Column(
-            children: <Widget>[
-              Container(
-                width: double.infinity,
-                child: Text(
-                  "${_task['data'][int.parse(widget.id)]['tasks'][index]['task']}",
-                  style: TextStyle(fontSize: 18, color: Colors.black87),
-                ),
-              ),
-              SizedBox(
-                height: 15,
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Container(
-                    width: double.infinity,
-                    height: 30,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Text(
-                          "Completed",
-                          style: TextStyle(color: baseColor1),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
+
 
   Widget _listtask_inprogress(index) {
     return Container(
       child: Card(
         child: Container(
-          margin: EdgeInsets.only(left: 10, right: 10),
+          margin: EdgeInsets.only(left: 10, right: 10,top: 5),
           child: Column(
             children: <Widget>[
               Container(
                 width: double.infinity,
                 child: Text(
-                  "${_task['data'][int.parse(widget.id)]['tasks'][index]['task']}",
-                  style: TextStyle(fontSize: 18, color: Colors.black87),
+                  "${_task['data'][index]['name']}",
+                  style: TextStyle(fontSize: 16, color: Colors.black87),
                 ),
               ),
               SizedBox(
@@ -198,7 +158,7 @@ class _task_inprogresState extends State<task_inprogres> {
         _loading = true;
       });
       http.Response response = await http
-          .get("$base_url/api/employees/1/events?status=approved");
+          .get("$baset_url_event/api/projects/${widget.id}/tasks");
       _task = jsonDecode(response.body);
 
       setState(() {

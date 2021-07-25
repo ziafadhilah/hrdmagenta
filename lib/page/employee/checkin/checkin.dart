@@ -95,10 +95,10 @@ class _CheckinState extends State<Checkin> {
                       SizedBox(
                         height: 15,
                       ),
-                      _buildCategoryabsence(),
-                      SizedBox(
-                        height: 15,
-                      ),
+                      // _buildCategoryabsence(),
+                      // SizedBox(
+                      //   height: 15,
+                      // ),
                       _buildLocation(),
                       SizedBox(
                         height: 10,
@@ -410,7 +410,7 @@ class _CheckinState extends State<Checkin> {
             _distance,
             _lat_mainoffice,
             _long_mainoffice,
-            _category_absent.toString().toLowerCase());
+            "present");
       }
     } else {
       validation_checkin(

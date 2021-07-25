@@ -12,8 +12,11 @@ import 'package:hrdmagenta/utalities/alert_dialog.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toast/toast.dart';
-String base_url = "http://192.168.1.118:8000";
+String base_url = "http://hrd.magentamediatama.net";
 String image_ur = "https://arenzha.s3.ap-southeast-1.amazonaws.com";
+String baset_url_event="http://192.168.1.104:3000";
+
+
 class Services {
   SharedPreference sharedPreference = new SharedPreference();
   budgetproject budget = new budgetproject();
@@ -23,12 +26,12 @@ class Services {
       BuildContext context, var username, var password) async {
     loading(context);
     try {
-      //String fcm_registration_token = await FirebaseMessaging().getToken();
+      String fcm_registration_token = await FirebaseMessaging().getToken();
       final response =
           await http.post("$base_url/api/login/mobile/employee", body: {
         "username": username.toString().trim(),
         "password": password,
-     //   "fcm_registration_token": fcm_registration_token
+        "fcm_registration_token": fcm_registration_token
       });
 
       //
@@ -212,7 +215,7 @@ class Services {
 
   ///finihed task
   Future<void> finished_task(BuildContext context, var id) async {
-    final response = await http.post("$base_url/api/event-tasks/$id/finish");
+    final response = await http.patch("$baset_url_event/api/projects/task/${id}");
     final responseJson = jsonDecode(response.body);
     if (responseJson['code'] == 200) {
       return "200";
@@ -542,12 +545,12 @@ class Services {
 
   Future<void> loginAdmin(
       BuildContext context, var username, var password) async {
-   // String fcm_registration_token = await FirebaseMessaging().getToken();
+    String fcm_registration_token = await FirebaseMessaging().getToken();
     loading(context);
     final response = await http.post("$base_url/api/login/mobile/admin", body: {
       "username": username.toString().trim(),
       "password": password,
-   //   "fcm_registration_token": fcm_registration_token
+      "fcm_registration_token": fcm_registration_token
     });
     //
     final data = jsonDecode(response.body);

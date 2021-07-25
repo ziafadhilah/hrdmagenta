@@ -417,7 +417,7 @@ class _expandBudgettState extends State<expandbudget> {
         ),
 
         backgroundColor: Colors.white,
-        title: new Text("Transaction",
+        title: new Text("Transaksi",
           style: TextStyle(color: Colors.black87),
         ),
       ),

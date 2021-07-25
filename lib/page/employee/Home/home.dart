@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:carousel_pro/carousel_pro.dart';
 
@@ -8,6 +7,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:hrdmagenta/model/notifacations.dart';
 import 'package:hrdmagenta/page/admin/l/announcement/DetailAnnouncement.dart';
@@ -25,6 +25,7 @@ import 'package:hrdmagenta/services/api_clien.dart';
 import 'package:hrdmagenta/utalities/color.dart';
 import 'package:hrdmagenta/utalities/constants.dart';
 import 'package:hrdmagenta/utalities/font.dart';
+import 'package:intl/intl.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -42,10 +43,11 @@ class _HomeEmployeeState extends State<HomeEmployee> {
 
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
+  final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
   final List<Notif> ListNotif = [];
   Map _projects;
   bool _loading = true;
-  var user_id;
+  var user_id,address;
 
   //-----main menu-----
   Widget _buildMenucheckin() {
@@ -372,12 +374,19 @@ class _HomeEmployeeState extends State<HomeEmployee> {
         ],
       ),
     );
+    
   }
 
 
-
-
+  
   Widget _buildProgress(index) {
+    _getAddressFromLatLng(double.parse("${_projects['data'][index]['latitude']}"),
+        double.parse("${_projects['data'][index]['longtitude']}"));
+    var completed_task= _projects['data'][index]['task'].where((prod) => prod["status"] == "completed").toList();
+    var percentage=(completed_task.length)/(_projects['data'][index]['task'].length);
+    var status=_projects['data'][index]['status'];
+    var balance= NumberFormat.currency(decimalDigits: 0,  locale: "id").format(_projects['data'][index]['budget']['balance']);
+
     return InkWell(
       onTap: (){
         Get.to(DetailProjects(id: '${_projects['data'][index]['id'].toString()}',));
@@ -388,114 +397,125 @@ class _HomeEmployeeState extends State<HomeEmployee> {
         child: Card(
           child: Container(
             margin: EdgeInsets.only(left: 10, right: 10),
-            child: Row(
-              children: [
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
                 Container(
-                  width: MediaQuery.of(context).size.width * 0.65,
-                  child: Column(
+
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Text("${_projects['data'][index]['title']}",
-                          style: subtitleMainMenu),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Container(
-                        child: Text(
-                            "${_projects['data'][index]['city']['name']}, ${_projects['data'][index]['city']['province']['name']}",
-                            style: TextStyle(
-                                color: Colors.black38,
-                                fontFamily: "SFReguler",
-                                fontSize: 14)),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Expanded(
-                        child: _loading
-                            ? Center(
-                                child: CircularProgressIndicator(),
-                              )
-                            : Center(
-                                child: Container(
-                                  margin: EdgeInsets.only(top: 20, bottom: 20),
+                                Container(
+                                  width:MediaQuery.of(context).size.width -100,
                                   child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      Expanded(
-                                        child: ListView.builder(
-                                            itemCount: 1,
-                                            scrollDirection: Axis.horizontal,
-                                            itemBuilder: (context, index_member) {
-                                              return _buildteam(
-                                                  index_member, index);
-                                            }),
+                                      Container(
+                                        child: Text("${_projects['data'][index]['project_number']}",
+                                            style: subtitleMainMenu),
+                                      ),
+                                                Container(
+                                                  child: Text(
+                                                      "$address",
+                                                      style: TextStyle(
+                                                          color: Colors.black38,
+                                                          fontFamily: "SFReguler",
+                                                          fontSize: 14)),
+                                                ),
+                                                SizedBox(
+                                                  height: 10,
+                                                ),
+
+                                      Container(
+                                        child: Text(
+                                            "$balance",
+                                            style: TextStyle(
+                                                color: Colors.black38,
+                                                fontFamily: "SFReguler",
+                                                fontSize: 14)),
+                                      ),
+                                      SizedBox(
+                                        height: 10,
                                       ),
                                     ],
                                   ),
                                 ),
-                              ),
-                        //   child: _buildNoproject(),
-                      ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                      Container(
+                        width: 70,
+                                      child:Container(
+                                        child: Container(
+                                            alignment: Alignment.center,
+                                            margin: EdgeInsets.only(top: 3, bottom: 3),
+                                            child: Text(
+                                              "${status=="approved"?"In Progress":"Completed"}",
+                                              style: TextStyle(
+                                                  color: Colors.white, fontSize: 10),
+                                            )),
+                                        decoration: BoxDecoration(
+                                          color: status=="approved"?Colors.green:Colors.lightBlue,
+                                          borderRadius: new BorderRadius.only(
+                                            topLeft: const Radius.circular(10.0),
+                                            topRight: const Radius.circular(10.0),
+                                            bottomLeft: const Radius.circular(10.0),
+                                            bottomRight: const Radius.circular(10.0),
+                                          ),
+                                        ),
+                                      ),
+                              )
+
+
                     ],
                   ),
                 ),
-                Expanded(
-                  child: Container(
-                      width: MediaQuery.of(context).size.width * 0.35 - 25,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          Container(
-                            child: Container(
-                                alignment: Alignment.center,
-                                margin: EdgeInsets.only(top: 3, bottom: 3),
-                                child: Text(
-                                  "in progress",
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 10),
-                                )),
-                            decoration: BoxDecoration(
-                              color: Colors.green,
-                              borderRadius: new BorderRadius.only(
-                                topLeft: const Radius.circular(10.0),
-                                topRight: const Radius.circular(10.0),
-                                bottomLeft: const Radius.circular(10.0),
-                                bottomRight: const Radius.circular(10.0),
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Container(
-                              margin: EdgeInsets.only(bottom: 10),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  new CircularPercentIndicator(
-                                    radius: 110.0,
-                                    lineWidth: 10.0,
-                                    animation: true,
-                                    percent: _projects['data'][index]
-                                            ['progress'] /
-                                        100,
-                                    center: new Text(
-                                      "${_projects['data'][index]['progress']}%",
-                                      style: new TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 17.0),
-                                    ),
-                                    circularStrokeCap: CircularStrokeCap.round,
-                                    progressColor: baseColor,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
-                      )),
+                Container(
+                  width: MediaQuery.of(context).size.width,
+                  child: Row(
+                    children: <Widget>[
+                      Container(
+                        width: Get.mediaQuery.size.width/2,
+                        height: 100,
+                        child: ListView.builder(itemBuilder: (context,index_member){
+                          return _buildteam(index_member, index);
+                        },
+                          scrollDirection: Axis.horizontal,
+                          itemCount: _projects['data'][index]['members'].length,
+                        ),
+                      ),
+                      Container(
+
+                        width: Get.mediaQuery.size.width/2-30,
+                                      child:Align(
+                                        alignment: Alignment.topRight,
+                                        child: Container(
+                                          margin: EdgeInsets.only(bottom: 10),
+                                          child: Column(
+                                            mainAxisAlignment: MainAxisAlignment.end,
+                                            children: [
+                                              new CircularPercentIndicator(
+                                                radius: 100.0,
+                                                lineWidth: 10.0,
+                                                animation: true,
+                                                percent: percentage,
+                                                center: new Text(
+                                                  "${(percentage * 100).toStringAsFixed(2)} %",
+                                                  style: new TextStyle(
+                                                      fontWeight: FontWeight.bold,
+                                                      fontSize: 17.0),
+                                                ),
+                                                circularStrokeCap: CircularStrokeCap.round,
+                                                progressColor: baseColor,
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                      )
+                    ],
+                  ),
                 )
               ],
             ),
@@ -652,10 +672,11 @@ class _HomeEmployeeState extends State<HomeEmployee> {
       setState(() {
         _loading = true;
       });
+
       http.Response response = await http
-          .get("$base_url/api/employees/$user_id/events?status=approved");
+          .get("$baset_url_event/api/projects");
       _projects = jsonDecode(response.body);
-      print(_projects['data'].length);
+      print('data project');
 
       setState(() {
         _loading = false;
@@ -744,11 +765,37 @@ class _HomeEmployeeState extends State<HomeEmployee> {
                           ),
 
                           Container(
+
                             margin: EdgeInsets.only(left: 10, top: 5),
-                            child: Text("Event",
-                                textAlign: TextAlign.left,
-                                style: titleMainMenu),
+                            child: Row(
+                              children: [
+                                Container(
+                                  child: Text("Projects",
+                                      textAlign: TextAlign.left,
+                                      style: titleMainMenu),
+                                ),
+                                Container(
+
+
+                                  width: Get.mediaQuery.size.width-90,
+
+                                  child: InkWell(
+                                    onTap: (){
+                                      Get.to(Tabsproject());
+                                    },
+                                    child: Container(
+
+                                      child: Text("Lihat Semua",
+
+                                          textAlign: TextAlign.right,
+                                          style:TextStyle(color: Colors.black45)),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
+                          SizedBox(height: 10,),
 
                           _buildproject(),
 
@@ -776,6 +823,21 @@ class _HomeEmployeeState extends State<HomeEmployee> {
         ),
       ),
     );
+  }
+
+  void _getAddressFromLatLng(var latitude,longgitude) async {
+    try {
+      List<Placemark> p = await geolocator.placemarkFromCoordinates(
+          latitude, longgitude);
+
+      Placemark place = p[0];
+
+      setState(() {
+        address =  "${place.locality}, ${place.postalCode}, ${place.country}";
+      });
+    } catch (e) {
+      print(e);
+    }
   }
 
   //notification
@@ -810,6 +872,7 @@ class _HomeEmployeeState extends State<HomeEmployee> {
 
   //inialisasi state
   void initState() {
+
     getDatapref();
 
     _firebaseMessaging.configure(

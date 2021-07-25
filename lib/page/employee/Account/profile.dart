@@ -2435,8 +2435,8 @@ class _DetailProfileState extends State<DetailProfile> {
       citizenship_country=data['data']['citizenship_country'];
       employee_status=data['data']['employee_status'];
       start_work_date=data['data']['start_work_date'];
-      designation=data['data']['active_career']['designation_name'];
-      departement=data['data']['active_career']['department']['name'];
+      //designation=data['data']['active_career']['designation_name'];
+      //departement=data['data']['active_career']['department']['name'];
       identity_type=data['data']['identity_type'];
       identity_number=data['data']['identity_number'];
       identity_expired_date=data['data']['identity_expired-date'];

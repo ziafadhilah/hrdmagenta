@@ -36,11 +36,11 @@ class Tabsappbudget extends StatelessWidget {
         body: TabBarView(
           children: <Widget>[
             budget_status(
-              status: "expense",
+              type: "out",
               event_id: event_id,
             ),
             budget_status(
-              status: "income",
+              type: "in",
               event_id: event_id,
             ),
           ],

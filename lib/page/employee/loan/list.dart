@@ -177,7 +177,7 @@ class _ListLoanEmployeePageState extends State<ListLoanEmployeePage> {
         });
 
         http.Response response =
-        await http.get("$base_url/api/employees/1/loans");
+        await http.get("$base_url/api/employees/${user_id}/loans");
         _loans = jsonDecode(response.body);
         loan_total=NumberFormat.currency(decimalDigits: 0,  locale: "id").format(_loans['data']['total_loans']);
         laon_remaining=NumberFormat.currency(decimalDigits: 0,  locale: "id").format(_loans['data']['remaining_loans']);
