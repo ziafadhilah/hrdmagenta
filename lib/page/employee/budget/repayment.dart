@@ -12,18 +12,19 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart'  as http;
 
 
-class expandbudget extends StatefulWidget {
-  expandbudget({
+class RepaymentBudget extends StatefulWidget {
+  RepaymentBudget({
     this.event_id,
-    this.project_number
+    this.project_number,
+    this.amount
 
-});
-  var event_id,project_number;
+  });
+  var event_id,project_number,amount;
   @override
-  _expandBudgettState createState() => new _expandBudgettState();
+  _RepaymentBudgetState createState() => new _RepaymentBudgetState();
 }
 
-class _expandBudgettState extends State<expandbudget> {
+class _RepaymentBudgetState extends State<RepaymentBudget> {
   final _scaffoldKey = new GlobalKey<ScaffoldState>();
   File imageFile;
   VoidCallback _showPersBottomSheetCallBack;
@@ -77,25 +78,25 @@ class _expandBudgettState extends State<expandbudget> {
                                 InkWell(
                                   onTap:(){
                                     _getFromCamera();
-                          },
+                                  },
                                   child: Container(
                                     child: Column(
                                       children: [
                                         Container(
-                                    child: CircleAvatar(
-                                    child: camera,
-                                      radius: 27,
-                                      backgroundColor: btnColor1,
-                                    ),
+                                          child: CircleAvatar(
+                                            child: camera,
+                                            radius: 27,
+                                            backgroundColor: btnColor1,
+                                          ),
 
 
 
                                         ),
                                         Text("Camera",
-                                        style: TextStyle(
-                                          color: Colors.black38,
+                                          style: TextStyle(
+                                            color: Colors.black38,
 
-                                        ),
+                                          ),
                                         )
                                       ],
                                     ),
@@ -168,6 +169,7 @@ class _expandBudgettState extends State<expandbudget> {
           ),
           height: 60.0,
           child:TextFormField(
+            enabled: false,
             controller: Cammount,
             onChanged: (string) {
               string = '${_formatNumber(string.replaceAll('.', ''))}';
@@ -355,7 +357,7 @@ class _expandBudgettState extends State<expandbudget> {
         onPressed: () {
 
           var ammount=(Cammount.text.replaceAll(new RegExp(r'[^\w\s]+'),''));
-          validator.validation_transaction(context, ammount, datePicker, Cnote.text.trim(), widget.event_id,_type, user_id, "",widget.project_number,"",'save');
+          validator.validation_transaction(context, ammount, datePicker, Cnote.text.trim(), widget.event_id,_type, user_id, "",widget.project_number,"",'repayment');
 
 
         },
@@ -486,24 +488,24 @@ class _expandBudgettState extends State<expandbudget> {
                         color: Colors.white,
                         margin: EdgeInsets.only(left: 20,right: 20),
                         child: Column(
-                      children: [
-                        _buildtypeexpense(),
-                        SizedBox(height: 10,),
-                        _buildamount(),
-                        SizedBox(height: 10,),
-                        _buildDate(),
+                          children: [
+                            _buildtypeexpense(),
+                            SizedBox(height: 10,),
+                            _buildamount(),
+                            SizedBox(height: 10,),
+                            _buildDate(),
 
-                       SizedBox(height: 10,),
-                        _buildnote(),
+                            SizedBox(height: 10,),
+                            _buildnote(),
 
-                        SizedBox(height: 10,),
-                        _buildfile(),
+                            SizedBox(height: 10,),
+                            _buildfile(),
 
-                        SizedBox(height: 10,),
-                        _buildSubmitbtn(),
+                            SizedBox(height: 10,),
+                            _buildSubmitbtn(),
 
-                      ],
-                    ))
+                          ],
+                        ))
                   ],
                 ),
               ),
@@ -520,10 +522,10 @@ class _expandBudgettState extends State<expandbudget> {
 
       http.Response response=await http.get("$baset_url_event/api/accounts");
       var data=jsonDecode(response.body);
-        setState(() {
-          typeList = data['data'];
-          _loading=false;
-        });
+      setState(() {
+        typeList = data['data'];
+        _loading=false;
+      });
 
     }catch(e){
 
@@ -540,6 +542,8 @@ class _expandBudgettState extends State<expandbudget> {
   void initState() {
     // TODO: implement initState
     super.initState();
+
+    Cammount.text="${_formatNumber(widget.amount.toString().replaceAll('.', ''))}";
     _data_expense();
     getDatapref();
   }

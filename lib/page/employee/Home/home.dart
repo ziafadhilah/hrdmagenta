@@ -451,12 +451,12 @@ class _HomeEmployeeState extends State<HomeEmployee> {
                                             alignment: Alignment.center,
                                             margin: EdgeInsets.only(top: 3, bottom: 3),
                                             child: Text(
-                                              "${status=="approved"?"In Progress":"Completed"}",
+                                              "${status=="approved"?"In Progress":status=="closed"?"completed":""}",
                                               style: TextStyle(
                                                   color: Colors.white, fontSize: 10),
                                             )),
                                         decoration: BoxDecoration(
-                                          color: status=="approved"?Colors.green:Colors.lightBlue,
+                                          color: status=="approved"?Colors.green:status=="closed"?Colors.lightBlue:Colors.white,
                                           borderRadius: new BorderRadius.only(
                                             topLeft: const Radius.circular(10.0),
                                             topRight: const Radius.circular(10.0),
@@ -482,7 +482,7 @@ class _HomeEmployeeState extends State<HomeEmployee> {
                           return _buildteam(index_member, index);
                         },
                           scrollDirection: Axis.horizontal,
-                          itemCount: _projects['data'][index]['members'].length,
+                          itemCount: _projects['data'][index]['members']==null?0:_projects['data'][index]['members'].length,
                         ),
                       ),
                       Container(
@@ -674,7 +674,7 @@ class _HomeEmployeeState extends State<HomeEmployee> {
       });
 
       http.Response response = await http
-          .get("$baset_url_event/api/projects");
+          .get("$baset_url_event/api/projects/approved/employees/${user_id}");
       _projects = jsonDecode(response.body);
       print('data project');
 

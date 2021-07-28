@@ -12,18 +12,23 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart'  as http;
 
 
-class expandbudget extends StatefulWidget {
-  expandbudget({
-    this.event_id,
-    this.project_number
+class EditExpense extends StatefulWidget {
+  EditExpense({
 
-});
-  var event_id,project_number;
+    this.account_id,
+    this.description,
+    this.amount,
+    this.transaction_id,
+    this.project_number,
+    this.date,
+    this.event_id
+  });
+  var project_number,account_id,amount,description,transaction_id,date,event_id;
   @override
-  _expandBudgettState createState() => new _expandBudgettState();
+  _EditExpenseState createState() => new _EditExpenseState();
 }
 
-class _expandBudgettState extends State<expandbudget> {
+class _EditExpenseState extends State<EditExpense> {
   final _scaffoldKey = new GlobalKey<ScaffoldState>();
   File imageFile;
   VoidCallback _showPersBottomSheetCallBack;
@@ -33,7 +38,7 @@ class _expandBudgettState extends State<expandbudget> {
   var Cfile=new TextEditingController();
   var ControllerDate=new TextEditingController();
   String _formatNumber(String s) => NumberFormat.decimalPattern(_locale).format(int.parse(s));
-  DateTime date = DateTime.now();
+
   Validasi validator=Validasi();
   bool _loading=false;
   List typeList;
@@ -77,25 +82,25 @@ class _expandBudgettState extends State<expandbudget> {
                                 InkWell(
                                   onTap:(){
                                     _getFromCamera();
-                          },
+                                  },
                                   child: Container(
                                     child: Column(
                                       children: [
                                         Container(
-                                    child: CircleAvatar(
-                                    child: camera,
-                                      radius: 27,
-                                      backgroundColor: btnColor1,
-                                    ),
+                                          child: CircleAvatar(
+                                            child: camera,
+                                            radius: 27,
+                                            backgroundColor: btnColor1,
+                                          ),
 
 
 
                                         ),
                                         Text("Camera",
-                                        style: TextStyle(
-                                          color: Colors.black38,
+                                          style: TextStyle(
+                                            color: Colors.black38,
 
-                                        ),
+                                          ),
                                         )
                                       ],
                                     ),
@@ -355,10 +360,9 @@ class _expandBudgettState extends State<expandbudget> {
         onPressed: () {
 
           var ammount=(Cammount.text.replaceAll(new RegExp(r'[^\w\s]+'),''));
-          validator.validation_transaction(context, ammount, datePicker, Cnote.text.trim(), widget.event_id,_type, user_id, "",widget.project_number,"",'save');
+          validator.validation_transaction(context, ammount, datePicker, Cnote.text.trim(), widget.event_id,_type, user_id, "",widget.project_number,widget.transaction_id,'update');
 
-
-        },
+          },
         child: Text('SUBMIT',
           style: TextStyle(color: Colors.black87),
         ),
@@ -391,6 +395,7 @@ class _expandBudgettState extends State<expandbudget> {
 
 
   _chooseDate(BuildContext context) async {
+    var date=DateTime.parse("${widget.date}");
     final DateTime picked = await showDatePicker(
       context: context,
 
@@ -486,24 +491,24 @@ class _expandBudgettState extends State<expandbudget> {
                         color: Colors.white,
                         margin: EdgeInsets.only(left: 20,right: 20),
                         child: Column(
-                      children: [
-                        _buildtypeexpense(),
-                        SizedBox(height: 10,),
-                        _buildamount(),
-                        SizedBox(height: 10,),
-                        _buildDate(),
+                          children: [
+                            _buildtypeexpense(),
+                            SizedBox(height: 10,),
+                            _buildamount(),
+                            SizedBox(height: 10,),
+                            _buildDate(),
 
-                       SizedBox(height: 10,),
-                        _buildnote(),
+                            SizedBox(height: 10,),
+                            _buildnote(),
 
-                        SizedBox(height: 10,),
-                        _buildfile(),
+                            SizedBox(height: 10,),
+                            _buildfile(),
 
-                        SizedBox(height: 10,),
-                        _buildSubmitbtn(),
+                            SizedBox(height: 10,),
+                            _buildSubmitbtn(),
 
-                      ],
-                    ))
+                          ],
+                        ))
                   ],
                 ),
               ),
@@ -520,10 +525,10 @@ class _expandBudgettState extends State<expandbudget> {
 
       http.Response response=await http.get("$baset_url_event/api/accounts");
       var data=jsonDecode(response.body);
-        setState(() {
-          typeList = data['data'];
-          _loading=false;
-        });
+      setState(() {
+        typeList = data['data'];
+        _loading=false;
+      });
 
     }catch(e){
 
@@ -538,6 +543,11 @@ class _expandBudgettState extends State<expandbudget> {
   }
   @override
   void initState() {
+    Cnote.text=widget.description;
+    ControllerDate.text=DateFormat('dd/MM/yyyy').format(DateTime.parse("${widget.date}")).toString();
+    datePicker=DateFormat('yyyy-MM-dd').format(DateTime.parse("${widget.date}")).toString();
+    Cammount.text=widget.amount;
+    _type=widget.account_id;
     // TODO: implement initState
     super.initState();
     _data_expense();

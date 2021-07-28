@@ -66,31 +66,104 @@ class Services {
 
   ///expense budget employee
   Future<void> expenseBudget(BuildContext context, var amount, date, note,
-      event_id, budget_category_id, requested_by, image) async {
+      event_id, budget_category_id, requested_by, image,project_number,status) async {
+    print(status);
     loading(context);
-    final response = await http.post("$base_url/api/event-budgets", body: {
-      "note": note,
-      "amount": amount,
-      "type": "expense",
-      "budget_category_id": budget_category_id,
-      "event_id": event_id,
-      "requested_by": requested_by,
-      "date": date,
-      //"file": file.toString().trim(),
-      "status": "pending"
-    });
+    try{
+      final response = await http.post("$baset_url_event/api/mobile/project/transactions", body: {
+        "description": note,
+        "amount": amount,
+        "account_id": budget_category_id,
+        "project_id": event_id,
+        "date": date,
+        //"file": file.toString().trim(),
+        "status": status,
+        "project_number":project_number
+      });
 
 
 
-    final responseJson = jsonDecode(response.body);
-    if (responseJson['code'] == 200) {
-      toast_success("${responseJson['message']}");
-      Navigator.pop(context);
-      Navigator.pop(context);
-    } else {
-      toast_error("${responseJson['message']}");
-      Navigator.pop(context);
+      final responseJson = jsonDecode(response.body);
+      if (responseJson['code'] == 200) {
+        toast_success("${responseJson['message']}");
+        Navigator.pop(context);
+        Navigator.pop(context);
+      } else {
+        toast_error("${responseJson['message']}");
+        Navigator.pop(context);
+      }
+
+    }catch(e){
+
+      toast_error("${e}");
+      print("${e}");
+
     }
+
+  }
+
+  ///expense budget employee
+  Future<void> editTransaction(BuildContext context, var amount, date, note,
+      event_id, budget_category_id, requested_by, image,project_number,transaction_id) async {
+    loading(context);
+    try{
+      final response = await http.patch("$baset_url_event/api/mobile/project/transactions/${transaction_id}", body: {
+        "description": note,
+        "amount": amount,
+        "account_id": budget_category_id,
+        "project_id": event_id,
+        "date": date,
+        //"file": file.toString().trim(),
+        "status": "approved",
+        "project_number":project_number
+      });
+
+
+
+      final responseJson = jsonDecode(response.body);
+      if (responseJson['code'] == 200) {
+        toast_success("${responseJson['message']}");
+        Navigator.pop(context);
+        Navigator.pop(context);
+      } else {
+        toast_error("${responseJson['message']}");
+        Navigator.pop(context);
+      }
+
+    }catch(e){
+      Navigator.pop(context);
+      toast_error("${e}");
+      print("${e}");
+
+    }
+
+  }
+
+
+
+  Future<void> deleteTransactionBudget(BuildContext context, var id,projectNumber) async {
+    loading(context);
+    try{
+      final response = await http.delete("$baset_url_event/api/mobile/project/transactions/${id}/${projectNumber}",);
+
+      final responseJson = jsonDecode(response.body);
+      if (responseJson['code'] == 200) {
+        toast_success("${responseJson['message']}");
+        Navigator.pop(context);
+        Navigator.pop(context);
+
+      } else {
+        toast_error("${responseJson['message']}");
+        Navigator.pop(context);
+      }
+
+    }catch(e){
+      Navigator.pop(context);
+      toast_error("${e}");
+      print("${e}");
+
+    }
+
   }
 
   ///function checkin employee

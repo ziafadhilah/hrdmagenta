@@ -165,7 +165,7 @@ class _ProjectState extends State<Project> {
                           return _buildteam(index_member, index);
                         },
                           scrollDirection: Axis.horizontal,
-                          itemCount: _projects['data'][index]['members'].length,
+                          itemCount: _projects['data'][index]['members']==null?0:_projects['data'][index]['members'].length,
                         ),
                       ),
                       Container(
