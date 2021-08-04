@@ -357,7 +357,7 @@ class _RepaymentBudgetState extends State<RepaymentBudget> {
         onPressed: () {
 
           var ammount=(Cammount.text.replaceAll(new RegExp(r'[^\w\s]+'),''));
-          validator.validation_transaction(context, ammount, datePicker, Cnote.text.trim(), widget.event_id,_type, user_id, "",widget.project_number,"",'repayment');
+          validator.validation_transaction(context, ammount, datePicker, Cnote.text.trim(), widget.event_id,_type, user_id, "",widget.project_number,"","",'repayment');
 
 
         },

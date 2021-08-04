@@ -21,9 +21,11 @@ class EditExpense extends StatefulWidget {
     this.transaction_id,
     this.project_number,
     this.date,
-    this.event_id
+    this.event_id,
+    this.status,
+    this.enabled
   });
-  var project_number,account_id,amount,description,transaction_id,date,event_id;
+  var project_number,account_id,amount,description,transaction_id,date,event_id,enabled,status;
   @override
   _EditExpenseState createState() => new _EditExpenseState();
 }
@@ -37,6 +39,7 @@ class _EditExpenseState extends State<EditExpense> {
   var Cammount=new TextEditingController();
   var Cfile=new TextEditingController();
   var ControllerDate=new TextEditingController();
+  bool enable_amount=true;
   String _formatNumber(String s) => NumberFormat.decimalPattern(_locale).format(int.parse(s));
 
   Validasi validator=Validasi();
@@ -173,6 +176,8 @@ class _EditExpenseState extends State<EditExpense> {
           ),
           height: 60.0,
           child:TextFormField(
+            enabled: enable_amount,
+
             controller: Cammount,
             onChanged: (string) {
               string = '${_formatNumber(string.replaceAll('.', ''))}';
@@ -359,9 +364,10 @@ class _EditExpenseState extends State<EditExpense> {
       child: new  OutlineButton(
         onPressed: () {
 
-          var ammount=(Cammount.text.replaceAll(new RegExp(r'[^\w\s]+'),''));
-          validator.validation_transaction(context, ammount, datePicker, Cnote.text.trim(), widget.event_id,_type, user_id, "",widget.project_number,widget.transaction_id,'update');
 
+          var ammount=(Cammount.text.replaceAll(new RegExp(r'[^\w\s]+'),''));
+          validator.validation_transaction(context, ammount, datePicker, Cnote.text.trim(), widget.event_id,"0", user_id, "",widget.project_number,widget.transaction_id,widget.status,'update');
+          print(widget.status);
           },
         child: Text('SUBMIT',
           style: TextStyle(color: Colors.black87),
@@ -492,7 +498,7 @@ class _EditExpenseState extends State<EditExpense> {
                         margin: EdgeInsets.only(left: 20,right: 20),
                         child: Column(
                           children: [
-                            _buildtypeexpense(),
+                           // _buildtypeexpense(),
                             SizedBox(height: 10,),
                             _buildamount(),
                             SizedBox(height: 10,),
@@ -543,11 +549,22 @@ class _EditExpenseState extends State<EditExpense> {
   }
   @override
   void initState() {
+    print(widget.enabled);
     Cnote.text=widget.description;
     ControllerDate.text=DateFormat('dd/MM/yyyy').format(DateTime.parse("${widget.date}")).toString();
     datePicker=DateFormat('yyyy-MM-dd').format(DateTime.parse("${widget.date}")).toString();
-    Cammount.text=widget.amount;
+   // Cammount.text=widget.amount;
+    Cammount.text="${_formatNumber(widget.amount.toString().replaceAll('.', ''))}";
     _type=widget.account_id;
+    if (widget.enabled==true){
+
+
+      enable_amount=true;
+
+    }else{
+      enable_amount=false;
+
+    }
     // TODO: implement initState
     super.initState();
     _data_expense();

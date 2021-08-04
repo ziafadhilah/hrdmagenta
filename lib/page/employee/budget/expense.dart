@@ -355,7 +355,7 @@ class _expandBudgettState extends State<expandbudget> {
         onPressed: () {
 
           var ammount=(Cammount.text.replaceAll(new RegExp(r'[^\w\s]+'),''));
-          validator.validation_transaction(context, ammount, datePicker, Cnote.text.trim(), widget.event_id,_type, user_id, "",widget.project_number,"",'save');
+          validator.validation_transaction(context, ammount, datePicker, Cnote.text.trim(), widget.event_id,"0", user_id, "",widget.project_number,"","",'save');
 
 
         },
@@ -487,7 +487,7 @@ class _expandBudgettState extends State<expandbudget> {
                         margin: EdgeInsets.only(left: 20,right: 20),
                         child: Column(
                       children: [
-                        _buildtypeexpense(),
+                        //_buildtypeexpense(),
                         SizedBox(height: 10,),
                         _buildamount(),
                         SizedBox(height: 10,),

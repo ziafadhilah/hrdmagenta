@@ -24,8 +24,6 @@ class budgetproject extends StatefulWidget {
         this.budgetStartDate,
         this.budgetEndDate,
         this.projectId
-
-
       });
 
   var projectNumber,
@@ -45,8 +43,8 @@ class _budgetprojectState extends State<budgetproject> {
   Map _transaction;
   bool _loading = true;
   var _remaining;
-  var total_in,total_out,balance,remaining_balance;
-  var _visible=true;
+  var total_in,total_out,balance,remaining_balance=0;
+  var _visible=false;
 
 
 //widget------------------
@@ -74,7 +72,7 @@ class _budgetprojectState extends State<budgetproject> {
                         Container(
                           width: Get.mediaQuery.size.width-50,
                           margin: EdgeInsets.only(left: 10),
-                          child: Text("Masi aktif penggunaan anggaran sudah terlewat ${remaining_balance>0?""
+                          child: Text("Masa aktif penggunaan anggaran sudah terlewat ${remaining_balance>0?""
                               "Saldo project anda masi tersisa ,silahkan lakukan transaksi pelunasan":""} ",style: TextStyle(color: Colors.white70,fontFamily: "SFReguler"),
 
                           ),
@@ -255,7 +253,7 @@ class _budgetprojectState extends State<budgetproject> {
                                               fontWeight: FontWeight.bold),
                                         ),
                                 ),
-                                _visible==true?Container(
+                                _visible==true?(remaining_balance >0?Container(
                                   margin: EdgeInsets.only(right: 5),
                                   child: ElevatedButton(
 
@@ -270,7 +268,7 @@ class _budgetprojectState extends State<budgetproject> {
                                     },
                                     child: Text('Pelunasan',style: TextStyle(fontSize: 13),),
                                   ),
-                                ):Container()
+                                ):Container()):Container()
                               ],
                             ),
                           ),
@@ -361,6 +359,8 @@ class _budgetprojectState extends State<budgetproject> {
                                                   date:_transaction['data']['transactions'][index]['date'],
                                                   account_id:_transaction['data']['transactions'][index]['account_id'].toString(),
                                                   event_id: widget.projectId,
+                                                  enabled: status=="pending"?false:true,
+                                                  status: status,
                                                 ));
                                               },
                                               child: Icon(Icons.edit_outlined,size: 20,)),
@@ -378,6 +378,8 @@ class _budgetprojectState extends State<budgetproject> {
                                                   date:_transaction['data']['transactions'][index]['date'],
                                                   account_id:_transaction['data']['transactions'][index]['account_id'].toString(),
                                                   event_id: widget.projectId,
+                                                  enabled: status=="pending"?false:true,
+                                                  status: status,
                                                 ));
                                               },
                                               child: Icon(Icons.edit_outlined,size: 20,)),
@@ -530,6 +532,30 @@ class _budgetprojectState extends State<budgetproject> {
                                       fontSize: 16, fontWeight: FontWeight.bold,color: type=="in"?Colors.green:Colors.red),
                                 ),
                               ),
+                              SizedBox(height: 10,),
+
+                              status=="pending"?Container(
+                                margin: EdgeInsets.only(left: 10),
+                                width: Get.mediaQuery.size.width-140,
+                                child: Row(
+                                  children: [
+                                    Container(child: Icon(Icons.info_outline,color: Colors.lightBlue,),),
+                                    Container(
+
+
+                                      margin: EdgeInsets.only(left: 10, top: 0),
+                                      child: Text(
+                                        "Menunggu persetujuan",
+
+                                        style: TextStyle(
+                                            fontSize: 16, color: Colors.lightBlue),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ):Container(),
+
+
 
                             ],
                           ),
@@ -609,7 +635,7 @@ class _budgetprojectState extends State<budgetproject> {
           style: TextStyle(color: Colors.black87),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
+       floatingActionButton:  _visible==false?FloatingActionButton(
         onPressed: () {
           Navigator.push(
               context,
@@ -621,7 +647,7 @@ class _budgetprojectState extends State<budgetproject> {
         },
         child: Icon(Icons.add),
         backgroundColor: btnColor1,
-      ),
+      ):null,
       body: RefreshIndicator(
         child: new Container(
           child: Container(
@@ -710,6 +736,16 @@ class _budgetprojectState extends State<budgetproject> {
     });
   }
 
+  void _saveBudget(){
+
+  }
+  void _updateBudget(){
+
+  }
+  void _payment(){
+
+  }
+
   void _checkActiveBudget(){
     var now=DateTime.now();
 
@@ -719,9 +755,10 @@ class _budgetprojectState extends State<budgetproject> {
 
     if (budgetStartDate.isBefore(now) && budgetEndDate.isAfter(now)){
    setState(() {
+     //between
      _visible=false;
    });
-    } else {
+    } else{
 
       setState(() {
         _visible=true;

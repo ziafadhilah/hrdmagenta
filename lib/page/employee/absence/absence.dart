@@ -65,398 +65,493 @@ class _absenceState extends State<absence> {
 
   Widget _buildlistabsence(index) {
 
-    return _absence['data'][index]['category']=='present'?Stack(
-      children: <Widget>[
-        Container(
-          width: double.infinity,
-          height: 100,
-          child: Card(
-            elevation: 1,
+    var date=_absence['data'][index]['date']!=null?DateFormat("dd/MM/yyyy").format(DateTime.parse("${_absence['data'][index]['date']}")):"-";
+
+    var check_in=_absence['data'][index]['clock_in']!=null?DateFormat("HH:mm:ss").format(DateTime.parse("${_absence['data'][index]['clock_in']}")):"-";
+     var check_out=_absence['data'][index]['clock_out']!=null?DateFormat("HH:mm:ss").format(DateTime.parse("${_absence['data'][index]['clock_out']}")):"-";
+    //
+    return _absence['data'][index]['category']=='present'?
+    InkWell(
+      onTap: (){
+        
+      },
+      child: Container(
+
+        width: Get.mediaQuery.size.width,
+        height: 150,
+        child: Card(
+          child: Container(
+
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
-                Flexible(
-                  child: Container(
-                    width: double.infinity,
-                    child: Padding(
-                      padding: const EdgeInsets.only(
-                        left: 5,
-                        top: 10,
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: <Widget>[
-                          Flexible(
-                            child: Container(
-                              width: double.infinity,
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  //container text
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Container(),
-                                  ),
-                                  Flexible(
-                                    child: Container(
-                                      margin:
-                                          EdgeInsets.only(top: 10, left: 10),
-                                      width: MediaQuery.of(context).size.width,
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: <Widget>[
-                                          Row(
-                                            children: [
-                                              Container(
-                                                  child: _absence['data'][index]
-                                                              ['approved_at'] ==
-                                                          null
-                                                      ? Text(
-                                                          "Kamu telah melakukan  ${_absence['data'][index]['type']} ",
-                                                          style:
-                                                              subtitleMainMenu)
-                                                      : Text(
-                                                          "kehadiran kamu telah disetujui")),
-                                            ],
-                                          ),
-                                          Container(
-                                            child: _absence['data'][index]
-                                                        ['type'] ==
-                                                    "check in"
-                                                ? Container(
-                                                    child: _absence['data']
-                                                                    [index][
-                                                                'approved_at'] ==
-                                                            null
-                                                        ? Text(
-                                                        DateFormat("dd/MM/yyyy hh:mm:ss").format(DateTime.parse(_absence['data'][index]['clock_in'])),
-                                                            style: TextStyle(
-                                                                fontSize: 15,
-                                                                color: Colors
-                                                                    .black26))
-                                                        : Text(
-                                                        DateFormat("dd/MM/yyyy hh:mm:ss").format(DateTime.parse(_absence['data'][index]['approved_at'])),
-                                                            style: TextStyle(
-                                                                fontSize: 15,
-                                                                color: Colors
-                                                                    .black26)),
-                                                  )
-                                                : Container(
-                                                    child: _absence['data']
-                                                                    [index][
-                                                                'approved_at'] ==
-                                                            null
-                                                        ? Text(
-                                                        DateFormat("dd/MM/yyyy hh:mm:ss").format(DateTime.parse(_absence['data'][index]['clock_out'])),
-                                                            style: TextStyle(
-                                                                fontSize: 15,
-                                                                color: Colors
-                                                                    .black26))
-                                                        : Text(
-                                                        DateFormat("dd/MM/yyyy hh:mm:ss").format(DateTime.parse(_absence['data'][index]['approved_at'])),
+                //header
+                Container(
+                  margin: EdgeInsets.only(top: 5,left: 10,right: 10),
 
-                                                            style: TextStyle(
-                                                                fontSize: 15,
-                                                                color: Colors
-                                                                    .black26)),
-                                                  ),
-                                          ),
-                                          InkWell(
-                                            onTap: () {
-                                              if (_absence['data'][index]
-                                                      ['type'] ==
-                                                  "check in") {
-                                                Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            detail_absence(
-                                                              status:
-                                                                  widget.type,
-                                                              date: _absence[
-                                                                          'data']
-                                                                      [index]
-                                                                  ['date'],
-                                                              time: _absence[
-                                                                          'data']
-                                                                      [index]
-                                                                  ['clock_in'],
-                                                              image: _absence[
-                                                                          'data']
-                                                                      [index]
-                                                                  ['image'],
-                                                              latitude: _absence[
-                                                                          'data']
-                                                                      [index][
-                                                                  'clock_in_latitude'],
-                                                              longitude: _absence[
-                                                                          'data']
-                                                                      [index][
-                                                                  'clock_in_longitude'],
-                                                              type: _absence[
-                                                                          'data']
-                                                                      [index]
-                                                                  ['type'],
-                                                              rejected_by: _absence['data']
-                                                                              [
-                                                                              index]
-                                                                          [
-                                                                          'rejected_by'] ==
-                                                                      null
-                                                                  ? "null"
-                                                                  : "${_absence['data'][index]['rejected_by']['first_name']} ${_absence['data'][index]['rejected_by']['last_name']}",
-                                                              approved_by: _absence['data']
-                                                                              [
-                                                                              index]
-                                                                          [
-                                                                          'approved_by'] ==
-                                                                      null
-                                                                  ? "null"
-                                                                  : "${_absence['data'][index]['approved_by']['first_name']} ${_absence['data'][index]['approved_by']['last_name']}",
-                                                              rejected_on: _absence[
-                                                                          'data']
-                                                                      [index][
-                                                                  'rejected_at'],
-                                                              rejection_note:
-                                                                  _absence['data']
-                                                                          [
-                                                                          index]
-                                                                      [
-                                                                      'rejection_note'],
-                                                              approval_note:
-                                                                  _absence['data']
-                                                                          [
-                                                                          index]
-                                                                      [
-                                                                      'approval_note'],
-                                                              approved_on: _absence[
-                                                                          'data']
-                                                                      [index][
-                                                                  'approved_at'],
-                                                              note: _absence[
-                                                                          'data']
-                                                                      [index]
-                                                                  ['note'],
-                                                              category: _absence[
-                                                                          'data']
-                                                                      [index]
-                                                                  ['category'],
-                                                              work_placement: _absence[
-                                                                              'data']
-                                                                          [
-                                                                          index]
-                                                                      [
-                                                                      'employee']
-                                                                  [
-                                                                  'work_placement'],
-                                                              firts_name_employee:
-                                                                  _absence['data']
-                                                                              [
-                                                                              index]
-                                                                          [
-                                                                          'employee']
-                                                                      [
-                                                                      'first_name'],
-                                                              last_name_employee:
-                                                                  _absence['data']
-                                                                              [
-                                                                              index]
-                                                                          [
-                                                                          'employee']
-                                                                      [
-                                                                      'last_name'],
-                                                              office_latitude:
-                                                                  _absence['data']
-                                                                          [
-                                                                          index]
-                                                                      [
-                                                                      'office_latitude'],
-                                                              office_longitude:
-                                                                  _absence['data']
-                                                                          [
-                                                                          index]
-                                                                      [
-                                                                      'office_longitude'],
-                                                              employee_id: _absence['data']
-                                                              [
-                                                              index]
-                                                              ['employee'][
-                                                              'employee_id'],
-                                                              photo: _absence['data']
-                                                              [
-                                                              index]['employee']
-                                                              ['photo'],
-                                                            )));
-                                              } else {
-                                                Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            detail_absence(
-                                                              status:
-                                                                  widget.type,
-                                                              date: _absence[
-                                                                          'data']
-                                                                      [index]
-                                                                  ['date'],
-                                                              time: _absence[
-                                                                          'data']
-                                                                      [index]
-                                                                  ['clock_out'],
-                                                              image: _absence[
-                                                                          'data']
-                                                                      [index]
-                                                                  ['image'],
-                                                              latitude: _absence[
-                                                                          'data']
-                                                                      [index][
-                                                                  'clock_out_latitude'],
-                                                              longitude: _absence[
-                                                                          'data']
-                                                                      [index][
-                                                                  'clock_out_longitude'],
-                                                              type: _absence[
-                                                                          'data']
-                                                                      [index]
-                                                                  ['type'],
-                                                              rejected_by: _absence['data']
-                                                                              [
-                                                                              index]
-                                                                          [
-                                                                          'rejected_by'] ==
-                                                                      null
-                                                                  ? "null"
-                                                                  : "${_absence['data'][index]['rejected_by']['first_name']} ${_absence['data'][index]['rejected_by']['last_name']}",
-                                                              approved_by: _absence['data']
-                                                                              [
-                                                                              index]
-                                                                          [
-                                                                          'approved_by'] ==
-                                                                      null
-                                                                  ? "null"
-                                                                  : "${_absence['data'][index]['approved_by']['first_name']} ${_absence['data'][index]['approved_by']['last_name']}",
-                                                              rejected_on: _absence[
-                                                                          'data']
-                                                                      [index][
-                                                                  'rejected_at'],
-                                                              rejection_note:
-                                                                  _absence['data']
-                                                                          [
-                                                                          index]
-                                                                      [
-                                                                      'rejection_note'],
-                                                              approval_note:
-                                                                  _absence['data']
-                                                                          [
-                                                                          index]
-                                                                      [
-                                                                      'approval_note'],
-                                                              approved_on: _absence[
-                                                                          'data']
-                                                                      [index][
-                                                                  'approved_at'],
-                                                              note: _absence[
-                                                                          'data']
-                                                                      [index]
-                                                                  ['note'],
-                                                              category: _absence[
-                                                                          'data']
-                                                                      [index]
-                                                                  ['category'],
-                                                              work_placement: _absence[
-                                                                              'data']
-                                                                          [
-                                                                          index]
-                                                                      [
-                                                                      'employee']
-                                                                  [
-                                                                  'work_placement'],
-                                                              firts_name_employee:
-                                                                  _absence['data']
-                                                                              [
-                                                                              index]
-                                                                          [
-                                                                          'employee']
-                                                                      [
-                                                                      'first_name'],
-                                                              last_name_employee:
-                                                                  _absence['data']
-                                                                              [
-                                                                              index]
-                                                                          [
-                                                                          'employee']
-                                                                      [
-                                                                      'last_name'],
-                                                              office_latitude:
-                                                                  _absence['data']
-                                                                          [
-                                                                          index]
-                                                                      [
-                                                                      'office_latitude'],
-                                                              office_longitude:
-                                                                  _absence['data']
-                                                                          [
-                                                                          index]
-                                                                      [
-                                                                      'office_longitude'],
-                                                                employee_id: _absence['data']
-                                                                [
-                                                                index]
-                                                                ['employee'][
-                                                                'employee_id'],
-                                                              photo: _absence['data']
-                                                              [
-                                                              index]['employee']
-                                                              ['photo'],
-                                                            )));
-                                              }
-                                            },
-                                            child: Container(
-                                              margin: EdgeInsets.only(
-                                                right: 5,
-                                                bottom: 5,
-                                              ),
-                                              width: double.infinity,
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.end,
-                                                children: <Widget>[
-                                                  Container(
-                                                    child: Text(
-                                                      "LIHAT DETAIL",
-                                                      style: TextStyle(
-                                                          color: textColor1),
-                                                    ),
-                                                  )
-                                                ],
-                                              ),
-                                            ),
-                                          )
-                                        ],
-                                      ),
-                                    ),
+                  child: Text("${date}",style: TextStyle(fontFamily: "SFBlack"),),
+                ),
+                SizedBox(height: 10,),
+                Container(
+                  width: Get.mediaQuery.size.width,
+                  height: 1,
+                  color: Colors.black38,
+                ),
+
+                Container(
+                  margin: EdgeInsets.all(10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+
+                      SizedBox(height: 20,),
+                      Container(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: <Widget>[
+                            Container(
+                              child: Column(
+                                children: <Widget>[
+                                  Container(
+                                    child: Text("Jam masuk",style: TextStyle(fontFamily: "SFReguler"),),
                                   ),
+                                  SizedBox(height: 5,),
+                                  Container(
+                                    child: Text("${check_in}",style: TextStyle(fontFamily: "SFReguler",color: Colors.black38),),
+                                  )
                                 ],
                               ),
                             ),
-                          ),
-                        ],
-                      ),
-                    ),
+                            Container(
+                              height: 50,
+                              width: 1,
+                              color: Colors.black,
+                            ),
+                            Container(
+                              child: Column(
+                                children: <Widget>[
+                                  Container(
+                                    child: Text("Jam keluar"),
+                                  ),
+                                  SizedBox(height: 5,),
+                                  Container(
+                                    child: Text("${check_out}",style: TextStyle(fontFamily: "SFReguler",color: Colors.black38),),
+                                  )
+                                ],
+                              ),
+                            )
+
+                          ],
+                        ),
+                      )
+                    ],
                   ),
-                ),
+
+                )
               ],
             ),
+
           ),
+
         ),
-      ],
-    ):_absence['data'][index]['category']=='leave'?_leave(index):_absence['data'][index]['category']=='sick'?_sick(index):_permission(index);
+
+      ),
+    ):
+    _absence['data'][index]['category']=='leave'?_leave(index):_absence['data'][index]['category']=='sick'?_sick(index):_permission(index);
+
+
+    // return _absence['data'][index]['category']=='present'?Stack(
+    //   children: <Widget>[
+    //     Container(
+    //       width: double.infinity,
+    //       height: 100,
+    //       child: Card(
+    //         elevation: 1,
+    //         child: Column(
+    //           crossAxisAlignment: CrossAxisAlignment.start,
+    //           mainAxisAlignment: MainAxisAlignment.start,
+    //           children: <Widget>[
+    //             Flexible(
+    //               child: Container(
+    //                 width: double.infinity,
+    //                 child: Padding(
+    //                   padding: const EdgeInsets.only(
+    //                     left: 5,
+    //                     top: 10,
+    //                   ),
+    //                   child: Column(
+    //                     crossAxisAlignment: CrossAxisAlignment.start,
+    //                     mainAxisAlignment: MainAxisAlignment.start,
+    //                     children: <Widget>[
+    //                       Flexible(
+    //                         child: Container(
+    //                           width: double.infinity,
+    //                           child: Row(
+    //                             crossAxisAlignment: CrossAxisAlignment.start,
+    //                             mainAxisAlignment: MainAxisAlignment.start,
+    //                             children: [
+    //                               //container text
+    //                               Padding(
+    //                                 padding: const EdgeInsets.all(8.0),
+    //                                 child: Container(),
+    //                               ),
+    //                               Flexible(
+    //                                 child: Container(
+    //                                   margin:
+    //                                       EdgeInsets.only(top: 10, left: 10),
+    //                                   width: MediaQuery.of(context).size.width,
+    //                                   child: Column(
+    //                                     mainAxisAlignment:
+    //                                         MainAxisAlignment.spaceBetween,
+    //                                     crossAxisAlignment:
+    //                                         CrossAxisAlignment.start,
+    //                                     children: <Widget>[
+    //                                       Row(
+    //                                         children: [
+    //                                           Container(
+    //                                               child: _absence['data'][index]
+    //                                                           ['approved_at'] ==
+    //                                                       null
+    //                                                   ? Text(
+    //                                                       "Kamu telah melakukan  ${_absence['data'][index]['type']} ",
+    //                                                       style:
+    //                                                           subtitleMainMenu)
+    //                                                   : Text(
+    //                                                       "kehadiran kamu telah disetujui")),
+    //                                         ],
+    //                                       ),
+    //                                       Container(
+    //                                         child: _absence['data'][index]
+    //                                                     ['type'] ==
+    //                                                 "check in"
+    //                                             ? Container(
+    //                                                 child: _absence['data']
+    //                                                                 [index][
+    //                                                             'approved_at'] ==
+    //                                                         null
+    //                                                     ? Text(
+    //                                                     DateFormat("dd/MM/yyyy hh:mm:ss").format(DateTime.parse(_absence['data'][index]['clock_in'])),
+    //                                                         style: TextStyle(
+    //                                                             fontSize: 15,
+    //                                                             color: Colors
+    //                                                                 .black26))
+    //                                                     : Text(
+    //                                                     DateFormat("dd/MM/yyyy hh:mm:ss").format(DateTime.parse(_absence['data'][index]['approved_at'])),
+    //                                                         style: TextStyle(
+    //                                                             fontSize: 15,
+    //                                                             color: Colors
+    //                                                                 .black26)),
+    //                                               )
+    //                                             : Container(
+    //                                                 child: _absence['data']
+    //                                                                 [index][
+    //                                                             'approved_at'] ==
+    //                                                         null
+    //                                                     ? Text(
+    //                                                     DateFormat("dd/MM/yyyy hh:mm:ss").format(DateTime.parse(_absence['data'][index]['clock_out'])),
+    //                                                         style: TextStyle(
+    //                                                             fontSize: 15,
+    //                                                             color: Colors
+    //                                                                 .black26))
+    //                                                     : Text(
+    //                                                     DateFormat("dd/MM/yyyy hh:mm:ss").format(DateTime.parse(_absence['data'][index]['approved_at'])),
+    //
+    //                                                         style: TextStyle(
+    //                                                             fontSize: 15,
+    //                                                             color: Colors
+    //                                                                 .black26)),
+    //                                               ),
+    //                                       ),
+    //                                       InkWell(
+    //                                         onTap: () {
+    //                                           if (_absence['data'][index]
+    //                                                   ['type'] ==
+    //                                               "check in") {
+    //                                             Navigator.push(
+    //                                                 context,
+    //                                                 MaterialPageRoute(
+    //                                                     builder: (context) =>
+    //                                                         detail_absence(
+    //                                                           status:
+    //                                                               widget.type,
+    //                                                           date: _absence[
+    //                                                                       'data']
+    //                                                                   [index]
+    //                                                               ['date'],
+    //                                                           time: _absence[
+    //                                                                       'data']
+    //                                                                   [index]
+    //                                                               ['clock_in'],
+    //                                                           image: _absence[
+    //                                                                       'data']
+    //                                                                   [index]
+    //                                                               ['image'],
+    //                                                           latitude: _absence[
+    //                                                                       'data']
+    //                                                                   [index][
+    //                                                               'clock_in_latitude'],
+    //                                                           longitude: _absence[
+    //                                                                       'data']
+    //                                                                   [index][
+    //                                                               'clock_in_longitude'],
+    //                                                           type: _absence[
+    //                                                                       'data']
+    //                                                                   [index]
+    //                                                               ['type'],
+    //                                                           rejected_by: _absence['data']
+    //                                                                           [
+    //                                                                           index]
+    //                                                                       [
+    //                                                                       'rejected_by'] ==
+    //                                                                   null
+    //                                                               ? "null"
+    //                                                               : "${_absence['data'][index]['rejected_by']['first_name']} ${_absence['data'][index]['rejected_by']['last_name']}",
+    //                                                           approved_by: _absence['data']
+    //                                                                           [
+    //                                                                           index]
+    //                                                                       [
+    //                                                                       'approved_by'] ==
+    //                                                                   null
+    //                                                               ? "null"
+    //                                                               : "${_absence['data'][index]['approved_by']['first_name']} ${_absence['data'][index]['approved_by']['last_name']}",
+    //                                                           rejected_on: _absence[
+    //                                                                       'data']
+    //                                                                   [index][
+    //                                                               'rejected_at'],
+    //                                                           rejection_note:
+    //                                                               _absence['data']
+    //                                                                       [
+    //                                                                       index]
+    //                                                                   [
+    //                                                                   'rejection_note'],
+    //                                                           approval_note:
+    //                                                               _absence['data']
+    //                                                                       [
+    //                                                                       index]
+    //                                                                   [
+    //                                                                   'approval_note'],
+    //                                                           approved_on: _absence[
+    //                                                                       'data']
+    //                                                                   [index][
+    //                                                               'approved_at'],
+    //                                                           note: _absence[
+    //                                                                       'data']
+    //                                                                   [index]
+    //                                                               ['note'],
+    //                                                           category: _absence[
+    //                                                                       'data']
+    //                                                                   [index]
+    //                                                               ['category'],
+    //                                                           work_placement: _absence[
+    //                                                                           'data']
+    //                                                                       [
+    //                                                                       index]
+    //                                                                   [
+    //                                                                   'employee']
+    //                                                               [
+    //                                                               'work_placement'],
+    //                                                           firts_name_employee:
+    //                                                               _absence['data']
+    //                                                                           [
+    //                                                                           index]
+    //                                                                       [
+    //                                                                       'employee']
+    //                                                                   [
+    //                                                                   'first_name'],
+    //                                                           last_name_employee:
+    //                                                               _absence['data']
+    //                                                                           [
+    //                                                                           index]
+    //                                                                       [
+    //                                                                       'employee']
+    //                                                                   [
+    //                                                                   'last_name'],
+    //                                                           office_latitude:
+    //                                                               _absence['data']
+    //                                                                       [
+    //                                                                       index]
+    //                                                                   [
+    //                                                                   'office_latitude'],
+    //                                                           office_longitude:
+    //                                                               _absence['data']
+    //                                                                       [
+    //                                                                       index]
+    //                                                                   [
+    //                                                                   'office_longitude'],
+    //                                                           employee_id: _absence['data']
+    //                                                           [
+    //                                                           index]
+    //                                                           ['employee'][
+    //                                                           'employee_id'],
+    //                                                           photo: _absence['data']
+    //                                                           [
+    //                                                           index]['employee']
+    //                                                           ['photo'],
+    //                                                         )));
+    //                                           } else {
+    //                                             Navigator.push(
+    //                                                 context,
+    //                                                 MaterialPageRoute(
+    //                                                     builder: (context) =>
+    //                                                         detail_absence(
+    //                                                           status:
+    //                                                               widget.type,
+    //                                                           date: _absence[
+    //                                                                       'data']
+    //                                                                   [index]
+    //                                                               ['date'],
+    //                                                           time: _absence[
+    //                                                                       'data']
+    //                                                                   [index]
+    //                                                               ['clock_out'],
+    //                                                           image: _absence[
+    //                                                                       'data']
+    //                                                                   [index]
+    //                                                               ['image'],
+    //                                                           latitude: _absence[
+    //                                                                       'data']
+    //                                                                   [index][
+    //                                                               'clock_out_latitude'],
+    //                                                           longitude: _absence[
+    //                                                                       'data']
+    //                                                                   [index][
+    //                                                               'clock_out_longitude'],
+    //                                                           type: _absence[
+    //                                                                       'data']
+    //                                                                   [index]
+    //                                                               ['type'],
+    //                                                           rejected_by: _absence['data']
+    //                                                                           [
+    //                                                                           index]
+    //                                                                       [
+    //                                                                       'rejected_by'] ==
+    //                                                                   null
+    //                                                               ? "null"
+    //                                                               : "${_absence['data'][index]['rejected_by']['first_name']} ${_absence['data'][index]['rejected_by']['last_name']}",
+    //                                                           approved_by: _absence['data']
+    //                                                                           [
+    //                                                                           index]
+    //                                                                       [
+    //                                                                       'approved_by'] ==
+    //                                                                   null
+    //                                                               ? "null"
+    //                                                               : "${_absence['data'][index]['approved_by']['first_name']} ${_absence['data'][index]['approved_by']['last_name']}",
+    //                                                           rejected_on: _absence[
+    //                                                                       'data']
+    //                                                                   [index][
+    //                                                               'rejected_at'],
+    //                                                           rejection_note:
+    //                                                               _absence['data']
+    //                                                                       [
+    //                                                                       index]
+    //                                                                   [
+    //                                                                   'rejection_note'],
+    //                                                           approval_note:
+    //                                                               _absence['data']
+    //                                                                       [
+    //                                                                       index]
+    //                                                                   [
+    //                                                                   'approval_note'],
+    //                                                           approved_on: _absence[
+    //                                                                       'data']
+    //                                                                   [index][
+    //                                                               'approved_at'],
+    //                                                           note: _absence[
+    //                                                                       'data']
+    //                                                                   [index]
+    //                                                               ['note'],
+    //                                                           category: _absence[
+    //                                                                       'data']
+    //                                                                   [index]
+    //                                                               ['category'],
+    //                                                           work_placement: _absence[
+    //                                                                           'data']
+    //                                                                       [
+    //                                                                       index]
+    //                                                                   [
+    //                                                                   'employee']
+    //                                                               [
+    //                                                               'work_placement'],
+    //                                                           firts_name_employee:
+    //                                                               _absence['data']
+    //                                                                           [
+    //                                                                           index]
+    //                                                                       [
+    //                                                                       'employee']
+    //                                                                   [
+    //                                                                   'first_name'],
+    //                                                           last_name_employee:
+    //                                                               _absence['data']
+    //                                                                           [
+    //                                                                           index]
+    //                                                                       [
+    //                                                                       'employee']
+    //                                                                   [
+    //                                                                   'last_name'],
+    //                                                           office_latitude:
+    //                                                               _absence['data']
+    //                                                                       [
+    //                                                                       index]
+    //                                                                   [
+    //                                                                   'office_latitude'],
+    //                                                           office_longitude:
+    //                                                               _absence['data']
+    //                                                                       [
+    //                                                                       index]
+    //                                                                   [
+    //                                                                   'office_longitude'],
+    //                                                             employee_id: _absence['data']
+    //                                                             [
+    //                                                             index]
+    //                                                             ['employee'][
+    //                                                             'employee_id'],
+    //                                                           photo: _absence['data']
+    //                                                           [
+    //                                                           index]['employee']
+    //                                                           ['photo'],
+    //                                                         )));
+    //                                           }
+    //                                         },
+    //                                         child: Container(
+    //                                           margin: EdgeInsets.only(
+    //                                             right: 5,
+    //                                             bottom: 5,
+    //                                           ),
+    //                                           width: double.infinity,
+    //                                           child: Column(
+    //                                             crossAxisAlignment:
+    //                                                 CrossAxisAlignment.end,
+    //                                             children: <Widget>[
+    //                                               Container(
+    //                                                 child: Text(
+    //                                                   "LIHAT DETAIL",
+    //                                                   style: TextStyle(
+    //                                                       color: textColor1),
+    //                                                 ),
+    //                                               )
+    //                                             ],
+    //                                           ),
+    //                                         ),
+    //                                       )
+    //                                     ],
+    //                                   ),
+    //                                 ),
+    //                               ),
+    //                             ],
+    //                           ),
+    //                         ),
+    //                       ),
+    //                     ],
+    //                   ),
+    //                 ),
+    //               ),
+    //             ),
+    //           ],
+    //         ),
+    //       ),
+    //     ),
+    //   ],
+    // ):_absence['data'][index]['category']=='leave'?_leave(index):_absence['data'][index]['category']=='sick'?_sick(index):_permission(index);
 
   }
 

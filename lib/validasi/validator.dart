@@ -22,7 +22,7 @@ class Validasi {
 
   //validasi transaction
   void validation_transaction(BuildContext context, var amount, date, note,
-      event_id, budget_category_id, requested_by, image,project_number,transaction_id,status) {
+      event_id, budget_category_id, requested_by, image,project_number,transaction_id,status_transaction,status) {
     if (amount.isEmpty) {
       Toast.show("jumlah uang belum diisi", context,
           duration: 5, gravity: Toast.BOTTOM);
@@ -34,13 +34,16 @@ class Validasi {
         services.expenseBudget(context, amount, date, note, event_id,
             budget_category_id, requested_by, image,project_number,"approved");
 
-      }else if(status=='edit'){
+      }else if(status=='update'){
+
         services.editTransaction(context, amount, date, note, event_id,
-            budget_category_id, requested_by, image,project_number,transaction_id);
+            budget_category_id, requested_by, image,project_number,transaction_id,status_transaction);
       }else if (status=='repayment'){
         services.expenseBudget(context, amount, date, note, event_id,
             budget_category_id, requested_by, image,project_number,"pending");
 
+      }else{
+        print("tes");
       }
 
 

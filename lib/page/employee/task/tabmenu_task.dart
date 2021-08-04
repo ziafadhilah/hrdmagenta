@@ -20,16 +20,15 @@ class Tabstasks extends StatelessWidget {
           iconTheme: IconThemeData(
             color: Colors.black87, //modify arrow color from here..
           ),
-          // leading: new IconButton(
-          //   icon: new Icon(Icons.arrow_back),
-          //   onPressed: () {
-          //     Navigator.pop(context);
-          //     Navigator.pop(context);
-          //     Navigator.pushReplacementNamed(context, "tabmenu_project-employee");
-          //
-          //
-          //   },
-          // ),
+          leading: new IconButton(
+            icon: new Icon(Icons.arrow_back_ios),
+            onPressed: () {
+              Navigator.pop(context,'update');
+
+
+
+            },
+          ),
 
           backgroundColor: Colors.white,
           title: Text(

@@ -79,70 +79,78 @@ class _DetailProjectsState extends State<DetailProjects> {
               tooltip: "Budget",
               onPressed: () {Get.to(budgetproject(projectNumber: projectNumber,projectId: widget.id,budgetStartDate: budgetStartDate,budgetEndDate: budgetEndDate,));}),
           IconButton(icon: taskIcon, tooltip: "Budget", onPressed: () {
-            Get.to(Tabstasks(id: widget.id,));
+            _updateTask();
           })
         ],
       ),
       body: _loading==true?Container(child: Center(child: CircularProgressIndicator()),):SingleChildScrollView(
-        child: Container(
-          margin: EdgeInsets.only(left: 5,right: 5),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              SizedBox(height: 15,),
-              Container(
-                child: Text(
-                  "Detail",
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontFamily: "SFReguler",
-                      fontSize: 18),
+        child: RefreshIndicator(
+          child: Container(
+            margin: EdgeInsets.only(left: 5,right: 5),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                SizedBox(height: 15,),
+                Container(
+                  margin: EdgeInsets.only(left: 5),
+                  child: Text(
+                    "Detail",
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontFamily: "SFReguler",
+                        fontSize: 18),
+                  ),
                 ),
-              ),
-              _detailProject(),
-              SizedBox(height: 15,),
+                _detailProject(),
+                SizedBox(height: 15,),
 
-              Container(
-                child: Text(
-                  "Anggota",
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontFamily: "SFReguler",
-                      fontSize: 18),
+                Container(
+                  margin: EdgeInsets.only(left: 5),
+                  child: Text(
+                    "Anggota",
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontFamily: "SFReguler",
+                        fontSize: 18),
+                  ),
                 ),
-              ),
 
-              _members(),
-              SizedBox(height: 15,),
-              Container(
-                child: Text(
-                  "Persentasi Tugas",
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontFamily: "SFReguler",
-                      fontSize: 18),
+                _members(),
+                SizedBox(height: 15,),
+                Container(
+                  margin: EdgeInsets.only(left: 5),
+                  child: Text(
+                    "Persentasi Tugas",
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontFamily: "SFReguler",
+                        fontSize: 18),
+                  ),
                 ),
-              ),
-        
-              _percentageTask(),
-              SizedBox(height: 15,),
 
-              Container(
-                child: Text(
-                  "Lokasi Project",
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontFamily: "SFReguler",
-                      fontSize: 18),
+                _percentageTask(),
+                SizedBox(height: 15,),
+
+                Container(
+                  margin: EdgeInsets.only(left: 5),
+                  child: Text(
+                    "Lokasi Project",
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontFamily: "SFReguler",
+                        fontSize: 18),
+                  ),
                 ),
-              ),
-              SizedBox(height: 10,),
-            //  _budgerCategory()
-              _builmap(),
-              SizedBox(height: 20,),
-            ],
+
+              //  _budgerCategory()
+                _builmap(),
+                SizedBox(height: 20,),
+              ],
+            ),
           ),
+          onRefresh: dataProject,
         ),
+
       ),
     );
   }
@@ -150,578 +158,580 @@ class _DetailProjectsState extends State<DetailProjects> {
   //detail peroject
 
   Widget _detailProject() {
-    return Container(
-      margin: EdgeInsets.only(top: 10),
-      color: Colors.white,
-      width: double.infinity,
+    return Card(
       child: Container(
-        margin: EdgeInsets.all(10),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Container(
-            //   child: Text(
-            //     "Detail",
-            //     style: TextStyle(
-            //         fontWeight: FontWeight.bold,
-            //         fontFamily: "SFReguler",
-            //         fontSize: 18),
-            //   ),
-            // ),
+        margin: EdgeInsets.only(top: 10),
+        color: Colors.white,
+        width: double.infinity,
+        child: Container(
+          margin: EdgeInsets.all(10),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Container(
+              //   child: Text(
+              //     "Detail",
+              //     style: TextStyle(
+              //         fontWeight: FontWeight.bold,
+              //         fontFamily: "SFReguler",
+              //         fontSize: 18),
+              //   ),
+              // ),
 
-            //nama event
-            Container(
-              margin: EdgeInsets.only(top: 5),
-              child: Row(
-                children: <Widget>[
+              //nama event
+              Container(
+                margin: EdgeInsets.only(top: 5),
+                child: Row(
+                  children: <Widget>[
 
-                  Container(
-                    margin: EdgeInsets.only(left: 5),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Container(
-                          child: Text(
-                            "No. Project",
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 15,
-                                fontFamily: "SFReguler"),
+                    Container(
+                      margin: EdgeInsets.only(left: 5),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Container(
+                            child: Text(
+                              "No. Project",
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 15,
+                                  fontFamily: "SFReguler"),
+                            ),
                           ),
-                        ),
 
-                        SizedBox(
-                          height: 5,
-                        ),
-
-                        Container(
-                          child: Text(
-                            "${projectNumber!=null?projectNumber:""}",
-                            style:
-                                TextStyle(color: Colors.black45, fontSize: 15),
+                          SizedBox(
+                            height: 5,
                           ),
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
 
-                        Container(
-                        width: Get.mediaQuery.size.width-35,
-                        height: 1,
-                        color: Colors.black12,
-                      )
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              margin: EdgeInsets.only(top: 10),
-              child: Row(
-                children: <Widget>[
-
-                  Container(
-                    margin: EdgeInsets.only(left: 5),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Container(
-                          child: Text(
-                            "Quotation",
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 15,
-                                fontFamily: "SFReguler"),
+                          Container(
+                            child: Text(
+                              "${projectNumber!=null?projectNumber:""}",
+                              style:
+                                  TextStyle(color: Colors.black45, fontSize: 15),
+                            ),
                           ),
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Container(
-                          width: Get.mediaQuery.size.width-35,
-
-                          child: Text(
-
-                            "${quotation!=null?quotation:""}",
-                            textAlign: TextAlign.justify,
-
-                            style: TextStyle(color: Colors.black45, fontSize: 15),
+                          SizedBox(
+                            height: 5,
                           ),
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Container(
-                          width: Get.mediaQuery.size.width-35,
+                          SizedBox(
+                            height: 5,
+                          ),
+
+                          Container(
+                          width: Get.mediaQuery.size.width-45,
                           height: 1,
                           color: Colors.black12,
                         )
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-            Container(
-              margin: EdgeInsets.only(top: 10),
-              child: Row(
-                children: <Widget>[
+              Container(
+                margin: EdgeInsets.only(top: 10),
+                child: Row(
+                  children: <Widget>[
 
-                  Container(
-                    margin: EdgeInsets.only(left: 5),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Container(
-                          child: Text(
-                            "Tanggal Mulai Project",
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 15,
-                                fontFamily: "SFReguler"),
+                    Container(
+                      margin: EdgeInsets.only(left: 5),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Container(
+                            child: Text(
+                              "Quotation",
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 15,
+                                  fontFamily: "SFReguler"),
+                            ),
                           ),
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Container(
-                          width: Get.mediaQuery.size.width-35,
-                          child: Text(
-                            "${projectStartDate!=null?projectStartDate:""}",
-                            textAlign: TextAlign.justify,
-                            style:
-                            TextStyle(color: Colors.black45, fontSize: 15),
+                          SizedBox(
+                            height: 5,
                           ),
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Container(
-                          width: Get.mediaQuery.size.width-35,
-                          height: 1,
-                          color: Colors.black12,
-                        )
-                      ],
+                          Container(
+                            width: Get.mediaQuery.size.width-45,
+
+                            child: Text(
+
+                              "${quotation!=null?quotation:""}",
+                              textAlign: TextAlign.justify,
+
+                              style: TextStyle(color: Colors.black45, fontSize: 15),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Container(
+                            width: Get.mediaQuery.size.width-45,
+                            height: 1,
+                            color: Colors.black12,
+                          )
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-            Container(
-              margin: EdgeInsets.only(top: 10),
-              child: Row(
-                children: <Widget>[
+              Container(
+                margin: EdgeInsets.only(top: 10),
+                child: Row(
+                  children: <Widget>[
 
-                  Container(
-                    margin: EdgeInsets.only(left: 5),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Container(
-                          child: Text(
-                            "Tanggal Akhir Project",
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 15,
-                                fontFamily: "SFReguler"),
+                    Container(
+                      margin: EdgeInsets.only(left: 5),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Container(
+                            child: Text(
+                              "Tanggal Mulai Project",
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 15,
+                                  fontFamily: "SFReguler"),
+                            ),
                           ),
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Container(
-                          width: Get.mediaQuery.size.width-35,
-                          child: Text(
-                            "${projectEndDate!=null?projectEndDate:""}",
-                            style:
-                            TextStyle(color: Colors.black45, fontSize: 15),
+                          SizedBox(
+                            height: 5,
                           ),
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Container(
-                          width: Get.mediaQuery.size.width-35,
-                          height: 1,
-                          color: Colors.black12,
-                        )
-                      ],
+                          Container(
+                            width: Get.mediaQuery.size.width-45,
+                            child: Text(
+                              "${projectStartDate!=null?projectStartDate:""}",
+                              textAlign: TextAlign.justify,
+                              style:
+                              TextStyle(color: Colors.black45, fontSize: 15),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Container(
+                            width: Get.mediaQuery.size.width-45,
+                            height: 1,
+                            color: Colors.black12,
+                          )
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-            Container(
-              margin: EdgeInsets.only(top: 10),
-              child: Row(
-                children: <Widget>[
+              Container(
+                margin: EdgeInsets.only(top: 10),
+                child: Row(
+                  children: <Widget>[
 
-                  Container(
-                    margin: EdgeInsets.only(left: 5),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Container(
-
-                          child: Text(
-                            "Deskripsi",
-                            textAlign: TextAlign.justify,
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 15,
-                                fontFamily: "SFReguler"),
+                    Container(
+                      margin: EdgeInsets.only(left: 5),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Container(
+                            child: Text(
+                              "Tanggal Akhir Project",
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 15,
+                                  fontFamily: "SFReguler"),
+                            ),
                           ),
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Container(
-                          width: Get.mediaQuery.size.width-35,
-                          child: Text(
-                            "${description!=null?description:""}",
-                            style:
-                            TextStyle(color: Colors.black45, fontSize: 15),
+                          SizedBox(
+                            height: 5,
                           ),
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Container(
-                          width: Get.mediaQuery.size.width-35,
-                          height: 1,
-                          color: Colors.black12,
-                        )
-                      ],
+                          Container(
+                            width: Get.mediaQuery.size.width-45,
+                            child: Text(
+                              "${projectEndDate!=null?projectEndDate:""}",
+                              style:
+                              TextStyle(color: Colors.black45, fontSize: 15),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Container(
+                            width: Get.mediaQuery.size.width-45,
+                            height: 1,
+                            color: Colors.black12,
+                          )
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-            Container(
-              margin: EdgeInsets.only(top: 10),
-              child: Row(
-                children: <Widget>[
+              Container(
+                margin: EdgeInsets.only(top: 10),
+                child: Row(
+                  children: <Widget>[
 
-                  Container(
-                    margin: EdgeInsets.only(left: 5),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Container(
-                          width: Get.mediaQuery.size.width-35,
-                          child: Text(
-                            "Customer",
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 15,
-                                fontFamily: "SFReguler"),
+                    Container(
+                      margin: EdgeInsets.only(left: 5),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Container(
+
+                            child: Text(
+                              "Deskripsi",
+                              textAlign: TextAlign.justify,
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 15,
+                                  fontFamily: "SFReguler"),
+                            ),
                           ),
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Container(
-                          width: Get.mediaQuery.size.width-35,
-                          child: Text(
-                            "${customer!=null?customer:""}",
-                            style:
-                            TextStyle(color: Colors.black45, fontSize: 15),
+                          SizedBox(
+                            height: 5,
                           ),
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Container(
-                          width: Get.mediaQuery.size.width-35,
-                          height: 1,
-                          color: Colors.black12,
-                        )
-                      ],
+                          Container(
+                            width: Get.mediaQuery.size.width-45,
+                            child: Text(
+                              "${description!=null?description:""}",
+                              style:
+                              TextStyle(color: Colors.black45, fontSize: 15),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Container(
+                            width: Get.mediaQuery.size.width-45,
+                            height: 1,
+                            color: Colors.black12,
+                          )
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-            Container(
-              margin: EdgeInsets.only(top: 10),
-              child: Row(
-                children: <Widget>[
+              Container(
+                margin: EdgeInsets.only(top: 10),
+                child: Row(
+                  children: <Widget>[
 
-                  Container(
-                    margin: EdgeInsets.only(left: 5),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Container(
-                          width: Get.mediaQuery.size.width-35,
-                          child: Text(
-                            "PIC Customer",
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 15,
-                                fontFamily: "SFReguler"),
+                    Container(
+                      margin: EdgeInsets.only(left: 5),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Container(
+                            width: Get.mediaQuery.size.width-45,
+                            child: Text(
+                              "Customer",
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 15,
+                                  fontFamily: "SFReguler"),
+                            ),
                           ),
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Container(
-                          width: Get.mediaQuery.size.width-35,
-                          child: Text(
-                            "${picCustomer!=null?picCustomer:""}",
-                            style:
-                            TextStyle(color: Colors.black45, fontSize: 15),
+                          SizedBox(
+                            height: 5,
                           ),
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Container(
-                          width: Get.mediaQuery.size.width-35,
-                          height: 1,
-                          color: Colors.black12,
-                        )
-                      ],
+                          Container(
+                            width: Get.mediaQuery.size.width-45,
+                            child: Text(
+                              "${customer!=null?customer:""}",
+                              style:
+                              TextStyle(color: Colors.black45, fontSize: 15),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Container(
+                            width: Get.mediaQuery.size.width-45,
+                            height: 1,
+                            color: Colors.black12,
+                          )
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
+              Container(
+                margin: EdgeInsets.only(top: 10),
+                child: Row(
+                  children: <Widget>[
 
-            //lokasi
-            Container(
-              margin: EdgeInsets.only(top: 10),
-              child: Row(
-                children: <Widget>[
-
-                  Container(
-                    margin: EdgeInsets.only(left: 5),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Container(
-                   width: Get.mediaQuery.size.width-35,
-                          child: Text(
-                            "Alamat",
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 15,
-                                fontFamily: "SFReguler"),
+                    Container(
+                      margin: EdgeInsets.only(left: 5),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Container(
+                            width: Get.mediaQuery.size.width-45,
+                            child: Text(
+                              "PIC Customer",
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 15,
+                                  fontFamily: "SFReguler"),
+                            ),
                           ),
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Container(
-                            width: Get.mediaQuery.size.width-35,
-                          child: Text(
-                            "${address!=null?address:""}",
-                            textAlign: TextAlign.justify,
-                            style:
-                                TextStyle(color: Colors.black45, fontSize: 15),
+                          SizedBox(
+                            height: 5,
                           ),
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Container(
-                          width: Get.mediaQuery.size.width-35,
-                          height: 1,
-                          color: Colors.black12,
-                        )
-                      ],
+                          Container(
+                            width: Get.mediaQuery.size.width-45,
+                            child: Text(
+                              "${picCustomer!=null?picCustomer:""}",
+                              style:
+                              TextStyle(color: Colors.black45, fontSize: 15),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Container(
+                            width: Get.mediaQuery.size.width-45,
+                            height: 1,
+                            color: Colors.black12,
+                          )
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
 
-            //saldo awal
-            Container(
-              margin: EdgeInsets.only(top: 10),
-              child: Row(
-                children: <Widget>[
+              //lokasi
+              Container(
+                margin: EdgeInsets.only(top: 10),
+                child: Row(
+                  children: <Widget>[
 
-                  Container(
-                    margin: EdgeInsets.only(left: 5),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Container(
-                          child: Text(
-                            "Total Biaya Project",
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 15,
-                                fontFamily: "SFReguler"),
+                    Container(
+                      margin: EdgeInsets.only(left: 5),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Container(
+                            width: Get.mediaQuery.size.width-45,
+                            child: Text(
+                              "Alamat",
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 15,
+                                  fontFamily: "SFReguler"),
+                            ),
                           ),
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Container(
-                          width: Get.mediaQuery.size.width-35,
-                          child: Text(
-                            "${totalProjectCost!=null?totalProjectCost:""}",
-                            style:
-                                TextStyle(color: Colors.black45, fontSize: 15),
+                          SizedBox(
+                            height: 5,
                           ),
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Container(
-                          width: Get.mediaQuery.size.width-35,
-                          height: 1,
-                          color: Colors.black12,
-                        )
-                      ],
+                          Container(
+                            width: Get.mediaQuery.size.width-45,
+                            child: Text(
+                              "${address!=null?address:""}",
+                              textAlign: TextAlign.justify,
+                              style:
+                                  TextStyle(color: Colors.black45, fontSize: 15),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Container(
+                            width: Get.mediaQuery.size.width-45,
+                            height: 1,
+                            color: Colors.black12,
+                          )
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-            Container(
-              margin: EdgeInsets.only(top: 10),
-              child: Row(
-                children: <Widget>[
 
-                  Container(
-                    margin: EdgeInsets.only(left: 5),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Container(
-                          child: Text(
-                            "Total In",
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 15,
-                                fontFamily: "SFReguler"),
+              //saldo awal
+              Container(
+                margin: EdgeInsets.only(top: 10),
+                child: Row(
+                  children: <Widget>[
+
+                    Container(
+                      margin: EdgeInsets.only(left: 5),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Container(
+                            child: Text(
+                              "Total Biaya Project",
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 15,
+                                  fontFamily: "SFReguler"),
+                            ),
                           ),
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Container(
-                          width: Get.mediaQuery.size.width-35,
-                          child: Text(
-                            "${totalIn!=null?totalIn:""}",
-                            style:
-                            TextStyle(color: Colors.black45, fontSize: 15),
+                          SizedBox(
+                            height: 5,
                           ),
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Container(
-                          width: Get.mediaQuery.size.width-35,
-                          height: 1,
-                          color: Colors.black12,
-                        )
-                      ],
+                          Container(
+                            width: Get.mediaQuery.size.width-45,
+                            child: Text(
+                              "${totalProjectCost!=null?totalProjectCost:""}",
+                              style:
+                                  TextStyle(color: Colors.black45, fontSize: 15),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Container(
+                            width: Get.mediaQuery.size.width-45,
+                            height: 1,
+                            color: Colors.black12,
+                          )
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
+              Container(
+                margin: EdgeInsets.only(top: 10),
+                child: Row(
+                  children: <Widget>[
 
-            //saldo
-            Container(
-              margin: EdgeInsets.only(top: 20),
-              child: Row(
-                children: <Widget>[
-
-                  Container(
-                    margin: EdgeInsets.only(left: 5),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Container(
-                          child: Text(
-                            "Total Out",
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 15,
-                                fontFamily: "SFReguler"),
+                    Container(
+                      margin: EdgeInsets.only(left: 5),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Container(
+                            child: Text(
+                              "Total In",
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 15,
+                                  fontFamily: "SFReguler"),
+                            ),
                           ),
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Container(
-                          width: Get.mediaQuery.size.width-35,
-                          child: Text(
-                            "${totalOut!=null?totalOut:""}",
-                            style:
-                                TextStyle(color: Colors.black45, fontSize: 15),
+                          SizedBox(
+                            height: 5,
                           ),
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Container(
-                          width: Get.mediaQuery.size.width-35,
-                          height: 1,
-                          color: Colors.black12,
-                        )
-                      ],
+                          Container(
+                            width: Get.mediaQuery.size.width-45,
+                            child: Text(
+                              "${totalIn!=null?totalIn:""}",
+                              style:
+                              TextStyle(color: Colors.black45, fontSize: 15),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Container(
+                            width: Get.mediaQuery.size.width-45,
+                            height: 1,
+                            color: Colors.black12,
+                          )
+                        ],
+                      ),
                     ),
-                  ),
-
-                ],
+                  ],
+                ),
               ),
-            ),
-            Container(
-              margin: EdgeInsets.only(top: 20),
-              child: Row(
-                children: <Widget>[
 
-                  Container(
-                    margin: EdgeInsets.only(left: 5),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Container(
-                          child: Text(
-                            "Saldo",
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 15,
-                                fontFamily: "SFReguler"),
+              //saldo
+              Container(
+                margin: EdgeInsets.only(top: 20),
+                child: Row(
+                  children: <Widget>[
+
+                    Container(
+                      margin: EdgeInsets.only(left: 5),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Container(
+                            child: Text(
+                              "Total Out",
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 15,
+                                  fontFamily: "SFReguler"),
+                            ),
                           ),
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Container(
-                          width: Get.mediaQuery.size.width-35,
-                          child: Text(
-                            "${balance!=null?balance:""}",
-                            style:
-                            TextStyle(color: Colors.black45, fontSize: 15),
+                          SizedBox(
+                            height: 5,
                           ),
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Container(
-                          width: Get.mediaQuery.size.width-35,
-                          height: 1,
-                          color: Colors.black12,
-                        )
-                      ],
+                          Container(
+                            width: Get.mediaQuery.size.width-45,
+                            child: Text(
+                              "${totalOut!=null?totalOut:""}",
+                              style:
+                                  TextStyle(color: Colors.black45, fontSize: 15),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Container(
+                            width: Get.mediaQuery.size.width-45,
+                            height: 1,
+                            color: Colors.black12,
+                          )
+                        ],
+                      ),
                     ),
-                  ),
 
-                ],
+                  ],
+                ),
               ),
-            ),
-          ],
+              Container(
+                margin: EdgeInsets.only(top: 20),
+                child: Row(
+                  children: <Widget>[
+
+                    Container(
+                      margin: EdgeInsets.only(left: 5),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Container(
+                            child: Text(
+                              "Saldo",
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 15,
+                                  fontFamily: "SFReguler"),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Container(
+                            width: Get.mediaQuery.size.width-45,
+                            child: Text(
+                              "${balance!=null?balance:""}",
+                              style:
+                              TextStyle(color: Colors.black45, fontSize: 15),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Container(
+                            width: Get.mediaQuery.size.width-45,
+                            height: 1,
+                            color: Colors.black12,
+                          )
+                        ],
+                      ),
+                    ),
+
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -729,104 +739,108 @@ class _DetailProjectsState extends State<DetailProjects> {
 
   //merbers
   Widget _members() {
-    return Container(
-      margin: EdgeInsets.only(top: 10),
-      color: Colors.white,
-
-      width: double.infinity,
-      height: Get.mediaQuery.size.height * 0.35,
+    return Card(
       child: Container(
-        margin: EdgeInsets.all(10),
-        child: ListView.builder(
-          itemCount: members.length,
-            itemBuilder: (contex,index){
-          return Container(
-              margin: EdgeInsets.only(top: 20),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Container(
-                    child: employee_profile,
-                    width: 60,
-                    height: 60,
-                  ),
-                  Container(
-                      child:Container(
-                        margin: EdgeInsets.only(left: 20),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Container(
-                              child: Text(
-                                "${members[index]['first_name']}",
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 15,
-                                    fontFamily: "SFReguler"),
+        margin: EdgeInsets.only(top: 10),
+        color: Colors.white,
+
+        width: double.infinity,
+        height: Get.mediaQuery.size.height * 0.35,
+        child: Container(
+          margin: EdgeInsets.all(10),
+          child: ListView.builder(
+            itemCount: members.length,
+              itemBuilder: (contex,index){
+            return Container(
+                margin: EdgeInsets.only(top: 20),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Container(
+                      child: employee_profile,
+                      width: 60,
+                      height: 60,
+                    ),
+                    Container(
+                        child:Container(
+                          margin: EdgeInsets.only(left: 20),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Container(
+                                child: Text(
+                                  "${members[index]['first_name']}",
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 15,
+                                      fontFamily: "SFReguler"),
+                                ),
                               ),
-                            ),
-                            SizedBox(
-                              height: 5,
-                            ),
-                            Container(
-                              child: Text(
-                                "${members[index]['status']=="members"?"Anggota":"PIC"}",
-                                style:
-                                TextStyle(color: Colors.black45, fontSize: 15),
+                              SizedBox(
+                                height: 5,
                               ),
-                            ),
-                          ],
-                        ),
-                      )
+                              Container(
+                                child: Text(
+                                  "${members[index]['status']=="members"?"Anggota":"PIC"}",
+                                  style:
+                                  TextStyle(color: Colors.black45, fontSize: 15),
+                                ),
+                              ),
+                            ],
+                          ),
+                        )
 
-                  )
+                    )
 
 
-                ],
+                  ],
 
 
-              )
-          );
+                )
+            );
 
-        }),
+          }),
 
-    )
+      )
+      ),
     );
   }
 
   //presentasi task
   Widget _percentageTask() {
-    return Container(
-      margin: EdgeInsets.only(top: 10),
-      color: Colors.white,
-
-      width: double.infinity,
+    return Card(
       child: Container(
-        margin: EdgeInsets.all(10),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Container(
-            //   child: Text(
-            //     "Persentasi Tugas",
-            //     style: TextStyle(
-            //         fontWeight: FontWeight.bold,
-            //         fontFamily: "SFReguler",
-            //         fontSize: 18),
-            //   ),
-            // ),
-            Container(
-              margin: EdgeInsets.only(top: 20,left: 10),
-              child: CircularPercentIndicator(
-                radius: 100.0,
-                lineWidth: 8.0,
-                percent: percentage!=null?percentage:0,
-                center: new Text("${((percentage!=null?percentage:0) * 100).toStringAsFixed(2)}%",style: TextStyle(color: Colors.black,fontFamily: "SFReguler",fontWeight: FontWeight.bold,fontSize: 20),),
-                progressColor: baseColor,
-              ),
-            )
+        margin: EdgeInsets.only(top: 10),
+        color: Colors.white,
 
-          ],
+        width: double.infinity,
+        child: Container(
+          margin: EdgeInsets.all(10),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Container(
+              //   child: Text(
+              //     "Persentasi Tugas",
+              //     style: TextStyle(
+              //         fontWeight: FontWeight.bold,
+              //         fontFamily: "SFReguler",
+              //         fontSize: 18),
+              //   ),
+              // ),
+              Container(
+                margin: EdgeInsets.only(top: 20,left: 10),
+                child: CircularPercentIndicator(
+                  radius: 100.0,
+                  lineWidth: 8.0,
+                  percent: percentage!=null?percentage:0,
+                  center: new Text("${((percentage!=null?percentage:0) * 100).toStringAsFixed(2)}%",style: TextStyle(color: Colors.black,fontFamily: "SFReguler",fontWeight: FontWeight.bold,fontSize: 20),),
+                  progressColor: baseColor,
+                ),
+              )
+
+            ],
+          ),
         ),
       ),
     );
@@ -868,24 +882,29 @@ class _DetailProjectsState extends State<DetailProjects> {
       height: Get.mediaQuery.size.height/2,
       child: Stack(
         children: [
-          GoogleMap(
-              initialCameraPosition: CameraPosition(
-                  target: LatLng(double.parse(latitude),
-                      double.parse(longitude)),
-                  zoom: 11.0),
-              markers: Set<Marker>.of(<Marker>[
-                Marker(
-                  markerId: MarkerId("1"),
-                  position: LatLng(double.parse(latitude),
-                      double.parse(longitude)),
-                ),
-              ]),
-              gestureRecognizers:
-              <Factory<OneSequenceGestureRecognizer>>[
-                Factory<OneSequenceGestureRecognizer>(
-                      () => ScaleGestureRecognizer(),
-                ),
-              ].toSet()),
+          Card(
+            child: Container(
+              margin: EdgeInsets.all(10),
+              child: GoogleMap(
+                  initialCameraPosition: CameraPosition(
+                      target: LatLng(double.parse(latitude),
+                          double.parse(longitude)),
+                      zoom: 11.0),
+                  markers: Set<Marker>.of(<Marker>[
+                    Marker(
+                      markerId: MarkerId("1"),
+                      position: LatLng(double.parse(latitude),
+                          double.parse(longitude)),
+                    ),
+                  ]),
+                  gestureRecognizers:
+                  <Factory<OneSequenceGestureRecognizer>>[
+                    Factory<OneSequenceGestureRecognizer>(
+                          () => ScaleGestureRecognizer(),
+                    ),
+                  ].toSet()),
+            ),
+          ),
           Container(
             width: 300,
             height: 200,
@@ -901,6 +920,13 @@ class _DetailProjectsState extends State<DetailProjects> {
   //   return
   //
   // }
+
+  void _updateTask() async {
+    var result=await Get.to(Tabstasks(id: widget.id,));
+    if  (result=='update'){
+      dataProject();
+    }
+  }
 
   void _getAddressFromLatLng(var latitude,longgitude) async {
     try {
