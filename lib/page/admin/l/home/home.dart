@@ -10,15 +10,15 @@ import 'package:get/get.dart';
 import 'package:hrdmagenta/model/notifacations.dart';
 import 'package:hrdmagenta/page/admin/l/absence/DetailAbsenceNotifAdmin.dart';
 import 'package:hrdmagenta/page/admin/l/absence/tabmenu_absence.dart';
-import 'package:hrdmagenta/page/admin/l/employees/DetailEmployee.dart';
+
+
 import 'package:hrdmagenta/page/admin/l/employees/list.dart';
-import 'package:hrdmagenta/page/admin/l/features/all.dart';
 import 'package:hrdmagenta/page/admin/l/leave/tabmenu_offwork.dart';
 import 'package:hrdmagenta/page/admin/l/permission/tabmenu.dart';
 import 'package:hrdmagenta/page/admin/l/project/tabmenu_project.dart';
 import 'package:hrdmagenta/page/admin/l/sick/tabmenu.dart';
 import 'package:hrdmagenta/page/employee/Account/profile.dart';
-import 'package:hrdmagenta/page/employee/absence/tabmenu_absence.dart';
+import 'package:hrdmagenta/page/employee/absence/absence.dart';
 import 'package:hrdmagenta/page/employee/checkin/checkin.dart';
 import 'package:hrdmagenta/page/employee/checkout/checkout.dart';
 import 'package:hrdmagenta/page/employee/leave/LeaveList.dart';
@@ -30,6 +30,7 @@ import 'package:hrdmagenta/services/api_clien.dart';
 import 'package:hrdmagenta/utalities/color.dart';
 import 'package:hrdmagenta/utalities/constants.dart';
 import 'package:hrdmagenta/utalities/font.dart';
+import 'package:intl/intl.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -155,9 +156,32 @@ class _HomeAdminState extends State<HomeAdmin> {
                             ),
                             Container(
                               margin: EdgeInsets.only(left: 10, top: 5),
-                              child: Text("Event",
-                                  textAlign: TextAlign.left,
-                                  style: titleMainMenu),
+                              child: Row(
+                                children: [
+                                  Container(
+                                    child: Text("Projects",
+                                        textAlign: TextAlign.left,
+                                        style: titleMainMenu),
+                                  ),
+                                  Container(
+                                    width: Get.mediaQuery.size.width - 90,
+                                    child: InkWell(
+                                      onTap: () {
+                                        Get.to(TabsprojectAdmin());
+                                      },
+                                      child: Container(
+                                        child: Text("Lihat Semua",
+                                            textAlign: TextAlign.right,
+                                            style:
+                                            TextStyle(color: Colors.black45)),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            SizedBox(
+                              height: 10,
                             ),
                             _buildproject(),
                           ],
@@ -612,7 +636,7 @@ class _HomeAdminState extends State<HomeAdmin> {
             isScrollControlled: true,
             builder: (context) {
               return FractionallySizedBox(
-                heightFactor: 0.8,
+                heightFactor: 0.4,
                 child: _draggableScroll(),
 
               );
@@ -627,7 +651,7 @@ class _HomeAdminState extends State<HomeAdmin> {
         ),
       ),
       Text(
-        "  Semua Fitur  ",
+        "Fitur Lainnya",
         style: subtitleMainMenu,
       )
     ]);
@@ -709,7 +733,8 @@ class _HomeAdminState extends State<HomeAdmin> {
                             _buildMenucheckin(),
                             _buildMenucheckout(),
                             _buildMenuaabsence(),
-                            _buildMenuannouncement(),
+                            _buildMenupayslip()
+                            // _buildMenuannouncement(),
 
                           ],
                         ),
@@ -1018,127 +1043,153 @@ class _HomeAdminState extends State<HomeAdmin> {
   }
 
   Widget _buildProgress(index) {
+    var venue ="";
+    if (_projects['data'][index]['quotations'].length>0){
+      venue = _projects['data'][index]['quotations'][0]['venue_event'];
+
+    }
+    var status = _projects['data'][index]['status'];
+    var balance = NumberFormat.currency(decimalDigits: 0, locale: "id")
+        .format(_projects['data'][index]['budget']['balance']);
+    var completed_task = _projects['data'][index]['task']
+        .where((prod) => prod["status"] == "completed")
+        .toList();
+    var percentage =
+        (completed_task.length) / (_projects['data'][index]['task'].length);
+    var task = _projects['data'][index]['task'];
+
     return InkWell(
-      onTap: (){
-        Get.to(DetailProjects(id: '${_projects['data'][index]['id']}',));
+      onTap: () {
+        Get.to(DetailProjects(
+          id: '${_projects['data'][index]['id'].toString()}',
+        ));
       },
       child: Container(
         width: MediaQuery.of(context).size.width,
+        height: 100,
         child: Card(
           child: Container(
             margin: EdgeInsets.only(left: 10, right: 10),
-            child: Row(
-              children: [
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
                 Container(
-                  width: MediaQuery.of(context).size.width * 0.65,
-                  child: Column(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      SizedBox(
-                        height: 5,
+                      Container(
+                        width: MediaQuery.of(context).size.width - 100,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              child: Text(
+                                  "${_projects['data'][index]['project_number']}",
+                                  style: subtitleMainMenu),
+                            ),
+                            Container(
+                              child: Text("$venue",
+                                  style: TextStyle(
+                                      color: Colors.black38,
+                                      fontFamily: "SFReguler",
+                                      fontSize: 14)),
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Container(
+                              child: Text("$balance",
+                                  style: TextStyle(
+                                      color: Colors.black38,
+                                      fontFamily: "SFReguler",
+                                      fontSize: 14)),
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                          ],
+                        ),
                       ),
-                      Text("${_projects['data'][index]['title']}",
-                          style: subtitleMainMenu),
                       SizedBox(
                         height: 10,
                       ),
                       Container(
-                        child: Text(
-                            "${_projects['data'][index]['city']['name']}, ${_projects['data'][index]['city']['province']['name']}",
-                            style: TextStyle(
-                                color: Colors.black38,
-                                fontFamily: "SFReguler",
-                                fontSize: 14)),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Expanded(
-                        child: _isLoading_employee
-                            ? Center(
-                                child: CircularProgressIndicator(),
-                              )
-                            : Center(
-                                child: Container(
-                                  margin: EdgeInsets.only(top: 1),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    children: [
-                                      Expanded(
-                                        child: ListView.builder(
-                                            itemCount: _projects['data'][index]
-                                                    ['members']
-                                                .length,
-                                            scrollDirection: Axis.horizontal,
-                                            itemBuilder: (context, index_member) {
-                                              return _buildteam(
-                                                  index_member, index);
-                                            }),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                        //   child: _buildNoproject(),
-                      ),
+                        width: 70,
+                        child: Container(
+                          child: Container(
+                              alignment: Alignment.center,
+                              margin: EdgeInsets.only(top: 3, bottom: 3),
+                              child: Text(
+                                "${status == "approved" ? "In Progress" : status == "closed" ? "completed" : ""}",
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 10),
+                              )),
+                          decoration: BoxDecoration(
+                            color: status == "approved"
+                                ? Colors.green
+                                : status == "closed"
+                                ? Colors.lightBlue
+                                : Colors.white,
+                            borderRadius: new BorderRadius.only(
+                              topLeft: const Radius.circular(10.0),
+                              topRight: const Radius.circular(10.0),
+                              bottomLeft: const Radius.circular(10.0),
+                              bottomRight: const Radius.circular(10.0),
+                            ),
+                          ),
+                        ),
+                      )
                     ],
                   ),
                 ),
-                Expanded(
-                  child: Container(
-                      width: MediaQuery.of(context).size.width * 0.35 - 25,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          Container(
-                            child: Container(
-                                alignment: Alignment.center,
-                                margin: EdgeInsets.only(top: 3, bottom: 3),
-                                child: Text(
-                                  "in progress",
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 10),
-                                )),
-                            decoration: BoxDecoration(
-                              color: Colors.green,
-                              borderRadius: new BorderRadius.only(
-                                topLeft: const Radius.circular(10.0),
-                                topRight: const Radius.circular(10.0),
-                                bottomLeft: const Radius.circular(10.0),
-                                bottomRight: const Radius.circular(10.0),
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Container(
-                              margin: EdgeInsets.only(bottom: 10),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  new CircularPercentIndicator(
-                                    radius: 110.0,
-                                    lineWidth: 10.0,
-                                    animation: true,
-                                    percent: _projects['data'][index]
-                                            ['progress'] /
-                                        100,
-                                    center: new Text(
-                                      "${_projects['data'][index]['progress']}%",
-                                      style: new TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 17.0),
-                                    ),
-                                    circularStrokeCap: CircularStrokeCap.round,
-                                    progressColor: baseColor,
+                Container(
+                  width: MediaQuery.of(context).size.width,
+                  child: Row(
+                    children: <Widget>[
+                      Container(
+                        width: Get.mediaQuery.size.width / 2,
+                        height: 100,
+                        child: ListView.builder(
+                          itemBuilder: (context, index_member) {
+                            return _buildteam(index_member, index);
+                          },
+                          scrollDirection: Axis.horizontal,
+                          itemCount: _projects['data'][index]['members'] == null
+                              ? 0
+                              : _projects['data'][index]['members'].length,
+                        ),
+                      ),
+                      Container(
+                        width: Get.mediaQuery.size.width / 2 - 30,
+                        child: Align(
+                          alignment: Alignment.topRight,
+                          child: Container(
+                            margin: EdgeInsets.only(bottom: 10),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                new CircularPercentIndicator(
+                                  radius: 100.0,
+                                  lineWidth: 10.0,
+                                  animation: true,
+                                  percent: task.length > 0 ? percentage : 0.00,
+                                  center: new Text(
+                                    "${task.length > 0.0 ? (percentage * 100).toStringAsFixed(2) : 0.00} %",
+                                    style: new TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 17.0),
                                   ),
-                                ],
-                              ),
+                                  circularStrokeCap: CircularStrokeCap.round,
+                                  progressColor: baseColor,
+                                ),
+                              ],
                             ),
                           ),
-                        ],
-                      )),
+                        ),
+                      )
+                    ],
+                  ),
                 )
               ],
             ),
@@ -1158,7 +1209,7 @@ class _HomeAdminState extends State<HomeAdmin> {
         child: InkWell(
           onTap: () {
             Navigator.push(context,
-                MaterialPageRoute(builder: (context) => TabsMenuAbsence()));
+                MaterialPageRoute(builder: (context) => absence()));
           },
           child: Card(
             elevation: 1,
@@ -1192,26 +1243,26 @@ class _HomeAdminState extends State<HomeAdmin> {
   }
 
   //ge data from api--------------------------------
+  //data from api
   Future dataProject() async {
     try {
       setState(() {
-        _dataEmployee();
-        _datasick();
-        _datapermission();
-        _dataLeave();
-        _dataAbsence();
         _isLoading_project = true;
       });
-      http.Response response =
-          await http.get("$base_url/api/events?status=approved");
+
+      http.Response response = await http
+          .get("${baset_url_event}/api/projects/approved/employees/15?page=1&record=5");
       _projects = jsonDecode(response.body);
+      print("${_projects}");
+      print(baset_url_event);
 
       setState(() {
         _isLoading_project = false;
       });
-    } catch (e) {}
+    } catch (e) {
+      print(e);
+    }
   }
-
   //ge data from api--------------------------------
   Future _dataAbsence() async {
     try {
@@ -1350,8 +1401,8 @@ class _HomeAdminState extends State<HomeAdmin> {
             width: 50,
             height: 10,
           ),
-          subbmission_menu(),
-          approval_menu(),
+          // subbmission_menu(),
+          // approval_menu(),
 
          // attendances_menu(),
           other_menu()
@@ -1362,9 +1413,9 @@ class _HomeAdminState extends State<HomeAdmin> {
 
   Widget _draggableScroll(){
     return DraggableScrollableSheet(
-      initialChildSize: 0.6,
+      initialChildSize: 0.8,
       maxChildSize: 1,
-      minChildSize: 0.3,
+      minChildSize: 0.4 ,
       builder:
           (BuildContext context, ScrollController scrollController) {
         return Container(

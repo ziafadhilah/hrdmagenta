@@ -454,9 +454,9 @@ class _absence_statusState extends State<absence_status> {
       setState(() {
         _loading = true;
       });
-      http.Response response = await http.get(
-          "$base_url/api/employees/$user_id/attendances?status=${widget.type}");
+      http.Response response =  await http.get("${base_url}/api/attendances?status=${widget.type}");
       _absence = jsonDecode(response.body);
+      print(_absence);
       setState(() {
         _loading = false;
       });

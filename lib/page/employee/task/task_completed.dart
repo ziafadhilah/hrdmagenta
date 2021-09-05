@@ -61,7 +61,6 @@ class _task_complatedState extends State<task_complated> {
 
   @override
   Widget build(BuildContext context) {
-
     return new Scaffold(
       body: new Container(
         color: Colors.white,
@@ -71,12 +70,9 @@ class _task_complatedState extends State<task_complated> {
           child: _loading
               ? Center(child: CircularProgressIndicator())
               : ListView.builder(
-                  itemCount:
-                      _task['data'].length,
+                  itemCount: _task['data'].length,
                   itemBuilder: (context, index) {
-                    return widget.status ==
-                            _task['data'][index]
-                                ['status']
+                    return widget.status == _task['data'][index]['status']
                         ? _listtask_inprogress(index)
                         : Text("");
 
@@ -91,7 +87,7 @@ class _task_complatedState extends State<task_complated> {
     return Container(
       child: Card(
         child: Container(
-          margin: EdgeInsets.only(left: 10, right: 10,top: 5),
+          margin: EdgeInsets.only(left: 10, right: 10, top: 5),
           child: Column(
             children: <Widget>[
               Container(
@@ -133,7 +129,7 @@ class _task_complatedState extends State<task_complated> {
     return Container(
       child: Card(
         child: Container(
-          margin: EdgeInsets.only(left: 10, right: 10,top: 5),
+          margin: EdgeInsets.only(left: 10, right: 10, top: 5),
           child: Column(
             children: <Widget>[
               Container(
@@ -177,8 +173,8 @@ class _task_complatedState extends State<task_complated> {
       setState(() {
         _loading = true;
       });
-      http.Response response = await http
-          .get("$baset_url_event/api/projects/${widget.id}/tasks");
+      http.Response response =
+          await http.get("$baset_url_event/api/projects/${widget.id}/tasks");
       _task = jsonDecode(response.body);
 
       setState(() {

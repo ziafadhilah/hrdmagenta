@@ -420,10 +420,13 @@ class _EditPermissionPageEmployeeState extends State<EditPermissionPageEmployee>
       http.Response response=await http.get("$base_url/api/permission-categories");
       var data=jsonDecode(response.body);
       setState(() {
+
+        print(data['data']);
         typeList = data['data'];
+        print(widget.permission_cetegory_id);
         _type=widget.permission_cetegory_id.toString();
        // position=int.parse(widget.permission_cetegory_id);
-        position=widget.permission_cetegory_id-1;
+        position=int.parse(widget.permission_cetegory_id)-1;
       });
       
       setState(() {

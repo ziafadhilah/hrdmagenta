@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hrdmagenta/services/api_clien.dart';
 import 'package:hrdmagenta/shared_preferenced/sessionmanage.dart';
+import 'package:hrdmagenta/utalities/constants.dart';
+import 'package:hrdmagenta/utalities/font.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -36,7 +38,7 @@ class _ListLoanEmployeePageState extends State<ListLoanEmployeePage> {
           child: _isLoading==true?Container(height:
           Get.mediaQuery.size.height, child: Center(child:
           CircularProgressIndicator(),)):Container(
-            child: Column(
+            child: _loans['data']['loans'].length>0? Column(
 
               children: <Widget>[
                 Container(
@@ -46,7 +48,7 @@ class _ListLoanEmployeePageState extends State<ListLoanEmployeePage> {
                   child: Card(
                     elevation: 1,
                     child: Container(
-                      child: Column(
+                      child:  Column(
                         crossAxisAlignment: CrossAxisAlignment.start ,
                         children: <Widget>[
                           Container(
@@ -94,14 +96,34 @@ class _ListLoanEmployeePageState extends State<ListLoanEmployeePage> {
                         child: ListView.builder(itemBuilder:(context,index){
                           return loansDetail(index);
                         },
-                          itemCount: _loans['data']['loans'].length<=0?1:_loans['data']['loans'].length,
+                          itemCount: _loans['data']['loans'].length<0?0:_loans['data']['loans'].length,
                         ),
                       ),
                     ],
                   ),
                 )
               ],
-            ),
+            ):Container(
+              height: MediaQuery.of(context).size.height - 150,
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Container(
+                      child: no_data_project,
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Container(
+                        child: Text(
+                          "Belum ada kasbon",
+                          style: subtitleMainMenu,
+                        )),
+                  ],
+                ),
+              ),
+            )
 
           ),
         ),
@@ -178,7 +200,9 @@ class _ListLoanEmployeePageState extends State<ListLoanEmployeePage> {
 
         http.Response response =
         await http.get("$base_url/api/employees/${user_id}/loans");
+
         _loans = jsonDecode(response.body);
+        print(_loans['data']['loans'].length);
         loan_total=NumberFormat.currency(decimalDigits: 0,  locale: "id").format(_loans['data']['total_loans']);
         laon_remaining=NumberFormat.currency(decimalDigits: 0,  locale: "id").format(_loans['data']['remaining_loans']);
         loan_payment=NumberFormat.currency(decimalDigits: 0,  locale: "id").format(_loans['data']['total_payments']);

@@ -12,6 +12,7 @@ import 'package:get/get.dart';
 import 'package:hrdmagenta/model/notifacations.dart';
 import 'package:hrdmagenta/page/admin/l/announcement/DetailAnnouncement.dart';
 import 'package:hrdmagenta/page/employee/absence/DetailAbsenceNotifEmplyee.dart';
+import 'package:hrdmagenta/page/employee/absence/absence.dart';
 import 'package:hrdmagenta/page/employee/absence/tabmenu_absence.dart';
 import 'package:hrdmagenta/page/employee/checkin/checkin.dart';
 import 'package:hrdmagenta/page/employee/checkout/checkout.dart';
@@ -37,7 +38,6 @@ class HomeEmployee extends StatefulWidget {
 
 enum statusLogin { signIn, notSignIn }
 
-
 class _HomeEmployeeState extends State<HomeEmployee> {
   final GlobalKey<ScaffoldState> scaffoldState = new GlobalKey<ScaffoldState>();
 
@@ -47,7 +47,7 @@ class _HomeEmployeeState extends State<HomeEmployee> {
   final List<Notif> ListNotif = [];
   Map _projects;
   bool _loading = true;
-  var user_id,address;
+  var user_id, address;
 
   //-----main menu-----
   Widget _buildMenucheckin() {
@@ -73,8 +73,6 @@ class _HomeEmployeeState extends State<HomeEmployee> {
     ]);
   }
 
-
-
   Widget _buildMenucheckout() {
     return Column(children: <Widget>[
       new Container(
@@ -98,8 +96,6 @@ class _HomeEmployeeState extends State<HomeEmployee> {
     ]);
   }
 
-
-
   Widget _buildMenuaabsence() {
     return Column(children: <Widget>[
       new Container(
@@ -107,8 +103,8 @@ class _HomeEmployeeState extends State<HomeEmployee> {
         height: 70,
         child: InkWell(
           onTap: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => TabsMenuAbsence()));
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => absence()));
           },
           child: Card(
             elevation: 1,
@@ -125,8 +121,6 @@ class _HomeEmployeeState extends State<HomeEmployee> {
       )
     ]);
   }
-
-
 
   Widget _buildMenuproject() {
     return Column(children: <Widget>[
@@ -184,7 +178,9 @@ class _HomeEmployeeState extends State<HomeEmployee> {
         child: InkWell(
           onTap: () {
             // Navigator.pushNamed(context, "leave_list_employee-page");
-            Get.to(LeaveListEmployee(status: "approved",));
+            Get.to(LeaveListEmployee(
+              status: "approved",
+            ));
           },
           child: Card(
             elevation: 1,
@@ -198,6 +194,7 @@ class _HomeEmployeeState extends State<HomeEmployee> {
       Text("Cuti", style: subtitleMainMenu)
     ]);
   }
+
   Widget _buildMenusick() {
     return Column(children: <Widget>[
       new Container(
@@ -206,7 +203,9 @@ class _HomeEmployeeState extends State<HomeEmployee> {
         child: InkWell(
           onTap: () {
             // Navigator.pushNamed(context, "leave_list_employee-page");
-            Get.to(ListSickPageEmployee(status: "approved",));
+            Get.to(ListSickPageEmployee(
+              status: "approved",
+            ));
           },
           child: Card(
             elevation: 1,
@@ -220,6 +219,7 @@ class _HomeEmployeeState extends State<HomeEmployee> {
       Text("Sakit", style: subtitleMainMenu)
     ]);
   }
+
   Widget _buildMenupermission() {
     return Column(children: <Widget>[
       new Container(
@@ -228,8 +228,10 @@ class _HomeEmployeeState extends State<HomeEmployee> {
         child: InkWell(
           onTap: () {
             // Navigator.pushNamed(context, "leave_list_employee-page");
-           // Get.to(LeaveListEmployee(status: "approved",));
-            Get.to(ListPermissionPageEmployee(status: "approved",));
+            // Get.to(LeaveListEmployee(status: "approved",));
+            Get.to(ListPermissionPageEmployee(
+              status: "approved",
+            ));
           },
           child: Card(
             elevation: 1,
@@ -252,7 +254,7 @@ class _HomeEmployeeState extends State<HomeEmployee> {
         child: InkWell(
           onTap: () {
             //Navigator.pushNamed(context, "pyslip_list_employee-page");
-            Services services=new Services();
+            Services services = new Services();
             services.payslipPermission(context, user_id);
           },
           child: Card(
@@ -290,8 +292,6 @@ class _HomeEmployeeState extends State<HomeEmployee> {
                             _buildMenucheckout(),
                             _buildMenuaabsence(),
                             _buildMenuloan()
-
-
                           ],
                         ),
                         Container(
@@ -315,9 +315,8 @@ class _HomeEmployeeState extends State<HomeEmployee> {
       ],
     );
   }
+
   //----end main menu---
-
-
 
   //-----projects-----
   Widget _buildproject() {
@@ -374,22 +373,29 @@ class _HomeEmployeeState extends State<HomeEmployee> {
         ],
       ),
     );
-    
   }
 
-
-  
   Widget _buildProgress(index) {
-    _getAddressFromLatLng(double.parse("${_projects['data'][index]['latitude']}"),
-        double.parse("${_projects['data'][index]['longtitude']}"));
-    var completed_task= _projects['data'][index]['task'].where((prod) => prod["status"] == "completed").toList();
-    var percentage=(completed_task.length)/(_projects['data'][index]['task'].length);
-    var status=_projects['data'][index]['status'];
-    var balance= NumberFormat.currency(decimalDigits: 0,  locale: "id").format(_projects['data'][index]['budget']['balance']);
+    var venue ="";
+    if (_projects['data'][index]['quotations'].length>0){
+     venue = _projects['data'][index]['quotations'][0]['venue_event'];
+
+    }
+    var status = _projects['data'][index]['status'];
+    var balance = NumberFormat.currency(decimalDigits: 0, locale: "id")
+        .format(_projects['data'][index]['budget']['balance']);
+    var completed_task = _projects['data'][index]['task']
+        .where((prod) => prod["status"] == "completed")
+        .toList();
+    var percentage =
+        (completed_task.length) / (_projects['data'][index]['task'].length);
+    var task = _projects['data'][index]['task'];
 
     return InkWell(
-      onTap: (){
-        Get.to(DetailProjects(id: '${_projects['data'][index]['id'].toString()}',));
+      onTap: () {
+        Get.to(DetailProjects(
+          id: '${_projects['data'][index]['id'].toString()}',
+        ));
       },
       child: Container(
         width: MediaQuery.of(context).size.width,
@@ -401,73 +407,72 @@ class _HomeEmployeeState extends State<HomeEmployee> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Container(
-
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                                Container(
-                                  width:MediaQuery.of(context).size.width -100,
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Container(
-                                        child: Text("${_projects['data'][index]['project_number']}",
-                                            style: subtitleMainMenu),
-                                      ),
-                                                Container(
-                                                  child: Text(
-                                                      "$address",
-                                                      style: TextStyle(
-                                                          color: Colors.black38,
-                                                          fontFamily: "SFReguler",
-                                                          fontSize: 14)),
-                                                ),
-                                                SizedBox(
-                                                  height: 10,
-                                                ),
-
-                                      Container(
-                                        child: Text(
-                                            "$balance",
-                                            style: TextStyle(
-                                                color: Colors.black38,
-                                                fontFamily: "SFReguler",
-                                                fontSize: 14)),
-                                      ),
-                                      SizedBox(
-                                        height: 10,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 10,
-                                ),
+                      Container(
+                        width: MediaQuery.of(context).size.width - 100,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              child: Text(
+                                  "${_projects['data'][index]['project_number']}",
+                                  style: subtitleMainMenu),
+                            ),
+                            Container(
+                              child: Text("$venue",
+                                  style: TextStyle(
+                                      color: Colors.black38,
+                                      fontFamily: "SFReguler",
+                                      fontSize: 14)),
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Container(
+                              child: Text("$balance",
+                                  style: TextStyle(
+                                      color: Colors.black38,
+                                      fontFamily: "SFReguler",
+                                      fontSize: 14)),
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
                       Container(
                         width: 70,
-                                      child:Container(
-                                        child: Container(
-                                            alignment: Alignment.center,
-                                            margin: EdgeInsets.only(top: 3, bottom: 3),
-                                            child: Text(
-                                              "${status=="approved"?"In Progress":status=="closed"?"completed":""}",
-                                              style: TextStyle(
-                                                  color: Colors.white, fontSize: 10),
-                                            )),
-                                        decoration: BoxDecoration(
-                                          color: status=="approved"?Colors.green:status=="closed"?Colors.lightBlue:Colors.white,
-                                          borderRadius: new BorderRadius.only(
-                                            topLeft: const Radius.circular(10.0),
-                                            topRight: const Radius.circular(10.0),
-                                            bottomLeft: const Radius.circular(10.0),
-                                            bottomRight: const Radius.circular(10.0),
-                                          ),
-                                        ),
-                                      ),
-                              )
-
-
+                        child: Container(
+                          child: Container(
+                              alignment: Alignment.center,
+                              margin: EdgeInsets.only(top: 3, bottom: 3),
+                              child: Text(
+                                "${status == "approved" ? "In Progress" : status == "closed" ? "completed" : ""}",
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 10),
+                              )),
+                          decoration: BoxDecoration(
+                            color: status == "approved"
+                                ? Colors.green
+                                : status == "closed"
+                                    ? Colors.lightBlue
+                                    : Colors.white,
+                            borderRadius: new BorderRadius.only(
+                              topLeft: const Radius.circular(10.0),
+                              topRight: const Radius.circular(10.0),
+                              bottomLeft: const Radius.circular(10.0),
+                              bottomRight: const Radius.circular(10.0),
+                            ),
+                          ),
+                        ),
+                      )
                     ],
                   ),
                 ),
@@ -476,43 +481,45 @@ class _HomeEmployeeState extends State<HomeEmployee> {
                   child: Row(
                     children: <Widget>[
                       Container(
-                        width: Get.mediaQuery.size.width/2,
+                        width: Get.mediaQuery.size.width / 2,
                         height: 100,
-                        child: ListView.builder(itemBuilder: (context,index_member){
-                          return _buildteam(index_member, index);
-                        },
+                        child: ListView.builder(
+                          itemBuilder: (context, index_member) {
+                            return _buildteam(index_member, index);
+                          },
                           scrollDirection: Axis.horizontal,
-                          itemCount: _projects['data'][index]['members']==null?0:_projects['data'][index]['members'].length,
+                          itemCount: _projects['data'][index]['members'] == null
+                              ? 0
+                              : _projects['data'][index]['members'].length,
                         ),
                       ),
                       Container(
-
-                        width: Get.mediaQuery.size.width/2-30,
-                                      child:Align(
-                                        alignment: Alignment.topRight,
-                                        child: Container(
-                                          margin: EdgeInsets.only(bottom: 10),
-                                          child: Column(
-                                            mainAxisAlignment: MainAxisAlignment.end,
-                                            children: [
-                                              new CircularPercentIndicator(
-                                                radius: 100.0,
-                                                lineWidth: 10.0,
-                                                animation: true,
-                                                percent: percentage,
-                                                center: new Text(
-                                                  "${(percentage * 100).toStringAsFixed(2)} %",
-                                                  style: new TextStyle(
-                                                      fontWeight: FontWeight.bold,
-                                                      fontSize: 17.0),
-                                                ),
-                                                circularStrokeCap: CircularStrokeCap.round,
-                                                progressColor: baseColor,
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
+                        width: Get.mediaQuery.size.width / 2 - 30,
+                        child: Align(
+                          alignment: Alignment.topRight,
+                          child: Container(
+                            margin: EdgeInsets.only(bottom: 10),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                new CircularPercentIndicator(
+                                  radius: 100.0,
+                                  lineWidth: 10.0,
+                                  animation: true,
+                                  percent: task.length > 0 ? percentage : 0.00,
+                                  center: new Text(
+                                    "${task.length > 0.0 ? (percentage * 100).toStringAsFixed(2) : 0.00} %",
+                                    style: new TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 17.0),
+                                  ),
+                                  circularStrokeCap: CircularStrokeCap.round,
+                                  progressColor: baseColor,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
                       )
                     ],
                   ),
@@ -543,9 +550,6 @@ class _HomeEmployeeState extends State<HomeEmployee> {
       ),
     );
   }
-
-
-
 
 //----end announcement-----
   Widget _buildInformation() {
@@ -637,6 +641,7 @@ class _HomeEmployeeState extends State<HomeEmployee> {
       ),
     );
   }
+
   //----end announcement
 
   Widget _buildNoAbbouncement() {
@@ -664,8 +669,6 @@ class _HomeEmployeeState extends State<HomeEmployee> {
     );
   }
 
-
-
   //data from api
   Future dataProject(user_id) async {
     try {
@@ -674,16 +677,18 @@ class _HomeEmployeeState extends State<HomeEmployee> {
       });
 
       http.Response response = await http
-          .get("$baset_url_event/api/projects/approved/employees/${user_id}");
+          .get("${baset_url_event}/api/projects/approved/employees/${user_id}?page=1&record=5");
       _projects = jsonDecode(response.body);
-      print('data project');
+      print("${_projects}");
+      print(baset_url_event);
 
       setState(() {
         _loading = false;
       });
-    } catch (e) {}
+    } catch (e) {
+      print(e);
+    }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -765,7 +770,6 @@ class _HomeEmployeeState extends State<HomeEmployee> {
                           ),
 
                           Container(
-
                             margin: EdgeInsets.only(left: 10, top: 5),
                             child: Row(
                               children: [
@@ -775,30 +779,27 @@ class _HomeEmployeeState extends State<HomeEmployee> {
                                       style: titleMainMenu),
                                 ),
                                 Container(
-
-
-                                  width: Get.mediaQuery.size.width-90,
-
+                                  width: Get.mediaQuery.size.width - 90,
                                   child: InkWell(
-                                    onTap: (){
+                                    onTap: () {
                                       Get.to(Tabsproject());
                                     },
                                     child: Container(
-
                                       child: Text("Lihat Semua",
-
                                           textAlign: TextAlign.right,
-                                          style:TextStyle(color: Colors.black45)),
+                                          style:
+                                              TextStyle(color: Colors.black45)),
                                     ),
                                   ),
                                 ),
                               ],
                             ),
                           ),
-                          SizedBox(height: 10,),
+                          SizedBox(
+                            height: 10,
+                          ),
 
                           _buildproject(),
-
 
                           SizedBox(
                             height: 15,
@@ -809,7 +810,7 @@ class _HomeEmployeeState extends State<HomeEmployee> {
                                 textAlign: TextAlign.left,
                                 style: titleMainMenu),
                           ),
-                         // _buildInformation(),
+                          // _buildInformation(),
                           _buildNoAbbouncement()
                         ],
                       ),
@@ -825,15 +826,15 @@ class _HomeEmployeeState extends State<HomeEmployee> {
     );
   }
 
-  void _getAddressFromLatLng(var latitude,longgitude) async {
+  void _getAddressFromLatLng(var latitude, longgitude) async {
     try {
-      List<Placemark> p = await geolocator.placemarkFromCoordinates(
-          latitude, longgitude);
+      List<Placemark> p =
+          await geolocator.placemarkFromCoordinates(latitude, longgitude);
 
       Placemark place = p[0];
 
       setState(() {
-        address =  "${place.locality}, ${place.postalCode}, ${place.country}";
+        address = "${place.locality}, ${place.postalCode}, ${place.country}";
       });
     } catch (e) {
       print(e);
@@ -870,9 +871,14 @@ class _HomeEmployeeState extends State<HomeEmployee> {
     });
   }
 
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+  }
+
   //inialisasi state
   void initState() {
-
     getDatapref();
 
     _firebaseMessaging.configure(

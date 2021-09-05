@@ -8,9 +8,9 @@ import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
 
 class task_inprogres extends StatefulWidget {
-  task_inprogres({this.tasks, this.status, this.id});
+  task_inprogres({this.tasks, this.status, this.id,this.statusMember});
 
-  var tasks, status, id;
+  var tasks, status, id,statusMember;
 
   @override
   _task_inprogresState createState() => new _task_inprogresState();
@@ -73,7 +73,7 @@ class _task_inprogresState extends State<task_inprogres> {
                       _task['data'].length,
                   itemBuilder: (context, index) {
                     final item = items[index];
-                    return new Dismissible(
+                    return  new   Dismissible(
                         key: new Key(item),
                         onDismissed: (direction) {
                           services

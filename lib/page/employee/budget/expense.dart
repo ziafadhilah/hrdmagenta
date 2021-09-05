@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:hrdmagenta/page/employee/budget/imagefile.dart';
 import 'package:hrdmagenta/services/api_clien.dart';
 import 'package:hrdmagenta/utalities/color.dart';
 import 'package:hrdmagenta/utalities/constants.dart';
@@ -9,16 +11,13 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'package:http/http.dart'  as http;
-
+import 'package:http/http.dart' as http;
 
 class expandbudget extends StatefulWidget {
-  expandbudget({
-    this.event_id,
-    this.project_number
+  expandbudget({this.event_id, this.project_number});
 
-});
-  var event_id,project_number;
+  var event_id, project_number;
+
   @override
   _expandBudgettState createState() => new _expandBudgettState();
 }
@@ -27,128 +26,20 @@ class _expandBudgettState extends State<expandbudget> {
   final _scaffoldKey = new GlobalKey<ScaffoldState>();
   File imageFile;
   VoidCallback _showPersBottomSheetCallBack;
-  static const _locale='id';
-  var Cnote=new TextEditingController();
-  var Cammount=new TextEditingController();
-  var Cfile=new TextEditingController();
-  var ControllerDate=new TextEditingController();
-  String _formatNumber(String s) => NumberFormat.decimalPattern(_locale).format(int.parse(s));
+  static const _locale = 'id';
+  var Cnote = new TextEditingController();
+  var Cammount = new TextEditingController();
+  var Cfile = new TextEditingController();
+  var ControllerDate = new TextEditingController();
+
+  String _formatNumber(String s) =>
+      NumberFormat.decimalPattern(_locale).format(int.parse(s));
   DateTime date = DateTime.now();
-  Validasi validator=Validasi();
-  bool _loading=false;
+  Validasi validator = Validasi();
+  bool _loading = false;
   List typeList;
-  String _type;
-  var user_id,project_number,datePicker;
-
-  //------------bottom sheet--------
-  void _modalSheetphotos() {
-    showModalBottomSheet(
-        context: context,
-        builder: (builder) {
-          return new Card(
-            elevation: 1,
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  Container(
-                    margin: EdgeInsets.all(20),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        //project
-                        Text("Take Your Transation",
-                          style: TextStyle(fontFamily: "OpenSans",
-                              color: Colors.black,
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold
-
-                          ),
-                        ),
-                        new Divider(
-                          color: Colors.black38,
-                        ),
-                        Container(
-                          child: Center(
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                InkWell(
-                                  onTap:(){
-                                    _getFromCamera();
-                          },
-                                  child: Container(
-                                    child: Column(
-                                      children: [
-                                        Container(
-                                    child: CircleAvatar(
-                                    child: camera,
-                                      radius: 27,
-                                      backgroundColor: btnColor1,
-                                    ),
-
-
-
-                                        ),
-                                        Text("Camera",
-                                        style: TextStyle(
-                                          color: Colors.black38,
-
-                                        ),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                ),
-
-                                InkWell(
-                                  onTap: (){
-                                    _getFromGallery();
-                                  },
-                                  child: Container(
-                                    margin: EdgeInsets.only(left: 40),
-                                    child: Column(
-                                      children: [
-
-                                        Container(
-
-                                          child: CircleAvatar(
-                                            child: gallery,
-                                            radius: 27,
-                                            backgroundColor: btnColor1,
-                                          ),
-
-                                        ),
-                                        Text("Gelery",
-                                          style: TextStyle(
-                                            color: Colors.black38,
-
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-
-
-          );
-        });
-  }
-
-
-
-
+  String _type, base64;
+  var user_id, project_number, datePicker;
 
   Widget _buildamount() {
     return Column(
@@ -156,9 +47,7 @@ class _expandBudgettState extends State<expandbudget> {
       children: <Widget>[
         Text(
           'Amount',
-          style: TextStyle(
-              color: Colors.black87
-          ),
+          style: TextStyle(color: Colors.black87),
         ),
         SizedBox(height: 10.0),
         Container(
@@ -167,7 +56,7 @@ class _expandBudgettState extends State<expandbudget> {
             color: Colors.white,
           ),
           height: 60.0,
-          child:TextFormField(
+          child: TextFormField(
             controller: Cammount,
             onChanged: (string) {
               string = '${_formatNumber(string.replaceAll('.', ''))}';
@@ -176,7 +65,6 @@ class _expandBudgettState extends State<expandbudget> {
                 selection: TextSelection.collapsed(offset: string.length),
               );
             },
-
             cursorColor: Colors.black38,
             keyboardType: TextInputType.number,
             style: TextStyle(
@@ -184,13 +72,11 @@ class _expandBudgettState extends State<expandbudget> {
               fontFamily: 'OpenSans',
             ),
             decoration: InputDecoration(
-
               contentPadding: EdgeInsets.only(top: 14.0),
               prefixIcon: Icon(
                 Icons.monetization_on_outlined,
                 color: Colors.black,
               ),
-
             ),
           ),
         ),
@@ -204,9 +90,7 @@ class _expandBudgettState extends State<expandbudget> {
       children: <Widget>[
         Text(
           'Note',
-          style: TextStyle(
-              color: Colors.black87
-          ),
+          style: TextStyle(color: Colors.black87),
         ),
         SizedBox(height: 10.0),
         Container(
@@ -215,23 +99,19 @@ class _expandBudgettState extends State<expandbudget> {
             color: Colors.white,
           ),
           height: 60.0,
-          child:TextFormField(
+          child: TextFormField(
             controller: Cnote,
-
             cursorColor: Colors.black38,
-
             style: TextStyle(
               color: Colors.black,
               fontFamily: 'OpenSans',
             ),
             decoration: InputDecoration(
-
               contentPadding: EdgeInsets.only(top: 14.0),
               prefixIcon: Icon(
                 Icons.description,
                 color: Colors.black,
               ),
-
             ),
           ),
         ),
@@ -239,78 +119,20 @@ class _expandBudgettState extends State<expandbudget> {
     );
   }
 
-
-  Widget _buildtypeexpense() {
-    return Container(
-
-      width: double.infinity,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-
-        children: <Widget>[
-          Text(
-            'Akun Transfer',
-            style: TextStyle(
-                color: Colors.black87
-            ),
-          ),
-
-          Container(
-            width: double.infinity,
-            child: DropdownButtonHideUnderline(
-              child: ButtonTheme(
-                alignedDropdown: true,
-                child: DropdownButton<String>(
-                  value: _type,
-                  iconSize: 30,
-                  icon: (null),
-                  style: TextStyle(
-                    color: Colors.black54,
-                    fontSize: 16,
-                  ),
-                  hint: Text('Select Akun'),
-                  onChanged: (String newValue) {
-                    setState(() {
-                      _type = newValue;
-
-                      print(_type);
-                    });
-                  },
-                  items: typeList?.map((item) {
-                    return new DropdownMenuItem(
-                      child: new Text("${item['bank_name']} (${item['account_number']})"),
-                      value: item['id'].toString(),
-                    );
-                  })?.toList() ??
-                      [],
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-
-
   Widget _buildfile() {
     return Container(
       child: InkWell(
-        onTap: (){
+        onTap: () {
           //_getFromGallery();
           //_modalSheetphotos();
           _getFromCamera();
-
         },
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Text(
               'Upload File',
-              style: TextStyle(
-                  color: Colors.black87
-              ),
+              style: TextStyle(color: Colors.black87),
             ),
             SizedBox(height: 10.0),
             Container(
@@ -319,10 +141,9 @@ class _expandBudgettState extends State<expandbudget> {
                 color: Colors.white,
               ),
               height: 60.0,
-              child:TextFormField(
+              child: TextFormField(
                 controller: Cfile,
                 enabled: false,
-
                 cursorColor: Colors.black38,
                 keyboardType: TextInputType.name,
                 style: TextStyle(
@@ -330,13 +151,11 @@ class _expandBudgettState extends State<expandbudget> {
                   fontFamily: 'OpenSans',
                 ),
                 decoration: InputDecoration(
-
                   contentPadding: EdgeInsets.only(top: 14.0),
                   prefixIcon: Icon(
                     Icons.file_copy,
                     color: Colors.black,
                   ),
-
                 ),
               ),
             ),
@@ -345,21 +164,34 @@ class _expandBudgettState extends State<expandbudget> {
       ),
     );
   }
+
   Widget _buildSubmitbtn() {
     return Container(
-
       width: double.infinity,
       height: 45,
       margin: EdgeInsets.symmetric(vertical: 30),
-      child: new  OutlineButton(
+      child: new OutlineButton(
         onPressed: () {
+          var ammount = (Cammount.text.replaceAll(new RegExp(r'[^\w\s]+'), ''));
+          //  var bytes = image.readAsBytesSync();
 
-          var ammount=(Cammount.text.replaceAll(new RegExp(r'[^\w\s]+'),''));
-          validator.validation_transaction(context, ammount, datePicker, Cnote.text.trim(), widget.event_id,"0", user_id, "",widget.project_number,"","",'save');
-
-
+          validator.validation_transaction(
+              context,
+              ammount,
+              datePicker,
+              Cnote.text.trim(),
+              widget.event_id,
+              "0",
+              user_id,
+              base64.toString(),
+              widget.project_number,
+              "",
+              "",
+              'save',
+              "");
         },
-        child: Text('SUBMIT',
+        child: Text(
+          'SUBMIT',
           style: TextStyle(color: Colors.black87),
         ),
       ),
@@ -388,8 +220,6 @@ class _expandBudgettState extends State<expandbudget> {
     );
   }
 
-
-
   _chooseDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
       context: context,
@@ -400,20 +230,15 @@ class _expandBudgettState extends State<expandbudget> {
     );
     if (picked != null && picked != date)
       setState(() {
-
         date = picked;
         final DateFormat formatterSubmit = DateFormat('yyyy-MM-dd');
         final DateFormat formatterShow = DateFormat('dd/MM/yyyy');
         var datePickerShow = formatterShow.format(date);
         var datePickerSubmit = formatterSubmit.format(date);
-        datePicker=datePickerSubmit;
+        datePicker = datePickerSubmit;
         ControllerDate.text = "$datePickerShow";
-
-
-
       });
   }
-
 
 //functions
   /// Get from gallery
@@ -425,10 +250,11 @@ class _expandBudgettState extends State<expandbudget> {
     );
     if (pickedFile != null) {
       setState(() {
-
         imageFile = File(pickedFile.path);
+        base64 = base64Encode(imageFile.readAsBytesSync());
+        print("bae 64 ${imageFile}");
         //Toast.show("$imageFile", context);
-        Cfile.text=imageFile.toString();
+        Cfile.text = imageFile.toString();
       });
     }
   }
@@ -444,17 +270,12 @@ class _expandBudgettState extends State<expandbudget> {
       setState(() {
         imageFile = File(pickedFile.path);
 
-        Cfile.text=imageFile.toString();
-
+        Cfile.text = imageFile.toString();
+        base64 = base64Encode(imageFile.readAsBytesSync());
+        print("bae 64 ${base64}");
       });
     }
   }
-
-
-
-
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -463,9 +284,9 @@ class _expandBudgettState extends State<expandbudget> {
         iconTheme: IconThemeData(
           color: Colors.black87, //modify arrow color from here..
         ),
-
         backgroundColor: Colors.white,
-        title: new Text("Transaksi",
+        title: new Text(
+          "Transaksi",
           style: TextStyle(color: Colors.black87),
         ),
       ),
@@ -473,69 +294,101 @@ class _expandBudgettState extends State<expandbudget> {
         height: double.infinity,
         width: double.infinity,
         color: Colors.white,
-        child: _loading==true?Center(child: CircularProgressIndicator(),):SingleChildScrollView(
-          child: new Container(
-            child: Container(
-              color: Colors.white,
-              child: Center(
-                child: new Column(
-                  children: <Widget>[
+        child: _loading == true
+            ? Center(
+                child: CircularProgressIndicator(),
+              )
+            : SingleChildScrollView(
+                child: new Container(
+                  child: Container(
+                    color: Colors.white,
+                    child: Center(
+                      child: new Column(
+                        children: <Widget>[
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Container(
+                              color: Colors.white,
+                              margin: EdgeInsets.only(left: 20, right: 20),
+                              child: Column(
+                                children: [
+                                  //_buildtypeexpense(),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  _buildamount(),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  _buildDate(),
 
-                    SizedBox(height: 10,),
-                    Container(
-                        color: Colors.white,
-                        margin: EdgeInsets.only(left: 20,right: 20),
-                        child: Column(
-                      children: [
-                        //_buildtypeexpense(),
-                        SizedBox(height: 10,),
-                        _buildamount(),
-                        SizedBox(height: 10,),
-                        _buildDate(),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  _buildnote(),
 
-                       SizedBox(height: 10,),
-                        _buildnote(),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  _buildfile(),
 
-                        SizedBox(height: 10,),
-                        _buildfile(),
+                                  //image picker
+                                  // Container(
+                                  //   margin: EdgeInsets.only(top: 15),
+                                  //   child: imageFile == null
+                                  //       ? Container()
+                                  //       : InkWell(
+                                  //           onTap: () {
+                                  //             //aksesCamera();
+                                  //             Get.to(ImageFile(
+                                  //               image: imageFile,
+                                  //             ));
+                                  //           },
+                                  //           child: new Image.file(imageFile,
+                                  //               width: 200,
+                                  //               height: 200,
+                                  //               fit: BoxFit.fill),
+                                  //         ),
+                                  // ),
 
-                        SizedBox(height: 10,),
-                        _buildSubmitbtn(),
-
-                      ],
-                    ))
-                  ],
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  _buildSubmitbtn(),
+                                ],
+                              ))
+                        ],
+                      ),
+                    ),
+                  ),
                 ),
               ),
-            ),
-          ),
-        ),
       ),
     );
   }
+
   //ge data from api--------------------------------
-  Future _data_expense() async{
-    try{
-      _loading=true;
+  Future _data_expense() async {
+    try {
+      _loading = false;
 
-      http.Response response=await http.get("$baset_url_event/api/accounts");
-      var data=jsonDecode(response.body);
-        setState(() {
-          typeList = data['data'];
-          _loading=false;
-        });
-
-    }catch(e){
-
-    }
-
+      http.Response response = await http.get("$baset_url_event/api/accounts");
+      var data = jsonDecode(response.body);
+      setState(() {
+        typeList = data['data'];
+        _loading = false;
+      });
+    } catch (e) {}
   }
-  void getDatapref() async{
+
+  void getDatapref() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     setState(() {
-      user_id=sharedPreferences.getString("user_id");
+      user_id = sharedPreferences.getString("user_id");
     });
   }
+
   @override
   void initState() {
     // TODO: implement initState
@@ -543,5 +396,4 @@ class _expandBudgettState extends State<expandbudget> {
     _data_expense();
     getDatapref();
   }
-
 }

@@ -324,6 +324,7 @@ class _CheckinState extends State<Checkin> {
                                   distance: _distance,
                                   latmainoffice: _lat_mainoffice,
                                   longMainoffice: _long_mainoffice,
+
                                 )));
                   },
                   child: Container(
@@ -554,8 +555,9 @@ class _CheckinState extends State<Checkin> {
       setState(() {
         _departement_name = _employee['data']['work_placement'];
 
+
         _gender = _employee['data']['gender'];
-        _last_name = _employee['data']['last_name'];
+       // _last_name = _employee['data']['last_name'];
         _profile_background = _employee['data']['photo'];
         _firts_name = _employee['data']['first_name'];
         _lat_mainoffice = _employee['data']['location']['latitude'];

@@ -1,6 +1,10 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:hrdmagenta/page/employee/budget/image.dart';
+import 'package:hrdmagenta/page/employee/budget/imagefile.dart';
 import 'package:hrdmagenta/services/api_clien.dart';
 import 'package:hrdmagenta/utalities/color.dart';
 import 'package:hrdmagenta/utalities/constants.dart';
@@ -9,23 +13,32 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'package:http/http.dart'  as http;
-
+import 'package:http/http.dart' as http;
 
 class EditExpense extends StatefulWidget {
-  EditExpense({
+  EditExpense(
+      {this.account_id,
+      this.description,
+      this.amount,
+      this.transaction_id,
+      this.project_number,
+      this.date,
+      this.event_id,
+      this.status,
+      this.path,
+      this.enabled});
 
-    this.account_id,
-    this.description,
-    this.amount,
-    this.transaction_id,
-    this.project_number,
-    this.date,
-    this.event_id,
-    this.status,
-    this.enabled
-  });
-  var project_number,account_id,amount,description,transaction_id,date,event_id,enabled,status;
+  var project_number,
+      account_id,
+      amount,
+      description,
+      transaction_id,
+      date,
+      path,
+      event_id,
+      enabled,
+      status;
+
   @override
   _EditExpenseState createState() => new _EditExpenseState();
 }
@@ -34,19 +47,21 @@ class _EditExpenseState extends State<EditExpense> {
   final _scaffoldKey = new GlobalKey<ScaffoldState>();
   File imageFile;
   VoidCallback _showPersBottomSheetCallBack;
-  static const _locale='id';
-  var Cnote=new TextEditingController();
-  var Cammount=new TextEditingController();
-  var Cfile=new TextEditingController();
-  var ControllerDate=new TextEditingController();
-  bool enable_amount=true;
-  String _formatNumber(String s) => NumberFormat.decimalPattern(_locale).format(int.parse(s));
+  static const _locale = 'id';
+  var Cnote = new TextEditingController();
+  var Cammount = new TextEditingController();
+  var Cfile = new TextEditingController();
+  var ControllerDate = new TextEditingController();
+  bool enable_amount = true;
 
-  Validasi validator=Validasi();
-  bool _loading=false;
+  String _formatNumber(String s) =>
+      NumberFormat.decimalPattern(_locale).format(int.parse(s));
+
+  Validasi validator = Validasi();
+  bool _loading = false;
   List typeList;
-  String _type;
-  var user_id,project_number,datePicker;
+  String _type, base64;
+  var user_id, project_number, datePicker;
 
   //------------bottom sheet--------
   void _modalSheetphotos() {
@@ -65,13 +80,13 @@ class _EditExpenseState extends State<EditExpense> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         //project
-                        Text("Take Your Transation",
-                          style: TextStyle(fontFamily: "OpenSans",
+                        Text(
+                          "Take Your Transation",
+                          style: TextStyle(
+                              fontFamily: "OpenSans",
                               color: Colors.black,
                               fontSize: 20,
-                              fontWeight: FontWeight.bold
-
-                          ),
+                              fontWeight: FontWeight.bold),
                         ),
                         new Divider(
                           color: Colors.black38,
@@ -83,7 +98,7 @@ class _EditExpenseState extends State<EditExpense> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
                                 InkWell(
-                                  onTap:(){
+                                  onTap: () {
                                     _getFromCamera();
                                   },
                                   child: Container(
@@ -95,43 +110,36 @@ class _EditExpenseState extends State<EditExpense> {
                                             radius: 27,
                                             backgroundColor: btnColor1,
                                           ),
-
-
-
                                         ),
-                                        Text("Camera",
+                                        Text(
+                                          "Camera",
                                           style: TextStyle(
                                             color: Colors.black38,
-
                                           ),
                                         )
                                       ],
                                     ),
                                   ),
                                 ),
-
                                 InkWell(
-                                  onTap: (){
+                                  onTap: () {
                                     _getFromGallery();
                                   },
                                   child: Container(
                                     margin: EdgeInsets.only(left: 40),
                                     child: Column(
                                       children: [
-
                                         Container(
-
                                           child: CircleAvatar(
                                             child: gallery,
                                             radius: 27,
                                             backgroundColor: btnColor1,
                                           ),
-
                                         ),
-                                        Text("Gelery",
+                                        Text(
+                                          "Gelery",
                                           style: TextStyle(
                                             color: Colors.black38,
-
                                           ),
                                         )
                                       ],
@@ -148,15 +156,9 @@ class _EditExpenseState extends State<EditExpense> {
                 ],
               ),
             ),
-
-
           );
         });
   }
-
-
-
-
 
   Widget _buildamount() {
     return Column(
@@ -164,9 +166,7 @@ class _EditExpenseState extends State<EditExpense> {
       children: <Widget>[
         Text(
           'Amount',
-          style: TextStyle(
-              color: Colors.black87
-          ),
+          style: TextStyle(color: Colors.black87),
         ),
         SizedBox(height: 10.0),
         Container(
@@ -175,9 +175,8 @@ class _EditExpenseState extends State<EditExpense> {
             color: Colors.white,
           ),
           height: 60.0,
-          child:TextFormField(
+          child: TextFormField(
             enabled: enable_amount,
-
             controller: Cammount,
             onChanged: (string) {
               string = '${_formatNumber(string.replaceAll('.', ''))}';
@@ -186,7 +185,6 @@ class _EditExpenseState extends State<EditExpense> {
                 selection: TextSelection.collapsed(offset: string.length),
               );
             },
-
             cursorColor: Colors.black38,
             keyboardType: TextInputType.number,
             style: TextStyle(
@@ -194,13 +192,11 @@ class _EditExpenseState extends State<EditExpense> {
               fontFamily: 'OpenSans',
             ),
             decoration: InputDecoration(
-
               contentPadding: EdgeInsets.only(top: 14.0),
               prefixIcon: Icon(
                 Icons.monetization_on_outlined,
                 color: Colors.black,
               ),
-
             ),
           ),
         ),
@@ -214,9 +210,7 @@ class _EditExpenseState extends State<EditExpense> {
       children: <Widget>[
         Text(
           'Note',
-          style: TextStyle(
-              color: Colors.black87
-          ),
+          style: TextStyle(color: Colors.black87),
         ),
         SizedBox(height: 10.0),
         Container(
@@ -225,23 +219,19 @@ class _EditExpenseState extends State<EditExpense> {
             color: Colors.white,
           ),
           height: 60.0,
-          child:TextFormField(
+          child: TextFormField(
             controller: Cnote,
-
             cursorColor: Colors.black38,
-
             style: TextStyle(
               color: Colors.black,
               fontFamily: 'OpenSans',
             ),
             decoration: InputDecoration(
-
               contentPadding: EdgeInsets.only(top: 14.0),
               prefixIcon: Icon(
                 Icons.description,
                 color: Colors.black,
               ),
-
             ),
           ),
         ),
@@ -249,22 +239,16 @@ class _EditExpenseState extends State<EditExpense> {
     );
   }
 
-
   Widget _buildtypeexpense() {
     return Container(
-
       width: double.infinity,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-
         children: <Widget>[
           Text(
             'Akun Transfer',
-            style: TextStyle(
-                color: Colors.black87
-            ),
+            style: TextStyle(color: Colors.black87),
           ),
-
           Container(
             width: double.infinity,
             child: DropdownButtonHideUnderline(
@@ -287,11 +271,12 @@ class _EditExpenseState extends State<EditExpense> {
                     });
                   },
                   items: typeList?.map((item) {
-                    return new DropdownMenuItem(
-                      child: new Text("${item['bank_name']} (${item['account_number']})"),
-                      value: item['id'].toString(),
-                    );
-                  })?.toList() ??
+                        return new DropdownMenuItem(
+                          child: new Text(
+                              "${item['bank_name']} (${item['account_number']})"),
+                          value: item['id'].toString(),
+                        );
+                      })?.toList() ??
                       [],
                 ),
               ),
@@ -302,25 +287,20 @@ class _EditExpenseState extends State<EditExpense> {
     );
   }
 
-
-
   Widget _buildfile() {
     return Container(
       child: InkWell(
-        onTap: (){
+        onTap: () {
           //_getFromGallery();
           //_modalSheetphotos();
           _getFromCamera();
-
         },
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Text(
               'Upload File',
-              style: TextStyle(
-                  color: Colors.black87
-              ),
+              style: TextStyle(color: Colors.black87),
             ),
             SizedBox(height: 10.0),
             Container(
@@ -329,10 +309,9 @@ class _EditExpenseState extends State<EditExpense> {
                 color: Colors.white,
               ),
               height: 60.0,
-              child:TextFormField(
+              child: TextFormField(
                 controller: Cfile,
                 enabled: false,
-
                 cursorColor: Colors.black38,
                 keyboardType: TextInputType.name,
                 style: TextStyle(
@@ -340,13 +319,11 @@ class _EditExpenseState extends State<EditExpense> {
                   fontFamily: 'OpenSans',
                 ),
                 decoration: InputDecoration(
-
                   contentPadding: EdgeInsets.only(top: 14.0),
                   prefixIcon: Icon(
                     Icons.file_copy,
                     color: Colors.black,
                   ),
-
                 ),
               ),
             ),
@@ -355,21 +332,34 @@ class _EditExpenseState extends State<EditExpense> {
       ),
     );
   }
+
   Widget _buildSubmitbtn() {
     return Container(
-
       width: double.infinity,
       height: 45,
       margin: EdgeInsets.symmetric(vertical: 30),
-      child: new  OutlineButton(
+      child: new OutlineButton(
         onPressed: () {
-
-
-          var ammount=(Cammount.text.replaceAll(new RegExp(r'[^\w\s]+'),''));
-          validator.validation_transaction(context, ammount, datePicker, Cnote.text.trim(), widget.event_id,"0", user_id, "",widget.project_number,widget.transaction_id,widget.status,'update');
+          print(( '${widget.path}'));
+          var ammount = (Cammount.text.replaceAll(new RegExp(r'[^\w\s]+'), ''));
+          validator.validation_transaction(
+              context,
+              ammount,
+              datePicker,
+              Cnote.text.trim(),
+              widget.event_id,
+              "0",
+              user_id,
+              base64.toString(),
+              widget.project_number,
+              widget.transaction_id,
+              widget.status,
+              'update',
+              widget.path);
           print(widget.status);
-          },
-        child: Text('SUBMIT',
+        },
+        child: Text(
+          'SUBMIT',
           style: TextStyle(color: Colors.black87),
         ),
       ),
@@ -398,10 +388,8 @@ class _EditExpenseState extends State<EditExpense> {
     );
   }
 
-
-
   _chooseDate(BuildContext context) async {
-    var date=DateTime.parse("${widget.date}");
+    var date = DateTime.parse("${widget.date}");
     final DateTime picked = await showDatePicker(
       context: context,
 
@@ -411,20 +399,15 @@ class _EditExpenseState extends State<EditExpense> {
     );
     if (picked != null && picked != date)
       setState(() {
-
         date = picked;
         final DateFormat formatterSubmit = DateFormat('yyyy-MM-dd');
         final DateFormat formatterShow = DateFormat('dd/MM/yyyy');
         var datePickerShow = formatterShow.format(date);
         var datePickerSubmit = formatterSubmit.format(date);
-        datePicker=datePickerSubmit;
+        datePicker = datePickerSubmit;
         ControllerDate.text = "$datePickerShow";
-
-
-
       });
   }
-
 
 //functions
   /// Get from gallery
@@ -436,10 +419,10 @@ class _EditExpenseState extends State<EditExpense> {
     );
     if (pickedFile != null) {
       setState(() {
-
         imageFile = File(pickedFile.path);
         //Toast.show("$imageFile", context);
-        Cfile.text=imageFile.toString();
+        Cfile.text = imageFile.toString();
+        base64 = base64Encode(imageFile.readAsBytesSync());
       });
     }
   }
@@ -455,17 +438,10 @@ class _EditExpenseState extends State<EditExpense> {
       setState(() {
         imageFile = File(pickedFile.path);
 
-        Cfile.text=imageFile.toString();
-
+        Cfile.text = imageFile.toString();
       });
     }
   }
-
-
-
-
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -474,9 +450,9 @@ class _EditExpenseState extends State<EditExpense> {
         iconTheme: IconThemeData(
           color: Colors.black87, //modify arrow color from here..
         ),
-
         backgroundColor: Colors.white,
-        title: new Text("Transaksi",
+        title: new Text(
+          "Transaksi",
           style: TextStyle(color: Colors.black87),
         ),
       ),
@@ -484,91 +460,157 @@ class _EditExpenseState extends State<EditExpense> {
         height: double.infinity,
         width: double.infinity,
         color: Colors.white,
-        child: _loading==true?Center(child: CircularProgressIndicator(),):SingleChildScrollView(
-          child: new Container(
-            child: Container(
-              color: Colors.white,
-              child: Center(
-                child: new Column(
-                  children: <Widget>[
+        child: _loading == true
+            ? Center(
+                child: CircularProgressIndicator(),
+              )
+            : SingleChildScrollView(
+                child: new Container(
+                  child: Container(
+                    color: Colors.white,
+                    child: Center(
+                      child: new Column(
+                        children: <Widget>[
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Container(
+                              color: Colors.white,
+                              margin: EdgeInsets.only(left: 20, right: 20),
+                              child: Column(
+                                children: [
+                                  // _buildtypeexpense(),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  _buildamount(),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  _buildDate(),
 
-                    SizedBox(height: 10,),
-                    Container(
-                        color: Colors.white,
-                        margin: EdgeInsets.only(left: 20,right: 20),
-                        child: Column(
-                          children: [
-                           // _buildtypeexpense(),
-                            SizedBox(height: 10,),
-                            _buildamount(),
-                            SizedBox(height: 10,),
-                            _buildDate(),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  _buildnote(),
 
-                            SizedBox(height: 10,),
-                            _buildnote(),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  _buildfile(),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
 
-                            SizedBox(height: 10,),
-                            _buildfile(),
+                                  Container(
+                                    child: imageFile == null
+                                        ? Container(
+                                            child: widget.path != null
+                                                ? Container(
+                                                    child: InkWell(
+                                                    onTap: () {
+                                                      Get.to(ImageTransaction(
+                                                        image: widget.path,
+                                                        title: "",
+                                                      ));
+                                                    },
+                                                    child: CachedNetworkImage(
+                                                      imageUrl:
+                                                          "${image_ur}/eo/transactions/${widget.path}",
+                                                      fit: BoxFit.fill,
+                                                      width: 200,
+                                                      height: 200,
+                                                      placeholder: (context,
+                                                              url) =>
+                                                          Center(
+                                                              child:
+                                                                  new CircularProgressIndicator()),
+                                                      errorWidget: (context,
+                                                              url, error) =>
+                                                          new Icon(Icons.error),
+                                                    ),
+                                                  ))
+                                                : Container(),
+                                          )
+                                        : Container(
+                                            margin: EdgeInsets.only(top: 15),
+                                            child: imageFile == null
+                                                ? Container()
+                                                : InkWell(
+                                                    onTap: () {
+                                                      //aksesCamera();
+                                                      Get.to(ImageFile(
+                                                        image: imageFile,
+                                                      ));
+                                                    },
+                                                    child: new Image.file(
+                                                        imageFile,
+                                                        width: 200,
+                                                        height: 200,
+                                                        fit: BoxFit.fill),
+                                                  ),
+                                          ),
+                                  ),
 
-                            SizedBox(height: 10,),
-                            _buildSubmitbtn(),
-
-                          ],
-                        ))
-                  ],
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  _buildSubmitbtn(),
+                                ],
+                              ))
+                        ],
+                      ),
+                    ),
+                  ),
                 ),
               ),
-            ),
-          ),
-        ),
       ),
     );
   }
-  //ge data from api--------------------------------
-  Future _data_expense() async{
-    try{
-      _loading=true;
 
-      http.Response response=await http.get("$baset_url_event/api/accounts");
-      var data=jsonDecode(response.body);
+  //ge data from api--------------------------------
+  Future _data_expense() async {
+    try {
+      _loading = false;
+
+      http.Response response = await http.get("$baset_url_event/api/accounts");
+      var data = jsonDecode(response.body);
       setState(() {
         typeList = data['data'];
-        _loading=false;
+        _loading = false;
       });
-
-    }catch(e){
-
-    }
-
+    } catch (e) {}
   }
-  void getDatapref() async{
+
+  void getDatapref() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     setState(() {
-      user_id=sharedPreferences.getString("user_id");
+      user_id = sharedPreferences.getString("user_id");
     });
   }
+
   @override
   void initState() {
     print(widget.enabled);
-    Cnote.text=widget.description;
-    ControllerDate.text=DateFormat('dd/MM/yyyy').format(DateTime.parse("${widget.date}")).toString();
-    datePicker=DateFormat('yyyy-MM-dd').format(DateTime.parse("${widget.date}")).toString();
-   // Cammount.text=widget.amount;
-    Cammount.text="${_formatNumber(widget.amount.toString().replaceAll('.', ''))}";
-    _type=widget.account_id;
-    if (widget.enabled==true){
-
-
-      enable_amount=true;
-
-    }else{
-      enable_amount=false;
-
+    Cnote.text = widget.description;
+    ControllerDate.text = DateFormat('dd/MM/yyyy')
+        .format(DateTime.parse("${widget.date}"))
+        .toString();
+    datePicker = DateFormat('yyyy-MM-dd')
+        .format(DateTime.parse("${widget.date}"))
+        .toString();
+    // Cammount.text=widget.amount;
+    Cammount.text =
+        "${_formatNumber(widget.amount.toString().replaceAll('.', ''))}";
+    _type = widget.account_id;
+    if (widget.enabled == true) {
+      enable_amount = true;
+    } else {
+      enable_amount = false;
     }
     // TODO: implement initState
     super.initState();
     _data_expense();
     getDatapref();
   }
-
 }

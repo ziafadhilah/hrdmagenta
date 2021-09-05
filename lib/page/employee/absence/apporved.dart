@@ -37,7 +37,7 @@ class _AprovedAbsenceEmployeePageState extends State<AprovedAbsenceEmployeePage>
             itemBuilder: (context, index) {
               return _absence['data'].length == 0
                   ? _buildnodata()
-                  : _buildlistabsence(index);
+                  : _absence['data'][index]['employee_id']==user_id?_buildlistabsence(index):Container();
             }),
 
         //
@@ -169,7 +169,7 @@ class _AprovedAbsenceEmployeePageState extends State<AprovedAbsenceEmployeePage>
                                                     ? Container(child: _absence['data'][index]['approved_at'] != null ? Text("${ DateFormat("dd/MM/yyyy hh:mm:ss").format(DateTime.parse(_absence['data'][index]['approved_at']))}", style: TextStyle(fontSize: 15, color: Colors.black26)) : Text("${ DateFormat("dd/MM/yyyy hh:mm:ss").format(DateTime.parse(_absence['data'][index]['clock_out']))}", style: TextStyle(fontSize: 15, color: Colors.black26)))
                                                     : Text("")),
                                           ),
-                                          InkWell(
+                                          _absence['data'][index]['clock_in_latitude']!=null?InkWell(
                                             onTap: () {
                                               if (_absence['data'][index]
                                               ['type'] ==
@@ -419,7 +419,7 @@ class _AprovedAbsenceEmployeePageState extends State<AprovedAbsenceEmployeePage>
                                                 ],
                                               ),
                                             ),
-                                          )
+                                          ):Container()
                                         ],
                                       ),
                                     ),
@@ -474,7 +474,7 @@ class _AprovedAbsenceEmployeePageState extends State<AprovedAbsenceEmployeePage>
         _loading = true;
       });
       http.Response response = await http.get(
-          "$base_url/api/employees/$user_id/attendances?status=${widget.type}");
+          "${base_url}/api/attendances?status=${widget.type}");
       _absence = jsonDecode(response.body);
       setState(() {
         _loading = false;

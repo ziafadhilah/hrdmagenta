@@ -29,11 +29,14 @@ class _ProjectState extends State<Project> {
   final GlobalKey<ScaffoldState> scaffoldState = new GlobalKey<ScaffoldState>();
 
   VoidCallback _showPersBottomSheetCallBack;
-  Map _projects;
-  bool _loading = true;
+  List _projects;
+  bool _loading = true, allLoaded = false;
   var address;
+  var page = 0, record = 15;
   final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
+  List<Placemark> p;
 
+  ScrollController _scrollController = new ScrollController();
 
 //---projects---
   Widget _buildproject() {
@@ -49,11 +52,10 @@ class _ProjectState extends State<Project> {
                       child: ShimmerProject(),
                     )
                   : ListView.builder(
-                      itemCount: _projects['data'].length == 0
-                          ? 1
-                          : _projects['data'].length,
+                      controller: _scrollController,
+                      itemCount: _projects.length == 0 ? 1 : _projects.length,
                       itemBuilder: (context, index) {
-                        return _projects['data'].length == 0
+                        return _projects.length == 0
                             ? _buildnodata()
                             : _buildProgress(index);
                       }),
@@ -66,20 +68,27 @@ class _ProjectState extends State<Project> {
   }
 
   Widget _buildProgress(index) {
-    _getAddressFromLatLng(double.parse("${_projects['data'][index]['latitude']}"),
-        double.parse("${_projects['data'][index]['longtitude']}"));
-    var completed_task= _projects['data'][index]['task'].where((prod) => prod["status"] == "completed").toList();
-    var percentage=(completed_task.length)/(_projects['data'][index]['task'].length);
-    var balance= NumberFormat.currency(decimalDigits: 0,  locale: "id").format(_projects['data'][index]['budget']['balance']);
-    var status=_projects['data'][index]['status'];
+    var venue = _projects[index]['quotations'][0]['venue_event'];
+
+    var completed_task = _projects[index]['task']
+        .where((prod) => prod["status"] == "completed")
+        .toList();
+    var percentage =
+        (completed_task.length) / (_projects[index]['task'].length);
+    var balance = NumberFormat.currency(decimalDigits: 0, locale: "id")
+        .format(_projects[index]['budget']['balance']);
+    var status = _projects[index]['status'];
+    var tasks = _projects[index]['task'];
 
     return InkWell(
-      onTap: (){
-        Get.to(DetailProjects(id: '${_projects['data'][index]['id'].toString()}',));
+      onTap: () {
+        Get.to(DetailProjects(
+          id: '${_projects[index]['id'].toString()}',
+          venue: venue,
+        ));
       },
       child: Container(
         width: MediaQuery.of(context).size.width,
-
         child: Card(
           child: Container(
             margin: EdgeInsets.only(left: 10, right: 10),
@@ -87,32 +96,32 @@ class _ProjectState extends State<Project> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Container(
-
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Container(
-                        width:MediaQuery.of(context).size.width -100,
+                        width: MediaQuery.of(context).size.width - 100,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Container(
-                              child: Text("${_projects['data'][index]['project_number']}",
+                              child: Text(
+                                  "${_projects[index]['project_number']}",
                                   style: subtitleMainMenu),
                             ),
                             Container(
-                              child: Text(
-                                  "$address",
+                              child: Text("$venue",
                                   style: TextStyle(
                                       color: Colors.black38,
                                       fontFamily: "SFReguler",
                                       fontSize: 14)),
                             ),
-                            SizedBox(height: 10,),
+                            SizedBox(
+                              height: 10,
+                            ),
                             Container(
-                              child: Text(
-                                  "$balance",
+                              child: Text("$balance",
                                   style: TextStyle(
                                       color: Colors.black38,
                                       fontFamily: "SFReguler",
@@ -129,17 +138,19 @@ class _ProjectState extends State<Project> {
                       ),
                       Container(
                         width: 70,
-                        child:Container(
+                        child: Container(
                           child: Container(
                               alignment: Alignment.center,
                               margin: EdgeInsets.only(top: 3, bottom: 3),
                               child: Text(
-                                "${status=="approved"?"In Progress":"Completed"}",
+                                "${status == "approved" ? "In Progress" : "${status}"}",
                                 style: TextStyle(
                                     color: Colors.white, fontSize: 10),
                               )),
                           decoration: BoxDecoration(
-                            color: status=="approved"?Colors.green:Colors.lightBlue,
+                            color: status == "approved"
+                                ? Colors.green
+                                : Colors.lightBlue,
                             borderRadius: new BorderRadius.only(
                               topLeft: const Radius.circular(10.0),
                               topRight: const Radius.circular(10.0),
@@ -149,8 +160,6 @@ class _ProjectState extends State<Project> {
                           ),
                         ),
                       )
-
-
                     ],
                   ),
                 ),
@@ -159,19 +168,21 @@ class _ProjectState extends State<Project> {
                   child: Row(
                     children: <Widget>[
                       Container(
-                        width: Get.mediaQuery.size.width/2,
+                        width: Get.mediaQuery.size.width / 2,
                         height: 100,
-                        child: ListView.builder(itemBuilder: (context,index_member){
-                          return _buildteam(index_member, index);
-                        },
+                        child: ListView.builder(
+                          itemBuilder: (context, index_member) {
+                            return _buildteam(index_member, index);
+                          },
                           scrollDirection: Axis.horizontal,
-                          itemCount: _projects['data'][index]['members']==null?0:_projects['data'][index]['members'].length,
+                          itemCount: _projects[index]['members'] == null
+                              ? 0
+                              : _projects[index]['members'].length,
                         ),
                       ),
                       Container(
-
-                        width: Get.mediaQuery.size.width/2-30,
-                        child:Align(
+                        width: Get.mediaQuery.size.width / 2 - 30,
+                        child: Align(
                           alignment: Alignment.topRight,
                           child: Container(
                             margin: EdgeInsets.only(bottom: 10),
@@ -182,9 +193,9 @@ class _ProjectState extends State<Project> {
                                   radius: 100.0,
                                   lineWidth: 10.0,
                                   animation: true,
-                                  percent: percentage,
+                                  percent: tasks.length > 0 ? percentage : 0.00,
                                   center: new Text(
-                                    "${(percentage * 100).toStringAsFixed(2)} %",
+                                    "${tasks.length > 0 ? (percentage * 100).toStringAsFixed(2) : 0.00} %",
                                     style: new TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 17.0),
@@ -207,8 +218,6 @@ class _ProjectState extends State<Project> {
       ),
     );
   }
-
-
 
   Widget _buildnodata() {
     return Container(
@@ -253,7 +262,7 @@ class _ProjectState extends State<Project> {
     );
   }
 
- //---end projects---
+  //---end projects---
 
 //---main contex-----
   @override
@@ -275,11 +284,14 @@ class _ProjectState extends State<Project> {
     try {
       setState(() {
         _loading = true;
+        page=1;
       });
 
       http.Response response = await http.get(
-          "$baset_url_event/api/projects");
-      _projects = jsonDecode(response.body);
+          "$baset_url_event/api/projects/${widget.status}/employees/${user_id}?page=1&record=15");
+
+      var data = jsonDecode(response.body);
+      _projects = data['data'];
 
       setState(() {
         _loading = false;
@@ -287,6 +299,28 @@ class _ProjectState extends State<Project> {
     } catch (e) {}
   }
 
+  Future loadMore(var user_id) async {
+    try {
+      setState(() {
+        allLoaded = true;
+        page=page+1;
+      });
+
+
+      http.Response response = await http.get(
+          "$baset_url_event/api/projects/${widget.status}/employees/${user_id}?page=${page}&record=${record}");
+      var newData = jsonDecode(response.body);
+      setState(() {
+        for (var i = 0; i < newData['data'].length; i++) {
+          _projects.add(newData['data'][i]);
+        }
+      });
+
+      setState(() {
+        allLoaded = false;
+      });
+    } catch (e) {}
+  }
 
   Future getDatapref() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
@@ -295,21 +329,28 @@ class _ProjectState extends State<Project> {
       dataProject(user_id);
     });
   }
-  void _getAddressFromLatLng(var latitude,longgitude) async {
+
+  void _getAddressFromLatLng(var latitude, longgitude) async {
     try {
-      List<Placemark> p = await geolocator.placemarkFromCoordinates(
-          latitude, longgitude);
+      List<Placemark> p =
+          await geolocator.placemarkFromCoordinates(latitude, longgitude);
 
       Placemark place = p[0];
 
       setState(() {
-        address =  "${place.locality}, ${place.postalCode}, ${place.country}";
+        address = "${place.locality}, ${place.postalCode}, ${place.country}";
       });
     } catch (e) {
       print(e);
     }
   }
 
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    _scrollController.dispose();
+  }
 
   //inislisasi state
   @override
@@ -318,6 +359,15 @@ class _ProjectState extends State<Project> {
     //show modal detail project
     getDatapref();
     //_showPersBottomSheetCallBack = _showBottomSheet;
+
+    _scrollController.addListener(() {
+
+
+      if (_scrollController.position.pixels ==
+          _scrollController.position.maxScrollExtent) {
+        loadMore(user_id);
+      }
+    });
   }
 }
 

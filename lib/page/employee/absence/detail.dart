@@ -97,15 +97,15 @@ class _detail_absenceState extends State<detail_absence> {
               children: <Widget>[
                 _buildProfile(),
 
-                _buildAbsenceType(),
+              //  _buildAbsenceType(),
                 Divider(color: Colors.black12,),
                 _buildAbsencecategory(),
                 Divider(color: Colors.black12,),
                 _buildDate(),
                 Divider(color: Colors.black12,),
                 _buildTime(),
-                Divider(color: Colors.black12,),
-                _buildRemark(),
+                // Divider(color: Colors.black12,),
+                // _buildRemark(),
                 Divider(color: Colors.black12,),
                 _buildAdress(),
                 Divider(color: Colors.black12,),
@@ -157,7 +157,7 @@ class _detail_absenceState extends State<detail_absence> {
         children: <Widget>[
           Container(
               child: CircleAvatar(
-           backgroundImage: NetworkImage('${image_ur}/${widget.photo}'),
+           backgroundImage: NetworkImage('${image_ur}/photos/default-photo.png'),
             backgroundColor: Colors.transparent,
             radius: 40,
           )),
@@ -195,43 +195,43 @@ class _detail_absenceState extends State<detail_absence> {
     );
   }
 
-  //widget type
-  Widget _buildAbsenceType() {
-    return Container(
-      margin: EdgeInsets.only(left: 5),
-      width: double.infinity,
-
-      child: Row(
-        children: <Widget>[
-
-          Container(
-            margin: EdgeInsets.only(left: 10),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Container(
-                  child: Text(
-                    "Type",
-                    style: titleAbsence,
-                  ),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Container(
-                  child: Text(
-                    "${widget.type}",
-                    style: subtitleAbsence,
-                  ),
-                )
-              ],
-            ),
-          )
-        ],
-      ),
-    );
-  }
+  // //widget type
+  // Widget _buildAbsenceType() {
+  //   return Container(
+  //     margin: EdgeInsets.only(left: 5),
+  //     width: double.infinity,
+  //
+  //     child: Row(
+  //       children: <Widget>[
+  //
+  //         Container(
+  //           margin: EdgeInsets.only(left: 10),
+  //           child: Column(
+  //             crossAxisAlignment: CrossAxisAlignment.start,
+  //             mainAxisAlignment: MainAxisAlignment.center,
+  //             children: <Widget>[
+  //               Container(
+  //                 child: Text(
+  //                   "Type",
+  //                   style: titleAbsence,
+  //                 ),
+  //               ),
+  //               SizedBox(
+  //                 height: 10,
+  //               ),
+  //               Container(
+  //                 child: Text(
+  //                   "${widget.type}",
+  //                   style: subtitleAbsence,
+  //                 ),
+  //               )
+  //             ],
+  //           ),
+  //         )
+  //       ],
+  //     ),
+  //   );
+  // }
 
   Widget _buildRemark() {
     return Container(
@@ -1036,8 +1036,8 @@ class _detail_absenceState extends State<detail_absence> {
     var waktu = Waktu();
     print(waktu.yMMMMEEEEd());
 
-    _time = DateFormat('hh:mm:ss').format(DateTime.parse(widget.time));
-    _date = Waktu(DateTime.parse(widget.date)).yMMMd();
+    _time = widget.time;
+    _date = widget.date;
     if ((widget.category == "present") || (widget.category == "present")) {
       _category = false;
     } else {

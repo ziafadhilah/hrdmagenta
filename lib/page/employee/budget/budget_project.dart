@@ -3,10 +3,10 @@ import 'dart:convert';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hrdmagenta/page/employee/absence/photoview.dart';
-import 'package:hrdmagenta/page/employee/budget/detail_budget.dart';
+
 import 'package:hrdmagenta/page/employee/budget/edit.dart';
 import 'package:hrdmagenta/page/employee/budget/expense.dart';
+import 'package:hrdmagenta/page/employee/budget/image.dart';
 import 'package:hrdmagenta/page/employee/budget/repayment.dart';
 import 'package:hrdmagenta/page/employee/budget/shimmer_effect.dart';
 import 'package:hrdmagenta/page/employee/budget/tabmenu_budget.dart';
@@ -18,20 +18,15 @@ import 'package:intl/intl.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
 class budgetproject extends StatefulWidget {
-  budgetproject(
-      {
+  budgetproject({
     this.projectNumber,
-        this.budgetStartDate,
-        this.budgetEndDate,
-        this.projectId
-      });
+    this.budgetStartDate,
+    this.budgetEndDate,
+    this.statusMember,
+    this.projectId,
+  });
 
-  var projectNumber,
-      budgetStartDate,
-      projectId,
-      budgetEndDate;
-
-
+  var projectNumber, budgetStartDate, projectId, budgetEndDate, statusMember;
 
   @override
   _budgetprojectState createState() => new _budgetprojectState();
@@ -39,13 +34,14 @@ class budgetproject extends StatefulWidget {
 
 class _budgetprojectState extends State<budgetproject> {
   final _scaffoldKey = new GlobalKey<ScaffoldState>();
-  Services services=new Services();
+  Services services = new Services();
   Map _transaction;
   bool _loading = true;
   var _remaining;
-  var total_in,total_out,balance,remaining_balance=0;
-  var _visible=false;
+  var total_in, total_out, balance, remaining_balance = 0;
+  var projectNumber, budgetStartDate, budgetEndDate;
 
+  var _visible = false;
 
 //widget------------------
   Widget _buildbidget() {
@@ -66,30 +62,41 @@ class _budgetprojectState extends State<budgetproject> {
                 children: <Widget>[
                   Visibility(
                     visible: _visible,
-                    child: Container(child: Row(
-                      children: [
-                        Container(child: Icon(Icons.warning_amber_outlined,color: Colors.amber,size: 20,)),
-                        Container(
-                          width: Get.mediaQuery.size.width-50,
-                          margin: EdgeInsets.only(left: 10),
-                          child: Text("Masa aktif penggunaan anggaran sudah terlewat ${remaining_balance>0?""
-                              "Saldo project anda masi tersisa ,silahkan lakukan transaksi pelunasan":""} ",style: TextStyle(color: Colors.white70,fontFamily: "SFReguler"),
-
+                    child: Container(
+                      child: Row(
+                        children: [
+                          Container(
+                              child: Icon(
+                            Icons.warning_amber_outlined,
+                            color: Colors.amber,
+                            size: 20,
+                          )),
+                          Container(
+                            width: Get.mediaQuery.size.width - 50,
+                            margin: EdgeInsets.only(left: 10),
+                            child: Text(
+                              "Diluar efektif budget ${remaining_balance > 0 ? ""
+                                  "" : ""} ",
+                              style: TextStyle(
+                                  color: Colors.white70,
+                                  fontFamily: "SFReguler"),
+                            ),
                           ),
-                        ),
-                      ],
-                    ),),
+                        ],
+                      ),
+                    ),
                   ),
-                  SizedBox(height: 10,),
+                  SizedBox(
+                    height: 10,
+                  ),
                   Text(
-                    "${widget.projectNumber}",
+                    "${widget.projectNumber == null ? projectNumber : widget.projectNumber}",
                     style: TextStyle(
                         color: Colors.white,
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
                         fontFamily: "OpenSans"),
                   ),
-
                   Container(
                     height: 55,
                     width: double.infinity,
@@ -100,7 +107,7 @@ class _budgetprojectState extends State<budgetproject> {
                           child: Container(
                             margin: EdgeInsets.only(bottom: 20),
                             child: Text(
-                              "Active on ${DateFormat('dd/MM/yyyy').format(DateTime.parse("${widget.budgetStartDate}"))} ",
+                              "Active on ${budgetStartDate == null ? "" : DateFormat('dd/MM/yyyy').format(DateTime.parse("${budgetStartDate}"))} ",
                               style:
                                   TextStyle(fontSize: 12, color: Colors.white),
                             ),
@@ -116,7 +123,7 @@ class _budgetprojectState extends State<budgetproject> {
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
                                 Text(
-                                  "Expired on ${DateFormat('dd/MM/yyyy').format(DateTime.parse("${widget.budgetEndDate}"))} ",
+                                  "Expired on ${budgetEndDate == null ? "" : DateFormat('dd/MM/yyyy').format(DateTime.parse("${budgetEndDate}"))} ",
                                   style: TextStyle(
                                       fontSize: 12, color: Colors.white),
                                 ),
@@ -136,7 +143,7 @@ class _budgetprojectState extends State<budgetproject> {
         Container(
           margin: EdgeInsets.only(left: 5, right: 5),
           width: double.infinity,
-          height: _visible==true?230:210,
+          height: _visible == true ? 230 : 210,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.end,
             children: <Widget>[
@@ -147,19 +154,14 @@ class _budgetprojectState extends State<budgetproject> {
                     width: double.infinity,
                     height: 130,
                     child: Row(
-
                       children: <Widget>[
                         Container(
-
-                          width: Get.mediaQuery.size.width/3 -20,
-
-                          margin: EdgeInsets.only(top: 10,bottom: 10,left: 5),
+                          width: Get.mediaQuery.size.width / 3 - 20,
+                          margin: EdgeInsets.only(top: 10, bottom: 10, left: 5),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               Container(
-
-
                                 child: Text(
                                   "Total In",
                                   style: TextStyle(
@@ -170,13 +172,14 @@ class _budgetprojectState extends State<budgetproject> {
                                 margin: EdgeInsets.only(top: 20),
                                 child: _loading == true
                                     ? Text("")
-                                    : Text( "${total_in}",
-                                  // "IDR ${_transaction['data']['total_in'] - _transaction['data']['total_out']}",
-                                  style: TextStyle(
-                                      color: Colors.black87,
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.bold),
-                                ),
+                                    : Text(
+                                        "${total_in}",
+                                        // "IDR ${_transaction['data']['total_in'] - _transaction['data']['total_out']}",
+                                        style: TextStyle(
+                                            color: Colors.black87,
+                                            fontSize: 13,
+                                            fontWeight: FontWeight.bold),
+                                      ),
                               )
                             ],
                           ),
@@ -188,10 +191,8 @@ class _budgetprojectState extends State<budgetproject> {
                             )),
                         //Container
                         Container(
-
-
-                          width: Get.mediaQuery.size.width/3 -20,
-                          margin: EdgeInsets.only(top: 10,bottom: 10),
+                          width: Get.mediaQuery.size.width / 3 - 20,
+                          margin: EdgeInsets.only(top: 10, bottom: 10),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
@@ -206,10 +207,10 @@ class _budgetprojectState extends State<budgetproject> {
                                 margin: EdgeInsets.only(top: 20),
                                 child: _loading == true
                                     ? Text("")
-                                    : Text(     "${total_out}",
+                                    : Text(
+                                        "${total_out}",
                                         // "IDR ${_transaction['data']['total_in'] - _transaction['data']['total_out']}",
                                         style: TextStyle(
-
                                             fontSize: 13,
                                             fontWeight: FontWeight.bold),
                                       ),
@@ -226,11 +227,8 @@ class _budgetprojectState extends State<budgetproject> {
                         //Container
                         Expanded(
                           child: Container(
-
-                            width: Get.mediaQuery.size.width/3 -20,
-
-
-                            margin: EdgeInsets.only(top: 10,bottom: 10),
+                            width: Get.mediaQuery.size.width / 3 - 20,
+                            margin: EdgeInsets.only(top: 10, bottom: 10),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
@@ -242,8 +240,7 @@ class _budgetprojectState extends State<budgetproject> {
                                   ),
                                 ),
                                 Container(
-
-                                  margin: EdgeInsets.only(top: 20,right: 5),
+                                  margin: EdgeInsets.only(top: 20, right: 5),
                                   child: _loading == true
                                       ? Text("")
                                       : Text(
@@ -253,22 +250,24 @@ class _budgetprojectState extends State<budgetproject> {
                                               fontWeight: FontWeight.bold),
                                         ),
                                 ),
-                                _visible==true?(remaining_balance >0?Container(
-                                  margin: EdgeInsets.only(right: 5),
-                                  child: ElevatedButton(
+                                (remaining_balance > 0
+                                    ? Container(
+                                        margin: EdgeInsets.only(right: 5),
+                                        child: widget.statusMember == 'pic'
+                                            ? ElevatedButton(
+                                                onPressed: () {
+                                                  updateRepayment();
 
-                                    onPressed: () {
-                                      // Respond to button press
-
-                                      Get.to(RepaymentBudget(
-                                        event_id: widget.projectId,
-                                        project_number: widget.projectNumber,
-                                        amount: remaining_balance,
-                                      ));
-                                    },
-                                    child: Text('Pelunasan',style: TextStyle(fontSize: 13),),
-                                  ),
-                                ):Container()):Container()
+                                                },
+                                                child: Text(
+                                                  'Pelunasan',
+                                                  style:
+                                                      TextStyle(fontSize: 13),
+                                                ),
+                                              )
+                                            : Container(),
+                                      )
+                                    : Container())
                               ],
                             ),
                           ),
@@ -286,15 +285,17 @@ class _budgetprojectState extends State<budgetproject> {
   }
 
   Widget _buildTransaction(index) {
+    var description =
+        _transaction['data']['transactions'][index]['description'];
+    var date = DateFormat("dd/MM/yyyy").format(DateTime.parse(
+        "${_transaction['data']['transactions'][index]['date']}"));
+    var amount = NumberFormat.currency(decimalDigits: 0, locale: "id")
+        .format(_transaction['data']['transactions'][index]['amount']);
 
-    var description=_transaction['data']['transactions'][index]['description'];
-    var date=DateFormat("dd/MM/yyyy").format(DateTime.parse("${_transaction['data']['transactions'][index]['date']}"));
-    var amount= NumberFormat.currency(decimalDigits: 0,  locale: "id").format(_transaction['data']['transactions'][index]['amount']);
-
-    var image=_transaction['data']['transactions'][index]['image'];
-    var type=_transaction['data']['transactions'][index]['type'];
-    var id=_transaction['data']['transactions'][index]['id'];
-    var status=_transaction['data']['transactions'][index]['status'];
+    var image = '${_transaction['data']['transactions'][index]['image']}';
+    var type = _transaction['data']['transactions'][index]['type'];
+    var id = _transaction['data']['transactions'][index]['id'];
+    var status = _transaction['data']['transactions'][index]['status'];
 
     return Center(
       child: Container(
@@ -305,16 +306,15 @@ class _budgetprojectState extends State<budgetproject> {
           children: <Widget>[
             //Container icon
             Container(
-              child:
-                  _transaction['data']['transactions'][index]['type'] == "in"
-                      ? Icon(
-                          Icons.monetization_on_outlined,
-                          color: Colors.green,
-                        )
-                      : Icon(
-                          Icons.monetization_on_outlined,
-                          color: Colors.redAccent,
-                        ),
+              child: _transaction['data']['transactions'][index]['type'] == "in"
+                  ? Icon(
+                      Icons.monetization_on_outlined,
+                      color: Colors.green,
+                    )
+                  : Icon(
+                      Icons.monetization_on_outlined,
+                      color: Colors.redAccent,
+                    ),
             ),
             Expanded(
               child: Container(
@@ -322,169 +322,289 @@ class _budgetprojectState extends State<budgetproject> {
                 child: Card(
                   child: Column(
                     children: [
-
                       Container(
                         height: 40,
                         child: Container(
-
                           width: Get.mediaQuery.size.width,
                           child: Row(
                             children: [
-                              status=="pending"?Container(
-                                margin: EdgeInsets.only(left: 10),
-                                child: Text("Pelunasan",style: TextStyle(color: Colors.black87,fontSize: 15,fontFamily: "SFBlack"),),
-                              ):Container(),
+                              status == "pending"
+                                  ? Container(
+                                      margin: EdgeInsets.only(left: 10),
+                                      child: Text(
+                                        "Pelunasan",
+                                        style: TextStyle(
+                                            color: Colors.black87,
+                                            fontSize: 15,
+                                            fontFamily: "SFBlack"),
+                                      ),
+                                    )
+                                  : Container(),
                               Expanded(
                                 child: Container(
                                   width: double.maxFinite,
-
                                   child: Align(
+                                    child: type == 'in'
+                                        ? Container()
+                                        : Row(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.end,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.end,
+                                            children: <Widget>[
+                                              //btn edit transaction
+                                              _visible == false
+                                                  ? (Container(
+                                                      child: new FlatButton(
+                                                          minWidth: 1,
+                                                          color:
+                                                              Colors.grey[100],
+                                                          onPressed: () {
+                                                            updateeditBudget(
+                                                                widget
+                                                                    .projectNumber,
+                                                                id.toString(),
+                                                                _transaction['data']['transactions']
+                                                                            [index]
+                                                                        [
+                                                                        'amount']
+                                                                    .toString(),
+                                                                _transaction['data']
+                                                                            ['transactions']
+                                                                        [index][
+                                                                    'description'],
+                                                                _transaction['data']
+                                                                            ['transactions']
+                                                                        [index]
+                                                                    ['date'],
+                                                                _transaction['data']
+                                                                            ['transactions']
+                                                                        [index][
+                                                                    'account_id'],
+                                                                widget
+                                                                    .projectId,
+                                                                status);
+                                                            // Get.to(EditExpense(
+                                                            //   project_number: widget
+                                                            //       .projectNumber,
+                                                            //   transaction_id:
+                                                            //       id.toString(),
+                                                            //   amount: _transaction['data']
+                                                            //                   [
+                                                            //                   'transactions']
+                                                            //               [
+                                                            //               index]
+                                                            //           ['amount']
+                                                            //       .toString(),
+                                                            //   description: _transaction[
+                                                            //               'data']
+                                                            //           [
+                                                            //           'transactions'][index]
+                                                            //       [
+                                                            //       'description'],
+                                                            //   date: _transaction[
+                                                            //               'data']
+                                                            //           [
+                                                            //           'transactions']
+                                                            //       [
+                                                            //       index]['date'],
+                                                            //   account_id: _transaction['data']
+                                                            //                   [
+                                                            //                   'transactions']
+                                                            //               [
+                                                            //               index]
+                                                            //           [
+                                                            //           'account_id']
+                                                            //       .toString(),
+                                                            //   event_id: widget
+                                                            //       .projectId,
+                                                            //   enabled: status ==
+                                                            //           "pending"
+                                                            //       ? false
+                                                            //       : true,
+                                                            //   status: status,
+                                                            //   path: _transaction[
+                                                            //               'data']
+                                                            //           [
+                                                            //           'transactions']
+                                                            //       [
+                                                            //       index]['image'],
+                                                            // ));
+                                                          },
+                                                          child: Icon(
+                                                            Icons.edit_outlined,
+                                                            size: 20,
+                                                          )),
+                                                    ))
+                                                  : (status == "pending"
+                                                      ? Container(
+                                                          child: new FlatButton(
+                                                              minWidth: 1,
+                                                              color: Colors
+                                                                  .grey[100],
+                                                              onPressed: () {},
+                                                              child: Icon(
+                                                                Icons
+                                                                    .edit_outlined,
+                                                                size: 20,
+                                                              )),
+                                                        )
+                                                      : Container()),
 
-                                    child: type=='in'?Container():Row(
-                                      crossAxisAlignment: CrossAxisAlignment.end,
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      children: <Widget>[
-
-                                        //btn edit transaction
-                                        _visible==false?(Container(
-                                          child: new FlatButton(
-                                              minWidth: 1,
-                                              color: Colors.grey[100],
-                                              onPressed:() {
-                                                Get.to(EditExpense(
-                                                  project_number: widget.projectNumber,
-                                                  transaction_id: id.toString(),
-                                                  amount: _transaction['data']['transactions'][index]['amount'].toString(),
-                                                  description:_transaction['data']['transactions'][index]['description'],
-                                                  date:_transaction['data']['transactions'][index]['date'],
-                                                  account_id:_transaction['data']['transactions'][index]['account_id'].toString(),
-                                                  event_id: widget.projectId,
-                                                  enabled: status=="pending"?false:true,
-                                                  status: status,
-                                                ));
-                                              },
-                                              child: Icon(Icons.edit_outlined,size: 20,)),
-                                        )):(status=="pending"?
-                                        Container(
-                                          child: new FlatButton(
-                                              minWidth: 1,
-                                              color: Colors.grey[100],
-                                              onPressed:() {
-                                                Get.to(EditExpense(
-                                                  project_number: widget.projectNumber,
-                                                  transaction_id: id.toString(),
-                                                  amount: _transaction['data']['transactions'][index]['amount'].toString(),
-                                                  description:_transaction['data']['transactions'][index]['description'],
-                                                  date:_transaction['data']['transactions'][index]['date'],
-                                                  account_id:_transaction['data']['transactions'][index]['account_id'].toString(),
-                                                  event_id: widget.projectId,
-                                                  enabled: status=="pending"?false:true,
-                                                  status: status,
-                                                ));
-                                              },
-                                              child: Icon(Icons.edit_outlined,size: 20,)),
-                                        ):Container()
-                                        ),
-
-                                        SizedBox(height: 10,),
-                                        _visible==false?Container(
-
-                                          margin: EdgeInsets.only(left: 10,right: 10),
-                                          child: new FlatButton(
-                                              minWidth: 1,
-                                              color: Colors.grey[100],
-
-                                              onPressed:() {
-                                                Alert(
-                                                  context: context,
-                                                  type: AlertType.warning,
-                                                  title: "Apa anda yakin?",
-                                                  desc: "Data transaksi ini akan dihapus",
-                                                  buttons: [
-                                                    DialogButton(
-                                                      child: Text(
-                                                        "Iya",
-                                                        style: TextStyle(color: Colors.white, fontSize: 20),
-                                                      ),
-                                                      onPressed: (){
-
-                                                        var id=_transaction['data']['transactions'][index]['id'];
-                                                        print("${id}");
-                                                        services.deleteTransactionBudget(context,id , widget.projectNumber).then((value) {
-
-                                                          _dataBudgeting();
-                                                          // _transaction['data']['transactions'].removeWhere((item) => item.id == id);
-                                                        });
-
-
-                                                      },
-                                                      color:btnColor1,
-                                                    ),
-                                                    DialogButton(
-                                                      child: Text(
-                                                        "Batalkan",
-                                                        style: TextStyle(color: Colors.white, fontSize: 20),
-                                                      ),
-                                                      onPressed: () => Navigator.pop(context),
-                                                      color:Colors.grey,
+                                              SizedBox(
+                                                height: 10,
+                                              ),
+                                              _visible == false
+                                                  ? Container(
+                                                      margin: EdgeInsets.only(
+                                                          left: 10, right: 10),
+                                                      child: new FlatButton(
+                                                          minWidth: 1,
+                                                          color:
+                                                              Colors.grey[100],
+                                                          onPressed: () {
+                                                            Alert(
+                                                              context: context,
+                                                              type: AlertType
+                                                                  .warning,
+                                                              title:
+                                                                  "Apa anda yakin?",
+                                                              desc:
+                                                                  "Data transaksi ini akan dihapus",
+                                                              buttons: [
+                                                                DialogButton(
+                                                                  child: Text(
+                                                                    "Iya",
+                                                                    style: TextStyle(
+                                                                        color: Colors
+                                                                            .white,
+                                                                        fontSize:
+                                                                            20),
+                                                                  ),
+                                                                  onPressed:
+                                                                      () {
+                                                                    var id = _transaction['data']
+                                                                            [
+                                                                            'transactions']
+                                                                        [
+                                                                        index]['id'];
+                                                                    print(
+                                                                        "${id}");
+                                                                    services
+                                                                        .deleteTransactionBudget(
+                                                                            context,
+                                                                            id,
+                                                                            widget
+                                                                                .projectNumber)
+                                                                        .then(
+                                                                            (value) {
+                                                                      _dataBudgeting();
+                                                                      // _transaction['data']['transactions'].removeWhere((item) => item.id == id);
+                                                                    });
+                                                                  },
+                                                                  color:
+                                                                      btnColor1,
+                                                                ),
+                                                                DialogButton(
+                                                                  child: Text(
+                                                                    "Batalkan",
+                                                                    style: TextStyle(
+                                                                        color: Colors
+                                                                            .white,
+                                                                        fontSize:
+                                                                            20),
+                                                                  ),
+                                                                  onPressed: () =>
+                                                                      Navigator.pop(
+                                                                          context),
+                                                                  color: Colors
+                                                                      .grey,
+                                                                )
+                                                              ],
+                                                            ).show();
+                                                          },
+                                                          child: Icon(
+                                                            Icons
+                                                                .restore_from_trash_outlined,
+                                                            size: 20,
+                                                          )),
                                                     )
-                                                  ],
-                                                ).show();
-
-                                              },
-                                              child: Icon(Icons.restore_from_trash_outlined,size: 20,)),
-                                        ):(status=="pending"?
-                                        Container(
-
-                                          margin: EdgeInsets.only(left: 10,right: 10),
-                                          child: new FlatButton(
-                                              minWidth: 1,
-                                              color: Colors.grey[100],
-
-                                              onPressed:() {
-                                                Alert(
-                                                  context: context,
-                                                  type: AlertType.warning,
-                                                  title: "Apa anda yakin?",
-                                                  desc: "Data transaksi ini akan dihapus",
-                                                  buttons: [
-                                                    DialogButton(
-                                                      child: Text(
-                                                        "Iya",
-                                                        style: TextStyle(color: Colors.white, fontSize: 20),
-                                                      ),
-                                                      onPressed: (){
-
-                                                        var id=_transaction['data']['transactions'][index]['id'];
-                                                        print("${id}");
-                                                        services.deleteTransactionBudget(context,id , widget.projectNumber).then((value) {
-
-                                                          _dataBudgeting();
-                                                          // _transaction['data']['transactions'].removeWhere((item) => item.id == id);
-                                                        });
-
-
-                                                      },
-                                                      color:btnColor1,
-                                                    ),
-                                                    DialogButton(
-                                                      child: Text(
-                                                        "Batalkan",
-                                                        style: TextStyle(color: Colors.white, fontSize: 20),
-                                                      ),
-                                                      onPressed: () => Navigator.pop(context),
-                                                      color:Colors.grey,
-                                                    )
-                                                  ],
-                                                ).show();
-
-                                              },
-                                              child: Icon(Icons.restore_from_trash_outlined,size: 20,)),
-                                        ):Container()
-
-                                        ),
-                                      ],
-                                    ),
+                                                  : (status == "pending"
+                                                      ? Container(
+                                                          margin:
+                                                              EdgeInsets.only(
+                                                                  left: 10,
+                                                                  right: 10),
+                                                          child: new FlatButton(
+                                                              minWidth: 1,
+                                                              color: Colors
+                                                                  .grey[100],
+                                                              onPressed: () {
+                                                                Alert(
+                                                                  context:
+                                                                      context,
+                                                                  type: AlertType
+                                                                      .warning,
+                                                                  title:
+                                                                      "Apa anda yakin?",
+                                                                  desc:
+                                                                      "Data transaksi ini akan dihapus",
+                                                                  buttons: [
+                                                                    DialogButton(
+                                                                      child:
+                                                                          Text(
+                                                                        "Iya",
+                                                                        style: TextStyle(
+                                                                            color:
+                                                                                Colors.white,
+                                                                            fontSize: 20),
+                                                                      ),
+                                                                      onPressed:
+                                                                          () {
+                                                                        var id =
+                                                                            _transaction['data']['transactions'][index]['id'];
+                                                                        print(
+                                                                            "${id}");
+                                                                        services
+                                                                            .deleteTransactionBudget(
+                                                                                context,
+                                                                                id,
+                                                                                widget.projectNumber)
+                                                                            .then((value) {
+                                                                          _dataBudgeting();
+                                                                          // _transaction['data']['transactions'].removeWhere((item) => item.id == id);
+                                                                        });
+                                                                      },
+                                                                      color:
+                                                                          btnColor1,
+                                                                    ),
+                                                                    DialogButton(
+                                                                      child:
+                                                                          Text(
+                                                                        "Batalkan",
+                                                                        style: TextStyle(
+                                                                            color:
+                                                                                Colors.white,
+                                                                            fontSize: 20),
+                                                                      ),
+                                                                      onPressed:
+                                                                          () =>
+                                                                              Navigator.pop(context),
+                                                                      color: Colors
+                                                                          .grey,
+                                                                    )
+                                                                  ],
+                                                                ).show();
+                                                              },
+                                                              child: Icon(
+                                                                Icons
+                                                                    .restore_from_trash_outlined,
+                                                                size: 20,
+                                                              )),
+                                                        )
+                                                      : Container()),
+                                            ],
+                                          ),
                                   ),
                                 ),
                               ),
@@ -494,13 +614,11 @@ class _budgetprojectState extends State<budgetproject> {
                       ),
                       Container(
                         color: Colors.black45,
-                        width: Get.mediaQuery.size.width-35,
+                        width: Get.mediaQuery.size.width - 35,
                         height: 1,
                       ),
                       Row(
                         children: [
-
-
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
@@ -512,13 +630,14 @@ class _budgetprojectState extends State<budgetproject> {
                                       fontSize: 16, color: Colors.black38),
                                 ),
                               ),
-                              SizedBox(height: 10,),
+                              SizedBox(
+                                height: 10,
+                              ),
                               Container(
-                                width: Get.mediaQuery.size.width-140,
+                                width: Get.mediaQuery.size.width - 140,
                                 margin: EdgeInsets.only(left: 10, top: 0),
                                 child: Text(
                                   "${description}",
-
                                   style: TextStyle(
                                       fontSize: 16, color: Colors.black38),
                                 ),
@@ -529,34 +648,67 @@ class _budgetprojectState extends State<budgetproject> {
                                 child: Text(
                                   "${amount}",
                                   style: TextStyle(
-                                      fontSize: 16, fontWeight: FontWeight.bold,color: type=="in"?Colors.green:Colors.red),
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                      color: type == "in"
+                                          ? Colors.green
+                                          : Colors.red),
                                 ),
                               ),
-                              SizedBox(height: 10,),
-
-                              status=="pending"?Container(
+                              SizedBox(
+                                height: 10,
+                              ),
+                              status == "pending"
+                                  ? Container(
+                                      margin: EdgeInsets.only(left: 10),
+                                      width: Get.mediaQuery.size.width - 140,
+                                      child: Row(
+                                        children: [
+                                          Container(
+                                            child: Icon(
+                                              Icons.info_outline,
+                                              color: Colors.lightBlue,
+                                            ),
+                                          ),
+                                          Container(
+                                            margin: EdgeInsets.only(
+                                                left: 10, top: 0),
+                                            child: Text(
+                                              "Menunggu persetujuan",
+                                              style: TextStyle(
+                                                  fontSize: 16,
+                                                  color: Colors.lightBlue),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    )
+                                  : status=="rejected"?
+                              Container(
                                 margin: EdgeInsets.only(left: 10),
-                                width: Get.mediaQuery.size.width-140,
+                                width: Get.mediaQuery.size.width - 150,
                                 child: Row(
                                   children: [
-                                    Container(child: Icon(Icons.info_outline,color: Colors.lightBlue,),),
                                     Container(
-
-
-                                      margin: EdgeInsets.only(left: 10, top: 0),
+                                      child: Icon(
+                                        Icons.close,
+                                        color: Colors.redAccent,
+                                      ),
+                                    ),
+                                    Container(
+                                      margin: EdgeInsets.only(
+                                          left: 10, top: 0),
                                       child: Text(
-                                        "Menunggu persetujuan",
-
+                                        "Pengajuan ditolak",
                                         style: TextStyle(
-                                            fontSize: 16, color: Colors.lightBlue),
+                                            fontSize: 16,
+                                            color: Colors.redAccent),
                                       ),
                                     ),
                                   ],
                                 ),
-                              ):Container(),
-
-
-
+                              ):
+                              Container(),
                             ],
                           ),
                           Expanded(
@@ -566,27 +718,55 @@ class _budgetprojectState extends State<budgetproject> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.end,
                                 children: <Widget>[
-                               SizedBox(height: 15,),
+                                  SizedBox(
+                                    height: 15,
+                                  ),
 
-
-                            Hero(
-                                tag: "avatar-1",
-                                child: Container(
-
-                                    margin: EdgeInsets.only(left: 10),
-                                    color: Colors.black87,
-                                    height: 100,
-                                    width: 100,
-                                    child: image == null
-                                        ?Center(child: Text("No Image",style: TextStyle(color: Colors.white)))
-                                        : image==""?Center(child: Text("No Image",style: TextStyle(color: Colors.white),)): CachedNetworkImage(
-                                      imageUrl:  "${image_ur}/${image}",
-                                      fit: BoxFit.fill,
-                                      placeholder: (context, url) =>
-                                          Center(child: new CircularProgressIndicator()),
-                                      errorWidget: (context, url, error) =>
-                                      new Icon(Icons.error),
-                                    )))
+                                  Hero(
+                                      tag: "image_transaksi",
+                                      child: Container(
+                                          margin: EdgeInsets.only(left: 10),
+                                          color: Colors.black87,
+                                          height: 100,
+                                          width: 100,
+                                          child: image == null
+                                              ? Center(
+                                                  child: Text("No Image",
+                                                      style: TextStyle(
+                                                          color: Colors.white))):image =="null"
+                                              ? Center(
+                                              child: Text("No Image",
+                                                  style: TextStyle(
+                                                      color: Colors.white)))
+                                              : image == ""
+                                                  ? Center(
+                                                      child: Text(
+                                                      "No Image",
+                                                      style: TextStyle(
+                                                          color: Colors.white),
+                                                    ))
+                                                  : InkWell(
+                                                      onTap: () {
+                                                        Get.to(ImageTransaction(
+                                                          image: image,
+                                                          title: description,
+                                                        ));
+                                                      },
+                                                      child: CachedNetworkImage(
+                                                        imageUrl:
+                                                            "${image_ur}/eo/transactions/${image}",
+                                                        fit: BoxFit.fill,
+                                                        placeholder: (context,
+                                                                url) =>
+                                                            Center(
+                                                                child:
+                                                                    new CircularProgressIndicator()),
+                                                        errorWidget: (context,
+                                                                url, error) =>
+                                                            new Icon(
+                                                                Icons.error),
+                                                      ),
+                                                    )))
 
                                   // Container(
                                   //   width: 100,
@@ -635,19 +815,18 @@ class _budgetprojectState extends State<budgetproject> {
           style: TextStyle(color: Colors.black87),
         ),
       ),
-       floatingActionButton:  _visible==false?FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => expandbudget(
-                        event_id: widget.projectId.toString(),
-                        project_number: widget.projectNumber.toString(),
-                      )));
-        },
-        child: Icon(Icons.add),
-        backgroundColor: btnColor1,
-      ):null,
+      floatingActionButton: widget.statusMember == 'pic'
+          ? (_visible == false
+              ? (remaining_balance!=0?FloatingActionButton(
+                  heroTag: "btn_expense",
+                  onPressed: () {
+                    _ExpenseBudget();
+                  },
+                  child: Icon(Icons.add),
+                  backgroundColor: btnColor1,
+                ):null)
+              : null)
+          : Container(),
       body: RefreshIndicator(
         child: new Container(
           child: Container(
@@ -668,7 +847,8 @@ class _budgetprojectState extends State<budgetproject> {
                                             .length ==
                                         0
                                     ? 0
-                                    : _transaction['data']['transactions'].length,
+                                    : _transaction['data']['transactions']
+                                        .length,
                                 itemBuilder: (context, index) {
                                   return _transaction['data']['transactions']
                                               .length ==
@@ -736,36 +916,79 @@ class _budgetprojectState extends State<budgetproject> {
     });
   }
 
-  void _saveBudget(){
-
-  }
-  void _updateBudget(){
-
-  }
-  void _payment(){
-
-  }
-
-  void _checkActiveBudget(){
-    var now=DateTime.now();
-
-    DateTime budgetStartDate =DateTime.parse("${widget.budgetStartDate}");
-    DateTime budgetEndDate=DateTime.parse("${widget.budgetEndDate}");
 
 
-    if (budgetStartDate.isBefore(now) && budgetEndDate.isAfter(now)){
-   setState(() {
-     //between
-     _visible=false;
-   });
-    } else{
+  void _checkActiveBudget() {
+    var now = DateTime.now();
 
+    DateTime budgetStartDate = DateTime.parse("${widget.budgetStartDate}");
+    DateTime budgetEndDate = DateTime.parse("${widget.budgetEndDate}");
+
+    if (budgetStartDate.isBefore(now) && budgetEndDate.isAfter(now)) {
       setState(() {
-        _visible=true;
+        //between
+        _visible = false;
+      });
+    } else {
+      setState(() {
+        _visible = true;
       });
     }
-
   }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+  }
+
+  void _ExpenseBudget() async {
+    var result = await Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => expandbudget(
+                  event_id: widget.projectId.toString(),
+                  project_number: widget.projectNumber.toString(),
+                )));
+
+    if (result == "update") {
+      Refreshbudget();
+    }
+  }
+
+  void updateeditBudget(var projectNumber, transactionId, amount, description,
+      date, accountId, eventId, status) async {
+    var result = await Get.to(EditExpense(
+      project_number: projectNumber,
+      transaction_id: transactionId,
+      amount: amount,
+      description: description,
+      date: date,
+      account_id: accountId.toString(),
+      event_id: eventId,
+      enabled: status == "pending" ? false : true,
+      status: status,
+    ));
+
+    if (result == "update") {
+      Refreshbudget();
+    }
+  }
+
+  void updateRepayment() async {
+    var result = await Get.to(RepaymentBudget(
+      event_id: widget.projectId,
+      project_number:
+      widget.projectNumber,
+      amount: remaining_balance,
+    ));
+
+    if (result == "update") {
+      Refreshbudget();
+    }
+  }
+
+
 
   //ge data from api--------------------------------
   Future _dataBudgeting() async {
@@ -776,11 +999,17 @@ class _budgetprojectState extends State<budgetproject> {
       http.Response response = await http
           .get("$baset_url_event/api/projects/${widget.projectId}/budgets");
       _transaction = jsonDecode(response.body);
-      total_in=NumberFormat.currency(decimalDigits: 0,  locale: "id").format(_transaction['data']['total_in']);
-      total_out=NumberFormat.currency(decimalDigits: 0,  locale: "id").format(_transaction['data']['total_out']);
-      balance=NumberFormat.currency(decimalDigits: 0,  locale: "id").format(_transaction['data']['balance']);
-      remaining_balance=_transaction['data']['balance'];
+      total_in = NumberFormat.currency(decimalDigits: 0, locale: "id")
+          .format(_transaction['data']['total_in']);
+      total_out = NumberFormat.currency(decimalDigits: 0, locale: "id")
+          .format(_transaction['data']['total_out']);
+      balance = NumberFormat.currency(decimalDigits: 0, locale: "id")
+          .format(_transaction['data']['balance']);
+      remaining_balance = _transaction['data']['balance'];
       _checkActiveBudget();
+      projectNumber = _transaction['data']['project_number'];
+      budgetStartDate = _transaction['data']['budget_start_date'];
+      budgetEndDate = _transaction['data']['budget_end_date'];
 
       setState(() {
         _loading = false;
@@ -794,6 +1023,5 @@ class _budgetprojectState extends State<budgetproject> {
     // TODO: implement initState
     super.initState();
     _dataBudgeting();
-
   }
 }

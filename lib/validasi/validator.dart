@@ -1,3 +1,6 @@
+
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:hrdmagenta/services/api_clien.dart';
 import 'package:toast/toast.dart';
@@ -22,12 +25,12 @@ class Validasi {
 
   //validasi transaction
   void validation_transaction(BuildContext context, var amount, date, note,
-      event_id, budget_category_id, requested_by, image,project_number,transaction_id,status_transaction,status) {
+      event_id, budget_category_id, requested_by,image,var project_number,transaction_id,status_transaction,status,path) {
     if (amount.isEmpty) {
       Toast.show("jumlah uang belum diisi", context,
           duration: 5, gravity: Toast.BOTTOM);
-    } else if (note.isEmpty) {
-      Toast.show("masukan bukti transaksi anda", context,
+    } else if (date.isEmpty) {
+      Toast.show("Masukan tanggal transaksi", context,
           duration: 5, gravity: Toast.BOTTOM);
     } else {
       if (status=='save'){
@@ -37,8 +40,9 @@ class Validasi {
       }else if(status=='update'){
 
         services.editTransaction(context, amount, date, note, event_id,
-            budget_category_id, requested_by, image,project_number,transaction_id,status_transaction);
+            budget_category_id, requested_by, image,project_number,transaction_id,status_transaction,path);
       }else if (status=='repayment'){
+
         services.expenseBudget(context, amount, date, note, event_id,
             budget_category_id, requested_by, image,project_number,"pending");
 

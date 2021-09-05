@@ -25,7 +25,7 @@ class Tabsappbudget extends StatelessWidget {
             labelColor: Colors.black87,
             tabs: <Widget>[
               Tab(
-                text: 'Expense',
+                text: 'Advance',
               ),
               Tab(
                 text: 'Deposit',

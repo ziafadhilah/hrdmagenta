@@ -7,9 +7,10 @@ import 'package:hrdmagenta/page/employee/task/task_inprogress.dart';
 import 'package:hrdmagenta/utalities/constants.dart';
 
 class Tabstasks extends StatelessWidget {
-  Tabstasks({this.task, this.id});
+  Tabstasks({this.task, this.id,this.statusMember});
 
   var task, id;
+  var statusMember;
 
   @override
   Widget build(BuildContext context) {
@@ -53,6 +54,7 @@ class Tabstasks extends StatelessWidget {
               status: "in progress",
               tasks: "$task",
               id: "$id",
+              statusMember:statusMember
             ),
             task_complated(
               status: "completed",

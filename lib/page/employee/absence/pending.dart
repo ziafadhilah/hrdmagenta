@@ -40,7 +40,7 @@ class _PendingAbsenceEmployeePageState extends State<PendingAbsenceEmployeePage>
             itemBuilder: (context, index) {
               return _absence['data'].length == 0
                   ? _buildnodata()
-                  : _buildlistabsence(index);
+              :_absence['data'][index]['employee_id']==user_id?_buildlistabsence(index):Container();
             }),
 
         //
@@ -116,7 +116,7 @@ class _PendingAbsenceEmployeePageState extends State<PendingAbsenceEmployeePage>
                                                 child: Text( DateFormat("dd/MM/yyyy hh:mm:ss").format(DateTime.parse(_absence['data'][index]['clock_out'])), style: TextStyle(fontSize: 15, color: Colors.black26))),
 
                                           ),
-                                          InkWell(
+                                          _absence['data'][index]['clock_in_latitude']!=null?InkWell(
                                             onTap: () {
                                               if (_absence['data'][index]
                                               ['type'] ==
@@ -366,7 +366,7 @@ class _PendingAbsenceEmployeePageState extends State<PendingAbsenceEmployeePage>
                                                 ],
                                               ),
                                             ),
-                                          )
+                                          ):Container()
                                         ],
                                       ),
                                     ),
@@ -419,7 +419,7 @@ class _PendingAbsenceEmployeePageState extends State<PendingAbsenceEmployeePage>
         _loading = true;
       });
       http.Response response = await http.get(
-          "$base_url/api/employees/$user_id/attendances?status=${widget.type}");
+          "${base_url}/api/attendances?status=${widget.type}");
       _absence = jsonDecode(response.body);
      
       setState(() {

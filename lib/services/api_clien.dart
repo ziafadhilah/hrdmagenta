@@ -14,7 +14,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toast/toast.dart';
 String base_url = "http://hrd.magentamediatama.net";
 String image_ur = "https://arenzha.s3.ap-southeast-1.amazonaws.com";
-String baset_url_event="http://127.0.0.1:3000";
+String baset_url_event="http://react.magentamediatama.net";
+
 
 
 class Services {
@@ -26,12 +27,12 @@ class Services {
       BuildContext context, var username, var password) async {
     loading(context);
     try {
-    //  String fcm_registration_token = await FirebaseMessaging().getToken();
+      String fcm_registration_token = await FirebaseMessaging().getToken();
       final response =
           await http.post("$base_url/api/login/mobile/employee", body: {
         "username": username.toString().trim(),
         "password": password,
-       // "fcm_registration_token": fcm_registration_token
+       "fcm_registration_token": fcm_registration_token
       });
 
       //
@@ -66,17 +67,18 @@ class Services {
 
   ///expense budget employee
   Future<void> expenseBudget(BuildContext context, var amount, date, note,
-      event_id, budget_category_id, requested_by, image,project_number,status) async {
-    print(status);
+      event_id, budget_category_id, requested_by,image,project_number,status) async {
+
     loading(context);
-    try{
-      final response = await http.post("$baset_url_event/api/mobile/project/transactions", body: {
+    // try{
+      final response = await http.post("$baset_url_event/api/mobile/project/transactions",
+          body: {
         "description": note,
         "amount": amount,
         "account_id": budget_category_id,
         "project_id": event_id,
         "date": date,
-        //"file": file.toString().trim(),
+         "image": '${image}',
         "status": status,
         "project_number":project_number
       });
@@ -87,35 +89,37 @@ class Services {
       if (responseJson['code'] == 200) {
         toast_success("${responseJson['message']}");
         Navigator.pop(context);
-        Navigator.pop(context);
+        Navigator.of(context).pop('update');
       } else {
         toast_error("${responseJson['message']}");
         Navigator.pop(context);
       }
 
-    }catch(e){
-
-      toast_error("${e}");
-      print("${e}");
-
-    }
+    // }catch(e){
+    //
+    //   toast_error("${e}");
+    //   print("${e}");
+    //
+    // }
 
   }
 
   ///expense budget employee
   Future<void> editTransaction(BuildContext context, var amount, date, note,
-      event_id, budget_category_id, requested_by, image,project_number,transaction_id,status_transaction) async {
+      event_id, budget_category_id, requested_by,image,var project_number,transaction_id,status_transaction,path) async {
     loading(context);
     try{
+
       final response = await http.patch("$baset_url_event/api/mobile/project/transactions/${transaction_id}", body: {
         "description": note,
         "amount": amount,
         "account_id": budget_category_id,
         "project_id": event_id,
         "date": date,
-        //"file": file.toString().trim(),
+        "image": image,
         "status": status_transaction,
         "project_number":project_number,
+        "path":path.toString()
 
       });
 
@@ -125,7 +129,7 @@ class Services {
       if (responseJson['code'] == 200) {
         toast_success("${responseJson['message']}");
         Navigator.pop(context);
-        Navigator.pop(context);
+        Navigator.of(context).pop('update');
       } else {
         toast_error("${responseJson['message']}");
         Navigator.pop(context);
@@ -343,13 +347,13 @@ class Services {
 
     final responseJson = jsonDecode(response.body);
     if (responseJson['code']==200){
-      Toast.show("${responseJson['message']}", context);
+      toast_error("${responseJson['message']}");
       Get.back();
       Get.back();
 
     }else{
       print(leaves_dates.toString());
-      toast_success("${responseJson['message']}");
+      toast_error("${responseJson['message']}");
       Get.back();
       print(responseJson.toString());
       print(date_of_filing.toString());
@@ -619,12 +623,12 @@ class Services {
 
   Future<void> loginAdmin(
       BuildContext context, var username, var password) async {
-    //String fcm_registration_token = await FirebaseMessaging().getToken();
+    String fcm_registration_token = await FirebaseMessaging().getToken();
     loading(context);
     final response = await http.post("$base_url/api/login/mobile/admin", body: {
       "username": username.toString().trim(),
       "password": password,
-      //"fcm_registration_token": fcm_registration_token
+      "fcm_registration_token": fcm_registration_token
     });
     //
     final data = jsonDecode(response.body);

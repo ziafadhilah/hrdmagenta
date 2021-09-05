@@ -371,11 +371,11 @@ class _AddPermissionPageEmployeeState extends State<AddPermissionPageEmployee> {
         _rangeCount = args.value.length.toString();
         jumlahPengambilanController.text=args.value.length.toString();
 
-
-        print("berhasil");
       }
     });
   }
+
+
   Future multipleDate(){
     return showDialog(
         context: context,

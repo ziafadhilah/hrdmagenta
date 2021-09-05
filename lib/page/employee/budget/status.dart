@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/instance_manager.dart';
 import 'package:hrdmagenta/page/employee/absence/photoview.dart';
+import 'package:hrdmagenta/page/employee/budget/image.dart';
 import 'package:hrdmagenta/page/employee/budget/shimmer_effect.dart';
 import 'package:hrdmagenta/services/api_clien.dart';
 import 'package:hrdmagenta/utalities/constants.dart';
@@ -49,159 +50,377 @@ class _budget_statusState extends State<budget_status> {
   }
 
   Widget _buildTransaction(index) {
-    var typeExpense="Transportasi";
-    var description=_transaction['data']['transactions'][index]['description'];
-    var date=DateFormat("dd/MM/yyyy").format(DateTime.parse("${_transaction['data']['transactions'][index]['date']}"));
-    var amount= NumberFormat.currency(decimalDigits: 0,  locale: "id").format(_transaction['data']['transactions'][index]['amount']);
+    var description =
+        _transaction['data']['transactions'][index]['description'];
+    var date = DateFormat("dd/MM/yyyy").format(DateTime.parse(
+        "${_transaction['data']['transactions'][index]['date']}"));
+    var amount = NumberFormat.currency(decimalDigits: 0, locale: "id")
+        .format(_transaction['data']['transactions'][index]['amount']);
 
-    var image=_transaction['data']['transactions'][index]['image'];
-    var type=_transaction['data']['transactions'][index]['type'];
-    return InkWell(
-      onTap: () {
-        // Navigator.pushReplacement(
-        //     context,
-        //     MaterialPageRoute(
-        //         builder: (context) => detailBudget(
-        //           usage_budget: "",
-        //           requested_on: "2021-10-11",
-        //           status: "pending",
-        //           budget_usage_category: "",
-        //           type: "",
-        //           note: "",
-        //         )));
-      },
-      child: Center(
-        child: Container(
-          margin: EdgeInsets.only(top: 10),
-          width: double.infinity,
-          height: 150,
-          child: Row(
-            children: <Widget>[
-              //Container icon
-              Container(
-                child:
-                _transaction['data']['transactions'][index]['type'] == "in"
-                    ? Icon(
-                  Icons.monetization_on_outlined,
-                  color: Colors.green,
-                )
-                    : Icon(
-                  Icons.monetization_on_outlined,
-                  color: Colors.redAccent,
-                ),
-              ),
-              Expanded(
-                child: Container(
-                  width: 200,
-                  child: Card(
-                    child: Row(
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Container(
-                              margin: EdgeInsets.only(left: 10, top: 10),
-                              child: Text(
-                                typeExpense,
-                                style: TextStyle(
-                                    fontSize: 16, fontWeight: FontWeight.bold),
-                              ),
-                            ),
-                            Container(
-                              width: Get.mediaQuery.size.width-140,
-                              margin: EdgeInsets.only(left: 10, top: 10),
-                              child: Text(
-                                "${description}",
+    var image = '${_transaction['data']['transactions'][index]['image']}';
+    var type = _transaction['data']['transactions'][index]['type'];
+    var id = _transaction['data']['transactions'][index]['id'];
+    var status = _transaction['data']['transactions'][index]['status'];
 
-                                style: TextStyle(
-                                    fontSize: 16, color: Colors.black38),
-                              ),
-                            ),
-                            Container(
-                              margin: EdgeInsets.only(
-                                  left: 10, top: 10, bottom: 10),
-                              child: Text(
-                                "${amount}",
-                                style: TextStyle(
-                                    fontSize: 16, fontWeight: FontWeight.bold,color: type=="in"?Colors.green:Colors.red),
-                              ),
-                            ),
-                          ],
-                        ),
-                        Expanded(
-                          child: Container(
-                            margin: EdgeInsets.only(right: 10),
-                            width: double.maxFinite,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: <Widget>[
-                                // Container(
-                                Container(
-                                  child: Text(
-                                    "${date}",
-                                    style: TextStyle(
-                                        fontSize: 16,color: Colors.black38),
-                                  ),
-                                ),
-                                SizedBox(height: 10,),
-
-                                Hero(
-                                    tag: "avatar-1",
-                                    child: Container(
-
-                                        margin: EdgeInsets.only(left: 10),
-                                        color: Colors.black87,
-                                        height: 100,
-                                        width: 100,
-                                        child: InkWell(
-                                          onTap: () {
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) => PhotoViewPage(
-                                                    //image: widget.image,
-                                                  )),
-                                            );
-                                          },
-                                          child: image == null
-                                              ? Image.asset(
-                                            "assets/absen.jpeg",
-                                            width: double.infinity,
-                                            height: double.infinity,
-                                            fit: BoxFit.fill,
-                                          )
-                                              : CachedNetworkImage(
-                                            imageUrl:  "${image_ur}/${image}",
-                                            fit: BoxFit.fill,
-                                            placeholder: (context, url) =>
-                                                Center(child: new CircularProgressIndicator()),
-                                            errorWidget: (context, url, error) =>
-                                            new Icon(Icons.error),
-                                          ),
-                                        )))
-
-                                // Container(
-                                //   width: 100,
-                                //   height: 100,
-                                //   color: Colors.black12,
-                                // )
-                              ],
-                            ),
-                          ),
-                        )
-                      ],
+    return Center(
+      child: Container(
+        margin: EdgeInsets.only(top: 10),
+        width: double.infinity,
+        height: 200,
+        child: Row(
+          children: <Widget>[
+            //Container icon
+            Container(
+              child: _transaction['data']['transactions'][index]['type'] == "in"
+                  ? Icon(
+                      Icons.monetization_on_outlined,
+                      color: Colors.green,
+                    )
+                  : Icon(
+                      Icons.monetization_on_outlined,
+                      color: Colors.redAccent,
                     ),
+            ),
+            Expanded(
+              child: Container(
+                width: 200,
+                child: Card(
+                  child: Column(
+                    children: [
+                      Container(
+                        height: 40,
+                        child: Container(
+                          width: Get.mediaQuery.size.width,
+                          child: Row(
+                            children: [
+                              status == "pending"
+                                  ? Container(
+                                      margin: EdgeInsets.only(left: 10),
+                                      child: Text(
+                                        "Pelunasan",
+                                        style: TextStyle(
+                                            color: Colors.black87,
+                                            fontSize: 15,
+                                            fontFamily: "SFBlack"),
+                                      ),
+                                    )
+                                  : Container(),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Container(
+                        color: Colors.black45,
+                        width: Get.mediaQuery.size.width - 35,
+                        height: 1,
+                      ),
+                      Row(
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Container(
+                                margin: EdgeInsets.only(left: 10, top: 0),
+                                child: Text(
+                                  "${date}",
+                                  style: TextStyle(
+                                      fontSize: 16, color: Colors.black38),
+                                ),
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Container(
+                                width: Get.mediaQuery.size.width - 140,
+                                margin: EdgeInsets.only(left: 10, top: 0),
+                                child: Text(
+                                  "${description}",
+                                  style: TextStyle(
+                                      fontSize: 16, color: Colors.black38),
+                                ),
+                              ),
+                              Container(
+                                margin: EdgeInsets.only(
+                                    left: 10, top: 10, bottom: 10),
+                                child: Text(
+                                  "${amount}",
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                      color: type == "in"
+                                          ? Colors.green
+                                          : Colors.red),
+                                ),
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              status == "pending"
+                                  ? Container(
+                                      margin: EdgeInsets.only(left: 10),
+                                      width: Get.mediaQuery.size.width - 140,
+                                      child: Row(
+                                        children: [
+                                          Container(
+                                            child: Icon(
+                                              Icons.info_outline,
+                                              color: Colors.lightBlue,
+                                            ),
+                                          ),
+                                          Container(
+                                            margin: EdgeInsets.only(
+                                                left: 10, top: 0),
+                                            child: Text(
+                                              "Menunggu persetujuan",
+                                              style: TextStyle(
+                                                  fontSize: 16,
+                                                  color: Colors.lightBlue),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    )
+                                  : Container(),
+                            ],
+                          ),
+                          Expanded(
+                            child: Container(
+                              margin: EdgeInsets.only(right: 10),
+                              width: double.maxFinite,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: <Widget>[
+                                  SizedBox(
+                                    height: 15,
+                                  ),
+
+                                  Hero(
+                                      tag: "image_transaksi",
+                                      child: Container(
+                                          margin: EdgeInsets.only(left: 10),
+                                          color: Colors.black87,
+                                          height: 100,
+                                          width: 100,
+                                          child: image == null
+                                              ? Center(
+                                                  child: Text("No Image",
+                                                      style: TextStyle(
+                                                          color: Colors.white)))
+                                              : image == "null"
+                                                  ? Center(
+                                                      child: Text("No Image",
+                                                          style: TextStyle(
+                                                              color: Colors
+                                                                  .white)))
+                                                  : image == ""
+                                                      ? Center(
+                                                          child: Text(
+                                                          "No Image",
+                                                          style: TextStyle(
+                                                              color:
+                                                                  Colors.white),
+                                                        ))
+                                                      : InkWell(
+                                                          onTap: () {
+                                                            Get.to(
+                                                                ImageTransaction(
+                                                              image: image,
+                                                              title:
+                                                                  description,
+                                                            ));
+                                                          },
+                                                          child:
+                                                              CachedNetworkImage(
+                                                            imageUrl:
+                                                                "${image_ur}/eo/transactions/${image}",
+                                                            fit: BoxFit.fill,
+                                                            placeholder: (context,
+                                                                    url) =>
+                                                                Center(
+                                                                    child:
+                                                                        new CircularProgressIndicator()),
+                                                            errorWidget: (context,
+                                                                    url,
+                                                                    error) =>
+                                                                new Icon(Icons
+                                                                    .error),
+                                                          ),
+                                                        )))
+
+                                  // Container(
+                                  //   width: 100,
+                                  //   height: 100,
+                                  //   color: Colors.black12,
+                                  // )
+                                ],
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    ],
                   ),
                 ),
-              )
-            ],
-          ),
+              ),
+            )
+          ],
         ),
       ),
     );
   }
 
-
+  // Widget _buildTransaction(index) {
+  //   var typeExpense="Transportasi";
+  //   var description=_transaction['data']['transactions'][index]['description'];
+  //   var date=DateFormat("dd/MM/yyyy").format(DateTime.parse("${_transaction['data']['transactions'][index]['date']}"));
+  //   var amount= NumberFormat.currency(decimalDigits: 0,  locale: "id").format(_transaction['data']['transactions'][index]['amount']);
+  //
+  //   var image=_transaction['data']['transactions'][index]['image'];
+  //   var type=_transaction['data']['transactions'][index]['type'];
+  //   return InkWell(
+  //     onTap: () {
+  //       // Navigator.pushReplacement(
+  //       //     context,
+  //       //     MaterialPageRoute(
+  //       //         builder: (context) => detailBudget(
+  //       //           usage_budget: "",
+  //       //           requested_on: "2021-10-11",
+  //       //           status: "pending",
+  //       //           budget_usage_category: "",
+  //       //           type: "",
+  //       //           note: "",
+  //       //         )));
+  //     },
+  //     child: Center(
+  //       child: Container(
+  //         margin: EdgeInsets.only(top: 10),
+  //         width: double.infinity,
+  //         height: 150,
+  //         child: Row(
+  //           children: <Widget>[
+  //             //Container icon
+  //             Container(
+  //               child:
+  //               _transaction['data']['transactions'][index]['type'] == "in"
+  //                   ? Icon(
+  //                 Icons.monetization_on_outlined,
+  //                 color: Colors.green,
+  //               )
+  //                   : Icon(
+  //                 Icons.monetization_on_outlined,
+  //                 color: Colors.redAccent,
+  //               ),
+  //             ),
+  //             Expanded(
+  //               child: Container(
+  //                 width: 200,
+  //                 child: Card(
+  //                   child: Row(
+  //                     children: [
+  //                       Column(
+  //                         crossAxisAlignment: CrossAxisAlignment.start,
+  //                         children: <Widget>[
+  //                           Container(
+  //                             margin: EdgeInsets.only(left: 10, top: 10),
+  //                             child: Text(
+  //                               typeExpense,
+  //                               style: TextStyle(
+  //                                   fontSize: 16, fontWeight: FontWeight.bold),
+  //                             ),
+  //                           ),
+  //                           Container(
+  //                             width: Get.mediaQuery.size.width-140,
+  //                             margin: EdgeInsets.only(left: 10, top: 10),
+  //                             child: Text(
+  //                               "${description}",
+  //
+  //                               style: TextStyle(
+  //                                   fontSize: 16, color: Colors.black38),
+  //                             ),
+  //                           ),
+  //                           Container(
+  //                             margin: EdgeInsets.only(
+  //                                 left: 10, top: 10, bottom: 10),
+  //                             child: Text(
+  //                               "${amount}",
+  //                               style: TextStyle(
+  //                                   fontSize: 16, fontWeight: FontWeight.bold,color: type=="in"?Colors.green:Colors.red),
+  //                             ),
+  //                           ),
+  //                         ],
+  //                       ),
+  //                       Expanded(
+  //                         child: Container(
+  //                           margin: EdgeInsets.only(right: 10),
+  //                           width: double.maxFinite,
+  //                           child: Column(
+  //                             crossAxisAlignment: CrossAxisAlignment.end,
+  //                             children: <Widget>[
+  //                               // Container(
+  //                               Container(
+  //                                 child: Text(
+  //                                   "${date}",
+  //                                   style: TextStyle(
+  //                                       fontSize: 16,color: Colors.black38),
+  //                                 ),
+  //                               ),
+  //                               SizedBox(height: 10,),
+  //
+  //                               Hero(
+  //                                   tag: "avatar-1",
+  //                                   child: Container(
+  //
+  //                                       margin: EdgeInsets.only(left: 10),
+  //                                       color: Colors.black87,
+  //                                       height: 100,
+  //                                       width: 100,
+  //                                       child: InkWell(
+  //                                         onTap: () {
+  //                                           Navigator.push(
+  //                                             context,
+  //                                             MaterialPageRoute(
+  //                                                 builder: (context) => PhotoViewPage(
+  //                                                   //image: widget.image,
+  //                                                 )),
+  //                                           );
+  //                                         },
+  //                                         child: image == null
+  //                                             ? Image.asset(
+  //                                           "assets/absen.jpeg",
+  //                                           width: double.infinity,
+  //                                           height: double.infinity,
+  //                                           fit: BoxFit.fill,
+  //                                         )
+  //                                             : CachedNetworkImage(
+  //                                           imageUrl:  "${image_ur}/${image}",
+  //                                           fit: BoxFit.fill,
+  //                                           placeholder: (context, url) =>
+  //                                               Center(child: new CircularProgressIndicator()),
+  //                                           errorWidget: (context, url, error) =>
+  //                                           new Icon(Icons.error),
+  //                                         ),
+  //                                       )))
+  //
+  //                               // Container(
+  //                               //   width: 100,
+  //                               //   height: 100,
+  //                               //   color: Colors.black12,
+  //                               // )
+  //                             ],
+  //                           ),
+  //                         ),
+  //                       )
+  //                     ],
+  //                   ),
+  //                 ),
+  //               ),
+  //             )
+  //           ],
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  // }
 
   Widget _buildnodata() {
     return Container(
@@ -249,9 +468,6 @@ class _budget_statusState extends State<budget_status> {
     _dataBudgeting();
   }
 }
-
-
-
 
 // Widget _buildTransaction(index) {
 //   return InkWell(

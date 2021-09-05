@@ -6,51 +6,40 @@ import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hrdmagenta/model/map.dart';
-import 'package:hrdmagenta/services/api_clien.dart';
 import 'package:hrdmagenta/utalities/color.dart';
 import 'package:hrdmagenta/utalities/constants.dart';
 import 'package:hrdmagenta/utalities/font.dart';
+
 import 'package:permission_handler/permission_handler.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-class Maps extends StatefulWidget {
+class MapsProject extends StatefulWidget {
   @override
-  _MapsState createState() => _MapsState();
+  _MapsProjectState createState() => _MapsProjectState();
 
-  Maps({this.address,
-    this.longitude,
-    this.latitude,
-    this.gender,
-    this.last_name,
-    this.firts_name,
-    this.profile_background,
-    this.distance,
-    this.longMainoffice,
-    this.latmainoffice,
-    this.image,
-    this.departement_name});
+  MapsProject(
+      {
+        this.longitude,
+        this.latitude,
+        this.projectNumber,
+        this.venue
 
-  var address,
+       });
+
+
+
+  var
       latitude,
+      venue,
       longitude,
-      gender,
-      firts_name,
-      last_name,
-      profile_background,
-      distance,
-      latmainoffice,
-      longMainoffice,
-      image,
-      departement_name;
+      projectNumber;
+
 }
 
-class _MapsState extends State<Maps> {
+class _MapsProjectState extends State<MapsProject> {
   GoogleMapController _controller;
-  Set<Circle> _circles = HashSet<Circle>();
   Position position;
   BitmapDescriptor companyIcon;
-  var employee_id;
-  var _latmainoffice,_longmainoffice;
+  Set<Circle> _circles = HashSet<Circle>();
 
   Widget _child = Center(
     child: Text('Loading...'),
@@ -59,7 +48,12 @@ class _MapsState extends State<Maps> {
 
   double _pinPillPosition = -100;
 
-
+  PinData _currentPinData = PinData(
+      pinPath: '',
+      avatarPath: '',
+      location: LatLng(0, 0),
+      locationName: '',
+      labelColor: Colors.grey);
 
   PinData _sourcePinInfo;
 
@@ -106,31 +100,21 @@ class _MapsState extends State<Maps> {
 
   Set<Marker> _createMarker() {
     return <Marker>[
-
       ///company marker
-      ///
-
-      Marker(
-        markerId: MarkerId('company'),
-        position: LatLng(double.parse(widget.latmainoffice), double.parse(widget.longMainoffice)),
-        icon: BitmapDescriptor.fromAsset("assets/office.png"),
-      ),
-
       ///user marker
       Marker(
-        markerId: MarkerId('user'),
-        position: LatLng(widget.latitude, widget.longitude),
-        icon: BitmapDescriptor.fromAsset("assets/emplyee_maps.png"),
-      )
+          markerId: MarkerId('user'),
+          position: LatLng(
+              double.parse(widget.latitude), double.parse(widget.longitude)),
+          ),
     ].toSet();
   }
 
   ///set raidus
   // Set<Circle> circles = Set.from([
-  //
   //   Circle(
   //       circleId: CircleId("1"),
-  //       center: LatLng(_longmainoffice, _longmainoffice),
+  //       center: LatLng(-6.9529516, 107.6684227),
   //       radius: 20,
   //       strokeColor: baseColor1,
   //       fillColor: baseColor.withOpacity(0.25),
@@ -153,6 +137,7 @@ class _MapsState extends State<Maps> {
         ImageConfiguration(devicePixelRatio: 2.5), 'assets/home.png');
   }
 
+
   ///style map json
   void _setStyle(GoogleMapController controller) async {
     String value = await DefaultAssetBundle.of(context)
@@ -166,12 +151,14 @@ class _MapsState extends State<Maps> {
       mapType: MapType.normal,
       markers: _createMarker(),
       initialCameraPosition: CameraPosition(
-          target: LatLng(widget.latitude, widget.longitude), zoom: 20.0),
+          target: LatLng(
+              double.parse(widget.latitude), double.parse(widget.longitude)),
+          zoom: 16.0),
       onMapCreated: (GoogleMapController controller) {
         _controller = controller;
         // _setStyle(controller);
 
-       // _setStyle(controller);
+        // _setStyle(controller);
       },
       tiltGesturesEnabled: false,
       onTap: (LatLng location) {
@@ -214,19 +201,10 @@ class _MapsState extends State<Maps> {
               ),
             ),
             new Positioned(
-                top: MediaQuery
-                    .of(context)
-                    .size
-                    .height * 0.6,
+                top: MediaQuery.of(context).size.height * 0.6,
                 child: new Container(
-                    width: MediaQuery
-                        .of(context)
-                        .size
-                        .width,
-                    height: MediaQuery
-                        .of(context)
-                        .size
-                        .height / 2,
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height / 2,
                     decoration: new BoxDecoration(
                         color: Colors.white,
                         borderRadius: new BorderRadius.only(
@@ -243,26 +221,34 @@ class _MapsState extends State<Maps> {
       child: Container(
         child: Column(
           children: <Widget>[
-
             ///widget profile
             Container(
               child: Row(
                 children: <Widget>[
-                  Container(
-                    margin: EdgeInsets.only(top: 20, left: 20, right: 20),
-                    child: CircleAvatar(
-                      radius: 30.0,
-                      backgroundImage:
-                      NetworkImage("${image_ur}/${widget.profile_background}"),
-                      backgroundColor: Colors.transparent,
-                    )),
+                  // Container(
+                  //   margin: EdgeInsets.only(top: 20, left: 20, right: 20),
+                  //   child: widget.profile_background == ""
+                  //       ? CircleAvatar(
+                  //       backgroundColor: Colors.transparent,
+                  //       radius: 40,
+                  //       child: widget.gender == "male"
+                  //           ? employee_profile
+                  //           : employee_profile)
+                  //       : CircleAvatar(
+                  //     radius: 40,
+                  //     child: Icon(
+                  //       Icons.person_pin,
+                  //     ),
+                  //   ),
+                  // ),
                   Container(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Container(
+                          margin: EdgeInsets.only(left: 50,right: 50,top: 50),
                           child: Text(
-                            "${widget.firts_name}",
+                            "${widget.projectNumber}",
                             style: TextStyle(
                                 fontSize: 18,
                                 color: Colors.black87,
@@ -271,15 +257,6 @@ class _MapsState extends State<Maps> {
                         ),
                         SizedBox(
                           height: 10,
-                        ),
-                        Container(
-                          child: Text(
-                            "${widget.departement_name}",
-                            style: TextStyle(
-                              fontSize: 15,
-                              color: Colors.black38,
-                            ),
-                          ),
                         ),
 
                         //detail acount
@@ -317,15 +294,11 @@ class _MapsState extends State<Maps> {
                                 SizedBox(
                                   height: 10,
                                 ),
-                                if (widget.address != null &&
-                                    widget.address != null)
-                                  Container(
-                                    width: Get.mediaQuery.size.width/2 +40,
-                                    child: Text(
-                                      widget.address,
-                                      style: TextStyle(color: Colors.black38),
-                                    ),
-                                  ),
+
+                                Container(
+                                  child: Text("${widget.venue}"),
+                                )
+
                               ],
                             ),
                           ),
@@ -336,32 +309,6 @@ class _MapsState extends State<Maps> {
                 ],
               ),
             ),
-            Container(
-              color: Colors.amber.withOpacity(0.5),
-              margin: EdgeInsets.only(left: 20, right: 20, top: 20),
-              child: Row(
-                children: <Widget>[
-                  Container(
-                    margin: EdgeInsets.only(
-                        left: 10, right: 20, top: 5, bottom: 5),
-                    child: Icon(
-                      Icons.info,
-                      color: Colors.black45,
-                    ),
-                  ),
-                  Container(
-                      child: widget.distance > 10
-                          ? Text(
-                        "Anda berada di luar area kantor",
-                        style: subtitleMainMenu,
-                      )
-                          : Text(
-                        "Anda berada di dalam area kantor",
-                        style: subtitleMainMenu,
-                      ))
-                ],
-              ),
-            )
 
             ///widget location
           ],
@@ -369,35 +316,26 @@ class _MapsState extends State<Maps> {
       ),
     );
   }
+
   void _setCircles() {
     _circles.add(
       Circle(
           circleId: CircleId("0"),
-          center: LatLng(double.parse(widget.latmainoffice), double.parse(widget.longMainoffice)),
-          radius: 10,
+          center: LatLng(double.parse(widget.longitude), double.parse(widget.longitude)),
+          // center: LatLng(double.parse(widget.latmainoffice),
+          //     double.parse(widget.longMainoffice)),
+          radius: 20,
           strokeColor: baseColor1,
           fillColor: baseColor.withOpacity(0.25),
           strokeWidth: 1),
     );
   }
 
-  void getDatapref() async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    setState(() {
-
-      employee_id = sharedPreferences.getString("employee_id");
-
-    });
-  }
-
   @override
   void initState() {
-    print(widget.departement_name);
-    print(widget.profile_background);
     getPermission();
     // _setSourceIcon();
     super.initState();
     _setCircles();
-
   }
 }
