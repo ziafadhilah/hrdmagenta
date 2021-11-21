@@ -14,7 +14,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toast/toast.dart';
 String base_url = "http://hrd.magentamediatama.net";
 String image_ur = "https://arenzha.s3.ap-southeast-1.amazonaws.com";
-String baset_url_event="http://react.magentamediatama.net";
+String baset_url_event="https://react.magentamediatama.net";
 
 
 
@@ -347,7 +347,7 @@ class Services {
 
     final responseJson = jsonDecode(response.body);
     if (responseJson['code']==200){
-      toast_error("${responseJson['message']}");
+      toast_success("${responseJson['message']}");
       Get.back();
       Get.back();
 
@@ -447,25 +447,35 @@ class Services {
 
   Future<void> sickEdit(BuildContext context,var id,employee_id,date_of_filing,sick_dates,old_sick_dates,description) async{
     loading(context);
-    final response =
-    await http.patch("$base_url/api/sick-submissions/$id", body: {
-      "employee_id":employee_id,
-      "date_of_filing":date_of_filing.toString(),
-      "sick_dates":sick_dates.toString(),
-      "description":description,
-      "old_sick_dates":old_sick_dates,
-    });
 
-    final responseJson = jsonDecode(response.body);
-    if (responseJson['code']==200){
-      toast_success("${responseJson['message']}");
+    try{
+      final response =
+      await http.patch("$base_url/api/sick-submissions/$id", body: {
+        "employee_id":employee_id,
+        "date_of_filing":date_of_filing.toString(),
+        "sick_dates":sick_dates.toString(),
+        "description":description,
+        "old_sick_dates":old_sick_dates,
+      });
+
+      final responseJson = jsonDecode(response.body);
+      if (responseJson['code']==200){
+        toast_success("${responseJson['message']}");
+        Get.back();
+        Navigator.pop(context,"update");
+      }else{
+        toast_error("${responseJson['message']}");
+        Get.back();
+        print(responseJson.toString());
+      }
+
+    }catch(e){
+      print(e);
+      Toast.show("${e}", context);
       Get.back();
-     Navigator.pop(context,"update");
-    }else{
-      toast_error("${responseJson['message']}");
-      Get.back();
-      print(responseJson.toString());
+
     }
+
   }
 
   Future<void> deleteSick(BuildContext context,var id) async {
@@ -490,7 +500,7 @@ class Services {
 
     final responseJson = jsonDecode(response.body);
     if (responseJson['code']==200){
-      Get.back();
+    Navigator.pop(context,"update");
       toast_success("${responseJson['message']}");
 
     }else{

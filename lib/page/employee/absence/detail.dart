@@ -9,10 +9,8 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hrdmagenta/page/employee/absence/MapsDetail.dart';
 import 'package:hrdmagenta/page/employee/absence/photoview.dart';
 import 'package:hrdmagenta/services/api_clien.dart';
-import 'package:hrdmagenta/utalities/constants.dart';
 import 'package:hrdmagenta/utalities/font.dart';
-import 'package:intl/intl.dart';
-import 'package:photo_view/photo_view.dart';
+
 
 class detail_absence extends StatefulWidget {
   detail_absence(
@@ -552,6 +550,7 @@ class _detail_absenceState extends State<detail_absence> {
                       ].toSet()),
                   InkWell(
                     onTap: () {
+                      print(_currentAddress);
                       Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -1029,7 +1028,7 @@ class _detail_absenceState extends State<detail_absence> {
 
   @override
   void initState() {
-    print(widget.image);
+    print(widget.latitude);
     // TODO: implement initState
     super.initState();
     _getAddressFromLatLng();

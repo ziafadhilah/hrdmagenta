@@ -260,8 +260,8 @@ class _HomeAdminState extends State<HomeAdmin> {
         height: 70,
         child: InkWell(
           onTap: () {
-            Get.to(TabmenuSickPageAdmin());
-
+           // Get.to(TabmenuSickPageAdmin());
+            navigatorSick();
           },
           child: Stack(
             children: [
@@ -403,6 +403,61 @@ class _HomeAdminState extends State<HomeAdmin> {
     ]);
   }
 
+  Widget _buildMenuaabsenceApproval() {
+    return Column(children: <Widget>[
+      new Container(
+        width: 70,
+        height: 70,
+        child: InkWell(
+          onTap: () {
+            // navigatorAttendances();
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => absence()));
+          },
+          child: Stack(
+            children: [
+              Card(
+                elevation: 1,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                child: Container(margin: EdgeInsets.all(15.0), child: absent),
+              ),
+              Container(
+                child: _isLoading_absence == true
+                    ? Text("")
+                    : Container(
+                  margin: EdgeInsets.only(top: 15, right: 10),
+                  width: double.maxFinite,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Container(
+                        child: _absence.length == 0
+                            ? Text("")
+                            : CircleAvatar(
+                          radius: 10,
+                          backgroundColor: Colors.redAccent,
+                          child: Text(
+                            "${_absence.length}",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              )
+            ],
+          ),
+        ),
+      ),
+      Text(
+        "Kehadiran",
+        style: subtitleMainMenu,
+      )
+    ]);
+  }
 
   Widget _buildMenuaabsence() {
     return Column(children: <Widget>[
@@ -411,7 +466,9 @@ class _HomeAdminState extends State<HomeAdmin> {
         height: 70,
         child: InkWell(
           onTap: () {
-            navigatorAttendances();
+            //navigatorAttendances();
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => absence()));
           },
           child: Stack(
             children: [
@@ -1208,8 +1265,8 @@ class _HomeAdminState extends State<HomeAdmin> {
         height: 70,
         child: InkWell(
           onTap: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => absence()));
+
+            navigatorAttendances();
           },
           child: Card(
             elevation: 1,

@@ -73,8 +73,10 @@ class _DetailPyslipState extends State<DetailPyslip> {
       '"age":0,"income":"30Rs","country":"India","area":"abc","day":"Monday","month":"april"},{"name":"","email":"john@gmail.com","age":0,"income":"15Rs","country":"India",'
       '"area":"abc","day":"Monday","month":"april"},{"name":"","email":"ram@gmail.com","age":0,"income":"10Rs","country":"India","area":"abc","day":"Monday","month":"april"},'
       '{"name":"","email":"shyam23@gmail.com","age":0,"income":"30Rs","country":"India","area":"abc","day":"Monday","month":"april"}]';
-  bool toggle = true;
 
+
+
+  bool toggle = true;
   double iconSize = 40;
   var totalIncome=0;
   var totalDeduction;
@@ -133,9 +135,9 @@ class _DetailPyslipState extends State<DetailPyslip> {
                   SizedBox(
                     height: 10,
                   ),
-                  _buildIcome(),
+                  //_buildIcome(),
 
-                  _builddeduction(),
+                //  _builddeduction(),
                 ],
               ),
             ),
@@ -370,10 +372,10 @@ class _DetailPyslipState extends State<DetailPyslip> {
       // ),
     );
   }
-
+  //
   Widget _buildIcome() {
-    var income = jsonDecode(jsonSample);
-    var deduction = jsonDecode(jsonSamplededuction);
+     var income = jsonDecode(jsonSample);
+    // var deduction = jsonDecode(jsonSamplededuction);
     totalIncome=0;
 
     return SingleChildScrollView(
@@ -481,146 +483,146 @@ class _DetailPyslipState extends State<DetailPyslip> {
       ),
     );
   }
-
-  Widget _builddeduction() {
-    var income = jsonDecode(widget.dataDeduction);
-
-
-    return SingleChildScrollView(
-      child: Container(
-        margin: EdgeInsets.only(left: 10, right: 10),
-        width: Get.mediaQuery.size.width,
-        child: Column(
-          children: [
-            JsonTable(
-              income,
-              allowRowHighlight: true,
-              rowHighlightColor: Colors.yellow[500].withOpacity(0.7),
-              tableHeaderBuilder: (String header) {
-                return Container(
-                  padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
-                  decoration: BoxDecoration(
-                      border: Border.all(width: 0.5), color: Colors.grey[300]),
-                  child: Text(
-                    header,
-                    textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.display1.copyWith(
-                        fontWeight: FontWeight.w700,
-                        fontSize: 14.0,
-                        color: Colors.black),
-                  ),
-                );
-              },
-              tableCellBuilder: (value) {
-
-                return Container(
-                  width: Get.mediaQuery.size.width / 2 - 20,
-                  height: 50,
-                  alignment: value is int
-                      ? Alignment.centerRight
-                      : Alignment.centerLeft,
-                  padding: EdgeInsets.symmetric(horizontal: 4.0, vertical: 2.0),
-                  decoration: BoxDecoration(
-                      border: Border.all(
-                          width: 0.5, color: Colors.grey.withOpacity(0.5))),
-                  child: Text(
-                    value.toString(),
-                    textAlign: TextAlign.left,
-                    style: Theme.of(context)
-                        .textTheme
-                        .display1
-                        .copyWith(fontSize: 14.0, color: Colors.grey[900]),
-                  ),
-                );
-              },
-              columns: [
-
-                JsonTableColumn(
-                  "name",
-                  label: "Deduction",
-                ),
-                JsonTableColumn('value',
-                    label: "Amount",valueBuilder: currencyDeduction),
-                // JsonTableColumn("value",
-                //     label: "Amount",),
-
-              ],
-              onRowSelect: (index, map) {
-
-              },
-            ),
-            Container(
-              color: Colors.grey[300],
-              margin: EdgeInsets.only(left: 10, right: 10),
-              child: Table(
-                border: TableBorder.all(),
-                children: [
-                  TableRow(children: [
-                    Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Total Deduction',
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          )
-                        ]),
-                    Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            margin: EdgeInsets.only(left: 5),
-                            child: Text(
-                              NumberFormat.currency(
-                                  locale: 'id', decimalDigits: 0)
-                                  .format(int.parse(widget.totalDeduction)),
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                          )
-                        ]),
-                  ]),
-                ],
-              ),
-            ),
-            Container(
-              color: Colors.grey[300],
-              margin: EdgeInsets.only(left: 10, right: 10),
-              child: Table(
-                border: TableBorder.all(),
-                children: [
-                  TableRow(children: [
-                    Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Pay Take Home',
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          )
-                        ]),
-                    Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            margin: EdgeInsets.only(left: 5),
-                            child: Text(
-                              NumberFormat.currency(
-                                  locale: 'id', decimalDigits: 0)
-                                  .format(int.parse(widget.totalIncome)-int.parse(widget.totalDeduction)),
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                          )
-                        ]),
-                  ]),
-                ],
-              ),
-            ),
-            SizedBox(
-              height: 40.0,
-            ),
-          ],
-        ),
-      ),
-    );
-  }
+  //
+  // Widget _builddeduction() {
+  //   var income = jsonDecode(widget.dataDeduction);
+  //
+  //
+  //   return SingleChildScrollView(
+  //     child: Container(
+  //       margin: EdgeInsets.only(left: 10, right: 10),
+  //       width: Get.mediaQuery.size.width,
+  //       child: Column(
+  //         children: [
+  //           JsonTable(
+  //             income,
+  //             allowRowHighlight: true,
+  //             rowHighlightColor: Colors.yellow[500].withOpacity(0.7),
+  //             tableHeaderBuilder: (String header) {
+  //               return Container(
+  //                 padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+  //                 decoration: BoxDecoration(
+  //                     border: Border.all(width: 0.5), color: Colors.grey[300]),
+  //                 child: Text(
+  //                   header,
+  //                   textAlign: TextAlign.center,
+  //                   style: Theme.of(context).textTheme.display1.copyWith(
+  //                       fontWeight: FontWeight.w700,
+  //                       fontSize: 14.0,
+  //                       color: Colors.black),
+  //                 ),
+  //               );
+  //             },
+  //             tableCellBuilder: (value) {
+  //
+  //               return Container(
+  //                 width: Get.mediaQuery.size.width / 2 - 20,
+  //                 height: 50,
+  //                 alignment: value is int
+  //                     ? Alignment.centerRight
+  //                     : Alignment.centerLeft,
+  //                 padding: EdgeInsets.symmetric(horizontal: 4.0, vertical: 2.0),
+  //                 decoration: BoxDecoration(
+  //                     border: Border.all(
+  //                         width: 0.5, color: Colors.grey.withOpacity(0.5))),
+  //                 child: Text(
+  //                   value.toString(),
+  //                   textAlign: TextAlign.left,
+  //                   style: Theme.of(context)
+  //                       .textTheme
+  //                       .display1
+  //                       .copyWith(fontSize: 14.0, color: Colors.grey[900]),
+  //                 ),
+  //               );
+  //             },
+  //             columns: [
+  //
+  //               JsonTableColumn(
+  //                 "name",
+  //                 label: "Deduction",
+  //               ),
+  //               JsonTableColumn('value',
+  //                   label: "Amount",valueBuilder: currencyDeduction),
+  //               // JsonTableColumn("value",
+  //               //     label: "Amount",),
+  //
+  //             ],
+  //             onRowSelect: (index, map) {
+  //
+  //             },
+  //           ),
+  //           Container(
+  //             color: Colors.grey[300],
+  //             margin: EdgeInsets.only(left: 10, right: 10),
+  //             child: Table(
+  //               border: TableBorder.all(),
+  //               children: [
+  //                 TableRow(children: [
+  //                   Column(
+  //                       crossAxisAlignment: CrossAxisAlignment.start,
+  //                       children: [
+  //                         Text(
+  //                           'Total Deduction',
+  //                           style: TextStyle(fontWeight: FontWeight.bold),
+  //                         )
+  //                       ]),
+  //                   Column(
+  //                       crossAxisAlignment: CrossAxisAlignment.start,
+  //                       children: [
+  //                         Container(
+  //                           margin: EdgeInsets.only(left: 5),
+  //                           child: Text(
+  //                             NumberFormat.currency(
+  //                                 locale: 'id', decimalDigits: 0)
+  //                                 .format(int.parse(widget.totalDeduction)),
+  //                             style: TextStyle(fontWeight: FontWeight.bold),
+  //                           ),
+  //                         )
+  //                       ]),
+  //                 ]),
+  //               ],
+  //             ),
+  //           ),
+  //           Container(
+  //             color: Colors.grey[300],
+  //             margin: EdgeInsets.only(left: 10, right: 10),
+  //             child: Table(
+  //               border: TableBorder.all(),
+  //               children: [
+  //                 TableRow(children: [
+  //                   Column(
+  //                       crossAxisAlignment: CrossAxisAlignment.start,
+  //                       children: [
+  //                         Text(
+  //                           'Pay Take Home',
+  //                           style: TextStyle(fontWeight: FontWeight.bold),
+  //                         )
+  //                       ]),
+  //                   Column(
+  //                       crossAxisAlignment: CrossAxisAlignment.start,
+  //                       children: [
+  //                         Container(
+  //                           margin: EdgeInsets.only(left: 5),
+  //                           child: Text(
+  //                             NumberFormat.currency(
+  //                                 locale: 'id', decimalDigits: 0)
+  //                                 .format(int.parse(widget.totalIncome)-int.parse(widget.totalDeduction)),
+  //                             style: TextStyle(fontWeight: FontWeight.bold),
+  //                           ),
+  //                         )
+  //                       ]),
+  //                 ]),
+  //               ],
+  //             ),
+  //           ),
+  //           SizedBox(
+  //             height: 40.0,
+  //           ),
+  //         ],
+  //       ),
+  //     ),
+  //   );
+  // }
 
 
   final pdf = pw.Document();

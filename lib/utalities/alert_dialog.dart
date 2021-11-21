@@ -220,7 +220,7 @@ void validation_checkin(
         ),
         onPressed: ()  {
            var date=DateFormat('yyyy-MM-dd').format(DateTime.now());
-           var time=DateFormat('hh:mm:ss').format(DateTime.now());
+           var time=DateFormat('HH:mm:ss').format(DateTime.now());
           Navigator.pop(context);
           validator.validation_checkin(
               context,
@@ -266,7 +266,9 @@ void validation_checkout(
     office_longitude,
     category) {
   Validasi validator = new Validasi();
+  print(time);
   Alert(
+
     context: context,
     type: AlertType.warning,
     title: "Check Out ",
@@ -281,7 +283,7 @@ void validation_checkout(
         onPressed: () {
           Navigator.pop(context);
           var date=DateFormat('yyyy-MM-dd').format(DateTime.now());
-          var time=DateFormat('hh:mm:ss').format(DateTime.now());
+          var time=DateFormat('HH:mm:ss').format(DateTime.now());
           validator.validation_checkout(
               context,
               photos,

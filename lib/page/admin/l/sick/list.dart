@@ -106,7 +106,7 @@ class _ListSickPageAdminState extends State<ListSickPageAdmin> {
               SizedBox(height: 10,),
               Container(child:Text("${_sick['data'][index]['employee']['first_name']} (${_sick['data'][index]['employee']['employee_id']})",style: TextStyle(color: Colors.black87,fontWeight: FontWeight.bold),),),
               SizedBox(height: 10,),
-              Container(child:Text("Tanggal cuti",style: TextStyle(color: Colors.black38),),),
+              Container(child:Text("Tanggal Sakit",style: TextStyle(color: Colors.black38),),),
               SizedBox(height: 5,),
               Flex(
                   direction: Axis.horizontal,

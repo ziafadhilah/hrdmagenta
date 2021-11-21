@@ -334,16 +334,14 @@ class _DetailProfileState extends State<DetailProfile> {
                               width: Get.mediaQuery.size.width-40,
                               child: address == null
                                   ? Text("-")
-                                  : Expanded(
-                                    child: Text(
+                                  : Text(
                                 address,
                                 style: TextStyle(
-                                    fontFamily: "SFReguler",
-                                    fontSize: 14,
-                                    color: Colors.black38,
+                                  fontFamily: "SFReguler",
+                                  fontSize: 14,
+                                  color: Colors.black38,
                                 ),
                               ),
-                                  ),
                             ),
                           ],
                         )

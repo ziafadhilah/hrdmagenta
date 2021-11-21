@@ -260,7 +260,7 @@ class _AccountAdminState extends State<AccountAdmin> {
                             height: 5,
                           ),
                           Text(
-                            "logout sebagai $first_name $last_name",
+                            "logout sebagai $first_name ",
                             style: TextStyle(
                               fontSize: 14,
                               color: Colors.black38,

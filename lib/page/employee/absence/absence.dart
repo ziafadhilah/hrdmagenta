@@ -26,11 +26,12 @@ class absence extends StatefulWidget {
 }
 
 class _absenceState extends State<absence> {
-  var user_id,employee_id;
-  var work_placement,first_name;
+  var user_id, employee_id;
+  var work_placement, first_name;
 
   Map _absence;
-  bool _loading = true, _search = true;
+  bool _loading = true,
+      _search = true;
   Coin coin;
   var scrollController = ScrollController();
   bool updating = false;
@@ -50,19 +51,19 @@ class _absenceState extends State<absence> {
         iconTheme: IconThemeData(
           color: Colors.black87, //modify arrow color from here..
         ),
-        actions: <Widget>[
-          PopupMenuButton<String>(
-            onSelected: choiceAction,
-            itemBuilder: (BuildContext context) {
-              return Constants.AbsenceStatus.map((String choice) {
-                return PopupMenuItem<String>(
-                  value: choice,
-                  child: Text(choice),
-                );
-              }).toList();
-            },
-          )
-        ],
+        // actions: <Widget>[
+        //   PopupMenuButton<String>(
+        //     onSelected: choiceAction,
+        //     itemBuilder: (BuildContext context) {
+        //       return Constants.AbsenceStatus.map((String choice) {
+        //         return PopupMenuItem<String>(
+        //           value: choice,
+        //           child: Text(choice),
+        //         );
+        //       }).toList();
+        //     },
+        //   )
+        // ],
         backgroundColor: Colors.white,
         title: Text(
           'Kehadiran',
@@ -74,26 +75,26 @@ class _absenceState extends State<absence> {
         child: Column(
           children: [
             Container(
-                margin: EdgeInsets.only(left: 5, right: 5),
-               // child: _builDateSearch()
+              margin: EdgeInsets.only(left: 5, right: 5),
+              // child: _builDateSearch()
             ),
             Expanded(
               child: _loading
                   ? Center(
-                      child: ShimmerAbsence(),
-                    )
+                child: ShimmerAbsence(),
+              )
                   : ListView.builder(
-                      controller: scrollController,
-                      physics: BouncingScrollPhysics(),
-                      itemBuilder: (context, index) {
-                        return _absence['data'].length == 0
-                            ? _buildnodata()
-                            : _buildlistabsence(index);
-                      },
-                      itemCount: _absence['data'].length == 0
-                          ? 1
-                          : _absence['data'].length,
-                    ),
+                controller: scrollController,
+                physics: BouncingScrollPhysics(),
+                itemBuilder: (context, index) {
+                  return _absence['data'].length == 0
+                      ? _buildnodata()
+                      : _buildlistabsence(index);
+                },
+                itemCount: _absence['data'].length == 0
+                    ? 1
+                    : _absence['data'].length,
+              ),
             ),
             if (updating) CircularProgressIndicator()
           ],
@@ -112,14 +113,16 @@ class _absenceState extends State<absence> {
               initialFirstDate: new DateTime.now(),
               initialLastDate: (new DateTime.now()).add(new Duration(days: 7)),
               firstDate: new DateTime(2015),
-              lastDate: new DateTime(DateTime.now().year + 2));
+              lastDate: new DateTime(DateTime
+                  .now()
+                  .year + 2));
           if (picked != null && picked.length == 2) {
             print(picked);
             ControllerDateSearch.text = picked[0].toString();
             var first_date =
-                DateFormat("dd/MM/yyyy").format(DateTime.parse("${picked[0]}"));
+            DateFormat("dd/MM/yyyy").format(DateTime.parse("${picked[0]}"));
             var last_date =
-                DateFormat("dd/MM/yyyy").format(DateTime.parse("${picked[1]}"));
+            DateFormat("dd/MM/yyyy").format(DateTime.parse("${picked[1]}"));
 
             ControllerDateSearch.text = '${first_date}-${last_date}';
             setState(() {
@@ -128,7 +131,9 @@ class _absenceState extends State<absence> {
           }
         },
         child: TextFormField(
-          cursorColor: Theme.of(context).cursorColor,
+          cursorColor: Theme
+              .of(context)
+              .cursorColor,
           enabled: false,
           controller: ControllerDateSearch,
           maxLines: null,
@@ -181,115 +186,120 @@ class _absenceState extends State<absence> {
   }
 
   Widget _buildlistabsence(index) {
+    var date = _absence['data'][index]['date'];
 
-    var date =  _absence['data'][index]['date'];
+    var check_in = "${_absence['data'][index]['clock_in'] != null
+        ? _absence['data'][index]['clock_in']
+        : "-"}";
 
-    var check_in = "${_absence['data'][index]['clock_in']!=null?_absence['data'][index]['clock_in']:"-"}";
-
-    var check_out = _absence['data'][index]['clock_out']!=null?_absence['data'][index]['clock_out']:"-";
+    var check_out = _absence['data'][index]['clock_out'] != null
+        ? _absence['data'][index]['clock_out']
+        : "-";
 
 
     //
     return _absence['data'][index]['checkin_category'] == 'present'
         ? Container(
-          width: Get.mediaQuery.size.width,
-          child: Card(
-            child: Container(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  //header
-                  Container(
-                    margin: EdgeInsets.only(top: 5, left: 10, right: 10),
-                    child: Row(
-                      children: [
-                        Text(
-                          "${date}",
-                          style: TextStyle(fontFamily: "SFBlack"),
-                        ),
-                        Expanded(
+      width: Get.mediaQuery.size.width,
+      child: Card(
+        child: Container(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              //header
+              Container(
+                margin: EdgeInsets.only(top: 5, left: 10, right: 10),
+                child: Row(
+                  children: [
+                    Text(
+                      "${date}",
+                      style: TextStyle(fontFamily: "SFBlack"),
+                    ),
+                    Expanded(
+                      child: Container(
+                          alignment: Alignment.centerRight,
+                          width: double.maxFinite,
                           child: Container(
-                            alignment: Alignment.centerRight,
-                            width: double.maxFinite,
+                            width: 70,
                             child: Container(
-                              width: 70,
                               child: Container(
-                                child: Container(
-                                    alignment: Alignment.center,
-                                    margin: EdgeInsets.only(top: 3, bottom: 3),
-                                    child: Text(
-                                      "${_absence['data'][index]['checkin_category'] == "present" ? "Hadir" : ""}",
-                                      style: TextStyle(
-                                          color: Colors.white, fontSize: 10),
-                                    )),
-                                decoration: BoxDecoration(
-                                  color: _absence['data'][index]['checkin_category'] == "present"
-                                      ? Colors.green
-                                      : Colors.transparent,
-                                  borderRadius: new BorderRadius.only(
-                                    topLeft: const Radius.circular(10.0),
-                                    topRight: const Radius.circular(10.0),
-                                    bottomLeft: const Radius.circular(10.0),
-                                    bottomRight: const Radius.circular(10.0),
-                                  ),
+                                  alignment: Alignment.center,
+                                  margin: EdgeInsets.only(top: 3, bottom: 3),
+                                  child: Text(
+                                    "${_absence['data'][index]['checkin_category'] ==
+                                        "present" ? "Hadir" : ""}",
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 10),
+                                  )),
+                              decoration: BoxDecoration(
+                                color: _absence['data'][index]['checkin_category'] ==
+                                    "present"
+                                    ? Colors.green
+                                    : Colors.transparent,
+                                borderRadius: new BorderRadius.only(
+                                  topLeft: const Radius.circular(10.0),
+                                  topRight: const Radius.circular(10.0),
+                                  bottomLeft: const Radius.circular(10.0),
+                                  bottomRight: const Radius.circular(10.0),
                                 ),
                               ),
-                            )
-                          ),
-                        ),
-                      ],
+                            ),
+                          )
+                      ),
                     ),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Container(
-                    width: Get.mediaQuery.size.width,
-                    height: 1,
-                    color: Colors.black38,
-                  ),
+                  ],
+                ),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Container(
+                width: Get.mediaQuery.size.width,
+                height: 1,
+                color: Colors.black38,
+              ),
 
-                  Container(
-                    margin: EdgeInsets.all(10),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        SizedBox(
-                          height: 20,
-                        ),
-                        Container(
-                          child: Row(
-                            mainAxisAlignment:
-                                MainAxisAlignment.spaceEvenly,
-                            children: <Widget>[
-                              Container(
-                                child: Column(
-                                  children: <Widget>[
-                                    Container(
-                                      child: Text(
+              Container(
+                margin: EdgeInsets.all(10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Container(
+                      child: Row(
+                        mainAxisAlignment:
+                        MainAxisAlignment.spaceEvenly,
+                        children: <Widget>[
+                          Container(
+                            child: Column(
+                              children: <Widget>[
+                                Container(
+                                  child: Text(
 
-                                        "Jam masuk",
-                                        style: TextStyle(
-                                            fontFamily: "SFReguler"),
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: 5,
-                                    ),
-                                    Container(
-                                      child: Text(
-                                        "${check_in}",
-                                        style: TextStyle(
-                                            fontFamily: "SFReguler",
-                                            color: Colors.black38),
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: 20,
-                                    ),
-                                    _absence['data'][index]
-                                    ['checkin_latitude']!=null? Container(
-                                        child:  OutlinedButton(
+                                    "Jam masuk",
+                                    style: TextStyle(
+                                        fontFamily: "SFReguler"),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 5,
+                                ),
+                                Container(
+                                  child: Text(
+                                    "${check_in}",
+                                    style: TextStyle(
+                                        fontFamily: "SFReguler",
+                                        color: Colors.black38),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 20,
+                                ),
+                                _absence['data'][index]
+                                ['checkin_latitude'] != null ? Container(
+                                    child: OutlinedButton(
                                       child: Text(
                                         'Detail',
                                         style: TextStyle(
@@ -301,83 +311,84 @@ class _absenceState extends State<absence> {
                                         Navigator.push(
                                             context,
                                             MaterialPageRoute(
-                                                builder: (context) => detail_absence(
-                                                  status: widget.type,
-                                                  date: _absence['data'][index]['date'],
-                                                  time:  _absence['data'][index]['clock_in'],
-                                                  image: _absence['data'][index]['checkin_image'],
-                                                  latitude: _absence['data'][index]
-                                                  ['checkin_latitude'],
-                                                  longitude: _absence['data'][index]
-                                                  ['checkin_longitude'],
-                                                  type: _absence['data'][index]['category'],
-                                                  rejected_by: _absence['data'][index]
-                                                  ['checkin_rejected_by'] ==
-                                                      null
-                                                      ? "null"
-                                                      : "${_absence['data'][index]['checkin_rejected_by']['first_name']} ${_absence['data'][index]['checkin_rejected_by']['last_name']}",
-                                                  approved_by: _absence['data'][index]
-                                                  ['checkin_approved_by'] ==
-                                                      null
-                                                      ? "null"
-                                                      : "${_absence['data'][index]['checkin_approved_by']['first_name']} ${_absence['data'][index]['checkin_approved_by']['last_name']}",
-                                                  rejected_on: _absence['data'][index]['checkin_rejected_at'],
-                                                  rejection_note: _absence['data'][index]
-                                                  ['checkin_rejection_note'],
-                                                  approval_note: _absence['data'][index]
-                                                  ['checkin_approval_note'],
-                                                  approved_on: _absence['data'][index]['checkin_approved_at'],
-                                                  note:null,
-                                                  category: _absence['data'][index]['checkin_category'],
-                                                  work_placement:work_placement
-                                                  ,
-                                                  firts_name_employee: first_name,
-                                                  last_name_employee: "",
-                                                  office_latitude: _absence['data'][index]
-                                                  ['checkin_office_latitude'],
-                                                  office_longitude: _absence['data'][index]
-                                                  ['checkin_office_longitude'],
-                                                  employee_id:employee_id,
-                                                  photo: null
-                                                )
+                                                builder: (context) =>
+                                                    detail_absence(
+                                                        status: widget.type,
+                                                        date: _absence['data'][index]['date'],
+                                                        time: _absence['data'][index]['clock_in'],
+                                                        image: _absence['data'][index]['checkin_image'],
+                                                        latitude: _absence['data'][index]
+                                                        ['checkin_latitude'],
+                                                        longitude: _absence['data'][index]
+                                                        ['checkin_longitude'],
+                                                        type: _absence['data'][index]['category'],
+                                                        rejected_by: _absence['data'][index]
+                                                        ['checkin_rejected_by'] ==
+                                                            null
+                                                            ? "null"
+                                                            : "${_absence['data'][index]['checkin_rejected_by']['first_name']} ${_absence['data'][index]['checkin_rejected_by']['last_name']}",
+                                                        approved_by: _absence['data'][index]
+                                                        ['checkin_approved_by'] ==
+                                                            null
+                                                            ? "null"
+                                                            : "${_absence['data'][index]['checkin_approved_by']['first_name']} ${_absence['data'][index]['checkin_approved_by']['last_name']}",
+                                                        rejected_on: _absence['data'][index]['checkin_rejected_at'],
+                                                        rejection_note: _absence['data'][index]
+                                                        ['checkin_rejection_note'],
+                                                        approval_note: _absence['data'][index]
+                                                        ['checkin_approval_note'],
+                                                        approved_on: _absence['data'][index]['checkin_approved_at'],
+                                                        note: null,
+                                                        category: _absence['data'][index]['checkin_category'],
+                                                        work_placement: work_placement
+                                                        ,
+                                                        firts_name_employee: first_name,
+                                                        last_name_employee: "",
+                                                        office_latitude: _absence['data'][index]
+                                                        ['checkin_office_latitude'],
+                                                        office_longitude: _absence['data'][index]
+                                                        ['checkin_office_longitude'],
+                                                        employee_id: employee_id,
+                                                        photo: null
+                                                    )
                                             ));
                                       },
-                                     )
-                  ):Container(
-                                      margin: EdgeInsets.only(bottom: 30),
                                     )
-                                  ],
+                                ) : Container(
+                                  margin: EdgeInsets.only(bottom: 30),
+                                )
+                              ],
+                            ),
+                          ),
+                          Container(
+                            height: 100,
+                            width: 1,
+                            color: Colors.black,
+                          ),
+                          Container(
+                            child: Column(
+                              children: <Widget>[
+                                Container(
+                                  child: Text("Jam keluar"),
                                 ),
-                              ),
-                              Container(
-                                height: 100,
-                                width: 1,
-                                color: Colors.black,
-                              ),
-                              Container(
-                                child: Column(
-                                  children: <Widget>[
-                                    Container(
-                                      child: Text("Jam keluar"),
-                                    ),
-                                    SizedBox(
-                                      height: 5,
-                                    ),
-                                    Container(
-                                      child: Text(
-                                        "${check_out}",
-                                        style: TextStyle(
-                                            fontFamily: "SFReguler",
-                                            color: Colors.black38),
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: 20,
-                                    ),
+                                SizedBox(
+                                  height: 5,
+                                ),
+                                Container(
+                                  child: Text(
+                                    "${check_out}",
+                                    style: TextStyle(
+                                        fontFamily: "SFReguler",
+                                        color: Colors.black38),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 20,
+                                ),
 
-                                  _absence['data'][index]
-                                    ['checkout_longitude']!=null? Container(
-                                        child: OutlinedButton(
+                                _absence['data'][index]
+                                ['checkout_longitude'] != null ? Container(
+                                    child: OutlinedButton(
                                       child: Text(
                                         'Detail',
                                         style: TextStyle(
@@ -390,70 +401,71 @@ class _absenceState extends State<absence> {
                                         Navigator.push(
                                             context,
                                             MaterialPageRoute(
-                                                builder: (context) => detail_absence(
-                                                    status: widget.type,
-                                                    date: _absence['data'][index]['date'],
-                                                    time:  _absence['data'][index]['clock_out'],
-                                                    image: _absence['data'][index]['checkout_image'],
-                                                    latitude: _absence['data'][index]
-                                                    ['checkout_latitude'],
-                                                    longitude: _absence['data'][index]
-                                                    ['checkout_longitude'],
-                                                    type: _absence['data'][index]['category'],
-                                                    rejected_by: _absence['data'][index]
-                                                    ['checkout_rejected_by'] ==
-                                                        null
-                                                        ? "null"
-                                                        : "${_absence['data'][index]['checkout_rejected_by']['first_name']} ${_absence['data'][index]['checkout_rejected_by']['last_name']}",
-                                                    approved_by: _absence['data'][index]
-                                                    ['checkout_approved_by'] ==
-                                                        null
-                                                        ? "null"
-                                                        : "${_absence['data'][index]['checkout_approved_by']['first_name']} ${_absence['data'][index]['checkout_approved_by']['last_name']}",
-                                                    rejected_on: _absence['data'][index]['checkout_rejected_at'],
-                                                    rejection_note: _absence['data'][index]
-                                                    ['checkout_rejection_note'],
-                                                    approval_note: _absence['data'][index]
-                                                    ['checkout_approval_note'],
-                                                    approved_on: _absence['data'][index]['checkout_approved_at'],
-                                                    note:null,
-                                                    category: _absence['data'][index]['checkout_category'],
-                                                    work_placement:work_placement
-                                                    ,
-                                                    firts_name_employee: first_name,
-                                                    last_name_employee: "",
-                                                    office_latitude: _absence['data'][index]
-                                                    ['checkout_office_latitude'],
-                                                    office_longitude: _absence['data'][index]
-                                                    ['checkout_office_longitude'],
-                                                    employee_id:employee_id,
-                                                    photo: null
-                                                )));
-
-
+                                                builder: (context) =>
+                                                    detail_absence(
+                                                        status: widget.type,
+                                                        date: _absence['data'][index]['date'],
+                                                        time: _absence['data'][index]['clock_out'],
+                                                        image: _absence['data'][index]['checkout_image'],
+                                                        latitude: _absence['data'][index]
+                                                        ['checkout_latitude'],
+                                                        longitude: _absence['data'][index]
+                                                        ['checkout_longitude'],
+                                                        type: _absence['data'][index]['category'],
+                                                        rejected_by: _absence['data'][index]
+                                                        ['checkout_rejected_by'] ==
+                                                            null
+                                                            ? "null"
+                                                            : "${_absence['data'][index]['checkout_rejected_by']['first_name']} ${_absence['data'][index]['checkout_rejected_by']['last_name']}",
+                                                        approved_by: _absence['data'][index]
+                                                        ['checkout_approved_by'] ==
+                                                            null
+                                                            ? "null"
+                                                            : "${_absence['data'][index]['checkout_approved_by']['first_name']} ${_absence['data'][index]['checkout_approved_by']['last_name']}",
+                                                        rejected_on: _absence['data'][index]['checkout_rejected_at'],
+                                                        rejection_note: _absence['data'][index]
+                                                        ['checkout_rejection_note'],
+                                                        approval_note: _absence['data'][index]
+                                                        ['checkout_approval_note'],
+                                                        approved_on: _absence['data'][index]['checkout_approved_at'],
+                                                        note: null,
+                                                        category: _absence['data'][index]['checkout_category'],
+                                                        work_placement: work_placement
+                                                        ,
+                                                        firts_name_employee: first_name,
+                                                        last_name_employee: "",
+                                                        office_latitude: _absence['data'][index]
+                                                        ['checkout_office_latitude'],
+                                                        office_longitude: _absence['data'][index]
+                                                        ['checkout_office_longitude'],
+                                                        employee_id: employee_id,
+                                                        photo: null
+                                                    )));
                                       },
-                                    )):Container(
-                                    margin: EdgeInsets.only(bottom: 30),
-                                  )
-                                  ],
-                                ),
-                              )
-                            ],
-                          ),
-                        )
-                      ],
-                    ),
-                  )
-                ],
-              ),
-            ),
+                                    )) : Container(
+                                  margin: EdgeInsets.only(bottom: 30),
+                                )
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+              )
+            ],
           ),
-        )
+        ),
+      ),
+    )
         : _absence['data'][index]['checkin_category'] == 'leave'
-            ? _leave(index)
-            : _absence['data'][index]['checkin_category'] == 'sick'
-                ? _sick(index)
-                :_absence['data'][index]['checkin_category'] == 'permission'? _permission(index):Container();
+        ? _leave(index)
+        : _absence['data'][index]['checkin_category'] == 'sick'
+        ? _sick(index)
+        : _absence['data'][index]['checkin_category'] == 'permission'
+        ? _permission(index)
+        : Container();
 
     // return _absence['data'][index]['category']=='present'?Stack(
     //   children: <Widget>[
@@ -861,7 +873,7 @@ class _absenceState extends State<absence> {
             children: <Widget>[
               Container(
                 child: Text(
-                  "Cuti",
+                  "Pengajuan Cuti",
                   style: TextStyle(color: Colors.black38),
                 ),
               ),
@@ -871,19 +883,19 @@ class _absenceState extends State<absence> {
               Flex(direction: Axis.horizontal, children: [
                 Expanded(
                     child: Container(
-                  child: Text(
-                    "[${_absence['data'][index]['date'].toString()}]",
-                    style: TextStyle(
-                        color: Colors.black87, fontFamily: "SFReguler"),
-                  ),
-                ))
+                      child: Text(
+                        "[${_absence['data'][index]['date'].toString()}]",
+                        style: TextStyle(
+                            color: Colors.black87, fontFamily: "SFReguler"),
+                      ),
+                    ))
               ]),
               SizedBox(
                 height: 15,
               ),
-              _absence['data'][index]['status'] == "approved"
+              _absence['data'][index]['checkin_status'] == "approved"
                   ? detailApproval(index)
-                  :  Container()
+                  : Container()
             ],
           ),
         ),
@@ -903,7 +915,7 @@ class _absenceState extends State<absence> {
             children: <Widget>[
               Container(
                 child: Text(
-                  "Sakit",
+                  "Pengajuan Sakit",
                   style: TextStyle(color: Colors.black38),
                 ),
               ),
@@ -913,17 +925,17 @@ class _absenceState extends State<absence> {
               Flex(direction: Axis.horizontal, children: [
                 Expanded(
                     child: Container(
-                  child: Text(
-                    "[${_absence['data'][index]['date'].toString()}]",
-                    style: TextStyle(
-                        color: Colors.black87, fontFamily: "SFReguler"),
-                  ),
-                ))
+                      child: Text(
+                        "[${_absence['data'][index]['date'].toString()}]",
+                        style: TextStyle(
+                            color: Colors.black87, fontFamily: "SFReguler"),
+                      ),
+                    ))
               ]),
               SizedBox(
                 height: 15,
               ),
-              _absence['data'][index]['status'] == "approved"
+              _absence['data'][index]['checkin_status'] == "approved"
                   ? detailApproval(index)
                   : detailRejection(index)
             ],
@@ -945,7 +957,7 @@ class _absenceState extends State<absence> {
             children: <Widget>[
               Container(
                 child: Text(
-                  "Izin",
+                  "Pengajuan Izin",
                   style: TextStyle(color: Colors.black38),
                 ),
               ),
@@ -955,17 +967,17 @@ class _absenceState extends State<absence> {
               Flex(direction: Axis.horizontal, children: [
                 Expanded(
                     child: Container(
-                  child: Text(
-                    "[${_absence['data'][index]['date'].toString()}]",
-                    style: TextStyle(
-                        color: Colors.black87, fontFamily: "SFReguler"),
-                  ),
-                ))
+                      child: Text(
+                        "[${_absence['data'][index]['date'].toString()}]",
+                        style: TextStyle(
+                            color: Colors.black87, fontFamily: "SFReguler"),
+                      ),
+                    ))
               ]),
               SizedBox(
                 height: 15,
               ),
-              _absence['data'][index]['status'] == "approved"
+              _absence['data'][index]['checkin_status'] == "approved"
                   ? detailApproval(index)
                   : detailRejection(index)
             ],
@@ -1071,7 +1083,10 @@ class _absenceState extends State<absence> {
 
   Widget _buildnodata() {
     return Container(
-      height: MediaQuery.of(context).size.height - 150,
+      height: MediaQuery
+          .of(context)
+          .size
+          .height - 150,
       child: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -1084,9 +1099,9 @@ class _absenceState extends State<absence> {
             ),
             Container(
                 child: Text(
-              "Belum ada kehadiran",
-              style: subtitleMainMenu,
-            )),
+                  "Belum ada kehadiran",
+                  style: subtitleMainMenu,
+                )),
           ],
         ),
       ),
@@ -1100,7 +1115,7 @@ class _absenceState extends State<absence> {
         _loading = true;
       });
       http.Response response = await http.get(
-            "$base_url/api/employees/${user_id}/attendances?status=approved");
+          "$base_url/api/employees/${user_id}/attendances?status=approved");
       _absence = jsonDecode(response.body);
       setState(() {
         _loading = false;

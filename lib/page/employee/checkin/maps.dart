@@ -350,7 +350,7 @@ class _MapsState extends State<Maps> {
                     ),
                   ),
                   Container(
-                      child: widget.distance > 10
+                      child: widget.distance > 20
                           ? Text(
                         "Anda berada di luar area kantor",
                         style: subtitleMainMenu,

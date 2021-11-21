@@ -274,8 +274,18 @@ class _absence_statusState extends State<absence_status> {
                                                                           'employee']
                                                                       [
                                                                       'last_name'],
-                                                              office_latitude: _absence['data'][index]['office_latitude'],
-                                                              office_longitude: _absence['data'][index]['office_longitude'],
+                                                              office_latitude:
+                                                                  _absence['data']
+                                                                          [
+                                                                          index]
+                                                                      [
+                                                                      'office_latitude'],
+                                                              office_longitude:
+                                                                  _absence['data']
+                                                                          [
+                                                                          index]
+                                                                      [
+                                                                      'office_longitude'],
                                                             )));
                                               } else {
                                                 Navigator.push(
@@ -377,8 +387,18 @@ class _absence_statusState extends State<absence_status> {
                                                                           'employee']
                                                                       [
                                                                       'last_name'],
-                                                              office_latitude: _absence['data'][index]['office_latitude'],
-                                                              office_longitude: _absence['data'][index]['office_longitude'],
+                                                              office_latitude:
+                                                                  _absence['data']
+                                                                          [
+                                                                          index]
+                                                                      [
+                                                                      'office_latitude'],
+                                                              office_longitude:
+                                                                  _absence['data']
+                                                                          [
+                                                                          index]
+                                                                      [
+                                                                      'office_longitude'],
                                                             )));
                                               }
                                             },
@@ -454,7 +474,8 @@ class _absence_statusState extends State<absence_status> {
       setState(() {
         _loading = true;
       });
-      http.Response response =  await http.get("${base_url}/api/attendances?status=${widget.type}");
+      http.Response response =
+          await http.get("${base_url}/api/attendances?status=${widget.type}");
       _absence = jsonDecode(response.body);
       print(_absence);
       setState(() {

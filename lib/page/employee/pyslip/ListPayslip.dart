@@ -81,7 +81,7 @@ class _PyslipListPageState extends State<PyslipListPage> {
               totalDeduction: _payslips['data'][index]['total_deductions'].toString(),
               totalIncome: _payslips['data'][index]['total_incomes'].toString(),
               divisi: _payslips['data'][index]['employee']['careers'][0]['designation']['name'],
-              job_title: _payslips['data'][index]['employee']['careers'][0]['job_title']['name'],
+              job_title: "",
               status_karyawan: _payslips['data'][index]['employee']['careers'][0]['employee_status'],
               pay_take_home: (_payslips['data'][index]['total_incomes']-_payslips['data'][index]['total_deductions']).toString(),
 
