@@ -319,7 +319,7 @@ class _LeaveListStatusAdminState extends State<LeaveListStatusAdmin> {
         _loading = true;
       });
       http.Response response = await http.get(
-          "$base_url/api/leave-submissions?status=${widget.status}");
+          Uri.parse("$base_url/api/leave-submissions?status=${widget.status}"));
       _leaves = jsonDecode(response.body);
       setState(() {
         _loading = false;

@@ -18,15 +18,20 @@ import 'package:intl/intl.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
 class budgetproject extends StatefulWidget {
-  budgetproject({
-    this.projectNumber,
-    this.budgetStartDate,
-    this.budgetEndDate,
-    this.statusMember,
-    this.projectId,
-  });
+  budgetproject(
+      {this.projectNumber,
+      this.budgetStartDate,
+      this.budgetEndDate,
+      this.statusMember,
+      this.projectId,
+      this.budgetid});
 
-  var projectNumber, budgetStartDate, projectId, budgetEndDate, statusMember;
+  var projectNumber,
+      budgetStartDate,
+      projectId,
+      budgetEndDate,
+      statusMember,
+      budgetid;
 
   @override
   _budgetprojectState createState() => new _budgetprojectState();
@@ -38,7 +43,7 @@ class _budgetprojectState extends State<budgetproject> {
   Map _transaction;
   bool _loading = true;
   var _remaining;
-  var total_in, total_out, balance, remaining_balance = 0;
+  var total_in = 0, total_out = 0, balance = 0, remaining_balance = 0;
   var projectNumber, budgetStartDate, budgetEndDate;
 
   var _visible = false;
@@ -93,9 +98,8 @@ class _budgetprojectState extends State<budgetproject> {
                     "${widget.projectNumber == null ? projectNumber : widget.projectNumber}",
                     style: TextStyle(
                         color: Colors.white,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: "OpenSans"),
+                        fontSize: 15,
+                        fontFamily: "roboto-bold"),
                   ),
                   Container(
                     height: 55,
@@ -107,7 +111,7 @@ class _budgetprojectState extends State<budgetproject> {
                           child: Container(
                             margin: EdgeInsets.only(bottom: 20),
                             child: Text(
-                              "Active on ${budgetStartDate == null ? "" : DateFormat('dd/MM/yyyy').format(DateTime.parse("${budgetStartDate}"))} ",
+                              "Active on ${widget.budgetStartDate == null ? "" : DateFormat('dd/MM/yyyy').format(DateTime.parse("${widget.budgetStartDate}"))} ",
                               style:
                                   TextStyle(fontSize: 12, color: Colors.white),
                             ),
@@ -123,7 +127,7 @@ class _budgetprojectState extends State<budgetproject> {
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
                                 Text(
-                                  "Expired on ${budgetEndDate == null ? "" : DateFormat('dd/MM/yyyy').format(DateTime.parse("${budgetEndDate}"))} ",
+                                  "Expired on ${widget.budgetEndDate == null ? "" : DateFormat('dd/MM/yyyy').format(DateTime.parse("${widget.budgetEndDate}"))} ",
                                   style: TextStyle(
                                       fontSize: 12, color: Colors.white),
                                 ),
@@ -165,7 +169,10 @@ class _budgetprojectState extends State<budgetproject> {
                                 child: Text(
                                   "Total In",
                                   style: TextStyle(
-                                      color: Colors.black38, fontSize: 16),
+                                      color: Colors.black,
+                                      fontSize: 15,
+                                      fontFamily: "roboto-light",
+                                      letterSpacing: 0.5),
                                 ),
                               ),
                               Container(
@@ -173,12 +180,13 @@ class _budgetprojectState extends State<budgetproject> {
                                 child: _loading == true
                                     ? Text("")
                                     : Text(
-                                        "${total_in}",
+                                        "${NumberFormat.currency(decimalDigits: 0, locale: "id").format(total_in)}",
                                         // "IDR ${_transaction['data']['total_in'] - _transaction['data']['total_out']}",
                                         style: TextStyle(
-                                            color: Colors.black87,
-                                            fontSize: 13,
-                                            fontWeight: FontWeight.bold),
+                                            color: Colors.black,
+                                            letterSpacing: 0.5,
+                                            fontSize: 12,
+                                            fontFamily: "roboto-regular"),
                                       ),
                               )
                             ],
@@ -200,7 +208,10 @@ class _budgetprojectState extends State<budgetproject> {
                                 child: Text(
                                   "Total Out",
                                   style: TextStyle(
-                                      color: Colors.black38, fontSize: 16),
+                                      color: Colors.black,
+                                      letterSpacing: 0.5,
+                                      fontSize: 15,
+                                      fontFamily: "roboto-light"),
                                 ),
                               ),
                               Container(
@@ -208,11 +219,13 @@ class _budgetprojectState extends State<budgetproject> {
                                 child: _loading == true
                                     ? Text("")
                                     : Text(
-                                        "${total_out}",
+                                        "${NumberFormat.currency(decimalDigits: 0, locale: "id").format(total_out)}",
                                         // "IDR ${_transaction['data']['total_in'] - _transaction['data']['total_out']}",
                                         style: TextStyle(
-                                            fontSize: 13,
-                                            fontWeight: FontWeight.bold),
+                                            color: Colors.black,
+                                            letterSpacing: 0.5,
+                                            fontSize: 12,
+                                            fontFamily: "roboto-regular"),
                                       ),
                               )
                             ],
@@ -236,7 +249,10 @@ class _budgetprojectState extends State<budgetproject> {
                                   child: Text(
                                     "saldo",
                                     style: TextStyle(
-                                        color: Colors.black38, fontSize: 16),
+                                        color: Colors.black,
+                                        fontSize: 15,
+                                        fontFamily: "roboto-light",
+                                        letterSpacing: 0.5),
                                   ),
                                 ),
                                 Container(
@@ -244,10 +260,12 @@ class _budgetprojectState extends State<budgetproject> {
                                   child: _loading == true
                                       ? Text("")
                                       : Text(
-                                          "${balance}",
+                                          "${NumberFormat.currency(decimalDigits: 0, locale: "id").format(total_in - total_out)}",
                                           style: TextStyle(
-                                              fontSize: 13,
-                                              fontWeight: FontWeight.bold),
+                                              color: Colors.black,
+                                              letterSpacing: 0.5,
+                                              fontSize: 12,
+                                              fontFamily: "roboto-regular"),
                                         ),
                                 ),
                                 (remaining_balance > 0
@@ -257,7 +275,6 @@ class _budgetprojectState extends State<budgetproject> {
                                             ? ElevatedButton(
                                                 onPressed: () {
                                                   updateRepayment();
-
                                                 },
                                                 child: Text(
                                                   'Pelunasan',
@@ -328,6 +345,16 @@ class _budgetprojectState extends State<budgetproject> {
                           width: Get.mediaQuery.size.width,
                           child: Row(
                             children: [
+                              Container(
+                                margin: EdgeInsets.only(left: 10, top: 0),
+                                child: Text(
+                                  "${date}",
+                                  style: TextStyle(
+                                      fontSize: 15,
+                                      color: Colors.black,
+                                      fontFamily: "roboto-bold"),
+                                ),
+                              ),
                               status == "pending"
                                   ? Container(
                                       margin: EdgeInsets.only(left: 10),
@@ -618,41 +645,34 @@ class _budgetprojectState extends State<budgetproject> {
                         height: 1,
                       ),
                       Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              Container(
-                                margin: EdgeInsets.only(left: 10, top: 0),
-                                child: Text(
-                                  "${date}",
-                                  style: TextStyle(
-                                      fontSize: 16, color: Colors.black38),
-                                ),
-                              ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              Container(
-                                width: Get.mediaQuery.size.width - 140,
-                                margin: EdgeInsets.only(left: 10, top: 0),
-                                child: Text(
-                                  "${description}",
-                                  style: TextStyle(
-                                      fontSize: 16, color: Colors.black38),
-                                ),
-                              ),
                               Container(
                                 margin: EdgeInsets.only(
                                     left: 10, top: 10, bottom: 10),
                                 child: Text(
                                   "${amount}",
                                   style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
+                                      fontSize: 15,
+                                      fontFamily: "roboto-regular",
+                                      letterSpacing: 0.5,
                                       color: type == "in"
                                           ? Colors.green
                                           : Colors.red),
+                                ),
+                              ),
+                              Container(
+                                width: Get.mediaQuery.size.width - 140,
+                                margin: EdgeInsets.only(left: 10, top: 0),
+                                child: Text(
+                                  "${description ?? "terererw"}",
+                                  style: TextStyle(
+                                      fontSize: 13,
+                                      color: Colors.black,
+                                      fontFamily: "roboto-light"),
                                 ),
                               ),
                               SizedBox(
@@ -683,32 +703,33 @@ class _budgetprojectState extends State<budgetproject> {
                                         ],
                                       ),
                                     )
-                                  : status=="rejected"?
-                              Container(
-                                margin: EdgeInsets.only(left: 10),
-                                width: Get.mediaQuery.size.width - 150,
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      child: Icon(
-                                        Icons.close,
-                                        color: Colors.redAccent,
-                                      ),
-                                    ),
-                                    Container(
-                                      margin: EdgeInsets.only(
-                                          left: 10, top: 0),
-                                      child: Text(
-                                        "Pengajuan ditolak",
-                                        style: TextStyle(
-                                            fontSize: 16,
-                                            color: Colors.redAccent),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ):
-                              Container(),
+                                  : status == "rejected"
+                                      ? Container(
+                                          margin: EdgeInsets.only(left: 10),
+                                          width:
+                                              Get.mediaQuery.size.width - 150,
+                                          child: Row(
+                                            children: [
+                                              Container(
+                                                child: Icon(
+                                                  Icons.close,
+                                                  color: Colors.redAccent,
+                                                ),
+                                              ),
+                                              Container(
+                                                margin: EdgeInsets.only(
+                                                    left: 10, top: 0),
+                                                child: Text(
+                                                  "Pengajuan ditolak",
+                                                  style: TextStyle(
+                                                      fontSize: 16,
+                                                      color: Colors.redAccent),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        )
+                                      : Container(),
                             ],
                           ),
                           Expanded(
@@ -733,40 +754,47 @@ class _budgetprojectState extends State<budgetproject> {
                                               ? Center(
                                                   child: Text("No Image",
                                                       style: TextStyle(
-                                                          color: Colors.white))):image =="null"
-                                              ? Center(
-                                              child: Text("No Image",
-                                                  style: TextStyle(
-                                                      color: Colors.white)))
-                                              : image == ""
+                                                          color: Colors.white)))
+                                              : image == "null"
                                                   ? Center(
-                                                      child: Text(
-                                                      "No Image",
-                                                      style: TextStyle(
-                                                          color: Colors.white),
-                                                    ))
-                                                  : InkWell(
-                                                      onTap: () {
-                                                        Get.to(ImageTransaction(
-                                                          image: image,
-                                                          title: description,
-                                                        ));
-                                                      },
-                                                      child: CachedNetworkImage(
-                                                        imageUrl:
-                                                            "${image_ur}/eo/transactions/${image}",
-                                                        fit: BoxFit.fill,
-                                                        placeholder: (context,
-                                                                url) =>
-                                                            Center(
-                                                                child:
-                                                                    new CircularProgressIndicator()),
-                                                        errorWidget: (context,
-                                                                url, error) =>
-                                                            new Icon(
-                                                                Icons.error),
-                                                      ),
-                                                    )))
+                                                      child: Text("No Image",
+                                                          style: TextStyle(
+                                                              color: Colors
+                                                                  .white)))
+                                                  : image == ""
+                                                      ? Center(
+                                                          child: Text(
+                                                          "No Image",
+                                                          style: TextStyle(
+                                                              color:
+                                                                  Colors.white),
+                                                        ))
+                                                      : InkWell(
+                                                          onTap: () {
+                                                            Get.to(
+                                                                ImageTransaction(
+                                                              image: image,
+                                                              title:
+                                                                  description,
+                                                            ));
+                                                          },
+                                                          child:
+                                                              CachedNetworkImage(
+                                                            imageUrl:
+                                                                "${image_ur}/eo/transactions/${image}",
+                                                            fit: BoxFit.fill,
+                                                            placeholder: (context,
+                                                                    url) =>
+                                                                Center(
+                                                                    child:
+                                                                        new CircularProgressIndicator()),
+                                                            errorWidget: (context,
+                                                                    url,
+                                                                    error) =>
+                                                                new Icon(Icons
+                                                                    .error),
+                                                          ),
+                                                        )))
 
                                   // Container(
                                   //   width: 100,
@@ -817,14 +845,16 @@ class _budgetprojectState extends State<budgetproject> {
       ),
       floatingActionButton: widget.statusMember == 'pic'
           ? (_visible == false
-              ? (remaining_balance!=0?FloatingActionButton(
-                  heroTag: "btn_expense",
-                  onPressed: () {
-                    _ExpenseBudget();
-                  },
-                  child: Icon(Icons.add),
-                  backgroundColor: btnColor1,
-                ):null)
+              ? (remaining_balance != 0
+                  ? FloatingActionButton(
+                      heroTag: "btn_expense",
+                      onPressed: () {
+                        _ExpenseBudget();
+                      },
+                      child: Icon(Icons.add),
+                      backgroundColor: btnColor1,
+                    )
+                  : null)
               : null)
           : Container(),
       body: RefreshIndicator(
@@ -916,8 +946,6 @@ class _budgetprojectState extends State<budgetproject> {
     });
   }
 
-
-
   void _checkActiveBudget() {
     var now = DateTime.now();
 
@@ -978,8 +1006,7 @@ class _budgetprojectState extends State<budgetproject> {
   void updateRepayment() async {
     var result = await Get.to(RepaymentBudget(
       event_id: widget.projectId,
-      project_number:
-      widget.projectNumber,
+      project_number: widget.projectNumber,
       amount: remaining_balance,
     ));
 
@@ -988,8 +1015,6 @@ class _budgetprojectState extends State<budgetproject> {
     }
   }
 
-
-
   //ge data from api--------------------------------
   Future _dataBudgeting() async {
     try {
@@ -997,24 +1022,43 @@ class _budgetprojectState extends State<budgetproject> {
         _loading = true;
       });
       http.Response response = await http
-          .get("$baset_url_event/api/projects/${widget.projectId}/budgets");
+          .get(Uri.parse("$baset_url_event/api/budgets/${widget.budgetid}"));
       _transaction = jsonDecode(response.body);
-      total_in = NumberFormat.currency(decimalDigits: 0, locale: "id")
-          .format(_transaction['data']['total_in']);
-      total_out = NumberFormat.currency(decimalDigits: 0, locale: "id")
-          .format(_transaction['data']['total_out']);
-      balance = NumberFormat.currency(decimalDigits: 0, locale: "id")
-          .format(_transaction['data']['balance']);
-      remaining_balance = _transaction['data']['balance'];
+      // var sum=_transaction['data']['transactions'].reduce((a, b) => int.parse(a) +int.parse( b['amount']));
+      // print("sum ${sum}");
+
+      setState(() {
+        _transaction['data']['transactions'].forEach((e) {
+          if (e['type'] == "in") {
+            total_in += e['amount'];
+          }
+        });
+        _transaction['data']['transactions'].forEach((e) {
+          if (e['type'] == "out") {
+            total_out += e['amount'];
+          }
+        });
+      });
+
+      //   _transaction['data']['transactions'].forEach((e) => total_in += e['amount']);
+      // total_in = NumberFormat.currency(decimalDigits: 0, locale: "id")
+      //     .format(_transaction['data']['total_in']);
+      // total_out = NumberFormat.currency(decimalDigits: 0, locale: "id")
+      //     .format(_transaction['data']['total_out']);
+      // balance = NumberFormat.currency(decimalDigits: 0, locale: "id")
+      //     .format(_transaction['data']['balance']);
+      // remaining_balance = _transaction['data']['balance'];
       _checkActiveBudget();
-      projectNumber = _transaction['data']['project_number'];
-      budgetStartDate = _transaction['data']['budget_start_date'];
-      budgetEndDate = _transaction['data']['budget_end_date'];
+      // projectNumber = _transaction['data']['project_number'];
+      // budgetStartDate = _transaction['data']['budget_start_date'];
+      // budgetEndDate = _transaction['data']['budget_end_date'];
 
       setState(() {
         _loading = false;
       });
-    } catch (e) {}
+    } catch (e) {
+      print("error ${e}");
+    }
   }
 
   //inilisasi state

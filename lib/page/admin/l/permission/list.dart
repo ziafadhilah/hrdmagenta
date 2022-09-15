@@ -313,7 +313,7 @@ class _ListPermissionPageAdminState extends State<ListPermissionPageAdmin> {
         _loading = true;
       });
       http.Response response = await http.get(
-          "$base_url/api/permission-submissions?status=${widget.status}");
+          Uri.parse("$base_url/api/permission-submissions?status=${widget.status}"));
       _permission = jsonDecode(response.body);
       print(_permission);
       setState(() {

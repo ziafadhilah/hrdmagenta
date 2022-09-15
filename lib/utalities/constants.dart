@@ -7,10 +7,8 @@ import 'package:intl/intl.dart';
 
 const version = "1.0";
 
-const photo_profile='https://arenzha.s3.ap-southeast-1.amazonaws.com/photos/default-photo.png';
-
-
-
+const photo_profile =
+    'https://arenzha.s3.ap-southeast-1.amazonaws.com/profile-default.png';
 
 //constan textstyle
 final paragraphStyle = TextStyle(
@@ -47,6 +45,9 @@ final Widget absent = SvgPicture.asset(
   color: baseColor1,
 );
 
+final Widget iconProf = SvgPicture.asset("assets/iconProf.svg",
+    color: Colors.black87, semanticsLabel: 'Acme Logo');
+
 final Widget task = SvgPicture.asset(
   "assets/task.svg",
   semanticsLabel: 'Acme Logo',
@@ -57,8 +58,7 @@ final Widget taskIcon = SvgPicture.asset(
   "assets/task.svg",
   semanticsLabel: 'Acme Logo',
   width: 25,
-    height: 25,
-
+  height: 25,
 );
 
 final Widget pyslip = SvgPicture.asset(
@@ -110,6 +110,11 @@ final Widget splassscreen = SvgPicture.asset(
   semanticsLabel: 'Acme Logo',
 );
 
+final Widget splashscreen = SvgPicture.asset(
+  "assets/splash.svg",
+  semanticsLabel: 'Acme Logo',
+);
+
 final Widget pyslip_letter = SvgPicture.asset(
   "assets/receipt.svg",
   semanticsLabel: 'Acme Logo',
@@ -132,14 +137,13 @@ final Widget female_avatar = SvgPicture.asset(
 //   "assets/employee_profile.svg",
 //   semanticsLabel: 'Acme Logo',
 // );
-final Widget employee_profile =Image.network(photo_profile);
+final Widget employee_profile = Image.network(photo_profile);
 
 final Widget no_data_project = SvgPicture.asset(
   "assets/no_data_project.svg",
   semanticsLabel: 'Acme Logo',
   width: 150,
   height: 150,
-
 );
 
 final Widget no_data_payslip = SvgPicture.asset(
@@ -147,9 +151,6 @@ final Widget no_data_payslip = SvgPicture.asset(
   semanticsLabel: 'Acme Logo',
   width: 150,
   height: 150,
- 
-
-
 );
 final Widget no_data_notification = SvgPicture.asset(
   "assets/notification.svg",
@@ -165,7 +166,6 @@ final Widget no_data_transacation = SvgPicture.asset(
   width: 150,
   height: 150,
   color: Colors.black38,
-
 );
 
 final Widget gallery = SvgPicture.asset(
@@ -193,7 +193,6 @@ final Widget no_data_absence = SvgPicture.asset(
   semanticsLabel: 'Acme Logo',
   width: 150,
   height: 150,
-
 );
 final Widget no_data_leave = SvgPicture.asset(
   "assets/leave.svg",
@@ -232,7 +231,6 @@ class Constants {
   static const List<String> LeaveStatus = <String>[Leave];
   static const List<String> SickStatus = <String>[Sick];
   static const List<String> PermissionStatus = <String>[Permission];
-
 }
 
 //--end constan icon
@@ -243,7 +241,10 @@ String readTimestamp(int timestamp) {
   var diff = now.difference(date);
   var time = '';
 
-  if (diff.inSeconds <= 0 || diff.inSeconds > 0 && diff.inMinutes == 0 || diff.inMinutes > 0 && diff.inHours == 0 || diff.inHours > 0 && diff.inDays == 0) {
+  if (diff.inSeconds <= 0 ||
+      diff.inSeconds > 0 && diff.inMinutes == 0 ||
+      diff.inMinutes > 0 && diff.inHours == 0 ||
+      diff.inHours > 0 && diff.inDays == 0) {
     time = format.format(date);
   } else if (diff.inDays > 0 && diff.inDays < 7) {
     if (diff.inDays == 1) {
@@ -255,17 +256,16 @@ String readTimestamp(int timestamp) {
     if (diff.inDays == 7) {
       time = (diff.inDays / 7).floor().toString() + ' WEEK AGO';
     } else {
-
       time = (diff.inDays / 7).floor().toString() + ' WEEKS AGO';
     }
   }
 
-
   return time;
 }
+
 String numberCurrency(jsonObject) {
-  String string = NumberFormat.currency(locale: 'id', decimalDigits: 0)
-      .format(jsonObject);
+  String string =
+      NumberFormat.currency(locale: 'id', decimalDigits: 0).format(jsonObject);
 
   return string;
 }

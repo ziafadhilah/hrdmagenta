@@ -475,7 +475,7 @@ class _RejectAbsenceEmployeePageState extends State<RejectAbsenceEmployeePage> {
       });
       http.Response response = await http.get(
           // "$base_url/api/employees/$user_id/attendances?status=${widget.type}");
-          "${base_url}/api/attendances?status=${widget.type}");
+          Uri.parse("${base_url}/api/attendances?status=${widget.type}"));
       _absence = jsonDecode(response.body);
       setState(() {
         _loading = false;

@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'dart:math';
 import 'dart:ui';
+// import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
@@ -43,6 +45,7 @@ class _CheckinState extends State<Checkin> {
       _last_name,
       _profile_background,
       _gender,
+      _active_working_pattern_id,
       _departement_name,
       _lat_mainoffice,
       _long_mainoffice;
@@ -60,7 +63,7 @@ class _CheckinState extends State<Checkin> {
         ),
         backgroundColor: Colors.white,
         title: new Text(
-          "Check In",
+          "Clock In",
           style: TextStyle(color: Colors.black87),
         ),
       ),
@@ -108,21 +111,37 @@ class _CheckinState extends State<Checkin> {
                         height: 10,
                       ),
                       _buildtime(),
-                      Expanded(
-                        child: Container(
-                          margin: EdgeInsets.only(bottom: 10),
-                          width: double.infinity,
-                          height: MediaQuery.of(context).size.height,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: <Widget>[
-                              _buildfingerprint(),
-                            ],
-                          ),
-                        ),
-                      )
+                      // Expanded(
+                      //   child: Container(
+                      //     margin: EdgeInsets.only(bottom: 10),
+                      //     width: double.infinity,
+                      //     height: MediaQuery.of(context).size.height,
+                      //     child: Column(
+                      //       mainAxisAlignment: MainAxisAlignment.end,
+                      //       children: <Widget>[
+                      //         _buildfingerprint(),
+                      //       ],
+                      //     ),
+                      //   ),
+                      // )
                     ],
                   ),
+                ),
+              ),
+            ),
+      floatingActionButton: _isLoading == true
+          ? Center(
+              child: Text(""),
+            )
+          : FloatingActionButton(
+              onPressed: () {
+                upload();
+              },
+              backgroundColor: Colors.white,
+              child: Container(
+                margin: EdgeInsets.all(10.0),
+                child: Image.asset(
+                  "assets/fingerprint.png",
                 ),
               ),
             ),
@@ -262,7 +281,6 @@ class _CheckinState extends State<Checkin> {
                   'Present',
                   'Sick',
                   'Permission',
-
                 ].map<DropdownMenuItem<String>>((String value) {
                   return DropdownMenuItem<String>(
                     value: value,
@@ -324,7 +342,6 @@ class _CheckinState extends State<Checkin> {
                                   distance: _distance,
                                   latmainoffice: _lat_mainoffice,
                                   longMainoffice: _long_mainoffice,
-
                                 )));
                   },
                   child: Container(
@@ -339,7 +356,7 @@ class _CheckinState extends State<Checkin> {
                         ),
                         if (_currentPosition != null && _currentAddress != null)
                           Container(
-                            width: Get.mediaQuery.size.width/2 +50,
+                            width: Get.mediaQuery.size.width / 2 + 50,
                             child: Text(
                               "$_currentAddress",
                               style: TextStyle(color: Colors.black38),
@@ -388,7 +405,6 @@ class _CheckinState extends State<Checkin> {
       _category_absent = "Present";
     }
 
-
     if (_category_absent.toString().toLowerCase() != 'present') {
       if (base64.toString() == "null") {
         Toast.show("Foto wajib digunakan", context,
@@ -411,6 +427,7 @@ class _CheckinState extends State<Checkin> {
             _distance,
             _lat_mainoffice,
             _long_mainoffice,
+            _active_working_pattern_id,
             "present");
       }
     } else {
@@ -427,21 +444,26 @@ class _CheckinState extends State<Checkin> {
           _distance,
           _lat_mainoffice,
           _long_mainoffice,
+          _active_working_pattern_id,
           _category_absent.toString().toLowerCase());
     }
   }
 
   ///fucntion
   //akses kamera
+
   aksesCamera() async {
-    print('Picker is Called');
-    File img = (await ImagePicker.pickImage(
-        source: ImageSource.camera, maxHeight: 600, maxWidth: 600));
-    if (img != null) {
+    final ImagePicker _picker = ImagePicker();
+    XFile image = await _picker.pickImage(source: ImageSource.camera);
+
+    if (image != null) {
+      var f = await image.readAsBytes();
       setState(() {
-        _image = File(img.path);
-        base64 = base64Encode(_image.readAsBytesSync());
+        _image = File(image.path);
+        base64 = base64Encode(f);
       });
+    } else {
+      toast_success("No file selected");
     }
   }
 
@@ -549,21 +571,21 @@ class _CheckinState extends State<Checkin> {
       setState(() {
         _isLoading = true;
       });
-      http.Response response = await http.get("$base_url/api/employees/$id");
+      http.Response response =
+          await http.get(Uri.parse("$base_url/api/employees/$id"));
       _employee = jsonDecode(response.body);
 
       setState(() {
-        _departement_name = _employee['data']['work_placement'];
-
+        _departement_name = "";
 
         _gender = _employee['data']['gender'];
-       // _last_name = _employee['data']['last_name'];
+        // _last_name = _employee['data']['last_name'];
         _profile_background = _employee['data']['photo'];
-        _firts_name = _employee['data']['first_name'];
-        _lat_mainoffice = _employee['data']['location']['latitude'];
-        _long_mainoffice = _employee['data']['location']['longitude'];
-
-        // print(_lat_mainoffice);
+        _firts_name = _employee['data']['name'];
+        _active_working_pattern_id =
+            _employee['data']['active_working_pattern_id'];
+        _lat_mainoffice = _employee['data']['office']['latitude'];
+        _long_mainoffice = _employee['data']['office']['longitude'];
 
         _isLoading = false;
       });

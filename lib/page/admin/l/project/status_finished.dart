@@ -642,7 +642,7 @@ class _projecthistoryState extends State<projecthistory> {
       setState(() {
         _loading=true;
       });
-      http.Response response=await http.get("$base_url/api/events?status=closed");
+      http.Response response=await http.get(Uri.parse("$base_url/api/events?status=closed"));
       _projects=jsonDecode(response.body);
 
 

@@ -94,6 +94,7 @@ class Validasi {
       distance,
       office_latitude,
       office_longitude,
+      working_pattern_id,
       category) {
     // if (departement_name == "office") {
     //   if (category == "present") {
@@ -167,7 +168,7 @@ class Validasi {
         if (photos != 'null') {
           print(photos.toString());
           if (remark.toString().isNotEmpty) {
-            services.checkin(
+            services.checkin2(
                 context,
                 photos,
                 remark,
@@ -179,6 +180,7 @@ class Validasi {
                 "approved",
                 office_latitude,
                 office_longitude,
+                working_pattern_id,
                 category);
           } else {
             Toast.show("Catatan wajib dimasukan", context,
@@ -264,6 +266,7 @@ class Validasi {
       distance,
       office_latitude,
       office_longitude,
+      long_shift_working_pattern_id,
       category) {
     if ((lat.toString() == "null") || (long.toString() == "null")) {
       Toast.show(
@@ -276,7 +279,7 @@ class Validasi {
         if (photos != 'null') {
           print(photos.toString());
           if (remark.toString().isNotEmpty) {
-            services.checkout(
+            services.checkout2(
                 context,
                 photos,
                 remark,
@@ -288,6 +291,7 @@ class Validasi {
                 "approved",
                 office_latitude,
                 office_longitude,
+                long_shift_working_pattern_id,
                 category);
           } else {
             Toast.show("Catatan wajib dimasukan", context,
@@ -436,16 +440,16 @@ class Validasi {
 
   ///leave
   void validation_leaves_submision(BuildContext context, var id, employee_id,
-      date_of_filling, leaves_dates, description, action) {
+      date_of_filling, leaves_dates, description, category, action) {
     if (leaves_dates.length <= 0) {
       Toast.show("tanggal Cuti belum dipilih", context);
     } else {
       if (action == "submit") {
-        services.leaveSubmission(
-            context, employee_id, date_of_filling, leaves_dates, description);
+        services.leaveSubmission(context, employee_id, date_of_filling,
+            leaves_dates, description, category);
       } else {
         services.leaveEdit(context, id, employee_id, date_of_filling,
-            leaves_dates, description);
+            leaves_dates, description, category);
       }
     }
   }
@@ -454,7 +458,7 @@ class Validasi {
   void validation_sick_submision(BuildContext context, var id, employee_id,
       date_of_filling, sick_dates, old_sick_dates, description, action) {
     if (sick_dates.length <= 0) {
-      Toast.show("tanggal sakit belum dipilih", context);
+      Toast.show("Tanggal sakit belum dipilih", context);
     } else {
       if (action == "submit") {
         services.sickSubmission(
@@ -468,7 +472,6 @@ class Validasi {
         print(description);
         services.sickEdit(context, id, employee_id, date_of_filling, sick_dates,
             old_sick_dates, description);
-
       }
     }
   }

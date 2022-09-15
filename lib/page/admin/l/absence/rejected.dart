@@ -470,7 +470,7 @@ class _RejectedAbsenceAdminPageState extends State<RejectedAbsenceAdminPage > {
         _loading = true;
       });
       http.Response response =
-      await http.get("$base_url/api/attendances?status=${widget.type}");
+      await http.get(Uri.parse("$base_url/api/attendances?status=${widget.type}"));
       var _absence_data = jsonDecode(response.body);
       _absence=json.decode(response.body);
       var  absence =_absence_data['data'].where((prod) => prod["present"] =="permission").toList();

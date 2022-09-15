@@ -11,7 +11,6 @@ import 'package:hrdmagenta/page/employee/absence/photoview.dart';
 import 'package:hrdmagenta/services/api_clien.dart';
 import 'package:hrdmagenta/utalities/font.dart';
 
-
 class detail_absence extends StatefulWidget {
   detail_absence(
       {this.status,
@@ -34,8 +33,8 @@ class detail_absence extends StatefulWidget {
       this.work_placement,
       this.office_latitude,
       this.office_longitude,
-        this.employee_id,
-        this.photo,
+      this.employee_id,
+      this.photo,
       this.category});
 
   var status,
@@ -58,8 +57,8 @@ class detail_absence extends StatefulWidget {
       work_placement,
       office_latitude,
       office_longitude,
-  employee_id,
-  photo,
+      employee_id,
+      photo,
       category;
 
   _detail_absenceState createState() => _detail_absenceState();
@@ -93,20 +92,30 @@ class _detail_absenceState extends State<detail_absence> {
             width: MediaQuery.of(context).size.width,
             child: Column(
               children: <Widget>[
-                _buildProfile(),
+                // _buildProfile(),
 
-              //  _buildAbsenceType(),
-                Divider(color: Colors.black12,),
+                //  _buildAbsenceType(),
+                Divider(
+                  color: Colors.black12,
+                ),
                 _buildAbsencecategory(),
-                Divider(color: Colors.black12,),
+                Divider(
+                  color: Colors.black12,
+                ),
                 _buildDate(),
-                Divider(color: Colors.black12,),
+                Divider(
+                  color: Colors.black12,
+                ),
                 _buildTime(),
                 // Divider(color: Colors.black12,),
                 // _buildRemark(),
-                Divider(color: Colors.black12,),
+                Divider(
+                  color: Colors.black12,
+                ),
                 _buildAdress(),
-                Divider(color: Colors.black12,),
+                Divider(
+                  color: Colors.black12,
+                ),
                 _buildgridtext(),
 
                 SizedBox(
@@ -117,12 +126,12 @@ class _detail_absenceState extends State<detail_absence> {
                 SizedBox(
                   height: 10,
                 ),
-                Container(
-                    child: widget.status == "pending"
-                        ? Text("")
-                        : widget.status == "rejected"
-                            ? _buildrejected()
-                            : _buildapproved()),
+                // Container(
+                //     child: widget.status == "pending"
+                //         ? Text("")
+                //         : widget.status == "rejected"
+                //             ? _buildrejected()
+                //             : _buildapproved()),
                 //_buildrejected(),
               ],
             ),
@@ -155,7 +164,8 @@ class _detail_absenceState extends State<detail_absence> {
         children: <Widget>[
           Container(
               child: CircleAvatar(
-           backgroundImage: NetworkImage('${image_ur}/photos/default-photo.png'),
+            backgroundImage:
+                NetworkImage('${image_ur}/photos/default-photo.png'),
             backgroundColor: Colors.transparent,
             radius: 40,
           )),
@@ -233,13 +243,10 @@ class _detail_absenceState extends State<detail_absence> {
 
   Widget _buildRemark() {
     return Container(
-
       margin: EdgeInsets.only(left: 5),
       width: double.infinity,
-
       child: Row(
         children: <Widget>[
-
           Container(
             margin: EdgeInsets.only(left: 10),
             child: Column(
@@ -247,7 +254,6 @@ class _detail_absenceState extends State<detail_absence> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Container(
-
                   child: Text(
                     "Catatan",
                     style: titleAbsence,
@@ -280,10 +286,8 @@ class _detail_absenceState extends State<detail_absence> {
     return Container(
       margin: EdgeInsets.only(left: 5),
       width: double.infinity,
-
       child: Row(
         children: <Widget>[
-
           Container(
             margin: EdgeInsets.only(left: 10),
             child: Column(
@@ -300,10 +304,12 @@ class _detail_absenceState extends State<detail_absence> {
                   height: 10,
                 ),
                 Container(
-                  child: widget.category=="present"? Text(
-                    "Hadir",
-                    style: subtitleAbsence,
-                  ):Container(),
+                  child: widget.category == "hadir"
+                      ? Text(
+                          "Hadir",
+                          style: subtitleAbsence,
+                        )
+                      : Container(),
                 )
               ],
             ),
@@ -318,10 +324,8 @@ class _detail_absenceState extends State<detail_absence> {
     return Container(
       margin: EdgeInsets.only(left: 5),
       width: double.infinity,
-
       child: Row(
         children: <Widget>[
-
           Container(
             margin: EdgeInsets.only(left: 10),
             child: Column(
@@ -358,7 +362,6 @@ class _detail_absenceState extends State<detail_absence> {
       width: double.infinity,
       child: Row(
         children: <Widget>[
-
           Container(
             margin: EdgeInsets.only(left: 10, bottom: 10),
             child: Column(
@@ -381,7 +384,7 @@ class _detail_absenceState extends State<detail_absence> {
                       child: _currentAddress == null
                           ? Text("")
                           : Text(
-                        "${_currentAddress}",
+                              "${_currentAddress}",
                               style: subtitleAbsence,
                             ),
                     ),
@@ -399,10 +402,8 @@ class _detail_absenceState extends State<detail_absence> {
     return Container(
       margin: EdgeInsets.only(left: 5),
       width: double.infinity,
-
       child: Row(
         children: <Widget>[
-
           Container(
             margin: EdgeInsets.only(left: 10),
             child: Column(
@@ -604,7 +605,7 @@ class _detail_absenceState extends State<detail_absence> {
                       fit: BoxFit.fill,
                     )
                   : CachedNetworkImage(
-                      imageUrl:  "${image_ur}/${widget.image}",
+                      imageUrl: "${image_ur}/${widget.image}",
                       fit: BoxFit.fill,
                       placeholder: (context, url) =>
                           Center(child: new CircularProgressIndicator()),
@@ -651,13 +652,18 @@ class _detail_absenceState extends State<detail_absence> {
                     height: 10,
                   ),
                   _buildrejectedby(),
-                  Divider(color: Colors.black12,),
+                  Divider(
+                    color: Colors.black12,
+                  ),
                   _buildrejecteddate(),
-                  Divider(color: Colors.black12,),
+                  Divider(
+                    color: Colors.black12,
+                  ),
                   // _buildrejectedon(),
                   _buildrejectednote(),
-                  Divider(color: Colors.black12,),
-
+                  Divider(
+                    color: Colors.black12,
+                  ),
                 ],
               )
             : Text(""));
@@ -667,10 +673,8 @@ class _detail_absenceState extends State<detail_absence> {
     return Container(
       margin: EdgeInsets.only(left: 5),
       width: double.infinity,
-
       child: Row(
         children: <Widget>[
-
           Container(
             margin: EdgeInsets.only(left: 10),
             child: Column(
@@ -704,10 +708,8 @@ class _detail_absenceState extends State<detail_absence> {
     return Container(
       margin: EdgeInsets.only(left: 5),
       width: double.infinity,
-
       child: Row(
         children: <Widget>[
-
           Container(
             margin: EdgeInsets.only(left: 10),
             child: Column(
@@ -742,11 +744,9 @@ class _detail_absenceState extends State<detail_absence> {
     return Container(
       margin: EdgeInsets.only(left: 5),
       width: double.infinity,
-
       child: Card(
         child: Row(
           children: <Widget>[
-
             Container(
               margin: EdgeInsets.only(left: 10),
               child: Column(
@@ -781,10 +781,8 @@ class _detail_absenceState extends State<detail_absence> {
     return Container(
       margin: EdgeInsets.only(left: 5),
       width: double.infinity,
-
       child: Row(
         children: <Widget>[
-
           Container(
             margin: EdgeInsets.only(left: 10),
             child: Column(
@@ -802,7 +800,6 @@ class _detail_absenceState extends State<detail_absence> {
                 ),
                 Container(
                   width: MediaQuery.of(context).size.width - 100,
-
                   child: widget.rejection_note == null
                       ? Text(
                           "-",
@@ -858,13 +855,19 @@ class _detail_absenceState extends State<detail_absence> {
                   SizedBox(
                     height: 10,
                   ),
-                  _buildapprovedby(),
-                  Divider(color: Colors.black12,),
-                  _buildapproveddate(),
-                  Divider(color: Colors.black12,),
+                  // _buildapprovedby(),
+                  // Divider(
+                  //   color: Colors.black12,
+                  // ),
+                  // _buildapproveddate(),
+                  // Divider(
+                  //   color: Colors.black12,
+                  // ),
                   //  _buildapprovedon(),
-                  _buildapprovalnote(),
-                  Divider(color: Colors.black12,),
+                  // _buildapprovalnote(),
+                  // Divider(
+                  //   color: Colors.black12,
+                  // ),
                 ],
               )
             : Text(""));
@@ -874,10 +877,8 @@ class _detail_absenceState extends State<detail_absence> {
     return Container(
       margin: EdgeInsets.only(left: 5),
       width: double.infinity,
-
       child: Row(
         children: <Widget>[
-
           Container(
             margin: EdgeInsets.only(left: 10),
             child: Column(
@@ -912,10 +913,8 @@ class _detail_absenceState extends State<detail_absence> {
     return Container(
       margin: EdgeInsets.only(left: 5),
       width: double.infinity,
-
       child: Row(
         children: <Widget>[
-
           Container(
             margin: EdgeInsets.only(left: 10),
             child: Column(
@@ -950,10 +949,8 @@ class _detail_absenceState extends State<detail_absence> {
     return Container(
       margin: EdgeInsets.only(left: 5),
       width: double.infinity,
-
       child: Row(
         children: <Widget>[
-
           Container(
             margin: EdgeInsets.only(left: 10),
             child: Column(
@@ -987,10 +984,8 @@ class _detail_absenceState extends State<detail_absence> {
     return Container(
       margin: EdgeInsets.only(left: 5),
       width: double.infinity,
-
       child: Row(
         children: <Widget>[
-
           Container(
             margin: EdgeInsets.only(left: 10),
             child: Column(

@@ -40,7 +40,6 @@ class SharedPreference {
     sharedPreferences.setString("email", email);
     sharedPreferences.setString("profile_background", profile_background);
 
-
     sharedPreferences.setString("contact", contact);
 
     sharedPreferences.setString("departement_id", depaertement_id);
@@ -49,11 +48,6 @@ class SharedPreference {
 
     sharedPreferences.setString("departement_lat", departement_lat);
     sharedPreferences.setString("departement_long", departement_long);
-
-
-
-
-
   }
 
   void logout(BuildContext context) async {

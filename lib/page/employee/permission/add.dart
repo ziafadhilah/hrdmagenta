@@ -407,7 +407,7 @@ class _AddPermissionPageEmployeeState extends State<AddPermissionPageEmployee> {
 
       });
 
-      http.Response response=await http.get("$base_url/api/permission-categories");
+      http.Response response=await http.get(Uri.parse("$base_url/api/permission-categories"));
       var data=jsonDecode(response.body);
       setState(() {
         typeList = data['data'];

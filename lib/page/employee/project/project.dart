@@ -68,17 +68,17 @@ class _ProjectState extends State<Project> {
   }
 
   Widget _buildProgress(index) {
-    var venue = _projects[index]['quotations'][0]['venue_event'];
+    var venue = _projects[index]['address'];
 
-    var completed_task = _projects[index]['task']
+    var completed_task = _projects[index]['tasks']
         .where((prod) => prod["status"] == "completed")
         .toList();
     var percentage =
-        (completed_task.length) / (_projects[index]['task'].length);
+        (completed_task.length) / (_projects[index]['tasks'].length);
     var balance = NumberFormat.currency(decimalDigits: 0, locale: "id")
-        .format(_projects[index]['budget']['balance']);
-    var status = _projects[index]['status'];
-    var tasks = _projects[index]['task'];
+        .format(_projects[index]['budgets']['balance']);
+    var status = "In Progress";
+    var tasks = _projects[index]['tasks'];
 
     return InkWell(
       onTap: () {
@@ -89,6 +89,7 @@ class _ProjectState extends State<Project> {
       },
       child: Container(
         width: MediaQuery.of(context).size.width,
+        margin: EdgeInsets.only(left: 20, right: 20),
         child: Card(
           child: Container(
             margin: EdgeInsets.only(left: 10, right: 10),
@@ -105,17 +106,69 @@ class _ProjectState extends State<Project> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
+                            SizedBox(
+                              height: 10,
+                            ),
                             Container(
-                              child: Text(
-                                  "${_projects[index]['project_number']}",
-                                  style: subtitleMainMenu),
+                              child: Row(
+                                children: [
+                                  Text("${_projects[index]['number']}",
+                                      style: TextStyle(
+                                          fontSize: 13, letterSpacing: 0.5)),
+                                  Expanded(
+                                      child: Container(
+                                    width: double.maxFinite,
+                                    alignment: Alignment.centerRight,
+                                    child: Container(
+                                      margin: EdgeInsets.only(right: 20),
+                                      width: 70,
+                                      child: Container(
+                                        child: Container(
+                                            alignment: Alignment.center,
+                                            margin: EdgeInsets.only(
+                                                top: 3, bottom: 3),
+                                            child: Text(
+                                              "${status == "approved" ? "In Progress" : "${status}"}",
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 10),
+                                            )),
+                                        decoration: BoxDecoration(
+                                          color: status == "approved"
+                                              ? Colors.green
+                                              : Colors.lightBlue,
+                                          borderRadius: new BorderRadius.only(
+                                            topLeft:
+                                                const Radius.circular(10.0),
+                                            topRight:
+                                                const Radius.circular(10.0),
+                                            bottomLeft:
+                                                const Radius.circular(10.0),
+                                            bottomRight:
+                                                const Radius.circular(10.0),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  )),
+                                ],
+                              ),
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Divider(
+                              height: 1,
+                            ),
+                            SizedBox(
+                              height: 10,
                             ),
                             Container(
                               child: Text("$venue",
                                   style: TextStyle(
-                                      color: Colors.black38,
+                                      color: Colors.black,
                                       fontFamily: "SFReguler",
-                                      fontSize: 14)),
+                                      fontSize: 12)),
                             ),
                             SizedBox(
                               height: 10,
@@ -123,9 +176,9 @@ class _ProjectState extends State<Project> {
                             Container(
                               child: Text("$balance",
                                   style: TextStyle(
-                                      color: Colors.black38,
+                                      color: Colors.black.withOpacity(0.2),
                                       fontFamily: "SFReguler",
-                                      fontSize: 14)),
+                                      fontSize: 12)),
                             ),
                             SizedBox(
                               height: 10,
@@ -136,30 +189,32 @@ class _ProjectState extends State<Project> {
                       SizedBox(
                         height: 10,
                       ),
-                      Container(
-                        width: 70,
-                        child: Container(
-                          child: Container(
-                              alignment: Alignment.center,
-                              margin: EdgeInsets.only(top: 3, bottom: 3),
-                              child: Text(
-                                "${status == "approved" ? "In Progress" : "${status}"}",
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 10),
-                              )),
-                          decoration: BoxDecoration(
-                            color: status == "approved"
-                                ? Colors.green
-                                : Colors.lightBlue,
-                            borderRadius: new BorderRadius.only(
-                              topLeft: const Radius.circular(10.0),
-                              topRight: const Radius.circular(10.0),
-                              bottomLeft: const Radius.circular(10.0),
-                              bottomRight: const Radius.circular(10.0),
-                            ),
-                          ),
-                        ),
-                      )
+                      // Container(
+                      //   margin: EdgeInsets.only(right: 20),
+                      //   width: 70,
+                      //   child: Container(
+                      //
+                      //     child: Container(
+                      //         alignment: Alignment.center,
+                      //         margin: EdgeInsets.only(top: 3, bottom: 3),
+                      //         child: Text(
+                      //           "${status == "approved" ? "In Progress" : "${status}"}",
+                      //           style: TextStyle(
+                      //               color: Colors.white, fontSize: 10),
+                      //         )),
+                      //     decoration: BoxDecoration(
+                      //       color: status == "approved"
+                      //           ? Colors.green
+                      //           : Colors.lightBlue,
+                      //       borderRadius: new BorderRadius.only(
+                      //         topLeft: const Radius.circular(10.0),
+                      //         topRight: const Radius.circular(10.0),
+                      //         bottomLeft: const Radius.circular(10.0),
+                      //         bottomRight: const Radius.circular(10.0),
+                      //       ),
+                      //     ),
+                      //   ),
+                      // )
                     ],
                   ),
                 ),
@@ -181,7 +236,6 @@ class _ProjectState extends State<Project> {
                         ),
                       ),
                       Container(
-                        width: Get.mediaQuery.size.width / 2 - 30,
                         child: Align(
                           alignment: Alignment.topRight,
                           child: Container(
@@ -284,35 +338,37 @@ class _ProjectState extends State<Project> {
     try {
       setState(() {
         _loading = true;
-        page=1;
+        page = 1;
       });
 
-      http.Response response = await http.get(
-          "$baset_url_event/api/projects/${widget.status}/employees/${user_id}?page=1&record=15");
+      http.Response response = await http.get(Uri.parse(
+          "$baset_url_event/api/employees/${user_id}/projects?status=${widget.status}"));
 
       var data = jsonDecode(response.body);
+      print("data ${data}");
       _projects = data['data'];
 
       setState(() {
         _loading = false;
       });
-    } catch (e) {}
+    } catch (e) {
+      print("${e}");
+    }
   }
 
   Future loadMore(var user_id) async {
     try {
       setState(() {
         allLoaded = true;
-        page=page+1;
+        page = page + 1;
       });
 
-
-      http.Response response = await http.get(
-          "$baset_url_event/api/projects/${widget.status}/employees/${user_id}?page=${page}&record=${record}");
+      http.Response response = await http.get(Uri.parse(
+          "$baset_url_event/api/projects/${widget.status}/employees/${user_id}?page=${page}&record=${record}"));
       var newData = jsonDecode(response.body);
       setState(() {
         for (var i = 0; i < newData['data'].length; i++) {
-          _projects.add(newData['data'][i]);
+          _projects.addAll(newData['data'][i]);
         }
       });
 
@@ -361,8 +417,6 @@ class _ProjectState extends State<Project> {
     //_showPersBottomSheetCallBack = _showBottomSheet;
 
     _scrollController.addListener(() {
-
-
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
         loadMore(user_id);

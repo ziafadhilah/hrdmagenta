@@ -174,7 +174,7 @@ class _task_complatedState extends State<task_complated> {
         _loading = true;
       });
       http.Response response =
-          await http.get("$baset_url_event/api/projects/${widget.id}/tasks");
+          await http.get(Uri.parse("$baset_url_event/api/projects/${widget.id}/tasks"));
       _task = jsonDecode(response.body);
 
       setState(() {

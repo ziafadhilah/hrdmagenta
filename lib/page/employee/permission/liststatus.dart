@@ -335,7 +335,7 @@ class _ListstatusPermissionPageEmployeeState extends State<ListstatusPermissionP
         _loading = true;
       });
       http.Response response = await http.get(
-          "$base_url/api/employees/$user_id/permission-submissions?status=${widget.status}");
+          Uri.parse("$base_url/api/employees/$user_id/permission-submissions?status=${widget.status}"));
       _permission = jsonDecode(response.body);
       print(_permission);
       setState(() {

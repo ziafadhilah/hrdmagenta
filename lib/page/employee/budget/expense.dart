@@ -373,7 +373,7 @@ class _expandBudgettState extends State<expandbudget> {
     try {
       _loading = false;
 
-      http.Response response = await http.get("$baset_url_event/api/accounts");
+      http.Response response = await http.get(Uri.parse("$baset_url_event/api/accounts"));
       var data = jsonDecode(response.body);
       setState(() {
         typeList = data['data'];

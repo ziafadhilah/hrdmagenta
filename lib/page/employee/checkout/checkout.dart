@@ -44,7 +44,8 @@ class _CheckoutState extends State<Checkout> {
       _gender,
       _departement_name,
       _lat_mainoffice,
-      _long_mainoffice;
+      _long_mainoffice,
+      _long_shift_working_pattern_id;
   String base64;
   Validasi validator = new Validasi();
 
@@ -58,7 +59,7 @@ class _CheckoutState extends State<Checkout> {
         ),
         backgroundColor: Colors.white,
         title: new Text(
-          "Check Out",
+          "Clock Out",
           style: TextStyle(color: Colors.black87),
         ),
       ),
@@ -405,6 +406,7 @@ class _CheckoutState extends State<Checkout> {
             _distance,
             _lat_mainoffice,
             _long_mainoffice,
+            _long_shift_working_pattern_id,
             _category_absent.toString().toLowerCase());
       }
     } else {
@@ -421,21 +423,26 @@ class _CheckoutState extends State<Checkout> {
           _distance,
           _lat_mainoffice,
           _long_mainoffice,
+          _long_shift_working_pattern_id,
           _category_absent.toString().toLowerCase());
     }
   }
 
   ///fucntion
   //akses kamera
+
   aksesCamera() async {
-    print('Picker is Called');
-    File img = (await ImagePicker.pickImage(
-        source: ImageSource.camera, maxHeight: 600, maxWidth: 600));
-    if (img != null) {
+    final ImagePicker _picker = ImagePicker();
+    XFile image = await _picker.pickImage(source: ImageSource.camera);
+
+    if (image != null) {
+      var f = await image.readAsBytes();
       setState(() {
-        _image = File(img.path);
-        base64 = base64Encode(_image.readAsBytesSync());
+        _image = File(image.path);
+        base64 = base64Encode(f);
       });
+    } else {
+      toast_success("No file selected");
     }
   }
 
@@ -534,18 +541,20 @@ class _CheckoutState extends State<Checkout> {
       setState(() {
         _isLoading = true;
       });
-      http.Response response = await http.get("$base_url/api/employees/$id");
+      http.Response response =
+          await http.get(Uri.parse("$base_url/api/employees/$id"));
       _employee = jsonDecode(response.body);
 
       setState(() {
-        _departement_name = _employee['data']['work_placement'];
+        _departement_name = "";
 
         _gender = _employee['data']['gender'];
-        _last_name = _employee['data']['last_name'];
+        _last_name = "";
         _profile_background = _employee['data']['photo'];
-        _firts_name = _employee['data']['first_name'];
-        _lat_mainoffice = _employee['data']['location']['latitude'];
-        _long_mainoffice = _employee['data']['location']['longitude'];
+        _firts_name = _employee['data']['name'];
+        _lat_mainoffice = _employee['data']['office']['latitude'];
+        _long_mainoffice = _employee['data']['office']['longitude'];
+        _long_shift_working_pattern_id = "";
         _getCurrentLocation();
         _getDistance(_lat_mainoffice, _long_mainoffice, _lat, _long);
 

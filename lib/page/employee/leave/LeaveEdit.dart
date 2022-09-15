@@ -13,10 +13,13 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 class LeaveEdit extends StatefulWidget {
-  LeaveEdit({
-    this.date_of_filing,this.leave_dates,this.description,this.id
-});
-  var date_of_filing,leave_dates,description,id;
+  LeaveEdit(
+      {this.date_of_filing,
+      this.leave_dates,
+      this.description,
+      this.id,
+      this.category});
+  var date_of_filing, leave_dates, description, id, category;
   @override
   _LeaveEditState createState() => _LeaveEditState();
 }
@@ -24,29 +27,32 @@ class LeaveEdit extends StatefulWidget {
 class _LeaveEditState extends State<LeaveEdit> {
   DateTime startdate = DateTime.now();
   DateTime enddate = DateTime.now();
-  var Cstartdate=new TextEditingController();
-  var Cenddate=new TextEditingController();
-  var totalLeaveController=new TextEditingController();
-  var takenLeaveController=new TextEditingController();
-  var jumlahPengambilanController=new TextEditingController();
-  var descriptionController=new TextEditingController();
+  var Cstartdate = new TextEditingController();
+  var Cenddate = new TextEditingController();
+  var totalLeaveController = new TextEditingController();
+  var takenLeaveController = new TextEditingController();
+  var jumlahPengambilanController = new TextEditingController();
+  var descriptionController = new TextEditingController();
+  var categoryController = new TextEditingController();
   var now;
   var _isLoading;
   var _submisionLeaves;
-  var total_leave,taken_leave;
-  var  date_leaves=[];
-  var date_leaves_submit=[];
+  var total_leave, taken_leave;
+  var date_leaves = [];
+  var date_leaves_submit = [];
   var _initialSelectedDates;
-  var _visible=false;
-  var disabled=true;
+  var _visible = false;
+  var disabled = true;
   var user_id;
-  List<DateTime> initial=[];
+  List typeList;
+  String _type;
+  int position;
+  List<DateTime> initial = [];
 
   String _selectedDate = '';
   String _dateCount = '';
   String _range = '';
   String _rangeCount = '';
-
 
   @override
   Widget build(BuildContext context) {
@@ -67,28 +73,115 @@ class _LeaveEditState extends State<LeaveEdit> {
         margin: EdgeInsets.only(left: 10, right: 10, top: 10),
         child: SingleChildScrollView(
           child: Container(
-
             color: Colors.white,
-            child: _isLoading?Container(
-                width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height,
-                child: Center(child: CircularProgressIndicator(),)):Column(
-              children: <Widget>[
-                _buildtglPengajuan(),
-                _buildJatacuti(),
-                _builJumlahambil(),
-                _builddateLeave(),
-                _buildJmlPengambilan(),
-                _buildketerangan(),
-                _buildbtsubmit(),
-
-              ],
-            ),
+            child: _isLoading
+                ? Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height,
+                    child: Center(
+                      child: CircularProgressIndicator(),
+                    ))
+                : Column(
+                    children: <Widget>[
+                      _buildCategory(),
+                      _buildtglPengajuan(),
+                      _buildJatacuti(),
+                      _builJumlahambil(),
+                      _builddateLeave(),
+                      _buildJmlPengambilan(),
+                      _buildketerangan(),
+                      _buildbtsubmit(),
+                    ],
+                  ),
           ),
         ),
       ),
     );
   }
+
+  Widget _buildCategory() {
+    return Container(
+      width: double.infinity,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Container(
+            width: double.infinity,
+            child: DropdownButtonHideUnderline(
+              child: ButtonTheme(
+                alignedDropdown: true,
+                child: DropdownButton<String>(
+                  hint: Text('Select Kategori'),
+                  onChanged: (String categories) {
+                    setState(() {
+                      _type = categories;
+                      print(_type);
+                      position = typeList.indexWhere(
+                          (prod) => prod["id"] == int.parse(categories));
+
+                      if (jumlahPengambilanController.text.toString().isEmpty) {
+                        disabled = true;
+                        _visible = true;
+                      } else {
+                        ///check total total leave
+                        if (int.parse(
+                                jumlahPengambilanController.text.toString()) >
+                            int.parse("${typeList[position]['max_day']}")) {
+                          _visible = true;
+                          disabled = false;
+                        } else {
+                          _visible = false;
+                          disabled = true;
+                        }
+                      }
+                    });
+                  },
+                  value: widget.category.toString(),
+                  iconSize: 30,
+                  icon: Icon(
+                    Icons.keyboard_arrow_down,
+                    color: Colors.black38,
+                  ),
+                  style: TextStyle(
+                    color: Colors.black54,
+                    fontSize: 16,
+                  ),
+                  items: typeList?.map((item) {
+                        return new DropdownMenuItem(
+                          child: new Text(item['name']),
+                          value: item['id'].toString(),
+                        );
+                      })?.toList() ??
+                      [],
+                ),
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          Divider(
+            color: Colors.black38,
+            height: 1,
+          ),
+          SizedBox(
+            height: 5,
+          ),
+          Visibility(
+            child: Container(
+                child: position != null
+                    ? Text("Maksimal:${typeList[position]['max_day']} Hari",
+                        style: TextStyle(
+                            color: Colors.black87,
+                            fontFamily: "SFReguler",
+                            fontStyle: FontStyle.italic))
+                    : Text("")),
+          )
+        ],
+      ),
+    );
+  }
+
   Widget _buildtglPengajuan() {
     return Container(
       child: TextFormField(
@@ -96,7 +189,7 @@ class _LeaveEditState extends State<LeaveEdit> {
         maxLines: 3,
         initialValue: '${now}',
         decoration: InputDecoration(
-          labelText: 'tanggal Pengajuan',
+          labelText: 'Tanggal Pengajuan',
         ),
       ),
     );
@@ -128,11 +221,10 @@ class _LeaveEditState extends State<LeaveEdit> {
 
   Widget _builddateLeave() {
     return InkWell(
-      onTap: (){
+      onTap: () {
         //_selectStartDate(context);
         multipleDate();
       },
-
       child: Container(
         child: TextFormField(
           cursorColor: Theme.of(context).cursorColor,
@@ -152,7 +244,6 @@ class _LeaveEditState extends State<LeaveEdit> {
     );
   }
 
-
   Widget _buildJmlPengambilan() {
     return Container(
       child: Column(
@@ -161,30 +252,41 @@ class _LeaveEditState extends State<LeaveEdit> {
           TextFormField(
             enabled: false,
             controller: jumlahPengambilanController,
-
             decoration: InputDecoration(
               labelText: 'Jumlah Pengambilan',
             ),
           ),
-          SizedBox(height: 5,),
+          SizedBox(
+            height: 5,
+          ),
           Visibility(
             visible: _visible,
-            child: Container(child: Row(
-              children: [
-                Container(child: Icon(Icons.warning_amber_outlined,color: Colors.amber,size: 20,)),
-                Container(
-                  margin: EdgeInsets.only(left: 10),
-                  child: Text("Jumlah hari telah melewati batas maksimal",style: TextStyle(color: iconColor,fontFamily: "SFReguler"),
-
+            child: Container(
+              child: Row(
+                children: [
+                  Container(
+                      child: Icon(
+                    Icons.warning_amber_outlined,
+                    color: Colors.amber,
+                    size: 20,
+                  )),
+                  Container(
+                    margin: EdgeInsets.only(left: 10),
+                    child: Text(
+                      "Jumlah hari telah melewati batas maksimal",
+                      style:
+                          TextStyle(color: iconColor, fontFamily: "SFReguler"),
+                    ),
                   ),
-                ),
-              ],
-            ),),
+                ],
+              ),
+            ),
           )
         ],
       ),
     );
   }
+
   Widget _buildketerangan() {
     return Container(
       child: TextFormField(
@@ -196,55 +298,88 @@ class _LeaveEditState extends State<LeaveEdit> {
       ),
     );
   }
+
   Widget _buildbtsubmit() {
     return Container(
       width: double.infinity,
       height: 45,
       margin: EdgeInsets.symmetric(vertical: 30),
-      child: new  OutlineButton(
-        onPressed: disabled==true? () {
-          Validasi validasi=new Validasi();
-          var data=date_leaves_submit.toString().replaceAll((']'),'');
-          var data1=data.toString().replaceAll(('['),'');
-          var data2=data1.toString().replaceAll((' '),'');
-          validasi.validation_leaves_submision(context, widget.id,user_id, now.toString(), data2.toString(), descriptionController.text,'edit');
-          print(date_leaves_submit);
-        }:null,
-        child: Text('Simpan Perubahan',
-          style: TextStyle(color: Colors.black87, fontFamily: "SFReguler",),
+      child: new OutlineButton(
+        onPressed: disabled == true
+            ? () {
+                Validasi validasi = new Validasi();
+                var data = date_leaves_submit.toString().replaceAll((']'), '');
+                var data1 = data.toString().replaceAll(('['), '');
+                var data2 = data1.toString().replaceAll((' '), '');
+                validasi.validation_leaves_submision(
+                  context,
+                  widget.id,
+                  user_id,
+                  now.toString(),
+                  data2.toString(),
+                  descriptionController.text,
+                  "${typeList[position]['id']}",
+                  'edit',
+                );
+                // print(date_leaves_submit);
+              }
+            : null,
+        child: Text(
+          'Simpan Perubahan',
+          style: TextStyle(
+            color: Colors.black87,
+            fontFamily: "SFReguler",
+          ),
         ),
       ),
     );
   }
 
+  Future categoryPermission() async {
+    try {
+      setState(() {
+        _isLoading = true;
+      });
 
-
-
+      http.Response response =
+          await http.get(Uri.parse("$base_url/api/leave-categories"));
+      var data = jsonDecode(response.body);
+      setState(() {
+        typeList = data['data'];
+      });
+      setState(() {
+        _isLoading = false;
+      });
+    } catch (e) {}
+  }
 
   Future dataLeave(var id) async {
     try {
       setState(() {
         _isLoading = true;
       });
-      http.Response response = await http.get("${base_url}/api/employees/$id/remaining-leaves");
-      _submisionLeaves= jsonDecode(response.body);
+      http.Response response = await http
+          .get(Uri.parse("${base_url}/api/employees/$id/remaining-leaves"));
+      _submisionLeaves = jsonDecode(response.body);
       setState(() {
-        totalLeaveController.text=_submisionLeaves['data']['total_leave'].toString();
-        takenLeaveController.text=_submisionLeaves['data']['taken_leave'].toString();
-        print(_submisionLeaves['data']['total_leave'].toString());
+        totalLeaveController.text =
+            _submisionLeaves['data']['total'].toString();
+        takenLeaveController.text =
+            _submisionLeaves['data']['taken'].toString();
+        // print(_submisionLeaves['data']['name'].toString());
         _isLoading = false;
       });
     } catch (e) {}
   }
+
   _getDataPref() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     setState(() {
       user_id = sharedPreferences.getString("user_id");
       dataLeave(user_id);
-
-
     });
   }
+
   void _onSelectionChanged(DateRangePickerSelectionChangedArgs args) {
     /// The argument value will return the changed date as [DateTime] when the
     /// widget [SfDateRangeSelectionMode] set as single.
@@ -266,59 +401,58 @@ class _LeaveEditState extends State<LeaveEdit> {
                 DateFormat('dd/MM/yyyy')
                     .format(args.value.endDate ?? args.value.startDate)
                     .toString();
-
-
       } else if (args.value is DateTime) {
         _selectedDate = args.value.toString();
       } else if (args.value is List<DateTime>) {
         print(args.value);
+
         ///initialselectdates date leaves
-        _initialSelectedDates=args.value;
+        _initialSelectedDates = args.value;
         date_leaves.clear();
         date_leaves_submit.clear();
-        jumlahPengambilanController.text=args.value.length.toString();
+        jumlahPengambilanController.text = args.value.length.toString();
 
         ///format date-leaves
-        args.value.forEach((DateTime date){
-          date_leaves.add(DateFormat('dd/MM/yyyy').format(date));
-          date_leaves_submit.add(DateFormat('yyyy-MM-dd').format(date));
-        },);
-
-
+        args.value.forEach(
+          (DateTime date) {
+            date_leaves.add(DateFormat('dd/MM/yyyy').format(date));
+            date_leaves_submit.add(DateFormat('yyyy-MM-dd').format(date));
+          },
+        );
 
         ///set date-leaves
-        if (date_leaves.length<=0){
-          Cstartdate.text="";
-        }else{
-          Cstartdate.text=date_leaves.toString();
+        if (date_leaves.length <= 0) {
+          Cstartdate.text = "";
+        } else {
+          Cstartdate.text = date_leaves.toString();
         }
 
         ///check total total leave
-        if (int.parse(totalLeaveController.text.toString())<int.parse(jumlahPengambilanController.text.toString())){
-          _visible=true;
-          disabled=false;
-        }else{
-          _visible=false;
-          disabled=true;
+        if (int.parse(totalLeaveController.text.toString()) <
+            int.parse(jumlahPengambilanController.text.toString())) {
+          _visible = true;
+          disabled = false;
+        } else {
+          _visible = false;
+          disabled = true;
         }
-
       } else {
         _rangeCount = args.value.length.toString();
-        jumlahPengambilanController.text=args.value.length.toString();
-
+        jumlahPengambilanController.text = args.value.length.toString();
 
         print("berhasil");
       }
     });
   }
-  Future multipleDate(){
+
+  Future multipleDate() {
     return showDialog(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            content:Container(
-              width: Get.mediaQuery.size.width-40,
-              height: Get.mediaQuery.size.height/2,
+            content: Container(
+              width: Get.mediaQuery.size.width - 40,
+              height: Get.mediaQuery.size.height / 2,
               child: Column(
                 children: [
                   SfDateRangePicker(
@@ -330,17 +464,15 @@ class _LeaveEditState extends State<LeaveEdit> {
               ),
             ),
           );
-
-
         });
   }
 
-
   @override
   void initState() {
-    _isLoading=false;
-    descriptionController.text=widget.description;
-  //  _initialSelectedDates="[${widget.leave_dates}]";
+    _isLoading = false;
+    descriptionController.text = widget.description;
+    categoryController.text = widget.category.toString();
+    //  _initialSelectedDates="[${widget.leave_dates}]";
 
     // TODO: implement initState
 
@@ -348,28 +480,25 @@ class _LeaveEditState extends State<LeaveEdit> {
     final DateTime n = DateTime.now();
     final DateFormat formatter = DateFormat('yyyy-MM-dd');
     now = widget.date_of_filing;
-    print(widget.leave_dates);
+    print(widget.category);
     var leave_dates = widget.leave_dates.split(',');
 
-    leave_dates.forEach((String date){
-      DateTime dt=DateTime.parse(date);
-      print(dt);
-      initial.add(dt);
-      // print(dt);
-      date_leaves.add(DateFormat('dd/MM/yyyy').format(DateTime.parse(date.toString())));
-      date_leaves_submit.add(DateFormat('yyyy-MM-dd').format(DateTime.parse(date.toString())));
+    leave_dates.forEach(
+      (String date) {
+        DateTime dt = DateTime.parse(date);
+        initial.add(dt);
+        date_leaves.add(
+            DateFormat('dd/MM/yyyy').format(DateTime.parse(date.toString())));
+        date_leaves_submit.add(
+            DateFormat('yyyy-MM-dd').format(DateTime.parse(date.toString())));
+      },
+    );
+    _initialSelectedDates = initial;
+    Cstartdate.text = date_leaves.toString();
 
-    },);
-    _initialSelectedDates=initial;
-    Cstartdate.text=date_leaves.toString();
-    jumlahPengambilanController.text=leave_dates.length.toString();
-
+    jumlahPengambilanController.text = leave_dates.length.toString();
 
     _getDataPref();
-
+    categoryPermission();
   }
-
-
-
-
 }

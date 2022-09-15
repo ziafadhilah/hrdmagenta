@@ -13,9 +13,7 @@ void loading(BuildContext context) {
   progressDialog.style(message: "Loading ...");
 
   progressDialog.show();
-
 }
-
 
 void alert_error(BuildContext context, var title, text_button) {
   Alert(
@@ -204,23 +202,24 @@ void validation_checkin(
     distance,
     office_latitude,
     office_longitude,
+    working_pattern_id,
     category) {
   Validasi validator = new Validasi();
   Alert(
     context: context,
     type: AlertType.warning,
-    title: "Check In",
+    title: "Clock In",
     // desc: "Apaka kamu yakin melakukan check in pada pukul ${time}?",
-     desc: "Apakah kamu yakin melakukan check in",
+    desc: "Apakah kamu yakin melakukan clock in",
     buttons: [
       DialogButton(
         child: Text(
           "Iya",
           style: TextStyle(color: Colors.white, fontSize: 20),
         ),
-        onPressed: ()  {
-           var date=DateFormat('yyyy-MM-dd').format(DateTime.now());
-           var time=DateFormat('HH:mm:ss').format(DateTime.now());
+        onPressed: () {
+          var date = DateFormat('yyyy-MM-dd').format(DateTime.now());
+          var time = DateFormat('HH:mm:ss').format(DateTime.now());
           Navigator.pop(context);
           validator.validation_checkin(
               context,
@@ -235,6 +234,7 @@ void validation_checkin(
               distance,
               office_latitude,
               office_longitude,
+              working_pattern_id,
               category);
         },
         color: btnColor1,
@@ -264,16 +264,16 @@ void validation_checkout(
     distance,
     office_latitude,
     office_longitude,
+    long_shift_working_pattern_id,
     category) {
   Validasi validator = new Validasi();
   print(time);
   Alert(
-
     context: context,
     type: AlertType.warning,
-    title: "Check Out ",
+    title: "Clock Out ",
     // desc: "Apaka kamu yakin melakukan check out pada pukul ${time} ",
-    desc: "Apakah kamu yakin melakukan check out",
+    desc: "Apakah kamu yakin melakukan clock out",
     buttons: [
       DialogButton(
         child: Text(
@@ -282,8 +282,8 @@ void validation_checkout(
         ),
         onPressed: () {
           Navigator.pop(context);
-          var date=DateFormat('yyyy-MM-dd').format(DateTime.now());
-          var time=DateFormat('HH:mm:ss').format(DateTime.now());
+          var date = DateFormat('yyyy-MM-dd').format(DateTime.now());
+          var time = DateFormat('HH:mm:ss').format(DateTime.now());
           validator.validation_checkout(
               context,
               photos,
@@ -297,6 +297,7 @@ void validation_checkout(
               distance,
               office_latitude,
               office_longitude,
+              long_shift_working_pattern_id,
               category);
         },
         color: btnColor1,
@@ -313,19 +314,17 @@ void validation_checkout(
   ).show();
 }
 
-void alert_confirm_delete_leave(BuildContext context,id) {
+void alert_confirm_delete_leave(BuildContext context, id) {
   Services services = new Services();
   var Cremarks = new TextEditingController();
-
 }
-
 
 void toast_success(message) {
   Fluttertoast.showToast(
       msg: message,
       toastLength: Toast.LENGTH_SHORT,
       gravity: ToastGravity.BOTTOM,
-      timeInSecForIos: 4,
+      // timeInSecForIos: 4,
       backgroundColor: Colors.green,
       textColor: Colors.white,
       fontSize: 16.0);
@@ -336,7 +335,7 @@ void toast_error(message) {
       msg: message,
       toastLength: Toast.LENGTH_SHORT,
       gravity: ToastGravity.BOTTOM,
-      timeInSecForIos: 4,
+      // timeInSecForIos: 4,
       backgroundColor: Colors.red,
       textColor: Colors.white,
       fontSize: 16.0);

@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/services.dart';
-import 'package:file_picker/file_picker.dart';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -21,7 +21,7 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
   String _path = '...';
   String _extension;
   bool _hasValidMime = false;
-  FileType _pickingType;
+  //FileType _pickingType;
   File file1;
 
   // ZefyrController _controller;
@@ -219,21 +219,21 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
 
 
   void _openFileExplorer() async {
-    if (_pickingType != FileType.custom || _hasValidMime) {
-
-      try {
-
-        _path = await FilePicker.getFilePath(type:FileType.any);
-      } on PlatformException catch (e) {
-        print("Unsupported operation" + e.toString());
-      }
-
-      if (!mounted) return;
-
-      setState(() {
-        _fileName = _path != null ? _path.split('/').last : '...';
-        cfile.text=_path;
-      });
-    }
+    // if (_pickingType != FileTyp.custom || _hasValidMime) {
+    //
+    //   try {
+    //
+    //     _path = await FilePicker.getFilePath(type:FileType.any);
+    //   } on PlatformException catch (e) {
+    //     print("Unsupported operation" + e.toString());
+    //   }
+    //
+    //   if (!mounted) return;
+    //
+    //   setState(() {
+    //     _fileName = _path != null ? _path.split('/').last : '...';
+    //     cfile.text=_path;
+    //   });
+    // }
   }
 }

@@ -53,7 +53,7 @@ class _HomeAdminState extends State<HomeAdmin> {
   bool _isLoading_permission = true;
   bool _isLoading_leave = true;
 
-  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+  //final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
   final List<Notif> ListNotif = [];
   var _absenPending,user_id;
@@ -1290,7 +1290,7 @@ class _HomeAdminState extends State<HomeAdmin> {
       setState(() {
         _isLoading_employee = true;
       });
-      http.Response response = await http.get("$base_url/api/employees");
+      http.Response response = await http.get(Uri.parse("$base_url/api/employees"));
       _employee = jsonDecode(response.body);
 
       setState(() {
@@ -1308,7 +1308,7 @@ class _HomeAdminState extends State<HomeAdmin> {
       });
 
       http.Response response = await http
-          .get("${baset_url_event}/api/projects/approved/employees/15?page=1&record=5");
+          .get(Uri.parse("${baset_url_event}/api/projects/approved/employees/15?page=1&record=5"));
       _projects = jsonDecode(response.body);
       print("${_projects}");
       print(baset_url_event);
@@ -1328,7 +1328,7 @@ class _HomeAdminState extends State<HomeAdmin> {
       });
 
       http.Response response =
-          await http.get("$base_url/api/attendances?status=pending");
+          await http.get(Uri.parse("$base_url/api/attendances?status=pending"));
       var _absence_data = jsonDecode(response.body);
       _absence =_absence_data['data'].where((prod) => prod["category"] =="present").toList();
       print("data absen ${_absence.length}");
@@ -1344,7 +1344,7 @@ class _HomeAdminState extends State<HomeAdmin> {
       });
 
       http.Response response =
-      await http.get("$base_url/api/permission-submissions?status=pending");
+      await http.get(Uri.parse("$base_url/api/permission-submissions?status=pending"));
       _permission = jsonDecode(response.body);
       setState(() {
         _isLoading_permission = false;
@@ -1358,7 +1358,7 @@ class _HomeAdminState extends State<HomeAdmin> {
       });
 
       http.Response response =
-      await http.get("$base_url/api/sick-submissions?status=pending");
+      await http.get(Uri.parse("$base_url/api/sick-submissions?status=pending"));
       _sick = jsonDecode(response.body);
       setState(() {
         _isLoading_sick = false;
@@ -1372,7 +1372,7 @@ class _HomeAdminState extends State<HomeAdmin> {
       });
 
       http.Response response =
-      await http.get("$base_url/api/leave-submissions?status=pending");
+      await http.get(Uri.parse("$base_url/api/leave-submissions?status=pending"));
       _leave = jsonDecode(response.body);
       setState(() {
         _isLoading_leave = false;
@@ -1542,7 +1542,7 @@ class _HomeAdminState extends State<HomeAdmin> {
 
   showNotifcation(String title, String body, String data) async {
     var android = new AndroidNotificationDetails(
-        'chanel id', 'chanel name', 'CHANEL DESCRIPTION');
+        'chanel id', 'chanel name',);
     var ios = new IOSNotificationDetails();
     var platform = new NotificationDetails(android: android, iOS: ios);
 
@@ -1575,50 +1575,50 @@ class _HomeAdminState extends State<HomeAdmin> {
     _datapermission();
     _datasick();
 
-    _firebaseMessaging.configure(
-      onMessage: (Map<String, dynamic> message) async {
-        print("onMessage: ${message['notification']['data']}");
-        final notif = message['notification'];
-        final data = message['data'];
+    // _firebaseMessaging.configure(
+    //   onMessage: (Map<String, dynamic> message) async {
+    //     print("onMessage: ${message['notification']['data']}");
+    //     final notif = message['notification'];
+    //     final data = message['data'];
+    //
+    //     setState(() {
+    //       ListNotif.add(
+    //         Notif(
+    //             title: notif['title'],
+    //             body: notif['body'],
+    //             id: data['id'],
+    //             screen: data['id']),
+    //       );
+    //     });
+    //     setState(() {
+    //       showNotifcation(notif['title'], notif['body'], data['id']);
+    //     });
+    //   },
+    //   onLaunch: (Map<String, dynamic> message) async {
+    //     print("onLaunch: $message");
+    //
+    //     final notification = message['data'];
+    //     setState(() {
+    //       ListNotif.add(Notif(
+    //         title: '${notification['title']}',
+    //         body: '${notification['body']}',
+    //       ));
+    //     });
+    //   },
+    //   onResume: (Map<String, dynamic> message) async {
+    //     print("onResume: $message");
+    //   },
+    // );
 
-        setState(() {
-          ListNotif.add(
-            Notif(
-                title: notif['title'],
-                body: notif['body'],
-                id: data['id'],
-                screen: data['id']),
-          );
-        });
-        setState(() {
-          showNotifcation(notif['title'], notif['body'], data['id']);
-        });
-      },
-      onLaunch: (Map<String, dynamic> message) async {
-        print("onLaunch: $message");
-
-        final notification = message['data'];
-        setState(() {
-          ListNotif.add(Notif(
-            title: '${notification['title']}',
-            body: '${notification['body']}',
-          ));
-        });
-      },
-      onResume: (Map<String, dynamic> message) async {
-        print("onResume: $message");
-      },
-    );
-
-    _firebaseMessaging.requestNotificationPermissions(
-        const IosNotificationSettings(sound: true, badge: true, alert: true));
-    super.initState();
-    flutterLocalNotificationsPlugin = new FlutterLocalNotificationsPlugin();
-    var android = new AndroidInitializationSettings('@mipmap/ic_launcher');
-    var iOS = new IOSInitializationSettings();
-    var initSetttings = new InitializationSettings(android: android, iOS: iOS);
-    flutterLocalNotificationsPlugin.initialize(initSetttings,
-        onSelectNotification: onSelectNotification);
+    // FirebaseMessaging.requestNotificationPermissions(
+    //     const IosNotificationSettings(sound: true, badge: true, alert: true));
+    // super.initState();
+    // flutterLocalNotificationsPlugin = new FlutterLocalNotificationsPlugin();
+    // var android = new AndroidInitializationSettings('@mipmap/ic_launcher');
+    // var iOS = new IOSInitializationSettings();
+    // var initSetttings = new InitializationSettings(android: android, iOS: iOS);
+    // flutterLocalNotificationsPlugin.initialize(initSetttings,
+    //     onSelectNotification: onSelectNotification);
   }
 
 

@@ -142,7 +142,7 @@ class _ListEmployeeState extends State<ListEmployee> {
       setState(() {
         _isLoading = true;
       });
-      http.Response response = await http.get("$base_url/api/employees");
+      http.Response response = await http.get(Uri.parse("$base_url/api/employees"));
       _employee = jsonDecode(response.body);
       _employees=_employee['data'];
       // var data= _employee['data'].wher((data) => data["first_name"].toString().contains("Panut")

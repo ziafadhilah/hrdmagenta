@@ -46,6 +46,7 @@ class _MapsDetailState extends State<MapsDetail> {
   Position position;
   BitmapDescriptor companyIcon;
   Set<Circle> _circles = HashSet<Circle>();
+  BitmapDescriptor _markerIcon;
 
   Widget _child = Center(
     child: Text('Loading...'),
@@ -63,38 +64,38 @@ class _MapsDetailState extends State<MapsDetail> {
 
   PinData _sourcePinInfo;
 
-  Future<void> getPermission() async {
-    PermissionStatus permission = await PermissionHandler()
-        .checkPermissionStatus(PermissionGroup.location);
-
-    if (permission == PermissionStatus.denied) {
-      await PermissionHandler()
-          .requestPermissions([PermissionGroup.locationAlways]);
-    }
-
-    var geolocator = Geolocator();
-
-    GeolocationStatus geolocationStatus =
-        await geolocator.checkGeolocationPermissionStatus();
-
-    switch (geolocationStatus) {
-      case GeolocationStatus.denied:
-        showToast('Access denied');
-        break;
-      case GeolocationStatus.disabled:
-        showToast('Disabled');
-        break;
-      case GeolocationStatus.restricted:
-        showToast('restricted');
-        break;
-      case GeolocationStatus.unknown:
-        showToast('Unknown');
-        break;
-      case GeolocationStatus.granted:
-        showToast('Accesss Granted');
-        _getCurrentLocation();
-    }
-  }
+  // Future<void> getPermission() async {
+  //   PermissionStatus permission = await PermissionHandler()
+  //       .checkPermissionStatus(PermissionGroup.location);
+  //
+  //   if (permission == PermissionStatus.denied) {
+  //     await PermissionHandler()
+  //         .requestPermissions([PermissionGroup.locationAlways]);
+  //   }
+  //
+  //   var geolocator = Geolocator();
+  //
+  //   GeolocationStatus geolocationStatus =
+  //       await geolocator.checkGeolocationPermissionStatus();
+  //
+  //   switch (geolocationStatus) {
+  //     case GeolocationStatus.denied:
+  //       showToast('Access denied');
+  //       break;
+  //     case GeolocationStatus.disabled:
+  //       showToast('Disabled');
+  //       break;
+  //     case GeolocationStatus.restricted:
+  //       showToast('restricted');
+  //       break;
+  //     case GeolocationStatus.unknown:
+  //       showToast('Unknown');
+  //       break;
+  //     case GeolocationStatus.granted:
+  //       showToast('Accesss Granted');
+  //       _getCurrentLocation();
+  //   }
+  // }
 
   void _getCurrentLocation() async {
     Position res = await Geolocator().getCurrentPosition();
@@ -109,16 +110,34 @@ class _MapsDetailState extends State<MapsDetail> {
       ///company marker
       Marker(
           markerId: MarkerId('company'),
-          position: LatLng(double.parse(widget.office_latitude), double.parse(widget.office_longitude)),
-          icon: BitmapDescriptor.fromAsset("assets/office.png")),
+          position: LatLng(double.parse(widget.office_latitude),
+              double.parse(widget.office_longitude)),
+          // icon: BitmapDescriptor.fromAsset("assets/office.png")
+          icon:_markerIcon),
 
       ///user marker
       Marker(
           markerId: MarkerId('user'),
           position: LatLng(
               double.parse(widget.latitude), double.parse(widget.longitude)),
-          icon: BitmapDescriptor.fromAsset("assets/emplyee_maps.png")),
+          // icon: BitmapDescriptor.fromAsset("assets/emplyee_maps.png")
+          icon: BitmapDescriptor.defaultMarker),
     ].toSet();
+  }
+
+  Future<void> _createMarkerImageFromAsset(BuildContext context) async {
+    if (_markerIcon == null) {
+      final ImageConfiguration imageConfiguration =
+      createLocalImageConfiguration(context, size: Size.square(48));
+      BitmapDescriptor.fromAssetImage(
+          imageConfiguration, 'assets/office.png')
+          .then(_updateBitmap);
+    }
+  }
+  void _updateBitmap(BitmapDescriptor bitmap) {
+    setState(() {
+      _markerIcon = bitmap;
+    });
   }
 
   ///set raidus
@@ -137,7 +156,7 @@ class _MapsDetailState extends State<MapsDetail> {
         msg: message,
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
-        timeInSecForIos: 1,
+
         backgroundColor: Colors.green,
         textColor: Colors.white,
         fontSize: 16.0);
@@ -184,6 +203,7 @@ class _MapsDetailState extends State<MapsDetail> {
 
   @override
   Widget build(BuildContext context) {
+    _createMarkerImageFromAsset(context);
     return Scaffold(
         body: Stack(
       children: <Widget>[
@@ -356,7 +376,7 @@ class _MapsDetailState extends State<MapsDetail> {
 
   @override
   void initState() {
-    getPermission();
+    //getPermission();
     // _setSourceIcon();
     super.initState();
     _setCircles();

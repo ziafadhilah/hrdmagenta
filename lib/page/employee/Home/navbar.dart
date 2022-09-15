@@ -95,7 +95,7 @@
 
 import 'package:flutter/material.dart';
 
-import 'package:bottom_navy_bar/bottom_navy_bar.dart';
+// import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:hrdmagenta/page/employee/Account/Account.dart';
 import 'package:hrdmagenta/page/employee/Home/home.dart';

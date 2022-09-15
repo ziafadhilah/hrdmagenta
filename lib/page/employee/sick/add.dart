@@ -20,19 +20,19 @@ class AddSickPageEmployee extends StatefulWidget {
 class _AddSickPageEmployeeState extends State<AddSickPageEmployee> {
   DateTime startdate = DateTime.now();
   DateTime enddate = DateTime.now();
-  var Cstartdate=new TextEditingController();
-  var Cenddate=new TextEditingController();
-  var jumlahPengambilanController=new TextEditingController();
-  var descriptionController=new TextEditingController();
+  var Cstartdate = new TextEditingController();
+  var Cenddate = new TextEditingController();
+  var jumlahPengambilanController = new TextEditingController();
+  var descriptionController = new TextEditingController();
   var now;
   var _isLoading;
   var _submisionSick;
 
-  var  sick_dates=[];
-  var sick_date_submit=[];
+  var sick_dates = [];
+  var sick_date_submit = [];
   var _initialSelectedDates;
-  var _visible=false;
-  var disable=true;
+  var _visible = false;
+  var disable = true;
   var user_id;
 
   String _selectedDate = '';
@@ -66,13 +66,13 @@ class _AddSickPageEmployeeState extends State<AddSickPageEmployee> {
               _buildJmlPengambilan(),
               _buildketerangan(),
               _buildbtsubmit()
-
             ],
           ),
         ),
       ),
     );
   }
+
   Widget _buildtglPengajuan() {
     return Container(
       child: TextFormField(
@@ -80,23 +80,18 @@ class _AddSickPageEmployeeState extends State<AddSickPageEmployee> {
         maxLines: 3,
         initialValue: '${now}',
         decoration: InputDecoration(
-          labelText: 'tanggal Pengajuan',
+          labelText: 'Tanggal Pengajuan',
         ),
       ),
     );
   }
 
-
-
-
-
   Widget _builddateLeave() {
     return InkWell(
-      onTap: (){
+      onTap: () {
         //_selectStartDate(context);
         multipleDate();
       },
-
       child: Container(
         child: TextFormField(
           cursorColor: Theme.of(context).cursorColor,
@@ -116,7 +111,6 @@ class _AddSickPageEmployeeState extends State<AddSickPageEmployee> {
     );
   }
 
-
   Widget _buildJmlPengambilan() {
     return Container(
       child: Column(
@@ -125,64 +119,88 @@ class _AddSickPageEmployeeState extends State<AddSickPageEmployee> {
           TextFormField(
             enabled: false,
             controller: jumlahPengambilanController,
-
             decoration: InputDecoration(
               labelText: 'Jumlah Pengambilan',
             ),
           ),
-          SizedBox(height: 5,),
+          SizedBox(
+            height: 5,
+          ),
           Visibility(
             visible: _visible,
-            child: Container(child: Row(
-              children: [
-                Container(child: Icon(Icons.warning_amber_outlined,color: Colors.amber,size: 20,)),
-                Container(
-                  margin: EdgeInsets.only(left: 10),
-                  child: Text("Berikan surat keterangan sakit ke hrd",style: TextStyle(color: iconColor,fontFamily: "SFReguler"),
-
+            child: Container(
+              child: Row(
+                children: [
+                  Container(
+                      child: Icon(
+                    Icons.warning_amber_outlined,
+                    color: Colors.amber,
+                    size: 20,
+                  )),
+                  Container(
+                    margin: EdgeInsets.only(left: 10),
+                    child: Text(
+                      "Berikan surat keterangan sakit ke hrd",
+                      style:
+                          TextStyle(color: iconColor, fontFamily: "SFReguler"),
+                    ),
                   ),
-                ),
-              ],
-            ),),
+                ],
+              ),
+            ),
           )
         ],
       ),
     );
   }
+
   Widget _buildketerangan() {
     return Container(
       child: TextFormField(
         controller: descriptionController,
         maxLines: 3,
-
         decoration: InputDecoration(
           labelText: 'Keterangan',
         ),
       ),
     );
   }
+
   Widget _buildbtsubmit() {
     return Container(
       width: double.infinity,
       height: 45,
       margin: EdgeInsets.symmetric(vertical: 30),
-      child: new  OutlineButton(
-        onPressed: disable==true?(){
-          Validasi validasi=new Validasi();
-          var data=sick_date_submit.toString().replaceAll((']'),'');
-          var data1=data.toString().replaceAll(('['),'');
-          var data2=data1.toString().replaceAll((' '),'');
-          print("tes");
-         // validasi.validation_leaves_submision(context,"0",user_id, now.toString(), data2.toString(), descriptionController.text,'submit');
-        validasi.validation_sick_submision(context, "0", user_id, now.toString(), data2.toString(), "",descriptionController.text, "submit");
-        }:null,
-        child: Text('Submit',
-          style: TextStyle(color: Colors.black87, fontFamily: "SFReguler",),
+      child: new OutlineButton(
+        onPressed: disable == true
+            ? () {
+                Validasi validasi = new Validasi();
+                var data = sick_date_submit.toString().replaceAll((']'), '');
+                var data1 = data.toString().replaceAll(('['), '');
+                var data2 = data1.toString().replaceAll((' '), '');
+                print(data2);
+                // validasi.validation_leaves_submision(context,"0",user_id, now.toString(), data2.toString(), descriptionController.text,'submit');
+                validasi.validation_sick_submision(
+                    context,
+                    "0",
+                    user_id,
+                    now.toString(),
+                    data2.toString(),
+                    "",
+                    descriptionController.text,
+                    "submit");
+              }
+            : null,
+        child: Text(
+          'Submit',
+          style: TextStyle(
+            color: Colors.black87,
+            fontFamily: "SFReguler",
+          ),
         ),
       ),
     );
   }
-
 
   _selectStartDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
@@ -194,12 +212,13 @@ class _AddSickPageEmployeeState extends State<AddSickPageEmployee> {
     );
     if (picked != null && picked != startdate)
       setState(() {
-        startdate= picked;
+        startdate = picked;
         final DateFormat formatter = DateFormat('yyyy-MM-dd');
         var startdate1 = formatter.format(startdate);
-        Cstartdate.text="$startdate1";
+        Cstartdate.text = "$startdate1";
       });
   }
+
   _selectEndtDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
       context: context,
@@ -212,20 +231,17 @@ class _AddSickPageEmployeeState extends State<AddSickPageEmployee> {
         enddate = picked;
         final DateFormat formatter = DateFormat('yyyy-MM-dd');
         var enddate1 = formatter.format(enddate);
-        Cenddate.text="$enddate1";
+        Cenddate.text = "$enddate1";
       });
   }
-
 
   _getDataPref() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     setState(() {
       user_id = sharedPreferences.getString("user_id");
-
-
-
     });
   }
+
   void _onSelectionChanged(DateRangePickerSelectionChangedArgs args) {
     /// The argument value will return the changed date as [DateTime] when the
     /// widget [SfDateRangeSelectionMode] set as single.
@@ -247,57 +263,55 @@ class _AddSickPageEmployeeState extends State<AddSickPageEmployee> {
                 DateFormat('dd/MM/yyyy')
                     .format(args.value.endDate ?? args.value.startDate)
                     .toString();
-
-
       } else if (args.value is DateTime) {
         _selectedDate = args.value.toString();
       } else if (args.value is List<DateTime>) {
         ///initialselectdates date leaves
-        _initialSelectedDates=args.value;
+        _initialSelectedDates = args.value;
         sick_dates.clear();
         sick_date_submit.clear();
-        jumlahPengambilanController.text=args.value.length.toString();
+        jumlahPengambilanController.text = args.value.length.toString();
 
         ///format date-leaves
-        args.value.forEach((DateTime date){
-          sick_dates.add(DateFormat('dd/MM/yyyy').format(date));
-          sick_date_submit.add(DateFormat('yyyy-MM-dd').format(date));
-        },);
-
+        args.value.forEach(
+          (DateTime date) {
+            sick_dates.add(DateFormat('dd/MM/yyyy').format(date));
+            sick_date_submit.add(DateFormat('yyyy-MM-dd').format(date));
+          },
+        );
 
         ///set date-leaves
-        if (sick_dates.length<=0){
-          Cstartdate.text="";
-        }else{
-          Cstartdate.text=sick_dates.toString();
+        if (sick_dates.length <= 0) {
+          Cstartdate.text = "";
+        } else {
+          Cstartdate.text = sick_dates.toString();
         }
 
         ///check total total leave
-        if (3<int.parse(jumlahPengambilanController.text.toString())){
-          _visible=true;
-          disable=true;
-        }else{
-          _visible=false;
-          disable=true;
+        if (3 < int.parse(jumlahPengambilanController.text.toString())) {
+          _visible = true;
+          disable = true;
+        } else {
+          _visible = false;
+          disable = true;
         }
-
       } else {
         _rangeCount = args.value.length.toString();
-        jumlahPengambilanController.text=args.value.length.toString();
-
+        jumlahPengambilanController.text = args.value.length.toString();
 
         print("berhasil");
       }
     });
   }
-  Future multipleDate(){
+
+  Future multipleDate() {
     return showDialog(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            content:Container(
-              width: Get.mediaQuery.size.width-40,
-              height: Get.mediaQuery.size.height/2,
+            content: Container(
+              width: Get.mediaQuery.size.width - 40,
+              height: Get.mediaQuery.size.height / 2,
               child: Column(
                 children: [
                   SfDateRangePicker(
@@ -309,15 +323,12 @@ class _AddSickPageEmployeeState extends State<AddSickPageEmployee> {
               ),
             ),
           );
-
-
         });
   }
 
-
   @override
   void initState() {
-    _isLoading=false;
+    _isLoading = false;
     // TODO: implement initState
 
     super.initState();
@@ -325,8 +336,5 @@ class _AddSickPageEmployeeState extends State<AddSickPageEmployee> {
     final DateFormat formatter = DateFormat('yyyy-MM-dd');
     now = formatter.format(n);
     _getDataPref();
-
   }
-
-
 }

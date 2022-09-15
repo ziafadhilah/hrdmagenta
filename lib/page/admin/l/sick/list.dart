@@ -304,7 +304,7 @@ class _ListSickPageAdminState extends State<ListSickPageAdmin> {
         _loading = true;
       });
       http.Response response = await http.get(
-          "$base_url/api/sick-submissions?status=${widget.status}");
+         Uri.parse("$base_url/api/sick-submissions?status=${widget.status}"));
       _sick = jsonDecode(response.body);
       setState(() {
         _loading = false;

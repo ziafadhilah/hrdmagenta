@@ -437,7 +437,7 @@ class _budgetprojectAdmintState extends State<budgetprojectAdmin> {
       setState(() {
         _loading=true;
       });
-      http.Response response=await http.get("$base_url/api/events/${widget.event_id}/budgets?status=approved");
+      http.Response response=await http.get(Uri.parse("$base_url/api/events/${widget.event_id}/budgets?status=approved"));
       _transaction=jsonDecode(response.body);
 
       print(_transaction);

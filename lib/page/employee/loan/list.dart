@@ -388,7 +388,7 @@ class _ListLoanEmployeePageState extends State<ListLoanEmployeePage> {
       });
 
       http.Response response =
-          await http.get("$base_url/api/employees/${user_id}/loans");
+          await http.get(Uri.parse("$base_url/api/employees/${user_id}/loans"));
 
       _loans = jsonDecode(response.body);
       print(_loans['data']['loans'].length);

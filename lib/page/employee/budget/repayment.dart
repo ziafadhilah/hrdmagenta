@@ -518,7 +518,7 @@ class _RepaymentBudgetState extends State<RepaymentBudget> {
     try {
       _loading = true;
 
-      http.Response response = await http.get("$baset_url_event/api/accounts");
+      http.Response response = await http.get(Uri.parse("$baset_url_event/api/accounts"));
       var data = jsonDecode(response.body);
       setState(() {
         typeList = data['data'].where((value) => value['id'] != 108).toList();

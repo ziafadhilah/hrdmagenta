@@ -29,15 +29,9 @@ class _SplassScreenState extends State<SplassScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 splassscreen,
-                Text(
-                  "Magenta HRD",
-                  style: TextStyle(
-                      color: baseColor,
-                      fontSize: 30,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: "OpenSans"),
+                Center(
+                  child: splashscreen,
                 )
-
                 // Text("tes")
               ],
             ),

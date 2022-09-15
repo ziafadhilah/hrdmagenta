@@ -57,38 +57,38 @@ class _MapsProjectState extends State<MapsProject> {
 
   PinData _sourcePinInfo;
 
-  Future<void> getPermission() async {
-    PermissionStatus permission = await PermissionHandler()
-        .checkPermissionStatus(PermissionGroup.location);
-
-    if (permission == PermissionStatus.denied) {
-      await PermissionHandler()
-          .requestPermissions([PermissionGroup.locationAlways]);
-    }
-
-    var geolocator = Geolocator();
-
-    GeolocationStatus geolocationStatus =
-    await geolocator.checkGeolocationPermissionStatus();
-
-    switch (geolocationStatus) {
-      case GeolocationStatus.denied:
-        showToast('Access denied');
-        break;
-      case GeolocationStatus.disabled:
-        showToast('Disabled');
-        break;
-      case GeolocationStatus.restricted:
-        showToast('restricted');
-        break;
-      case GeolocationStatus.unknown:
-        showToast('Unknown');
-        break;
-      case GeolocationStatus.granted:
-        showToast('Accesss Granted');
-        _getCurrentLocation();
-    }
-  }
+  // Future<void> getPermission() async {
+  //   PermissionStatus permission = await PermissionHandl()
+  //       .checkPermissionStatus(PermissionGroup.location);
+  //
+  //   if (permission == PermissionStatus.denied) {
+  //     await PermissionHandler()
+  //         .requestPermissions([PermissionGroup.locationAlways]);
+  //   }
+  //
+  //   var geolocator = Geolocator();
+  //
+  //   GeolocationStatus geolocationStatus =
+  //   await geolocator.checkGeolocationPermissionStatus();
+  //
+  //   switch (geolocationStatus) {
+  //     case GeolocationStatus.denied:
+  //       showToast('Access denied');
+  //       break;
+  //     case GeolocationStatus.disabled:
+  //       showToast('Disabled');
+  //       break;
+  //     case GeolocationStatus.restricted:
+  //       showToast('restricted');
+  //       break;
+  //     case GeolocationStatus.unknown:
+  //       showToast('Unknown');
+  //       break;
+  //     case GeolocationStatus.granted:
+  //       showToast('Accesss Granted');
+  //       _getCurrentLocation();
+  //   }
+  // }
 
   void _getCurrentLocation() async {
     Position res = await Geolocator().getCurrentPosition();
@@ -126,7 +126,7 @@ class _MapsProjectState extends State<MapsProject> {
         msg: message,
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
-        timeInSecForIos: 1,
+
         backgroundColor: Colors.green,
         textColor: Colors.white,
         fontSize: 16.0);
@@ -333,7 +333,7 @@ class _MapsProjectState extends State<MapsProject> {
 
   @override
   void initState() {
-    getPermission();
+ //   getPermission();
     // _setSourceIcon();
     super.initState();
     _setCircles();

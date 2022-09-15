@@ -12,9 +12,9 @@ import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 
 class budget_status extends StatefulWidget {
-  budget_status({this.type, this.event_id});
+  budget_status({this.type, this.event_id,this.budgetId});
 
-  var type, event_id;
+  var type, event_id,budgetId;
 
   @override
   _budget_statusState createState() => _budget_statusState();
@@ -453,7 +453,7 @@ class _budget_statusState extends State<budget_status> {
         _loading = true;
       });
       http.Response response = await http.get(
-          "$baset_url_event/api/projects/${widget.event_id}/budgets/${widget.type}");
+          Uri.parse("$baset_url_event/api/budgets/${widget.budgetId}?type=${widget.type}"));
       _transaction = jsonDecode(response.body);
       setState(() {
         _loading = false;

@@ -48,9 +48,9 @@ class _ListSickPageEmployeeState extends State<ListSickPageEmployee> {
             ),
             Container(
                 child: Text(
-                  "Belum ada pengajuan sakit",
-                  style: TextStyle(color: Colors.black38, fontSize: 18),
-                )),
+              "Belum ada pengajuan sakit",
+              style: TextStyle(color: Colors.black38, fontSize: 18),
+            )),
           ],
         ),
       ),
@@ -60,7 +60,6 @@ class _ListSickPageEmployeeState extends State<ListSickPageEmployee> {
 //main contex---------------------------
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
         actions: <Widget>[
@@ -88,7 +87,6 @@ class _ListSickPageEmployeeState extends State<ListSickPageEmployee> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Get.to(AddSickPageEmployee());
-
         },
         child: Icon(Icons.add),
         backgroundColor: btnColor1,
@@ -100,15 +98,18 @@ class _ListSickPageEmployeeState extends State<ListSickPageEmployee> {
             child: Container(
               child: _loading
                   ? Center(
-                child: ShimmerProject(),
-              )
+                      child: ShimmerProject(),
+                    )
                   : ListView.builder(
-                  itemCount: _sick['data'].length<=0?1:_sick['data'].length,
-                //itemCount: 1,
-                  itemBuilder: (context, index) {
-                    return _sick['data'].length.toString()=='0'?_buildnodata(): _leave(index);
-                    //return _buildnodata();
-                  }),
+                      itemCount:
+                          _sick['data'].length <= 0 ? 1 : _sick['data'].length,
+                      //itemCount: 1,
+                      itemBuilder: (context, index) {
+                        return _sick['data'].length.toString() == '0'
+                            ? _buildnodata()
+                            : _leave(index);
+                        //return _buildnodata();
+                      }),
             ),
           ),
         ),
@@ -116,56 +117,105 @@ class _ListSickPageEmployeeState extends State<ListSickPageEmployee> {
       ),
     );
   }
-  Widget _leave(index){
-    var id=_sick['data'][index]['id'];
-    var date_of_filing=_sick['data'][index]['date_of_filing'];
-    var leave_dates=_sick['data'][index]['leave_dates'];
-    var description=_sick['data'][index]['description'];
+
+  Widget _leave(index) {
+    var id = _sick['data'][index]['id'];
+    var date_of_filing = _sick['data'][index]['date_of_filing'];
+    var leave_dates = _sick['data'][index]['leave_dates'];
+    var description = _sick['data'][index]['note'];
+
+    var formattedApplicationDates = _sick['data'][index]['application_dates']
+        .split(',')
+        .map((date) => DateFormat('dd/MM/yyyy').format(DateTime.parse(date)))
+        .toList()
+        .join(', ');
 
     // var date_of_filing=DateFormat().format(DateFormat().parse(_leaves['data'][index]['date_of_filing'].toString()));
     return Card(
       child: Container(
-        margin: EdgeInsets.only(top: 10,bottom: 20),
+        margin: EdgeInsets.only(top: 10, bottom: 20),
         width: Get.mediaQuery.size.width,
         child: Container(
-          margin: EdgeInsets.only(top: 10,left: 5,right: 5),
-
+          margin: EdgeInsets.only(top: 10, left: 5, right: 5),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Container(width: Get.mediaQuery.size.width,
+              Container(
+                width: Get.mediaQuery.size.width,
                 margin: EdgeInsets.only(left: 10),
-                child:Text(DateFormat('dd/MM/yyyy').format(DateTime.parse(_sick['data'][index]['date_of_filing'].toString())),
-                  style: TextStyle(color: Colors.black45,fontFamily: "SFReguler")
-                  ,textAlign: TextAlign.end,),),
-              SizedBox(height: 10,),
-              Container(child:Text("Tanggal sakit",style: TextStyle(color: Colors.black38),),),
-              SizedBox(height: 5,),
-              Flex(
-                  direction: Axis.horizontal,
-                  children: [Expanded(child: Container(child:Text("[${_sick['data'][index]['sick_dates'].toString()}]",style: TextStyle(color: Colors.black87,fontFamily: "SFReguler"),),))]),
-              SizedBox(height: 15,),
-              description!=null?Container(child:Text("Keterangan",style: TextStyle(color: Colors.black38),),):Container(),
-              SizedBox(height: 5,),
-              description!=null?Flex(
-                  direction: Axis.horizontal,
-                  children: [Expanded(child: Container(child:Text("${_sick['data'][index]['description'].toString()}",style: TextStyle(color: Colors.black87,fontFamily: "SFReguler"),),))]):Container(),
+                child: Text(
+                  DateFormat('dd/MM/yyyy').format(
+                      DateTime.parse(_sick['data'][index]['date'].toString())),
+                  style:
+                      TextStyle(color: Colors.black45, fontFamily: "SFReguler"),
+                  textAlign: TextAlign.end,
+                ),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Container(
+                child: Text(
+                  "Tanggal sakit",
+                  style: TextStyle(color: Colors.black38),
+                ),
+              ),
+              SizedBox(
+                height: 5,
+              ),
+              Flex(direction: Axis.horizontal, children: [
+                Expanded(
+                    child: Container(
+                  child: Text(
+                    formattedApplicationDates,
+                    style: TextStyle(
+                        color: Colors.black87, fontFamily: "SFReguler"),
+                  ),
+                ))
+              ]),
+              SizedBox(
+                height: 15,
+              ),
+              description != null
+                  ? Container(
+                      child: Text(
+                        "Keterangan",
+                        style: TextStyle(color: Colors.black38),
+                      ),
+                    )
+                  : Container(),
+              SizedBox(
+                height: 5,
+              ),
+              description != null
+                  ? Flex(direction: Axis.horizontal, children: [
+                      Expanded(
+                          child: Container(
+                        child: Text(
+                          "${_sick['data'][index]['note'].toString()}",
+                          style: TextStyle(
+                              color: Colors.black87, fontFamily: "SFReguler"),
+                        ),
+                      ))
+                    ])
+                  : Container(),
 
-              SizedBox(height: 15,),
+              SizedBox(
+                height: 15,
+              ),
 
               // _leaves['data'][index]['status']=="aproved"?Container():btnAction(id,_leaves['data'][index]['date_of_filing'],_leaves['data'][index]['leave_dates'],_leaves['data'][index]['description'])
             ],
           ),
         ),
-
       ),
     );
   }
-  Widget btnAction(id,date_of_filing,leave_dates,description){
-    return  Container(
+
+  Widget btnAction(id, date_of_filing, leave_dates, description) {
+    return Container(
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
-
         children: <Widget>[
           Container(
             margin: EdgeInsets.only(right: 10),
@@ -177,7 +227,10 @@ class _ListSickPageEmployeeState extends State<ListSickPageEmployee> {
               ),
               child: IconButton(
                 iconSize: 20,
-                icon: Icon(Icons.edit_outlined,color: Colors.black45,),
+                icon: Icon(
+                  Icons.edit_outlined,
+                  color: Colors.black45,
+                ),
                 onPressed: () {
                   // Get.to(LeaveEdit(
                   //   id: id,
@@ -189,7 +242,6 @@ class _ListSickPageEmployeeState extends State<ListSickPageEmployee> {
               ),
             ),
           ),
-
           Container(
             width: 40,
             height: 40,
@@ -199,21 +251,23 @@ class _ListSickPageEmployeeState extends State<ListSickPageEmployee> {
               ),
               child: IconButton(
                 iconSize: 20,
-                icon: Icon(Icons.restore_from_trash_outlined,color: Colors.black45,),
+                icon: Icon(
+                  Icons.restore_from_trash_outlined,
+                  color: Colors.black45,
+                ),
                 onPressed: () {
                   //print('pressed');
-                  Services services=new Services();
+                  Services services = new Services();
                   // services.deleteLeave(context, id);
                   Alert(
                     context: context,
                     type: AlertType.warning,
                     title: "Apakah anda yakin?",
                     desc: "Data akan dihapus",
-
                     buttons: [
                       DialogButton(
                         child: Text(
-                          "batalkan",
+                          "Batalkan",
                           style: TextStyle(color: Colors.white, fontSize: 20),
                         ),
                         onPressed: () => Navigator.pop(context),
@@ -229,9 +283,9 @@ class _ListSickPageEmployeeState extends State<ListSickPageEmployee> {
                           services.deleteLeave(context, id).then((value) {
                             _dataSick(user_id);
                           });
-
                         },
-                        gradient: LinearGradient(colors: [Colors.green, Colors.green]),
+                        gradient: LinearGradient(
+                            colors: [Colors.green, Colors.green]),
                       )
                     ],
                   ).show();
@@ -241,27 +295,29 @@ class _ListSickPageEmployeeState extends State<ListSickPageEmployee> {
           ),
         ],
       ),
-
     );
   }
-  void editSick(var id,date_of_filing,leave_dates,description) async{
-    var result=await Get.to(LeaveEdit(
+
+  void editSick(var id, date_of_filing, leave_dates, description) async {
+    var result = await Get.to(LeaveEdit(
       id: id,
       date_of_filing: date_of_filing,
       leave_dates: leave_dates,
-      description: description,));
-    if (result=="update"){
+      description: description,
+    ));
+    if (result == "update") {
       _dataSick(user_id);
     }
   }
+
   //ge data from api--------------------------------
   Future _dataSick(var user_id) async {
     try {
       setState(() {
         _loading = true;
       });
-      http.Response response = await http.get(
-          "$base_url/api/employees/$user_id/sick-submissions?status=${widget.status}");
+      http.Response response = await http.get(Uri.parse(
+          "$base_url/api/employees/$user_id/sick-applications?approval_status=${widget.status}"));
       _sick = jsonDecode(response.body);
       print(_sick);
       setState(() {
@@ -269,6 +325,7 @@ class _ListSickPageEmployeeState extends State<ListSickPageEmployee> {
       });
     } catch (e) {}
   }
+
   Future getDatapref() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     setState(() {

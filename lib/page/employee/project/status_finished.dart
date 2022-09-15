@@ -606,7 +606,7 @@ class _projecthistoryState extends State<projecthistory> {
         _loading = true;
       });
       http.Response response = await http
-          .get("$base_url/api/employees/1/events?status=finished");
+          .get(Uri.parse("$base_url/api/employees/1/events?status=finished"));
       _projects = jsonDecode(response.body);
 
       setState(() {

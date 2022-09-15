@@ -250,7 +250,7 @@ class _Project_adminState extends State<Project_admin> {
         _loading = true;
       });
       http.Response response =
-          await http.get("$base_url/api/events?status=${widget.status}");
+          await http.get(Uri.parse("$base_url/api/events?status=${widget.status}"));
       _projects = jsonDecode(response.body);
       print(_projects);
 

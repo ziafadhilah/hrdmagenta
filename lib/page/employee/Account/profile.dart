@@ -8,19 +8,13 @@ import 'package:http/http.dart' as http;
 
 class DetailProfile extends StatefulWidget {
   var id;
-  DetailProfile({
-    this.id
-});
-
-
+  DetailProfile({this.id});
 
   @override
   _DetailProfileState createState() => _DetailProfileState();
 }
 
 class _DetailProfileState extends State<DetailProfile> {
-
-
   var first_name,
       bank_account_name,
       bank_account_owner,
@@ -35,7 +29,8 @@ class _DetailProfileState extends State<DetailProfile> {
       address,
       email,
       date_of_birth,
-      gender,citizenship,
+      gender,
+      citizenship,
       religion,
       citizenship_country,
       employee_status,
@@ -53,19 +48,16 @@ class _DetailProfileState extends State<DetailProfile> {
       last_education_name,
       username,
       marita_status,
-     npwp_number,
-     npwp_start,
-     npwp_pemotong,
-     wajib_pajak,
-     no_kpj,
-    date_bpjs,
-    employee_id,
+      npwp_number,
+      npwp_start,
+      npwp_pemotong,
+      wajib_pajak,
+      no_kpj,
+      date_bpjs,
+      employee_id,
       number_card_bpjs,
-     efective_date_bpjs;
-  bool _isLoading=false;
-
-
-
+      efective_date_bpjs;
+  bool _isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -84,30 +76,29 @@ class _DetailProfileState extends State<DetailProfile> {
         width: Get.mediaQuery.size.width,
         height: Get.mediaQuery.size.height,
         child: SingleChildScrollView(
-          child: _isLoading==true?Container(
-            width: Get.mediaQuery.size.height,
-              height: Get.mediaQuery.size.width,
-              child: Center(
-                child: CircularProgressIndicator(),)):Container(
-
-
-            child: Column(
-          children: <Widget>[
-            _buildProfile(),
-            Container(child: personalInformation()),
-            contactInformation(),
-            bankAccount(),
-            NPWPInformation(),
-            BPJSInformation()
-
-          ],
-            ),
-          ),
-    ),
-      )
+          child: _isLoading == true
+              ? Container(
+                  width: Get.mediaQuery.size.height,
+                  height: Get.mediaQuery.size.width,
+                  child: Center(
+                    child: CircularProgressIndicator(),
+                  ))
+              : Container(
+                  child: Column(
+                    children: <Widget>[
+                      _buildProfile(),
+                      Container(child: personalInformation()),
+                      contactInformation(),
+                      bankAccount(),
+                      NPWPInformation(),
+                      BPJSInformation()
+                    ],
+                  ),
+                ),
+        ),
+      ),
     );
   }
-
 
   Widget _buildProfile() {
     return Container(
@@ -116,17 +107,17 @@ class _DetailProfileState extends State<DetailProfile> {
         children: <Widget>[
           Container(
               child: CircleAvatar(
-                backgroundImage: NetworkImage("${image_ur}/$photo"),
-                backgroundColor: Colors.transparent,
-                radius: 40,
-              )),
+            backgroundImage: NetworkImage("$photo"),
+            backgroundColor: Colors.transparent,
+            radius: 40,
+          )),
           Container(
             margin: EdgeInsets.only(left: 10, right: 10),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Container(
-                  width:Get.mediaQuery.size.width/1.8,
+                  width: Get.mediaQuery.size.width / 1.8,
                   child: Text(
                     "${first_name}",
                     style: TextStyle(
@@ -157,15 +148,18 @@ class _DetailProfileState extends State<DetailProfile> {
     );
   }
 
-
   //personal information
-  Widget personalInformation(){
+  Widget personalInformation() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
-          margin: EdgeInsets.only(left: 5,top: 20,bottom: 10),
-          child: Text("Informasi Pribadi",style: TextStyle(color: Colors.black,fontFamily: "SFBlack",fontSize: 16),),
+          margin: EdgeInsets.only(left: 5, top: 20, bottom: 10),
+          child: Text(
+            "Informasi Pribadi",
+            style: TextStyle(
+                color: Colors.black, fontFamily: "SFBlack", fontSize: 16),
+          ),
         ),
         Card(
           elevation: 0,
@@ -187,8 +181,6 @@ class _DetailProfileState extends State<DetailProfile> {
               _last_education(),
               _last_education_name(),
               _study_program()
-
-
             ],
           ),
         ),
@@ -196,17 +188,19 @@ class _DetailProfileState extends State<DetailProfile> {
     );
   }
 
-
-
   //Contaoct Information
   //personal information
-  Widget contactInformation(){
+  Widget contactInformation() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
-          margin: EdgeInsets.only(left: 5,top: 20,bottom: 10),
-          child: Text("Informasi Kontak",style: TextStyle(color: Colors.black,fontFamily: "SFBlack",fontSize: 16),),
+          margin: EdgeInsets.only(left: 5, top: 20, bottom: 10),
+          child: Text(
+            "Informasi Kontak",
+            style: TextStyle(
+                color: Colors.black, fontFamily: "SFBlack", fontSize: 16),
+          ),
         ),
         Card(
           elevation: 0,
@@ -217,7 +211,6 @@ class _DetailProfileState extends State<DetailProfile> {
               _buildadress(),
               _emergency_contact_name(),
               _emergency_contact_number(),
-
             ],
           ),
         ),
@@ -225,13 +218,17 @@ class _DetailProfileState extends State<DetailProfile> {
     );
   }
 
-  Widget bankAccount(){
+  Widget bankAccount() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
-          margin: EdgeInsets.only(left: 5,top: 20,bottom: 10),
-          child: Text("Rekening Bank",style: TextStyle(color: Colors.black,fontFamily: "SFBlack",fontSize: 16),),
+          margin: EdgeInsets.only(left: 5, top: 20, bottom: 10),
+          child: Text(
+            "Rekening Bank",
+            style: TextStyle(
+                color: Colors.black, fontFamily: "SFBlack", fontSize: 16),
+          ),
         ),
         Card(
           elevation: 0,
@@ -241,21 +238,24 @@ class _DetailProfileState extends State<DetailProfile> {
               _bank_account_owner(),
               _bank_account_number(),
               _bank_account_branch(),
-
-
             ],
           ),
         ),
       ],
     );
   }
-  Widget NPWPInformation(){
+
+  Widget NPWPInformation() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
-          margin: EdgeInsets.only(left: 5,top: 20,bottom: 10),
-          child: Text("Informasi NPWP",style: TextStyle(color: Colors.black,fontFamily: "SFBlack",fontSize: 16),),
+          margin: EdgeInsets.only(left: 5, top: 20, bottom: 10),
+          child: Text(
+            "Informasi NPWP",
+            style: TextStyle(
+                color: Colors.black, fontFamily: "SFBlack", fontSize: 16),
+          ),
         ),
         Card(
           elevation: 0,
@@ -271,13 +271,18 @@ class _DetailProfileState extends State<DetailProfile> {
       ],
     );
   }
-  Widget BPJSInformation(){
+
+  Widget BPJSInformation() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
-          margin: EdgeInsets.only(left: 5,top: 20,bottom: 10),
-          child: Text("Informasi BPJS",style: TextStyle(color: Colors.black,fontFamily: "SFBlack",fontSize: 16),),
+          margin: EdgeInsets.only(left: 5, top: 20, bottom: 10),
+          child: Text(
+            "Informasi BPJS",
+            style: TextStyle(
+                color: Colors.black, fontFamily: "SFBlack", fontSize: 16),
+          ),
         ),
         Card(
           elevation: 0,
@@ -287,15 +292,12 @@ class _DetailProfileState extends State<DetailProfile> {
               _date_bpjs(),
               _number_card_bpjs(),
               _effective_date_bpjs()
-
-
             ],
           ),
         ),
       ],
     );
   }
-
 
   Widget _buildadress() {
     return Container(
@@ -331,17 +333,17 @@ class _DetailProfileState extends State<DetailProfile> {
                         Column(
                           children: [
                             Container(
-                              width: Get.mediaQuery.size.width-40,
+                              width: Get.mediaQuery.size.width - 40,
                               child: address == null
                                   ? Text("-")
                                   : Text(
-                                address,
-                                style: TextStyle(
-                                  fontFamily: "SFReguler",
-                                  fontSize: 14,
-                                  color: Colors.black38,
-                                ),
-                              ),
+                                      address,
+                                      style: TextStyle(
+                                        fontFamily: "SFReguler",
+                                        fontSize: 14,
+                                        color: Colors.black38,
+                                      ),
+                                    ),
                             ),
                           ],
                         )
@@ -357,8 +359,6 @@ class _DetailProfileState extends State<DetailProfile> {
       ),
     );
   }
-
-
 
   Widget _buildemail() {
     return Container(
@@ -396,13 +396,13 @@ class _DetailProfileState extends State<DetailProfile> {
                           child: email == null
                               ? Text("-")
                               : Text(
-                            email,
-                            style: TextStyle(
-                              fontFamily: "SFReguler",
-                              fontSize: 14,
-                              color: Colors.black38,
-                            ),
-                          ),
+                                  email,
+                                  style: TextStyle(
+                                    fontFamily: "SFReguler",
+                                    fontSize: 14,
+                                    color: Colors.black38,
+                                  ),
+                                ),
                         )
                       ],
                     )),
@@ -416,7 +416,6 @@ class _DetailProfileState extends State<DetailProfile> {
       ),
     );
   }
-
 
   Widget _buildcontaocnumber() {
     return Container(
@@ -453,12 +452,12 @@ class _DetailProfileState extends State<DetailProfile> {
                           child: contact_number == null
                               ? Text("-")
                               : Text(
-                            contact_number,
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: Colors.black38,
-                            ),
-                          ),
+                                  contact_number,
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.black38,
+                                  ),
+                                ),
                         )
                       ],
                     )),
@@ -472,7 +471,6 @@ class _DetailProfileState extends State<DetailProfile> {
       ),
     );
   }
-
 
   Widget _buildgeneder() {
     return Container(
@@ -506,35 +504,36 @@ class _DetailProfileState extends State<DetailProfile> {
                           height: 5,
                         ),
                         Container(
-                          child: gender == null
-                              ? Text("-")
-                              :          Container(
-                            child: gender=='male'?Text(
-                              "Pria",
-
-                              style: TextStyle(
-                                fontSize: 14,
-                                fontFamily: "SFReguler",
-                                color: Colors.black38,
-                              ),
-                            ):gender=="female"?Text(
-                              "Wanita",
-
-                              style: TextStyle(
-                                fontSize: 14,
-                                fontFamily: "SFReguler",
-                                color: Colors.black38,
-                              ),
-                            ):Text(
-                              "-",
-                              style: TextStyle(
-                                fontSize: 14,
-                                fontFamily: "SFReguler",
-                                color: Colors.black38,
-                              ),
-                            ),
-                          )
-                        )
+                            child: gender == null
+                                ? Text("-")
+                                : Container(
+                                    child: gender == 'male'
+                                        ? Text(
+                                            "Pria",
+                                            style: TextStyle(
+                                              fontSize: 14,
+                                              fontFamily: "SFReguler",
+                                              color: Colors.black38,
+                                            ),
+                                          )
+                                        : gender == "female"
+                                            ? Text(
+                                                "Wanita",
+                                                style: TextStyle(
+                                                  fontSize: 14,
+                                                  fontFamily: "SFReguler",
+                                                  color: Colors.black38,
+                                                ),
+                                              )
+                                            : Text(
+                                                "-",
+                                                style: TextStyle(
+                                                  fontSize: 14,
+                                                  fontFamily: "SFReguler",
+                                                  color: Colors.black38,
+                                                ),
+                                              ),
+                                  ))
                       ],
                     )),
               ],
@@ -583,13 +582,13 @@ class _DetailProfileState extends State<DetailProfile> {
                           child: date_of_birth == null
                               ? Text("-")
                               : Text(
-                            date_of_birth,
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontFamily: "SFReguler",
-                              color: Colors.black38,
-                            ),
-                          ),
+                                  date_of_birth,
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontFamily: "SFReguler",
+                                    color: Colors.black38,
+                                  ),
+                                ),
                         )
                       ],
                     )),
@@ -639,13 +638,13 @@ class _DetailProfileState extends State<DetailProfile> {
                           child: username == null
                               ? Text("-")
                               : Text(
-                            username,
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontFamily: "SFReguler",
-                              color: Colors.black38,
-                            ),
-                          ),
+                                  username,
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontFamily: "SFReguler",
+                                    color: Colors.black38,
+                                  ),
+                                ),
                         )
                       ],
                     )),
@@ -695,13 +694,13 @@ class _DetailProfileState extends State<DetailProfile> {
                           child: citizenship == null
                               ? Text("-")
                               : Text(
-                            citizenship,
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontFamily: "SFReguler",
-                              color: Colors.black38,
-                            ),
-                          ),
+                                  citizenship,
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontFamily: "SFReguler",
+                                    color: Colors.black38,
+                                  ),
+                                ),
                         )
                       ],
                     )),
@@ -748,16 +747,16 @@ class _DetailProfileState extends State<DetailProfile> {
                           height: 5,
                         ),
                         Container(
-                          child: citizenship == null
+                          child: citizenship_country == null
                               ? Text("-")
                               : Text(
-                            citizenship,
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontFamily: "SFReguler",
-                              color: Colors.black38,
-                            ),
-                          ),
+                                  citizenship_country,
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontFamily: "SFReguler",
+                                    color: Colors.black38,
+                                  ),
+                                ),
                         )
                       ],
                     )),
@@ -771,7 +770,6 @@ class _DetailProfileState extends State<DetailProfile> {
       ),
     );
   }
-
 
   Widget _employee_status() {
     return Container(
@@ -808,13 +806,13 @@ class _DetailProfileState extends State<DetailProfile> {
                           child: employee_status == null
                               ? Text("-")
                               : Text(
-                            employee_status,
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontFamily: "SFReguler",
-                              color: Colors.black38,
-                            ),
-                          ),
+                                  employee_status,
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontFamily: "SFReguler",
+                                    color: Colors.black38,
+                                  ),
+                                ),
                         )
                       ],
                     )),
@@ -828,7 +826,6 @@ class _DetailProfileState extends State<DetailProfile> {
       ),
     );
   }
-
 
   Widget _start_work_date() {
     return Container(
@@ -865,13 +862,13 @@ class _DetailProfileState extends State<DetailProfile> {
                           child: start_work_date == null
                               ? Text("-")
                               : Text(
-                            start_work_date,
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontFamily: "SFReguler",
-                              color: Colors.black38,
-                            ),
-                          ),
+                                  start_work_date,
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontFamily: "SFReguler",
+                                    color: Colors.black38,
+                                  ),
+                                ),
                         )
                       ],
                     )),
@@ -921,13 +918,13 @@ class _DetailProfileState extends State<DetailProfile> {
                           child: designation == null
                               ? Text("-")
                               : Text(
-                            designation,
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontFamily: "SFReguler",
-                              color: Colors.black38,
-                            ),
-                          ),
+                                  designation,
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontFamily: "SFReguler",
+                                    color: Colors.black38,
+                                  ),
+                                ),
                         )
                       ],
                     )),
@@ -941,7 +938,6 @@ class _DetailProfileState extends State<DetailProfile> {
       ),
     );
   }
-
 
   Widget _departement() {
     return Container(
@@ -978,13 +974,13 @@ class _DetailProfileState extends State<DetailProfile> {
                           child: departement == null
                               ? Text("-")
                               : Text(
-                            departement,
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontFamily: "SFReguler",
-                              color: Colors.black38,
-                            ),
-                          ),
+                                  departement,
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontFamily: "SFReguler",
+                                    color: Colors.black38,
+                                  ),
+                                ),
                         )
                       ],
                     )),
@@ -1034,13 +1030,13 @@ class _DetailProfileState extends State<DetailProfile> {
                           child: identity_type == null
                               ? Text("-")
                               : Text(
-                            identity_type,
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontFamily: "SFReguler",
-                              color: Colors.black38,
-                            ),
-                          ),
+                                  identity_type,
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontFamily: "SFReguler",
+                                    color: Colors.black38,
+                                  ),
+                                ),
                         )
                       ],
                     )),
@@ -1054,6 +1050,7 @@ class _DetailProfileState extends State<DetailProfile> {
       ),
     );
   }
+
   Widget _identity_number() {
     return Container(
       margin: EdgeInsets.all(10),
@@ -1089,13 +1086,13 @@ class _DetailProfileState extends State<DetailProfile> {
                           child: identity_number == null
                               ? Text("-")
                               : Text(
-                            identity_number,
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontFamily: "SFReguler",
-                              color: Colors.black38,
-                            ),
-                          ),
+                                  identity_number,
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontFamily: "SFReguler",
+                                    color: Colors.black38,
+                                  ),
+                                ),
                         )
                       ],
                     )),
@@ -1145,13 +1142,13 @@ class _DetailProfileState extends State<DetailProfile> {
                           child: identity_expired_date == null
                               ? Text("-")
                               : Text(
-                            identity_expired_date,
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontFamily: "SFReguler",
-                              color: Colors.black38,
-                            ),
-                          ),
+                                  identity_expired_date,
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontFamily: "SFReguler",
+                                    color: Colors.black38,
+                                  ),
+                                ),
                         )
                       ],
                     )),
@@ -1165,7 +1162,6 @@ class _DetailProfileState extends State<DetailProfile> {
       ),
     );
   }
-
 
   Widget _place_of_birth() {
     return Container(
@@ -1202,13 +1198,13 @@ class _DetailProfileState extends State<DetailProfile> {
                           child: place_of_birth == null
                               ? Text("-")
                               : Text(
-                            place_of_birth,
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontFamily: "SFReguler",
-                              color: Colors.black38,
-                            ),
-                          ),
+                                  place_of_birth,
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontFamily: "SFReguler",
+                                    color: Colors.black38,
+                                  ),
+                                ),
                         )
                       ],
                     )),
@@ -1222,7 +1218,6 @@ class _DetailProfileState extends State<DetailProfile> {
       ),
     );
   }
-
 
   Widget _marita_status() {
     return Container(
@@ -1259,13 +1254,13 @@ class _DetailProfileState extends State<DetailProfile> {
                           child: marita_status == null
                               ? Text("-")
                               : Text(
-                            marita_status,
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontFamily: "SFReguler",
-                              color: Colors.black38,
-                            ),
-                          ),
+                                  marita_status,
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontFamily: "SFReguler",
+                                    color: Colors.black38,
+                                  ),
+                                ),
                         )
                       ],
                     )),
@@ -1315,13 +1310,13 @@ class _DetailProfileState extends State<DetailProfile> {
                           child: last_education == null
                               ? Text("-")
                               : Text(
-                            last_education,
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontFamily: "SFReguler",
-                              color: Colors.black38,
-                            ),
-                          ),
+                                  last_education,
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontFamily: "SFReguler",
+                                    color: Colors.black38,
+                                  ),
+                                ),
                         )
                       ],
                     )),
@@ -1371,13 +1366,13 @@ class _DetailProfileState extends State<DetailProfile> {
                           child: religion == null
                               ? Text("-")
                               : Text(
-                            religion,
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontFamily: "SFReguler",
-                              color: Colors.black38,
-                            ),
-                          ),
+                                  religion,
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontFamily: "SFReguler",
+                                    color: Colors.black38,
+                                  ),
+                                ),
                         )
                       ],
                     )),
@@ -1427,13 +1422,13 @@ class _DetailProfileState extends State<DetailProfile> {
                           child: blood_type == null
                               ? Text("-")
                               : Text(
-                            blood_type,
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontFamily: "SFReguler",
-                              color: Colors.black38,
-                            ),
-                          ),
+                                  blood_type,
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontFamily: "SFReguler",
+                                    color: Colors.black38,
+                                  ),
+                                ),
                         )
                       ],
                     )),
@@ -1483,13 +1478,13 @@ class _DetailProfileState extends State<DetailProfile> {
                           child: study_program == null
                               ? Text("-")
                               : Text(
-                            study_program,
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontFamily: "SFReguler",
-                              color: Colors.black38,
-                            ),
-                          ),
+                                  study_program,
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontFamily: "SFReguler",
+                                    color: Colors.black38,
+                                  ),
+                                ),
                         )
                       ],
                     )),
@@ -1539,13 +1534,13 @@ class _DetailProfileState extends State<DetailProfile> {
                           child: last_education_name == null
                               ? Text("-")
                               : Text(
-                            last_education_name,
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontFamily: "SFReguler",
-                              color: Colors.black38,
-                            ),
-                          ),
+                                  last_education_name,
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontFamily: "SFReguler",
+                                    color: Colors.black38,
+                                  ),
+                                ),
                         )
                       ],
                     )),
@@ -1595,13 +1590,13 @@ class _DetailProfileState extends State<DetailProfile> {
                           child: contact_number == null
                               ? Text("-")
                               : Text(
-                            contact_number,
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontFamily: "SFReguler",
-                              color: Colors.black38,
-                            ),
-                          ),
+                                  contact_number,
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontFamily: "SFReguler",
+                                    color: Colors.black38,
+                                  ),
+                                ),
                         )
                       ],
                     )),
@@ -1615,7 +1610,6 @@ class _DetailProfileState extends State<DetailProfile> {
       ),
     );
   }
-
 
   Widget _emergency_contact_number() {
     return Container(
@@ -1652,13 +1646,13 @@ class _DetailProfileState extends State<DetailProfile> {
                           child: emergency_contact_number == null
                               ? Text("-")
                               : Text(
-                            emergency_contact_number,
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontFamily: "SFReguler",
-                              color: Colors.black38,
-                            ),
-                          ),
+                                  emergency_contact_number,
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontFamily: "SFReguler",
+                                    color: Colors.black38,
+                                  ),
+                                ),
                         )
                       ],
                     )),
@@ -1672,7 +1666,6 @@ class _DetailProfileState extends State<DetailProfile> {
       ),
     );
   }
-
 
   Widget _emergency_contact_name() {
     return Container(
@@ -1709,13 +1702,13 @@ class _DetailProfileState extends State<DetailProfile> {
                           child: emergency_contact_name == null
                               ? Text("-")
                               : Text(
-                            emergency_contact_name,
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontFamily: "SFReguler",
-                              color: Colors.black38,
-                            ),
-                          ),
+                                  emergency_contact_name,
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontFamily: "SFReguler",
+                                    color: Colors.black38,
+                                  ),
+                                ),
                         )
                       ],
                     )),
@@ -1730,8 +1723,7 @@ class _DetailProfileState extends State<DetailProfile> {
     );
   }
 
-
-  Widget _bank_account_name(){
+  Widget _bank_account_name() {
     return Container(
       margin: EdgeInsets.all(10),
       child: Column(
@@ -1766,13 +1758,13 @@ class _DetailProfileState extends State<DetailProfile> {
                           child: bank_account_name == null
                               ? Text("-")
                               : Text(
-                            bank_account_name,
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontFamily: "SFReguler",
-                              color: Colors.black38,
-                            ),
-                          ),
+                                  bank_account_name,
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontFamily: "SFReguler",
+                                    color: Colors.black38,
+                                  ),
+                                ),
                         )
                       ],
                     )),
@@ -1787,7 +1779,7 @@ class _DetailProfileState extends State<DetailProfile> {
     );
   }
 
-  Widget _bank_account_owner(){
+  Widget _bank_account_owner() {
     return Container(
       margin: EdgeInsets.all(10),
       child: Column(
@@ -1822,13 +1814,13 @@ class _DetailProfileState extends State<DetailProfile> {
                           child: bank_account_owner == null
                               ? Text("-")
                               : Text(
-                            bank_account_owner,
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontFamily: "SFReguler",
-                              color: Colors.black38,
-                            ),
-                          ),
+                                  bank_account_owner,
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontFamily: "SFReguler",
+                                    color: Colors.black38,
+                                  ),
+                                ),
                         )
                       ],
                     )),
@@ -1843,8 +1835,7 @@ class _DetailProfileState extends State<DetailProfile> {
     );
   }
 
-
-  Widget _bank_account_number (){
+  Widget _bank_account_number() {
     return Container(
       margin: EdgeInsets.all(10),
       child: Column(
@@ -1876,16 +1867,16 @@ class _DetailProfileState extends State<DetailProfile> {
                           height: 5,
                         ),
                         Container(
-                          child: bank_account_number  == null
+                          child: bank_account_number == null
                               ? Text("-")
                               : Text(
-                            bank_account_number ,
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontFamily: "SFReguler",
-                              color: Colors.black38,
-                            ),
-                          ),
+                                  bank_account_number,
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontFamily: "SFReguler",
+                                    color: Colors.black38,
+                                  ),
+                                ),
                         )
                       ],
                     )),
@@ -1900,7 +1891,7 @@ class _DetailProfileState extends State<DetailProfile> {
     );
   }
 
-  Widget _bank_account_branch (){
+  Widget _bank_account_branch() {
     return Container(
       margin: EdgeInsets.all(10),
       child: Column(
@@ -1932,16 +1923,16 @@ class _DetailProfileState extends State<DetailProfile> {
                           height: 5,
                         ),
                         Container(
-                          child: bank_account_branch   == null
+                          child: bank_account_branch == null
                               ? Text("-")
                               : Text(
-                            bank_account_branch ,
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontFamily: "SFReguler",
-                              color: Colors.black38,
-                            ),
-                          ),
+                                  bank_account_branch,
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontFamily: "SFReguler",
+                                    color: Colors.black38,
+                                  ),
+                                ),
                         )
                       ],
                     )),
@@ -1956,7 +1947,7 @@ class _DetailProfileState extends State<DetailProfile> {
     );
   }
 
-  Widget _npwp_number (){
+  Widget _npwp_number() {
     return Container(
       margin: EdgeInsets.all(10),
       child: Column(
@@ -1988,16 +1979,16 @@ class _DetailProfileState extends State<DetailProfile> {
                           height: 5,
                         ),
                         Container(
-                          child: npwp_number   == null
+                          child: npwp_number == null
                               ? Text("-")
                               : Text(
-                            npwp_number ,
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontFamily: "SFReguler",
-                              color: Colors.black38,
-                            ),
-                          ),
+                                  npwp_number,
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontFamily: "SFReguler",
+                                    color: Colors.black38,
+                                  ),
+                                ),
                         )
                       ],
                     )),
@@ -2012,7 +2003,7 @@ class _DetailProfileState extends State<DetailProfile> {
     );
   }
 
-  Widget _npwp_start (){
+  Widget _npwp_start() {
     return Container(
       margin: EdgeInsets.all(10),
       child: Column(
@@ -2044,16 +2035,16 @@ class _DetailProfileState extends State<DetailProfile> {
                           height: 5,
                         ),
                         Container(
-                          child: npwp_start   == null
+                          child: npwp_start == null
                               ? Text("-")
                               : Text(
-                            npwp_start ,
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontFamily: "SFReguler",
-                              color: Colors.black38,
-                            ),
-                          ),
+                                  npwp_start,
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontFamily: "SFReguler",
+                                    color: Colors.black38,
+                                  ),
+                                ),
                         )
                       ],
                     )),
@@ -2068,7 +2059,7 @@ class _DetailProfileState extends State<DetailProfile> {
     );
   }
 
-  Widget _npwp_pemotang (){
+  Widget _npwp_pemotang() {
     return Container(
       margin: EdgeInsets.all(10),
       child: Column(
@@ -2100,16 +2091,16 @@ class _DetailProfileState extends State<DetailProfile> {
                           height: 5,
                         ),
                         Container(
-                          child: npwp_pemotong   == null
+                          child: npwp_pemotong == null
                               ? Text("-")
                               : Text(
-                            npwp_pemotong ,
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontFamily: "SFReguler",
-                              color: Colors.black38,
-                            ),
-                          ),
+                                  npwp_pemotong,
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontFamily: "SFReguler",
+                                    color: Colors.black38,
+                                  ),
+                                ),
                         )
                       ],
                     )),
@@ -2124,7 +2115,7 @@ class _DetailProfileState extends State<DetailProfile> {
     );
   }
 
-  Widget _wajib_pajak (){
+  Widget _wajib_pajak() {
     return Container(
       margin: EdgeInsets.all(10),
       child: Column(
@@ -2156,16 +2147,16 @@ class _DetailProfileState extends State<DetailProfile> {
                           height: 5,
                         ),
                         Container(
-                          child: wajib_pajak   == null
+                          child: wajib_pajak == null
                               ? Text("-")
                               : Text(
-                            wajib_pajak ,
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontFamily: "SFReguler",
-                              color: Colors.black38,
-                            ),
-                          ),
+                                  wajib_pajak,
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontFamily: "SFReguler",
+                                    color: Colors.black38,
+                                  ),
+                                ),
                         )
                       ],
                     )),
@@ -2180,7 +2171,7 @@ class _DetailProfileState extends State<DetailProfile> {
     );
   }
 
-  Widget _no_kpj (){
+  Widget _no_kpj() {
     return Container(
       margin: EdgeInsets.all(10),
       child: Column(
@@ -2215,13 +2206,13 @@ class _DetailProfileState extends State<DetailProfile> {
                           child: no_kpj == null
                               ? Text("-")
                               : Text(
-                            no_kpj ,
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontFamily: "SFReguler",
-                              color: Colors.black38,
-                            ),
-                          ),
+                                  no_kpj,
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontFamily: "SFReguler",
+                                    color: Colors.black38,
+                                  ),
+                                ),
                         )
                       ],
                     )),
@@ -2236,7 +2227,7 @@ class _DetailProfileState extends State<DetailProfile> {
     );
   }
 
-  Widget _date_bpjs (){
+  Widget _date_bpjs() {
     return Container(
       margin: EdgeInsets.all(10),
       child: Column(
@@ -2271,13 +2262,13 @@ class _DetailProfileState extends State<DetailProfile> {
                           child: date_bpjs == null
                               ? Text("-")
                               : Text(
-                            date_bpjs ,
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontFamily: "SFReguler",
-                              color: Colors.black38,
-                            ),
-                          ),
+                                  date_bpjs,
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontFamily: "SFReguler",
+                                    color: Colors.black38,
+                                  ),
+                                ),
                         )
                       ],
                     )),
@@ -2292,7 +2283,7 @@ class _DetailProfileState extends State<DetailProfile> {
     );
   }
 
-  Widget _number_card_bpjs (){
+  Widget _number_card_bpjs() {
     return Container(
       margin: EdgeInsets.all(10),
       child: Column(
@@ -2327,13 +2318,13 @@ class _DetailProfileState extends State<DetailProfile> {
                           child: number_card_bpjs == null
                               ? Text("-")
                               : Text(
-                            number_card_bpjs ,
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontFamily: "SFReguler",
-                              color: Colors.black38,
-                            ),
-                          ),
+                                  number_card_bpjs,
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontFamily: "SFReguler",
+                                    color: Colors.black38,
+                                  ),
+                                ),
                         )
                       ],
                     )),
@@ -2348,8 +2339,7 @@ class _DetailProfileState extends State<DetailProfile> {
     );
   }
 
-
-  Widget _effective_date_bpjs (){
+  Widget _effective_date_bpjs() {
     return Container(
       margin: EdgeInsets.all(10),
       child: Column(
@@ -2384,13 +2374,13 @@ class _DetailProfileState extends State<DetailProfile> {
                           child: efective_date_bpjs == null
                               ? Text("-")
                               : Text(
-                            efective_date_bpjs ,
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontFamily: "SFReguler",
-                              color: Colors.black38,
-                            ),
-                          ),
+                                  efective_date_bpjs,
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontFamily: "SFReguler",
+                                    color: Colors.black38,
+                                  ),
+                                ),
                         )
                       ],
                     )),
@@ -2405,72 +2395,67 @@ class _DetailProfileState extends State<DetailProfile> {
     );
   }
 
-
-
-
   ///function companies
   Future _employee(BuildContext context) async {
     setState(() {
       _isLoading = true;
     });
     final response =
-    await http.get("$base_url/api/employees/${widget.id}");
+        await http.get(Uri.parse("$base_url/api/employees/${widget.id}"));
     final data = jsonDecode(response.body);
 
     if (data['code'] == 200) {
       //final compaymodel = companiesFromJson(response.body);
 
       //build personal information
-      first_name = data['data']['first_name'];
-      last_name = data['data']['last_name'];
+      first_name = data['data']['name'];
+      last_name = "";
       photo = data['data']['photo'];
-      work_palcement = data['data']['work_placement'];
-      username = data['data']['username'];
+      work_palcement = "office";
+      username = data['data']['credential']['username'] ?? "";
       gender = data['data']['gender'];
       date_of_birth = data['data']['date_of_birth'];
-      employee_id = data['data']['employee_id'];
-      citizenship=data['data']['citizenship'];
-      citizenship_country=data['data']['citizenship_country'];
-      employee_status=data['data']['employee_status'];
-      start_work_date=data['data']['start_work_date'];
+      employee_id = data['data']['number'];
+      citizenship = "WNI";
+      citizenship_country = "Indonesia";
+      employee_status = data['data']['active_career']['status'] ?? "";
+      start_work_date = data['data']['start_work_date'];
       //designation=data['data']['active_career']['designation_name'];
       //departement=data['data']['active_career']['department']['name'];
-      identity_type=data['data']['identity_type'];
-      identity_number=data['data']['identity_number'];
-      identity_expired_date=data['data']['identity_expired-date'];
-      place_of_birth==data['data']['place_of_birth'];
-      marita_status=data['data']['marital_status'];
-      last_education=data['data']['last_education'];
-      religion=data['data']['religion'];
-      blood_type=data['data']['blood_type'];
-      study_program=data['data']['study_program'];
-      last_education_name=data['data']['last_education_name'];
-      last_education=data['data']['last_education'];
+      identity_type = data['data']['identity_type'];
+      identity_number = data['data']['identity_number'];
+      identity_expired_date = "";
+      place_of_birth = data['data']['place_of_birth'];
+      marita_status = data['data']['marital_status'];
+      last_education = data['data']['recent_education'];
+      religion = data['data']['religion'];
+      blood_type = data['data']['blood_group'];
+      study_program = data['data']['study_program'];
+      last_education_name = data['data']['education_institution_name'];
 
       // contaoc  information
-       email =data['data']['email'];
-       contact_number =data['data']['contact_number'];
-       address =data['data']['address'];
-      emergency_contact_number =data['data']['emergency_contact_number'];
-      emergency_contact_name =data['data']['emergency_contact_name'];
+      email = data['data']['email'];
+      contact_number = data['data']['phone'];
+      address = data['data']['address'];
+      emergency_contact_number = data['data']['emergency_contact_phone'];
+      emergency_contact_name = data['data']['emergency_contact_name'];
 
       //back account
-      bank_account_name =data['data']['bank_account_name'];
-      bank_account_owner =data['data']['bank_account_owner'];
-      bank_account_number =data['data']['bank_account_number'];
-      bank_account_branch =data['data']['bank_account_branch'];
+      bank_account_name = "";
+      bank_account_owner = "";
+      bank_account_number = "";
+      bank_account_branch = "";
       //npwp
-      npwp_number=data['data']['npwp_number'];
-      npwp_start=data['data']['npwp_start_date'];
-      npwp_pemotong=data['data']['npwp_tax_collector'];
-      efective_date_bpjs=data['data']['bpjs_kesehatan_effective_date'];
-      wajib_pajak=data['data']['taxpayer_status'];
+      npwp_number = data['data']['npwp_number'];
+      npwp_start = data['data']['npwp_effective_date'];
+      npwp_pemotong = "";
+      efective_date_bpjs = "";
+      wajib_pajak = "";
       //bpjs
-      no_kpj=data['data']['bpjs_ketenagakerjaan_number'];
-      date_bpjs=data['data']['bpjs_ketenagakerjaan_effective_date'];
-      number_card_bpjs=data['data']['bpjs_kesehatan_number'];
-      efective_date_bpjs=data['data']['bpjs_kesehatan_effective_date'];
-
+      no_kpj = "";
+      date_bpjs = "";
+      number_card_bpjs = "";
+      efective_date_bpjs = "";
 
       setState(() {
         _isLoading = false;
@@ -2481,6 +2466,7 @@ class _DetailProfileState extends State<DetailProfile> {
       });
     }
   }
+
   @override
   void initState() {
     // TODO: implement initState

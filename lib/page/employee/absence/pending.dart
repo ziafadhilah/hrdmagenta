@@ -419,7 +419,7 @@ class _PendingAbsenceEmployeePageState extends State<PendingAbsenceEmployeePage>
         _loading = true;
       });
       http.Response response = await http.get(
-          "${base_url}/api/attendances?status=${widget.type}");
+          Uri.parse("${base_url}/api/attendances?status=${widget.type}"));
       _absence = jsonDecode(response.body);
      
       setState(() {

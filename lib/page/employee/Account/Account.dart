@@ -427,6 +427,7 @@ class _AccountEmployeeState extends State<AccountEmployee> {
       ),
     );
   }
+
 //wodget about
   Widget _buildabout() {
     return Container(
@@ -480,7 +481,6 @@ class _AccountEmployeeState extends State<AccountEmployee> {
                     )),
 
                 //container arrow right
-
               ],
             ),
           ),
@@ -597,25 +597,29 @@ class _AccountEmployeeState extends State<AccountEmployee> {
                           height: 5,
                         ),
                         Container(
-                          child: gender=='male'?Text(
-                            "Pria",
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: Colors.black38,
-                            ),
-                          ):gender=="female"?Text(
-                            "Wanita",
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: Colors.black38,
-                            ),
-                          ):Text(
-                            "-",
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: Colors.black38,
-                            ),
-                          ),
+                          child: gender == 'male'
+                              ? Text(
+                                  "Pria",
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.black38,
+                                  ),
+                                )
+                              : gender == "female"
+                                  ? Text(
+                                      "Wanita",
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        color: Colors.black38,
+                                      ),
+                                    )
+                                  : Text(
+                                      "-",
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        color: Colors.black38,
+                                      ),
+                                    ),
                         )
                       ],
                     )),
@@ -810,13 +814,11 @@ class _AccountEmployeeState extends State<AccountEmployee> {
     return Container(
         margin: EdgeInsets.only(top: 10, left: 5, right: 5),
         width: double.infinity,
-
         child: Column(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-
             _buildprofile(),
             _buildCompany(),
             _buildChangepassword(),
@@ -1114,7 +1116,7 @@ class _AccountEmployeeState extends State<AccountEmployee> {
                             child: Text("Iya"),
                             onPressed: () async {
                               session.logout(context);
-                              services.clearTokenemployee(user_id);
+                              // services.clearTokenemployee(user_id);
                             },
                           ),
                         ),

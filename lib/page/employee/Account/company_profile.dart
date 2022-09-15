@@ -224,7 +224,6 @@ class _company_pfrofileState extends State<company_pfrofile> {
                           style: TextStyle(
                               fontSize: 14,
                               color: Colors.black87,
-
                               fontFamily: "SFReguler",
                               fontWeight: FontWeight.bold),
                         ),
@@ -335,15 +334,19 @@ class _company_pfrofileState extends State<company_pfrofile> {
       _isLoading = true;
     });
     final response =
-        await http.get("$base_url/api/employees/${widget.id}/companies");
+        await http.get(Uri.parse("$base_url/api/employees/${widget.id}"));
     final data = jsonDecode(response.body);
 
     if (data['code'] == 200) {
       //final compaymodel = companiesFromJson(response.body);
-      company_name = data['data']['name'];
-      company_adress = data['data']['address'];
-      company_email = data['data']['email'];
-      company_phonenumber = data['data']['contact_number'];
+      company_name =
+          data['data']['office']['division']['company']['name'] ?? "-";
+      company_adress =
+          data['data']['office']['division']['company']['address'] ?? "-";
+      company_email =
+          data['data']['office']['division']['company']['email'] ?? "-";
+      company_phonenumber =
+          data['data']['office']['division']['company']['phone'] ?? "-";
 
       setState(() {
         _isLoading = false;

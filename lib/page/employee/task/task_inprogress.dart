@@ -158,7 +158,7 @@ class _task_inprogresState extends State<task_inprogres> {
         _loading = true;
       });
       http.Response response = await http
-          .get("$baset_url_event/api/projects/${widget.id}/tasks");
+          .get(Uri.parse("$baset_url_event/api/projects/${widget.id}/tasks"));
       _task = jsonDecode(response.body);
 
       setState(() {

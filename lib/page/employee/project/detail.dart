@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:hrdmagenta/page/admin/l/task/tabmenutask.dart';
 import 'package:hrdmagenta/page/employee/budget/budget_project.dart';
 import 'package:hrdmagenta/page/employee/project/map.dart';
 import 'package:hrdmagenta/page/employee/task/tabmenu_task.dart';
@@ -15,13 +14,13 @@ import 'package:hrdmagenta/utalities/constants.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
-import 'package:pie_chart/pie_chart.dart';
+
 import 'package:shared_preferences/shared_preferences.dart';
 
 class DetailProjects extends StatefulWidget {
-  var id,venue;
+  var id, venue;
 
-  DetailProjects({this.id,this.venue});
+  DetailProjects({this.id, this.venue});
 
   @override
   _DetailProjectsState createState() => _DetailProjectsState();
@@ -49,6 +48,7 @@ class _DetailProjectsState extends State<DetailProjects> {
       members,
       user_id,
       task = 0,
+      budgetid="0",
       status_member;
   final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
 
@@ -71,31 +71,31 @@ class _DetailProjectsState extends State<DetailProjects> {
           "Project Detail",
           style: TextStyle(color: Colors.black87),
         ),
-        actions: [
-          IconButton(
-              icon: Icon(
-                Icons.monetization_on_outlined,
-                size: 30,
-              ),
-              tooltip: "Budget",
-              onPressed: () {
-                Get.to(budgetproject(
-                  projectNumber: projectNumber,
-                  projectId: widget.id,
-                  budgetStartDate: budgetStartDate,
-                  budgetEndDate: budgetEndDate,
-                  statusMember: status_member,
-                ));
-              }),
-          task > 0
-              ? IconButton(
-                  icon: taskIcon,
-                  tooltip: "tak",
-                  onPressed: () {
-                    _updateTask();
-                  })
-              : Container()
-        ],
+        // actions: [
+        //   IconButton(
+        //       icon: Icon(
+        //         Icons.monetization_on_outlined,
+        //         size: 30,
+        //       ),
+        //       tooltip: "Budget",
+        //       onPressed: () {
+        //         Get.to(budgetproject(
+        //           projectNumber: projectNumber,
+        //           projectId: widget.id,
+        //           budgetStartDate: budgetStartDate,
+        //           budgetEndDate: budgetEndDate,
+        //           statusMember: status_member,
+        //         ));
+        //       }),
+        //   task > 0
+        //       ? IconButton(
+        //           icon: taskIcon,
+        //           tooltip: "tak",
+        //           onPressed: () {
+        //             _updateTask();
+        //           })
+        //       : Container()
+        // ],
       ),
       body: _loading == true
           ? Container(
@@ -113,30 +113,127 @@ class _DetailProjectsState extends State<DetailProjects> {
                       ),
                       Container(
                         margin: EdgeInsets.only(left: 5),
-                        child: Text(
-                          "Detail",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontFamily: "SFReguler",
-                              fontSize: 18),
+                        child: Row(
+                          children: [
+                            Text(
+                              "Detail",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: "robotol-bold",
+                                  fontSize: 17),
+                            ),
+                            Expanded(
+                              child: Container(
+                                alignment: Alignment.centerRight,
+                                width: double.maxFinite,
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    Container(
+                                      height: 30,
+                                      child: ElevatedButton(
+                                          onPressed: () {
+                                            print("budget start date ${budgetStartDate.toString()}");
+                                            Get.to(budgetproject(
+                                              projectNumber: projectNumber,
+                                              projectId: widget.id,
+                                              budgetStartDate: budgetStartDate.toString(),
+                                              budgetEndDate: budgetEndDate,
+                                              statusMember: status_member,
+                                              budgetid: budgetid.toString(),
+
+                                            ));
+                                          },
+                                          style: ButtonStyle(
+                                            backgroundColor:
+                                                MaterialStateProperty.all(
+                                                    baseColor),
+                                            shape: MaterialStateProperty.all<
+                                                    RoundedRectangleBorder>(
+                                                RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(5.0),
+                                            )),
+                                          ),
+                                          child: _loading
+                                              ? Container(
+                                                  width: 30,
+                                                  height: 30,
+                                                  child: const Center(
+                                                      child:
+                                                          CircularProgressIndicator(
+                                                    color: Colors.white,
+                                                    strokeWidth: 2,
+                                                  )))
+                                              : const Text(
+                                                  "Budget",
+                                                  style: TextStyle(
+                                                      fontSize: 13,
+                                                      fontFamily:
+                                                          "roboto-regular"),
+                                                )),
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    Container(
+                                      height: 30,
+                                      child: ElevatedButton(
+                                          onPressed: () {},
+                                          style: ButtonStyle(
+                                            backgroundColor:
+                                                MaterialStateProperty.all(
+                                                    baseColor),
+                                            shape: MaterialStateProperty.all<
+                                                    RoundedRectangleBorder>(
+                                                RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(5.0),
+                                            )),
+                                          ),
+                                          child: _loading
+                                              ? Container(
+                                                  width: 30,
+                                                  height: 30,
+                                                  child: const Center(
+                                                      child:
+                                                          CircularProgressIndicator(
+                                                    color: Colors.white,
+                                                    strokeWidth: 2,
+                                                  )))
+                                              : const Text(
+                                                  "Task",
+                                                  style: TextStyle(
+                                                      fontSize: 13,
+                                                      fontFamily:
+                                                          "roboto-regular"),
+                                                )),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            )
+                          ],
                         ),
+                      ),
+                      SizedBox(
+                        height: 15,
                       ),
                       _detailProject(),
                       SizedBox(
                         height: 15,
                       ),
-
                       Container(
                         margin: EdgeInsets.only(left: 5),
                         child: Text(
-                          "Anggota",
+                          "Angota",
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
-                              fontFamily: "SFReguler",
-                              fontSize: 18),
+                              fontFamily: "robotol-bold",
+                              fontSize: 17),
                         ),
                       ),
-
                       _members(),
                       SizedBox(
                         height: 15,
@@ -144,32 +241,17 @@ class _DetailProjectsState extends State<DetailProjects> {
                       Container(
                         margin: EdgeInsets.only(left: 5),
                         child: Text(
-                          "Persentasi Tugas",
+                          "Persentase",
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
-                              fontFamily: "SFReguler",
-                              fontSize: 18),
+                              fontFamily: "robotol-bold",
+                              fontSize: 17),
                         ),
                       ),
-
                       _percentageTask(),
                       SizedBox(
                         height: 15,
                       ),
-
-                      Container(
-                        margin: EdgeInsets.only(left: 5),
-                        child: Text(
-                          "Lokasi Project",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontFamily: "SFReguler",
-                              fontSize: 18),
-                        ),
-                      ),
-
-                      //  _budgerCategory()
-                      _builmap(),
                       SizedBox(
                         height: 20,
                       ),
@@ -186,6 +268,7 @@ class _DetailProjectsState extends State<DetailProjects> {
 
   Widget _detailProject() {
     return Card(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       child: Container(
         margin: EdgeInsets.only(top: 10),
         color: Colors.white,
@@ -220,8 +303,9 @@ class _DetailProjectsState extends State<DetailProjects> {
                               "No. Project",
                               style: TextStyle(
                                   color: Colors.black,
-                                  fontSize: 15,
-                                  fontFamily: "SFReguler"),
+                                  fontSize: 13,
+                                  letterSpacing: 0.5,
+                                  fontFamily: "roboto-regular"),
                             ),
                           ),
                           SizedBox(
@@ -231,7 +315,10 @@ class _DetailProjectsState extends State<DetailProjects> {
                             child: Text(
                               "${projectNumber != null ? projectNumber : ""}",
                               style: TextStyle(
-                                  color: Colors.black45, fontSize: 15),
+                                  color: Colors.black.withOpacity(0.5),
+                                  fontSize: 11,
+                                  letterSpacing: 0.5,
+                                  fontFamily: "roboto-regular"),
                             ),
                           ),
                           SizedBox(
@@ -242,8 +329,10 @@ class _DetailProjectsState extends State<DetailProjects> {
                           ),
                           Container(
                             width: Get.mediaQuery.size.width - 45,
-                            height: 1,
-                            color: Colors.black12,
+                            child: Divider(
+                              height: 1,
+                              color: Colors.black.withOpacity(0.1),
+                            ),
                           )
                         ],
                       ),
@@ -251,50 +340,50 @@ class _DetailProjectsState extends State<DetailProjects> {
                   ],
                 ),
               ),
-              Container(
-                margin: EdgeInsets.only(top: 10),
-                child: Row(
-                  children: <Widget>[
-                    Container(
-                      margin: EdgeInsets.only(left: 5),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Container(
-                            child: Text(
-                              "Quotation",
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 15,
-                                  fontFamily: "SFReguler"),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 5,
-                          ),
-                          Container(
-                            width: Get.mediaQuery.size.width - 45,
-                            child: Text(
-                              "${quotation != null ? quotation : ""}",
-                              textAlign: TextAlign.justify,
-                              style: TextStyle(
-                                  color: Colors.black45, fontSize: 15),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 5,
-                          ),
-                          Container(
-                            width: Get.mediaQuery.size.width - 45,
-                            height: 1,
-                            color: Colors.black12,
-                          )
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+              // Container(
+              //   margin: EdgeInsets.only(top: 10),
+              //   child: Row(
+              //     children: <Widget>[
+              //       Container(
+              //         margin: EdgeInsets.only(left: 5),
+              //         child: Column(
+              //           crossAxisAlignment: CrossAxisAlignment.start,
+              //           children: <Widget>[
+              //             Container(
+              //               child: Text(
+              //                 "Quotation",
+              //                 style: TextStyle(
+              //                     color: Colors.black,
+              //                     fontSize: 15,
+              //                     fontFamily: "SFReguler"),
+              //               ),
+              //             ),
+              //             SizedBox(
+              //               height: 5,
+              //             ),
+              //             Container(
+              //               width: Get.mediaQuery.size.width - 45,
+              //               child: Text(
+              //                 "${quotation != null ? quotation : ""}",
+              //                 textAlign: TextAlign.justify,
+              //                 style: TextStyle(
+              //                     color: Colors.black45, fontSize: 15),
+              //               ),
+              //             ),
+              //             SizedBox(
+              //               height: 5,
+              //             ),
+              //             Container(
+              //               width: Get.mediaQuery.size.width - 45,
+              //               height: 1,
+              //               color: Colors.black12,
+              //             )
+              //           ],
+              //         ),
+              //       ),
+              //     ],
+              //   ),
+              // ),
               Container(
                 margin: EdgeInsets.only(top: 10),
                 child: Row(
@@ -309,8 +398,9 @@ class _DetailProjectsState extends State<DetailProjects> {
                               "Tanggal Mulai Project",
                               style: TextStyle(
                                   color: Colors.black,
-                                  fontSize: 15,
-                                  fontFamily: "SFReguler"),
+                                  fontSize: 13,
+                                  letterSpacing: 0.5,
+                                  fontFamily: "roboto-regular"),
                             ),
                           ),
                           SizedBox(
@@ -322,7 +412,10 @@ class _DetailProjectsState extends State<DetailProjects> {
                               "${projectStartDate != null ? projectStartDate : ""}",
                               textAlign: TextAlign.justify,
                               style: TextStyle(
-                                  color: Colors.black45, fontSize: 15),
+                                  color: Colors.black.withOpacity(0.5),
+                                  fontSize: 11,
+                                  letterSpacing: 0.5,
+                                  fontFamily: "roboto-regular"),
                             ),
                           ),
                           SizedBox(
@@ -330,8 +423,10 @@ class _DetailProjectsState extends State<DetailProjects> {
                           ),
                           Container(
                             width: Get.mediaQuery.size.width - 45,
-                            height: 1,
-                            color: Colors.black12,
+                            child: Divider(
+                              height: 1,
+                              color: Colors.black.withOpacity(0.1),
+                            ),
                           )
                         ],
                       ),
@@ -353,8 +448,9 @@ class _DetailProjectsState extends State<DetailProjects> {
                               "Tanggal Akhir Project",
                               style: TextStyle(
                                   color: Colors.black,
-                                  fontSize: 15,
-                                  fontFamily: "SFReguler"),
+                                  fontSize: 13,
+                                  letterSpacing: 0.5,
+                                  fontFamily: "roboto-regular"),
                             ),
                           ),
                           SizedBox(
@@ -365,7 +461,10 @@ class _DetailProjectsState extends State<DetailProjects> {
                             child: Text(
                               "${projectEndDate != null ? projectEndDate : ""}",
                               style: TextStyle(
-                                  color: Colors.black45, fontSize: 15),
+                                  color: Colors.black.withOpacity(0.5),
+                                  fontSize: 11,
+                                  letterSpacing: 0.5,
+                                  fontFamily: "roboto-regular"),
                             ),
                           ),
                           SizedBox(
@@ -373,8 +472,10 @@ class _DetailProjectsState extends State<DetailProjects> {
                           ),
                           Container(
                             width: Get.mediaQuery.size.width - 45,
-                            height: 1,
-                            color: Colors.black12,
+                            child: Divider(
+                              height: 1,
+                              color: Colors.black.withOpacity(0.1),
+                            ),
                           )
                         ],
                       ),
@@ -397,8 +498,9 @@ class _DetailProjectsState extends State<DetailProjects> {
                               textAlign: TextAlign.justify,
                               style: TextStyle(
                                   color: Colors.black,
-                                  fontSize: 15,
-                                  fontFamily: "SFReguler"),
+                                  fontSize: 13,
+                                  letterSpacing: 0.5,
+                                  fontFamily: "roboto-regular"),
                             ),
                           ),
                           SizedBox(
@@ -409,7 +511,10 @@ class _DetailProjectsState extends State<DetailProjects> {
                             child: Text(
                               "${description != null ? description : ""}",
                               style: TextStyle(
-                                  color: Colors.black45, fontSize: 15),
+                                  color: Colors.black.withOpacity(0.5),
+                                  fontSize: 11,
+                                  letterSpacing: 0.5,
+                                  fontFamily: "roboto-regular"),
                             ),
                           ),
                           SizedBox(
@@ -417,8 +522,10 @@ class _DetailProjectsState extends State<DetailProjects> {
                           ),
                           Container(
                             width: Get.mediaQuery.size.width - 45,
-                            height: 1,
-                            color: Colors.black12,
+                            child: Divider(
+                              height: 1,
+                              color: Colors.black.withOpacity(0.1),
+                            ),
                           )
                         ],
                       ),
@@ -441,8 +548,9 @@ class _DetailProjectsState extends State<DetailProjects> {
                               "Customer",
                               style: TextStyle(
                                   color: Colors.black,
-                                  fontSize: 15,
-                                  fontFamily: "SFReguler"),
+                                  fontSize: 13,
+                                  letterSpacing: 0.5,
+                                  fontFamily: "roboto-regular"),
                             ),
                           ),
                           SizedBox(
@@ -453,7 +561,10 @@ class _DetailProjectsState extends State<DetailProjects> {
                             child: Text(
                               "${customer != null ? customer : ""}",
                               style: TextStyle(
-                                  color: Colors.black45, fontSize: 15),
+                                  color: Colors.black.withOpacity(0.5),
+                                  fontSize: 11,
+                                  letterSpacing: 0.5,
+                                  fontFamily: "roboto-regular"),
                             ),
                           ),
                           SizedBox(
@@ -461,8 +572,10 @@ class _DetailProjectsState extends State<DetailProjects> {
                           ),
                           Container(
                             width: Get.mediaQuery.size.width - 45,
-                            height: 1,
-                            color: Colors.black12,
+                            child: Divider(
+                              height: 1,
+                              color: Colors.black.withOpacity(0.1),
+                            ),
                           )
                         ],
                       ),
@@ -485,8 +598,9 @@ class _DetailProjectsState extends State<DetailProjects> {
                               "PIC Customer",
                               style: TextStyle(
                                   color: Colors.black,
-                                  fontSize: 15,
-                                  fontFamily: "SFReguler"),
+                                  fontSize: 13,
+                                  letterSpacing: 0.5,
+                                  fontFamily: "roboto-regular"),
                             ),
                           ),
                           SizedBox(
@@ -497,7 +611,10 @@ class _DetailProjectsState extends State<DetailProjects> {
                             child: Text(
                               "${picCustomer != null ? picCustomer : ""}",
                               style: TextStyle(
-                                  color: Colors.black45, fontSize: 15),
+                                  color: Colors.black.withOpacity(0.5),
+                                  fontSize: 11,
+                                  letterSpacing: 0.5,
+                                  fontFamily: "roboto-regular"),
                             ),
                           ),
                           SizedBox(
@@ -505,8 +622,10 @@ class _DetailProjectsState extends State<DetailProjects> {
                           ),
                           Container(
                             width: Get.mediaQuery.size.width - 45,
-                            height: 1,
-                            color: Colors.black12,
+                            child: Divider(
+                              height: 1,
+                              color: Colors.black.withOpacity(0.1),
+                            ),
                           )
                         ],
                       ),
@@ -531,8 +650,9 @@ class _DetailProjectsState extends State<DetailProjects> {
                               "Venue",
                               style: TextStyle(
                                   color: Colors.black,
-                                  fontSize: 15,
-                                  fontFamily: "SFReguler"),
+                                  fontSize: 13,
+                                  letterSpacing: 0.5,
+                                  fontFamily: "roboto-regular"),
                             ),
                           ),
                           SizedBox(
@@ -544,7 +664,10 @@ class _DetailProjectsState extends State<DetailProjects> {
                               "${widget.venue}",
                               textAlign: TextAlign.justify,
                               style: TextStyle(
-                                  color: Colors.black45, fontSize: 15),
+                                  color: Colors.black.withOpacity(0.5),
+                                  fontSize: 11,
+                                  letterSpacing: 0.5,
+                                  fontFamily: "roboto-regular"),
                             ),
                           ),
                           SizedBox(
@@ -552,8 +675,10 @@ class _DetailProjectsState extends State<DetailProjects> {
                           ),
                           Container(
                             width: Get.mediaQuery.size.width - 45,
-                            height: 1,
-                            color: Colors.black12,
+                            child: Divider(
+                              height: 1,
+                              color: Colors.black.withOpacity(0.1),
+                            ),
                           )
                         ],
                       ),
@@ -577,8 +702,9 @@ class _DetailProjectsState extends State<DetailProjects> {
                               "Total Biaya Project",
                               style: TextStyle(
                                   color: Colors.black,
-                                  fontSize: 15,
-                                  fontFamily: "SFReguler"),
+                                  fontSize: 13,
+                                  letterSpacing: 0.5,
+                                  fontFamily: "roboto-regular"),
                             ),
                           ),
                           SizedBox(
@@ -589,154 +715,152 @@ class _DetailProjectsState extends State<DetailProjects> {
                             child: Text(
                               "${totalProjectCost != null ? totalProjectCost : ""}",
                               style: TextStyle(
-                                  color: Colors.black45, fontSize: 15),
+                                  color: Colors.black.withOpacity(0.5),
+                                  fontSize: 11,
+                                  letterSpacing: 0.5,
+                                  fontFamily: "roboto-regular"),
                             ),
                           ),
                           SizedBox(
                             height: 5,
                           ),
-                          Container(
-                            width: Get.mediaQuery.size.width - 45,
-                            height: 1,
-                            color: Colors.black12,
-                          )
                         ],
                       ),
                     ),
                   ],
                 ),
               ),
-              Container(
-                margin: EdgeInsets.only(top: 10),
-                child: Row(
-                  children: <Widget>[
-                    Container(
-                      margin: EdgeInsets.only(left: 5),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Container(
-                            child: Text(
-                              "Total In",
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 15,
-                                  fontFamily: "SFReguler"),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 5,
-                          ),
-                          Container(
-                            width: Get.mediaQuery.size.width - 45,
-                            child: Text(
-                              "${totalIn != null ? totalIn : ""}",
-                              style: TextStyle(
-                                  color: Colors.black45, fontSize: 15),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 5,
-                          ),
-                          Container(
-                            width: Get.mediaQuery.size.width - 45,
-                            height: 1,
-                            color: Colors.black12,
-                          )
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-
-              //saldo
-              Container(
-                margin: EdgeInsets.only(top: 20),
-                child: Row(
-                  children: <Widget>[
-                    Container(
-                      margin: EdgeInsets.only(left: 5),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Container(
-                            child: Text(
-                              "Total Out",
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 15,
-                                  fontFamily: "SFReguler"),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 5,
-                          ),
-                          Container(
-                            width: Get.mediaQuery.size.width - 45,
-                            child: Text(
-                              "${totalOut != null ? totalOut : ""}",
-                              style: TextStyle(
-                                  color: Colors.black45, fontSize: 15),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 5,
-                          ),
-                          Container(
-                            width: Get.mediaQuery.size.width - 45,
-                            height: 1,
-                            color: Colors.black12,
-                          )
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                margin: EdgeInsets.only(top: 20),
-                child: Row(
-                  children: <Widget>[
-                    Container(
-                      margin: EdgeInsets.only(left: 5),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Container(
-                            child: Text(
-                              "Saldo",
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 15,
-                                  fontFamily: "SFReguler"),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 5,
-                          ),
-                          Container(
-                            width: Get.mediaQuery.size.width - 45,
-                            child: Text(
-                              "${balance != null ? balance : ""}",
-                              style: TextStyle(
-                                  color: Colors.black45, fontSize: 15),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 5,
-                          ),
-                          Container(
-                            width: Get.mediaQuery.size.width - 45,
-                            height: 1,
-                            color: Colors.black12,
-                          )
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+              // Container(
+              //   margin: EdgeInsets.only(top: 10),
+              //   child: Row(
+              //     children: <Widget>[
+              //       Container(
+              //         margin: EdgeInsets.only(left: 5),
+              //         child: Column(
+              //           crossAxisAlignment: CrossAxisAlignment.start,
+              //           children: <Widget>[
+              //             Container(
+              //               child: Text(
+              //                 "Total In",
+              //                 style: TextStyle(
+              //                     color: Colors.black,
+              //                     fontSize: 15,
+              //                     fontFamily: "SFReguler"),
+              //               ),
+              //             ),
+              //             SizedBox(
+              //               height: 5,
+              //             ),
+              //             Container(
+              //               width: Get.mediaQuery.size.width - 45,
+              //               child: Text(
+              //                 "${totalIn != null ? totalIn : ""}",
+              //                 style: TextStyle(
+              //                     color: Colors.black45, fontSize: 15),
+              //               ),
+              //             ),
+              //             SizedBox(
+              //               height: 5,
+              //             ),
+              //             Container(
+              //               width: Get.mediaQuery.size.width - 45,
+              //               height: 1,
+              //               color: Colors.black12,
+              //             )
+              //           ],
+              //         ),
+              //       ),
+              //     ],
+              //   ),
+              // ),
+              //
+              // //saldo
+              // Container(
+              //   margin: EdgeInsets.only(top: 20),
+              //   child: Row(
+              //     children: <Widget>[
+              //       Container(
+              //         margin: EdgeInsets.only(left: 5),
+              //         child: Column(
+              //           crossAxisAlignment: CrossAxisAlignment.start,
+              //           children: <Widget>[
+              //             Container(
+              //               child: Text(
+              //                 "Total Out",
+              //                 style: TextStyle(
+              //                     color: Colors.black,
+              //                     fontSize: 15,
+              //                     fontFamily: "SFReguler"),
+              //               ),
+              //             ),
+              //             SizedBox(
+              //               height: 5,
+              //             ),
+              //             Container(
+              //               width: Get.mediaQuery.size.width - 45,
+              //               child: Text(
+              //                 "${totalOut != null ? totalOut : ""}",
+              //                 style: TextStyle(
+              //                     color: Colors.black45, fontSize: 15),
+              //               ),
+              //             ),
+              //             SizedBox(
+              //               height: 5,
+              //             ),
+              //             Container(
+              //               width: Get.mediaQuery.size.width - 45,
+              //               height: 1,
+              //               color: Colors.black12,
+              //             )
+              //           ],
+              //         ),
+              //       ),
+              //     ],
+              //   ),
+              // ),
+              // Container(
+              //   margin: EdgeInsets.only(top: 20),
+              //   child: Row(
+              //     children: <Widget>[
+              //       Container(
+              //         margin: EdgeInsets.only(left: 5),
+              //         child: Column(
+              //           crossAxisAlignment: CrossAxisAlignment.start,
+              //           children: <Widget>[
+              //             Container(
+              //               child: Text(
+              //                 "Saldo",
+              //                 style: TextStyle(
+              //                     color: Colors.black,
+              //                     fontSize: 15,
+              //                     fontFamily: "SFReguler"),
+              //               ),
+              //             ),
+              //             SizedBox(
+              //               height: 5,
+              //             ),
+              //             Container(
+              //               width: Get.mediaQuery.size.width - 45,
+              //               child: Text(
+              //                 "${balance != null ? balance : ""}",
+              //                 style: TextStyle(
+              //                     color: Colors.black45, fontSize: 15),
+              //               ),
+              //             ),
+              //             SizedBox(
+              //               height: 5,
+              //             ),
+              //             Container(
+              //               width: Get.mediaQuery.size.width - 45,
+              //               height: 1,
+              //               color: Colors.black12,
+              //             )
+              //           ],
+              //         ),
+              //       ),
+              //     ],
+              //   ),
+              // ),
             ],
           ),
         ),
@@ -747,58 +871,72 @@ class _DetailProjectsState extends State<DetailProjects> {
   //merbers
   Widget _members() {
     return Card(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       child: Container(
           margin: EdgeInsets.only(top: 10),
           color: Colors.white,
           width: double.infinity,
-          height: Get.mediaQuery.size.height * 0.35,
           child: Container(
-            margin: EdgeInsets.all(10),
-            child: ListView.builder(
-                itemCount: members.length,
-                itemBuilder: (contex, index) {
+              margin: EdgeInsets.only(bottom: 40, right: 10, left: 10),
+              child: Column(
+                children: List.generate(members.length, (index) {
                   return Container(
                       margin: EdgeInsets.only(top: 20),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Container(
-                            child: employee_profile,
-                            width: 60,
-                            height: 60,
+                      child: Column(
+                        children: [
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Container(
+                                child: employee_profile,
+                                width: 60,
+                                height: 60,
+                              ),
+                              Container(
+                                  child: Container(
+                                margin: EdgeInsets.only(left: 20),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Container(
+                                      child: Text(
+                                        "${members[index]['name']}",
+                                        style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 13,
+                                            fontFamily: "roboto-regular"),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 5,
+                                    ),
+                                    Container(
+                                      child: Text(
+                                        "${members[index]['status'] == "members" ? "Anggota" : "PIC"}",
+                                        style: TextStyle(
+                                            color:
+                                                Colors.black.withOpacity(0.5),
+                                            fontSize: 13,
+                                            fontFamily: "roboto-light"),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ))
+                            ],
                           ),
+                          SizedBox(height: 10),
                           Container(
-                              child: Container(
-                            margin: EdgeInsets.only(left: 20),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Container(
-                                  child: Text(
-                                    "${members[index]['first_name']}",
-                                    style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 15,
-                                        fontFamily: "SFReguler"),
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 5,
-                                ),
-                                Container(
-                                  child: Text(
-                                    "${members[index]['status'] == "members" ? "Anggota" : "PIC"}",
-                                    style: TextStyle(
-                                        color: Colors.black45, fontSize: 15),
-                                  ),
-                                ),
-                              ],
+                            width: Get.mediaQuery.size.width - 45,
+                            child: Divider(
+                              height: 1,
+                              color: Colors.black.withOpacity(0.1),
                             ),
-                          ))
+                          )
                         ],
                       ));
                 }),
-          )),
+              ))),
     );
   }
 
@@ -847,61 +985,59 @@ class _DetailProjectsState extends State<DetailProjects> {
     );
   }
 
-
-
-  Widget _builmap() {
-    return InkWell(
-      onTap: () {},
-      child: InkWell(
-        onTap: () {
-          print("tes");
-        },
-        child: Container(
-            margin: EdgeInsets.only(left: 5,right: 5),
-            child: SizedBox(
-              width: Get.mediaQuery.size.width,
-              height: 300.0,
-              child: Stack(
-                children: [
-                  GoogleMap(
-                      initialCameraPosition: CameraPosition(
-                          target: LatLng(
-                              double.parse(latitude), double.parse(longitude)),
-                          zoom: 11.0),
-                      markers: Set<Marker>.of(<Marker>[
-                        Marker(
-                          markerId: MarkerId("1"),
-                          position: LatLng(
-                              double.parse(latitude), double.parse(longitude)),
-                        ),
-                      ]),
-                      gestureRecognizers:
-                          <Factory<OneSequenceGestureRecognizer>>[
-                        Factory<OneSequenceGestureRecognizer>(
-                          () => ScaleGestureRecognizer(),
-                        ),
-                      ].toSet()),
-                  InkWell(
-                    onTap: () {
-                      Get.to(MapsProject(
-                        latitude: latitude,
-                        longitude: longitude,
-                        projectNumber: projectNumber,
-                        venue: widget.venue,
-                      ));
-                    },
-                    child: Container(
-                      width: 300,
-                      height: 200,
-                      color: Colors.transparent,
-                    ),
-                  )
-                ],
-              ),
-            )),
-      ),
-    );
-  }
+  // Widget _builmap() {
+  //   return InkWell(
+  //     onTap: () {},
+  //     child: InkWell(
+  //       onTap: () {
+  //         print("tes");
+  //       },
+  //       child: Container(
+  //           margin: EdgeInsets.only(left: 5, right: 5),
+  //           child: SizedBox(
+  //             width: Get.mediaQuery.size.width,
+  //             height: 300.0,
+  //             child: Stack(
+  //               children: [
+  //                 GoogleMap(
+  //                     initialCameraPosition: CameraPosition(
+  //                         target: LatLng(
+  //                             double.parse(latitude), double.parse(longitude)),
+  //                         zoom: 11.0),
+  //                     markers: Set<Marker>.of(<Marker>[
+  //                       Marker(
+  //                         markerId: MarkerId("1"),
+  //                         position: LatLng(
+  //                             double.parse(latitude), double.parse(longitude)),
+  //                       ),
+  //                     ]),
+  //                     gestureRecognizers:
+  //                         <Factory<OneSequenceGestureRecognizer>>[
+  //                       Factory<OneSequenceGestureRecognizer>(
+  //                         () => ScaleGestureRecognizer(),
+  //                       ),
+  //                     ].toSet()),
+  //                 InkWell(
+  //                   onTap: () {
+  //                     Get.to(MapsProject(
+  //                       latitude: latitude,
+  //                       longitude: longitude,
+  //                       projectNumber: projectNumber,
+  //                       venue: widget.venue,
+  //                     ));
+  //                   },
+  //                   child: Container(
+  //                     width: 300,
+  //                     height: 200,
+  //                     color: Colors.transparent,
+  //                   ),
+  //                 )
+  //               ],
+  //             ),
+  //           )),
+  //     ),
+  //   );
+  // }
 
   // Widget _widgetMembers(){
   //   return
@@ -938,39 +1074,42 @@ class _DetailProjectsState extends State<DetailProjects> {
         _loading = true;
       });
 
-      http.Response response = await http.get(
-          "$baset_url_event/api/mobile/projects/detail-project/${widget.id}");
+      http.Response response = await http
+          .get(Uri.parse("$baset_url_event/api/projects/${widget.id}"));
       _projectdetail = jsonDecode(response.body);
+      print("data _${_projectdetail}");
 
       //detail
-      projectNumber = _projectdetail['data']['project_number'];
-      quotation = _projectdetail['data']['quotation_number'];
-      projectStartDate = DateFormat('dd/MM/yyyy').format(
-          DateTime.parse("${_projectdetail['data']['project_start_date']}"));
-      projectEndDate = DateFormat('dd/MM/yyyy').format(
-          DateTime.parse("${_projectdetail['data']['project_end_date']}"));
+      projectNumber = _projectdetail['data']['number'];
+      // quotation = "tew";
+      projectStartDate = DateFormat('dd/MM/yyyy')
+          .format(DateTime.parse("${_projectdetail['data']['start_date']}"));
+      projectEndDate = DateFormat('dd/MM/yyyy')
+          .format(DateTime.parse("${_projectdetail['data']['end_date']}"));
       description = _projectdetail['data']['description'];
-      customer = _projectdetail['data']['event_customer'];
-      picCustomer = _projectdetail['data']['event_pic'];
+      customer = _projectdetail['data']['customer'];
+      picCustomer = _projectdetail['data']['pic_event'];
       totalProjectCost = NumberFormat.currency(decimalDigits: 0, locale: "id")
-          .format(_projectdetail['data']['total_project_cost']);
-      _getAddressFromLatLng(
-          double.parse("${_projectdetail['data']['latitude']}"),
-          double.parse("${_projectdetail['data']['longtitude']}"));
-      latitude = _projectdetail['data']['latitude'];
-      longitude = _projectdetail['data']['longtitude'];
-      task = _projectdetail['data']['tasks'].length;
+          .format(_projectdetail['data']['amount']);
+      // // _getAddressFromLatLng(
+      // //     double.parse("${_projectdetail['data']['latitude']}"),
+      // //     double.parse("${_projectdetail['data']['longtitude']}"));
+      // // latitude = _projectdetail['data']['latitude'];
+      // // longitude = _projectdetail['data']['longtitude'];
+      // task = _projectdetail['data']['tasks'].length;
 
       //bugget
-      if (_projectdetail['data']['budget'].length > 0) {
-        budgetStartDate = _projectdetail['data']['budget']['budget_start_date'];
-        budgetEndDate = _projectdetail['data']['budget']['budget_end_date'];
-        totalIn = NumberFormat.currency(decimalDigits: 0, locale: "id")
-            .format(_projectdetail['data']['budget']['total_in']);
-        totalOut = NumberFormat.currency(decimalDigits: 0, locale: "id")
-            .format(_projectdetail['data']['budget']['total_out']);
-        balance = NumberFormat.currency(decimalDigits: 0, locale: "id")
-            .format(_projectdetail['data']['budget']['balance']);
+      if (_projectdetail['data']['budgets'].length !=null ) {
+        budgetStartDate = _projectdetail['data']['budgets']['start_date'];
+        budgetEndDate = _projectdetail['data']['budgets']['end_date'];
+        budgetid=_projectdetail['data']['budgets']['id'].toString();
+
+        // totalIn = NumberFormat.currency(decimalDigits: 0, locale: "id")
+        //     .format(_projectdetail['data']['budgets']['daily_money_reguler']);
+        // totalOut = NumberFormat.currency(decimalDigits: 0, locale: "id")
+        //     .format(_projectdetail['data']['budgets']['daily_money_reguler']);
+        // balance = NumberFormat.currency(decimalDigits: 0, locale: "id")
+        //     .format(_projectdetail['data']['budgets']['daily_money_reguler']);
       }
 
       if (_projectdetail['data']['tasks'].length > 0) {
@@ -986,7 +1125,8 @@ class _DetailProjectsState extends State<DetailProjects> {
       if (_projectdetail['data']['members'].length > 0) {
         members = _projectdetail['data']['members'];
         var checkedPic = _projectdetail['data']['members']
-            .where((prod) => prod["id"] == user_id)
+            .where(
+                (prod) => prod["employee_id"].toString() == user_id.toString())
             .toList();
         status_member = checkedPic[0]['status'];
       } else {

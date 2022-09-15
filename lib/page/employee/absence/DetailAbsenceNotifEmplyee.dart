@@ -1028,7 +1028,7 @@ class _detail_absence_employee_notifState
         _loading = true;
       });
       http.Response response =
-          await http.get("$base_url/api/attendances/${widget.id}");
+          await http.get(Uri.parse("$base_url/api/attendances/${widget.id}"));
       _absence = jsonDecode(response.body);
       setState(() {
         _loading = false;
